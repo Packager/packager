@@ -1,0 +1,50 @@
+{
+    "name": "pkger",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Browser-based trans-bundler.",
+    "main": "dist/index.js",
+    "types": "build/index.d.ts",
+    "author": "Adrian Barylski",
+    "license": "MIT",
+    "scripts": {
+        "dev": "rollup -w -c",
+        "build": "rollup -c",
+        "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit",
+        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+        "lint": "tslint -p tsconfig.json"
+    },
+    "dependencies": {
+        "rollup": "^1.29.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^11.0.1",
+        "@rollup/plugin-node-resolve": "^7.0.0",
+        "@rollup/plugin-typescript": "^2.1.0",
+        "@types/jest": "^24.9.0",
+        "jest": "^24.9.0",
+        "prettier": "^1.19.1",
+        "rollup-plugin-web-worker-loader": "^0.8.1",
+        "ts-jest": "^24.3.0",
+        "tslint": "^5.20.1",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^3.7.4"
+    },
+    "jest": {
+        "roots": [
+            "<rootDir>/src"
+        ],
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx",
+            "json",
+            "node"
+        ]
+    }
+}
