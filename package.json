@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "acorn-loose": "^7.0.0",
+        "estree-walker": "^1.0.1",
         "rollup": "^1.29.0"
     },
     "devDependencies": {

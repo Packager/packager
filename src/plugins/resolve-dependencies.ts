@@ -2,9 +2,11 @@ import { Plugin } from "rollup";
 import path from "../utils/path";
 import { PluginContext, File } from "./";
 
-export default function resolveDependencies(context: PluginContext): Plugin {
-    const isExternal = (modulePath: string) => !modulePath.startsWith(".");
-
+export const resolveRelative = (
+    childPath: string,
+    parentPath: string,
+    context: PluginContext
+): string | null => {
     const retryFileFind = (path: string): File | undefined =>
         context.files.find(
             f =>
@@ -18,6 +20,21 @@ export default function resolveDependencies(context: PluginContext): Plugin {
                 f.path === `${path}.tsx`
         );
 
+    const resolved = path
+        .resolve(path.dirname(parentPath), childPath)
+        .replace(/^\.\//, "");
+
+    if (context.files.find(f => f.path === resolved)) return resolved;
+
+    const absolute = path.resolve(path.dirname(parentPath), childPath);
+    const retriedFile = retryFileFind(absolute) || { path: null };
+
+    return retriedFile.path;
+};
+
+export default function resolveDependencies(context: PluginContext): Plugin {
+    const isExternal = (modulePath: string) => !modulePath.startsWith(".");
+
     return {
         name: "resolve-dependencies",
         resolveId(modulePath: string, parent?: string) {
@@ -25,16 +42,9 @@ export default function resolveDependencies(context: PluginContext): Plugin {
 
             if (isExternal(modulePath)) return modulePath;
 
-            const resolved = path
-                .resolve(path.dirname(parent), modulePath)
-                .replace(/^\.\//, "");
+            const relativePath = resolveRelative(modulePath, parent, context);
 
-            if (context.files.find(f => f.path === resolved)) return resolved;
-
-            const absolute = path.resolve(path.dirname(parent), modulePath);
-            const retriedFile = retryFileFind(absolute);
-
-            if (retriedFile) return retriedFile.path;
+            if (relativePath) return relativePath;
 
             throw new Error(
                 `Could not resolve '${modulePath}' from '${parent}'`

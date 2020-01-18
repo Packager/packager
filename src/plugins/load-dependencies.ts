@@ -12,15 +12,41 @@ export default function loadDependencies(context: PluginContext): Plugin {
             if (!file) {
                 const version =
                     context.bundleOptions.externalModules[modulePath];
-                const npmCode =
-                    (await fetchNpmDependency(modulePath, version)) || "";
+                const cacheKey = `${modulePath}@${version}`;
+                const cachedNpmDependency = context.cache.get(cacheKey);
 
-                return { code: npmCode, map: "" };
+                if (cachedNpmDependency) {
+                    return {
+                        code: cachedNpmDependency.code
+                    };
+                } else {
+                    const npmDependency =
+                        (await fetchNpmDependency(modulePath, version)) || "";
+
+                    if (npmDependency) {
+                        context.cache.set(cacheKey, {
+                            module: modulePath,
+                            code: npmDependency.code,
+                            path: npmDependency.metadata.link
+                        });
+
+                        return {
+                            code: npmDependency.code
+                        };
+                    }
+
+                    return null;
+                }
             }
 
             return {
                 code: file.code
             };
+        },
+        transform(code: any, source: string) {
+            if (!source.startsWith("/")) {
+                return { code, map: { mappings: "" } };
+            }
         }
     };
 }

@@ -7,32 +7,43 @@ const files = [
         name: "app.js",
         path: "/src/app.js",
         entry: true,
-        code: `import test from './test.js'
+        code: `import Vue from 'vue';
+import test from './test.js'
 
 console.log(test());`
     },
     {
         name: "test.js",
         path: "/src/test.js",
-        code: `import Vue from 'vue';
+        code: `import another from './another';
 
 export default function () {
-    console.log(Vue);
+    console.log(another());
     return 'test!';
+}`
+    },
+    {
+        name: "another.js",
+        path: "/src/another.js",
+        code: `export default function () {
+    return 'another!';
 }`
     }
 ];
 
 (async () => {
     try {
-        const bundleOptions = {
-            // externalModules: {
-            //     vue: "16.11"
-            // }
-        };
-
-        const { code } = await pkger.bundle(files, bundleOptions);
+        console.time("first");
+        const { code } = await pkger.bundle(files, {});
         eval(code);
+        console.timeEnd("first");
+
+        setTimeout(async () => {
+            console.time("second");
+            const { code } = await pkger.bundle(files, {});
+            eval(code);
+            console.timeEnd("second");
+        }, 3000);
     } catch (e) {
         //
     }

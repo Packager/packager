@@ -21,19 +21,31 @@ const getNextService = (currentService: string): string | null => {
     return serviceNames[currentIndex + 1];
 };
 
+type FetchedNpmDependecy = {
+    code: string;
+    metadata: {
+        link: string;
+    };
+};
+
 export default async function fetchNpmDependency(
     name: string,
     version: number | string = "latest",
     path: string = "",
     service = "unpkg"
-): Promise<string | null> {
+): Promise<FetchedNpmDependecy | null> {
     try {
         const _service = services[service];
-        const data = await resolver(
-            `${_service.url}/${name}@${version}${path}`
-        );
+        const fullPath = `${_service.url}/${name}@${version}${path}`;
 
-        return data;
+        const data = await resolver(fullPath);
+
+        return {
+            code: data,
+            metadata: {
+                link: fullPath
+            }
+        };
     } catch (e) {
         const nextService = getNextService(service);
 
