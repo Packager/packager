@@ -14,13 +14,26 @@ console.log(test());`
     {
         name: "test.js",
         path: "/src/test.js",
-        code: `export default function () {
+        code: `import Vue from 'vue';
+
+export default function () {
+    console.log(Vue);
     return 'test!';
 }`
     }
 ];
 
 (async () => {
-    const { code } = await pkger.bundle(files);
-    eval(code);
+    try {
+        const bundleOptions = {
+            // externalModules: {
+            //     vue: "16.11"
+            // }
+        };
+
+        const { code } = await pkger.bundle(files, bundleOptions);
+        eval(code);
+    } catch (e) {
+        //
+    }
 })();

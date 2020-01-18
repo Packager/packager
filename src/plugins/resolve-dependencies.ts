@@ -39,15 +39,6 @@ export default function resolveDependencies(context: PluginContext): Plugin {
             throw new Error(
                 `Could not resolve '${modulePath}' from '${parent}'`
             );
-        },
-        load(modulePath: string) {
-            const file = context.files.find(f => f.path === modulePath);
-
-            if (!file) return null;
-
-            return {
-                code: file.code
-            };
         }
     };
 }

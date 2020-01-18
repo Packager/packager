@@ -1,10 +1,23 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
+// @ts-ignore
 import rollup from "rollup/dist/rollup.browser";
 
-import setupPlugins, { File } from "./plugins";
+import setupPlugins, { File, BundleOptions } from "./plugins";
 
 type PackagerOptions = {
     sourcemaps: boolean;
+};
+
+const findEntryFile = (files: File[]) => {
+    const foundFile = files.find(f => f.entry);
+
+    if (!foundFile) {
+        throw Error(
+            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files."
+        );
+    }
+
+    return foundFile;
 };
 
 export default class Packager {
@@ -31,18 +44,18 @@ export default class Packager {
         };
     }
 
-    async bundle(files: File[]) {
+    async bundle(files: File[], bundleOptions?: BundleOptions) {
         this.files = files;
 
-        const entryFile = this.files.find(f => f.entry);
-
-        this.inputOptions = {
-            ...this.inputOptions,
-            input: entryFile?.path,
-            plugins: setupPlugins(this.files)
-        };
-
         try {
+            const entryFile = findEntryFile(this.files);
+
+            this.inputOptions = {
+                ...this.inputOptions,
+                input: entryFile?.path,
+                plugins: setupPlugins(this.files, bundleOptions)
+            };
+
             const bundle = await rollup.rollup(this.inputOptions);
 
             this.cachedBundle = bundle.cache;
