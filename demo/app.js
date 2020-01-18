@@ -1,4 +1,6 @@
-const pkger = new Packager({});
+const pkger = new Packager({
+    sourcemaps: true
+});
 
 const files = [
     {
@@ -20,5 +22,5 @@ console.log(test());`
 
 (async () => {
     const { code } = await pkger.bundle(files);
-    console.log(code);
+    eval(code);
 })();

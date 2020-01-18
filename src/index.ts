@@ -3,7 +3,9 @@ import rollup from "rollup/dist/rollup.browser";
 
 import setupPlugins, { File } from "./plugins";
 
-type PackagerOptions = {};
+type PackagerOptions = {
+    sourcemaps: boolean;
+};
 
 export default class Packager {
     public files: File[] = [];
@@ -24,7 +26,8 @@ export default class Packager {
 
         this.outputOptions = {
             ...outputOptions,
-            format: "iife"
+            format: "iife",
+            sourcemap: options.sourcemaps ? "inline" : false
         };
     }
 
@@ -47,7 +50,11 @@ export default class Packager {
             const { output } = await bundle.generate(this.outputOptions);
 
             return {
-                code: output[0].code
+                code: `${output[0].code}${
+                    this.outputOptions.sourcemap && output[0].map
+                        ? `\n//# sourceMappingURL=` + output[0].map.toUrl()
+                        : ""
+                }`
             };
         } catch (e) {
             console.error(e);
