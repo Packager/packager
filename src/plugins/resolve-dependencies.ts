@@ -32,6 +32,20 @@ export const resolveRelative = (
     return retriedFile.path;
 };
 
+const resolveRelativeExternal = (childPath: string, parentPath: string) => {
+    if (!parentPath.startsWith("@")) {
+        if (!!~parentPath.indexOf("/")) {
+            return path
+                .resolve(path.dirname(`/${parentPath}`), childPath)
+                .replace(/^\.\//, "");
+        }
+
+        return path.resolve(`/${parentPath}`, childPath);
+    }
+
+    throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
+};
+
 export default function resolveDependencies(context: PluginContext): Plugin {
     const isExternal = (modulePath: string) => !modulePath.startsWith(".");
 
@@ -45,6 +59,14 @@ export default function resolveDependencies(context: PluginContext): Plugin {
             const relativePath = resolveRelative(modulePath, parent, context);
 
             if (relativePath) return relativePath;
+
+            if (!parent.startsWith(".") || !parent.startsWith("/")) {
+                const pkgPath = resolveRelativeExternal(modulePath, parent);
+
+                return {
+                    id: pkgPath.substr(1)
+                };
+            }
 
             throw new Error(
                 `Could not resolve '${modulePath}' from '${parent}'`

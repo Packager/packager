@@ -20,6 +20,12 @@ const findEntryFile = (files: File[]) => {
     return foundFile;
 };
 
+const applyPreCode = () => {
+    const windowProcess = `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
+
+    return windowProcess;
+};
+
 export default class Packager {
     public files: File[] = [];
     public inputOptions: InputOptions;
@@ -40,7 +46,7 @@ export default class Packager {
         this.outputOptions = {
             ...outputOptions,
             format: "iife",
-            sourcemap: options.sourcemaps ? "inline" : false
+            sourcemap: options && options.sourcemaps ? "inline" : false
         };
     }
 
@@ -63,7 +69,7 @@ export default class Packager {
             const { output } = await bundle.generate(this.outputOptions);
 
             return {
-                code: `${output[0].code}${
+                code: `${applyPreCode()} ${output[0].code}${
                     this.outputOptions.sourcemap && output[0].map
                         ? `\n//# sourceMappingURL=` + output[0].map.toUrl()
                         : ""

@@ -9,17 +9,17 @@ export type Dependency = {
 export type DependencyCache = {
     get: (name: string) => Dependency | undefined;
     getAll: () => { [name: string]: Dependency };
-    set: (name: string, value: Dependency) => boolean;
+    set: (name: string, value: any) => boolean;
     has: (name: string) => boolean;
     delete: (name: string) => boolean;
     clear: () => void;
 };
 
 export default {
-    get(name: string): Dependency | undefined {
+    get(name: string): any | undefined {
         return cache.get(name);
     },
-    getAll(): { [name: string]: Dependency } {
+    getAll(): { [name: string]: any } {
         return Array.from(cache.entries()).reduce(
             (acc, val) => ({
                 ...acc,
@@ -28,7 +28,7 @@ export default {
             {}
         );
     },
-    set(name: string, value: Dependency): boolean {
+    set(name: string, value: any): boolean {
         if (name == null || name == "") {
             return false;
         }

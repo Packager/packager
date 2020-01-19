@@ -10,6 +10,8 @@ export default function transformExternalDependencies(
         transform(code: string, modulePath: string) {
             // @ts-ignore
             if (!modulePath.startsWith("/") && window.Babel) {
+                let tempCode = code;
+
                 if (
                     // @ts-ignore
                     !window.__dependencies ||
@@ -17,17 +19,17 @@ export default function transformExternalDependencies(
                     !window.__dependencies[modulePath]
                 ) {
                     // @ts-ignore
-                    const { code: _code } = window.Babel.transform(code, {
+                    const { code: _code } = window.Babel.transform(tempCode, {
                         plugins: ["transform-commonjs"],
                         compact: false,
                         moduleId: modulePath
                     });
 
-                    eval(_code);
+                    code = _code;
                 }
 
                 return {
-                    code: `export default window.__dependencies['${modulePath}']`,
+                    code: `${code} export default window.__dependencies['${modulePath}'];`,
                     map: { mappings: "" }
                 };
             }

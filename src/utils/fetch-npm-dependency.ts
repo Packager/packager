@@ -37,7 +37,6 @@ export default async function fetchNpmDependency(
     try {
         const _service = services[service];
         const fullPath = `${_service.url}/${name}@${version}${path}`;
-
         const data = await resolver(fullPath);
 
         return {
