@@ -7,8 +7,14 @@ const files = [
         name: "app.js",
         path: "/src/app.js",
         entry: true,
-        code: `import Vue from 'vue';
+        code: `import Vue123 from 'vue';
+import VueRouter from 'vue-router';
+import jQuery from 'jquery';
 import test from './test.js'
+
+console.log(Vue123);
+console.log(VueRouter);
+console.log(jQuery);
 
 console.log(test());`
     },

@@ -14,11 +14,8 @@ export default function loadDependencies(context: PluginContext): Plugin {
                     context.bundleOptions.externalModules[modulePath];
                 const cacheKey = `${modulePath}@${version}`;
                 const cachedNpmDependency = context.cache.get(cacheKey);
-
                 if (cachedNpmDependency) {
-                    return {
-                        code: cachedNpmDependency.code
-                    };
+                    return "";
                 } else {
                     const npmDependency =
                         (await fetchNpmDependency(modulePath, version)) || "";
@@ -42,11 +39,6 @@ export default function loadDependencies(context: PluginContext): Plugin {
             return {
                 code: file.code
             };
-        },
-        transform(code: any, source: string) {
-            if (!source.startsWith("/")) {
-                return { code, map: { mappings: "" } };
-            }
         }
     };
 }

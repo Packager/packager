@@ -1,6 +1,7 @@
 import initialSetup from "./initial-setup";
 import resolveDependencies from "./resolve-dependencies";
 import loadDependencies from "./load-dependencies";
+import transformExternalDependencies from "./transform-external-dependencies";
 import cache, { DependencyCache } from "../utils/dependency-cache";
 
 export type File = {
@@ -55,6 +56,7 @@ export default function setup(
     return [
         initialSetup(context),
         resolveDependencies(context),
-        loadDependencies(context)
+        loadDependencies(context),
+        transformExternalDependencies(context)
     ];
 }
