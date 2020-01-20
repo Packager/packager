@@ -1,9 +1,8 @@
 import { Plugin } from "rollup";
-import path from "../utils/path";
-import { PluginContext, File } from "./";
+import { PackagerContext } from "./";
 
 export default function transformExternalDependencies(
-    context: PluginContext
+    context: PackagerContext
 ): Plugin {
     return {
         name: "transform-external-dependencies",

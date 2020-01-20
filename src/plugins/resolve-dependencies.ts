@@ -1,11 +1,11 @@
 import { Plugin } from "rollup";
 import path from "../utils/path";
-import { PluginContext, File } from "./";
+import { PackagerContext, File } from "./";
 
 export const resolveRelative = (
     childPath: string,
     parentPath: string,
-    context: PluginContext
+    context: PackagerContext
 ): string | null => {
     const retryFileFind = (path: string): File | undefined =>
         context.files.find(
@@ -46,7 +46,7 @@ const resolveRelativeExternal = (childPath: string, parentPath: string) => {
     throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
 };
 
-export default function resolveDependencies(context: PluginContext): Plugin {
+export default function resolveDependencies(context: PackagerContext): Plugin {
     const isExternal = (modulePath: string) => !modulePath.startsWith(".");
 
     return {

@@ -1,10 +1,10 @@
 import { Plugin } from "rollup";
 
-import { PluginContext } from "./";
+import { PackagerContext } from "./";
 import fetchNpmDependency from "../utils/fetch-npm-dependency";
 import parsePackagePath from "../utils/parse-package-path";
 
-export default function loadDependencies(context: PluginContext): Plugin {
+export default function loadDependencies(context: PackagerContext): Plugin {
     return {
         name: "load-dependencies",
         async load(modulePath: string) {
@@ -24,7 +24,9 @@ export default function loadDependencies(context: PluginContext): Plugin {
                     "latest";
                 const cacheKey = `${moduleName}@${version}${moduleMeta.path ||
                     ""}`;
-                const cachedNpmDependency = context.cache.get(cacheKey);
+                const cachedNpmDependency = context.cache.dependencies.get(
+                    cacheKey
+                );
                 if (cachedNpmDependency) {
                     return "";
                 } else {
@@ -36,7 +38,7 @@ export default function loadDependencies(context: PluginContext): Plugin {
                         )) || "";
 
                     if (npmDependency) {
-                        context.cache.set(cacheKey, true);
+                        context.cache.dependencies.set(cacheKey, true);
 
                         return {
                             code: npmDependency.code

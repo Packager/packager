@@ -46,7 +46,8 @@ export default class Packager {
         this.outputOptions = {
             ...outputOptions,
             format: "iife",
-            sourcemap: options && options.sourcemaps ? "inline" : false
+            sourcemap: options && options.sourcemaps ? "inline" : false,
+            freeze: false
         };
     }
 

@@ -1,7 +1,9 @@
-import cache from "../dependency-cache";
+import applicationCache from "../application-cache";
 
-describe("dependency cache", () => {
-    const dependency = {
+describe("cachedData cache", () => {
+    const cache = applicationCache();
+
+    const cachedData = {
         path: "path",
         module: "module",
         code: ""
@@ -11,35 +13,35 @@ describe("dependency cache", () => {
         cache.clear();
     });
 
-    it("should successfully add dependency to cache", () => {
-        expect(cache.set("test1", dependency)).toBeTruthy();
+    it("should successfully add to cache", () => {
+        expect(cache.set("test1", cachedData)).toBeTruthy();
     });
     it("should fail when adding to cache with empty key", () => {
-        expect(cache.set("", dependency)).toBeFalsy();
+        expect(cache.set("", cachedData)).toBeFalsy();
     });
     it("should successfully delete a cache", () => {
-        expect(cache.set("test1", dependency)).toBeTruthy();
+        expect(cache.set("test1", cachedData)).toBeTruthy();
         expect(cache.delete("test1")).toBeTruthy();
     });
     it("should fail if a non-existing cache is being deleted", () => {
         expect(cache.delete("")).toBeFalsy();
     });
     it("should successfully get all caches", () => {
-        cache.set("test1", dependency);
-        cache.set("test2", dependency);
+        cache.set("test1", cachedData);
+        cache.set("test2", cachedData);
 
         expect(cache.getAll()).toEqual({
-            test1: dependency,
-            test2: dependency
+            test1: cachedData,
+            test2: cachedData
         });
     });
     it("should successfully clear all caches", () => {
-        cache.set("test1", dependency);
-        cache.set("test2", dependency);
+        cache.set("test1", cachedData);
+        cache.set("test2", cachedData);
 
         expect(cache.getAll()).toEqual({
-            test1: dependency,
-            test2: dependency
+            test1: cachedData,
+            test2: cachedData
         });
 
         cache.clear();

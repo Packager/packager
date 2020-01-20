@@ -2,7 +2,8 @@ import initialSetup from "./initial-setup";
 import resolveDependencies from "./resolve-dependencies";
 import loadDependencies from "./load-dependencies";
 import transformExternalDependencies from "./transform-external-dependencies";
-import cache, { DependencyCache } from "../utils/dependency-cache";
+import transformVueFiles from "./transform-vue-files";
+import cacheFactory, { ApplicationCache } from "../utils/application-cache";
 
 export type File = {
     name: string;
@@ -11,8 +12,11 @@ export type File = {
     code: string;
 };
 
-export type PluginContext = {
-    cache: DependencyCache;
+export type PackagerContext = {
+    cache: {
+        dependencies: ApplicationCache;
+        transpilers: ApplicationCache;
+    };
     files: File[];
     bundleOptions: BundleOptions;
 };
@@ -43,11 +47,16 @@ const normalizeBundleOptions = (
     };
 };
 
+const cache = {
+    dependencies: cacheFactory(),
+    transpilers: cacheFactory()
+};
+
 export default function setup(
     files: File[],
     bundleOptions: BundleOptions = defaultBundleOptions
 ) {
-    const context: PluginContext = {
+    const context: PackagerContext = {
         cache,
         files,
         bundleOptions: normalizeBundleOptions(bundleOptions)
@@ -57,6 +66,7 @@ export default function setup(
         initialSetup(context),
         resolveDependencies(context),
         loadDependencies(context),
-        transformExternalDependencies(context)
+        transformExternalDependencies(context),
+        transformVueFiles(context)
     ];
 }

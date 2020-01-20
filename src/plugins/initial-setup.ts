@@ -1,8 +1,8 @@
 import { Plugin } from "rollup";
 
-import { PluginContext } from "./";
+import { PackagerContext } from "./";
 import findDependencies from "../utils/find-dependencies";
-import babelCjsPlugin from "./babel-cjs-plugin";
+import babelCjsPlugin from "../utils/babel-cjs-plugin";
 
 const loadBabel = () => {
     return new Promise(resolve => {
@@ -23,17 +23,12 @@ const loadBabelTypes = () => {
     });
 };
 
-export default function initialSetup(context: PluginContext): Plugin {
+export default function initialSetup(context: PackagerContext): Plugin {
     return {
         name: "initial-setup",
         async buildStart() {
             const entryFile = context.files.find(f => f.entry)!;
-            const dependencies = findDependencies(
-                this.parse,
-                entryFile,
-                context,
-                true
-            );
+            const dependencies = findDependencies(entryFile, context, true);
 
             if (
                 dependencies._hasExternal &&

@@ -10,6 +10,7 @@
     "scripts": {
         "dev": "rollup -w -c",
         "build": "rollup -c",
+        "build-prod": "NODE_ENV=production rollup -c",
         "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json"
@@ -23,9 +24,11 @@
         "@rollup/plugin-commonjs": "^11.0.1",
         "@rollup/plugin-node-resolve": "^7.0.0",
         "@rollup/plugin-typescript": "^2.1.0",
+        "@types/acorn": "^4.0.5",
         "@types/jest": "^24.9.0",
         "jest": "^24.9.0",
         "prettier": "^1.19.1",
+        "rollup-plugin-terser": "^5.2.0",
         "rollup-plugin-web-worker-loader": "^0.8.1",
         "ts-jest": "^24.3.0",
         "tslint": "^5.20.1",

@@ -1,6 +1,7 @@
 import { Program, BaseNode } from "estree";
 import { walk } from "estree-walker";
-import { File, PluginContext } from "../plugins";
+import * as acornLoose from "acorn-loose";
+import { File, PackagerContext } from "../plugins";
 import { resolveRelative } from "../plugins/resolve-dependencies";
 
 let dependencies: { [path: string]: any } = {};
@@ -23,14 +24,14 @@ const addDependency = (rootPath: string, path: string): void => {
 };
 
 export default function findDependencies(
-    acorn: (input: string, options: any) => Program,
     file: File,
-    context: PluginContext,
+    context: PackagerContext,
     recursive: boolean = false
 ) {
     if (!recursive) dependencies = {}; // Cleanup incase there are any cached deps.
 
-    const ast = acorn(file.code, null);
+    const ast = acornLoose.parse(file.code);
+
     walk(ast, {
         enter(node: BaseNode, parent: BaseNode, prop: string, index: number) {
             // Regular import like import X from './x';
@@ -55,8 +56,7 @@ export default function findDependencies(
             const absolute = resolveRelative(dependency, file.path, context);
             const absoluteFile = context.files.find(f => f.path === absolute);
 
-            if (absoluteFile)
-                findDependencies(acorn, absoluteFile, context, true);
+            if (absoluteFile) findDependencies(absoluteFile, context, true);
         }
     }
 

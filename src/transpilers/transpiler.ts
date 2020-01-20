@@ -1,3 +1,5 @@
+import { PackagerContext } from "../plugins";
+
 export const TRANSPILE_STATUS = {
     PREPARE_FILES: "transpiler:files:prepare",
     START_ADDITIONAL: "transpiler:additional:start",
@@ -8,11 +10,13 @@ export const TRANSPILE_STATUS = {
 export default class Transpiler {
     public name: string;
     public worker: Worker;
-    public loadedTranspilers: { [name: string]: Transpiler };
+    public context: PackagerContext;
 
-    constructor(name: string, worker: Worker) {
+    constructor(name: string, worker: Worker, context: PackagerContext) {
         this.name = name;
         this.worker = worker;
-        this.loadedTranspilers = {};
+        this.context = context;
     }
+
+    doTranspile() {}
 }
