@@ -1,26 +1,40 @@
 import { Plugin } from "rollup";
 import VueTranspiler from "../transpilers/vue";
 import { PackagerContext } from "./";
+import verifyExtensions from "../utils/verify-extensions";
 
 export default function transformVueFiles(context: PackagerContext): Plugin {
+    const isVue = verifyExtensions([".vue"]);
     let transpiler: VueTranspiler;
 
     return {
         name: "transform-vue-files",
-        // @ts-ignore
         async transform(code: string, modulePath: string) {
-            if (modulePath.endsWith(".vue")) {
+            if (isVue(modulePath)) {
                 transpiler = context.cache.transpilers.get("vue-transpiler");
                 if (!transpiler) {
                     transpiler = new VueTranspiler(context);
                     context.cache.transpilers.set("vue-transpiler", transpiler);
                 }
 
-                return transpiler.transpile(code);
+                const file = context.files.find(f => f.path === modulePath)!;
+
+                await context.transpileQueue.push(() =>
+                    transpiler.transpile({ ...file, code })
+                );
+                const completed = context.transpileQueue.completed.find(
+                    c => c.path === modulePath
+                );
+
+                if (completed) {
+                    return {
+                        code: completed.code,
+                        syntheticNamedExports: true
+                    };
+                }
+
+                throw new Error("Failed to transpile Vue file " + modulePath);
             }
-        },
-        generateBundle(options: any, bundle: any) {
-            console.log(bundle["app.js"].code);
         }
     };
 }

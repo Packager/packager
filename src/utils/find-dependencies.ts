@@ -53,10 +53,18 @@ export default function findDependencies(
 
     if (recursive && Object.keys(dependencies[file.path] || {}).length) {
         for (const dependency in dependencies[file.path]) {
-            const absolute = resolveRelative(dependency, file.path, context);
-            const absoluteFile = context.files.find(f => f.path === absolute);
+            if (!dependencies[file.path][dependency].external) {
+                const absolute = resolveRelative(
+                    dependency,
+                    file.path,
+                    context
+                );
+                const absoluteFile = context.files.find(
+                    f => f.path === absolute
+                );
 
-            if (absoluteFile) findDependencies(absoluteFile, context, true);
+                if (absoluteFile) findDependencies(absoluteFile, context, true);
+            }
         }
     }
 

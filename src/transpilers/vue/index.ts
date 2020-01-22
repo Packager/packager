@@ -1,6 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
-import WebWorker from "web-worker:./worker.ts";
+import WebWorker from "web-worker:./vue-worker.ts";
+// import WebWorker from "web-worker:./vue-worker.ts";
 import { PackagerContext } from "../../plugins";
 
 export default class VueTranspiler extends Transpiler {
@@ -8,13 +9,7 @@ export default class VueTranspiler extends Transpiler {
         super("vue-transpiler", new WebWorker(), context);
     }
 
-    transpile(code: string) {
-        return new Promise(resolve =>
-            setTimeout(() =>
-                resolve(
-                    `export default function test () { return \`${code}\`; }`
-                )
-            )
-        );
+    transpile(file: any) {
+        return this.doTranspile(file);
     }
 }

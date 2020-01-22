@@ -1,3 +1,4 @@
+// import QueueSystem, { SequentialTaskQueue } from "./queue-system";
 import { PackagerContext } from "../plugins";
 
 export const TRANSPILE_STATUS = {
@@ -18,5 +19,21 @@ export default class Transpiler {
         this.context = context;
     }
 
-    doTranspile() {}
+    doTranspile(file: any) {
+        return new Promise((resolve, reject) => {
+            this.worker.onmessage = async ({ data }) => {
+                const { success, file, type } = data;
+
+                if (type === "worker--transpiled-file") {
+                    return success ? resolve(file) : reject(data);
+                }
+            };
+
+            this.worker.postMessage({
+                type: "transpiler--prepare-file",
+                file,
+                files: this.context.files
+            });
+        });
+    }
 }
