@@ -23,7 +23,12 @@ new Vue({
 </template>
 <script>
 export default { name: 'app' };
-</script>`
+</script>
+<style lang="scss">
+h1 {
+    color: red;
+}
+</style>`
     },
     {
         name: "Test.vue",

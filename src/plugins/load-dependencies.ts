@@ -50,7 +50,8 @@ export default function loadDependencies(context: PackagerContext): Plugin {
             }
 
             return {
-                code: file.code
+                code: file.code,
+                syntheticNamedExports: true
             };
         }
     };

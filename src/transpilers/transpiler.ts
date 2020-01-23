@@ -1,11 +1,12 @@
-// import QueueSystem, { SequentialTaskQueue } from "./queue-system";
 import { PackagerContext } from "../plugins";
 
 export const TRANSPILE_STATUS = {
-    PREPARE_FILES: "transpiler:files:prepare",
-    START_ADDITIONAL: "transpiler:additional:start",
-    END_ADDITIONAL: "transpiler:additional:end",
-    TRANSPILE_COMPLETE: "transpiler:transpile:complete"
+    PREPARE_FILES: "transpiler:file:prepare",
+    PREPARE_ADDITIONAL: "transpiler:additional:prepare",
+    ADDITIONAL_TRANSPILED: "transpiler:additional:transpiled",
+    TRANSPILE_COMPLETE: "transpiler:transpile:complete",
+    ERROR_PREPARING_AND_COMPILING: "transpiler:error:compile",
+    ERROR_ADDITIONAL: "transpiler:error:additional"
 };
 
 export default class Transpiler {
@@ -22,18 +23,89 @@ export default class Transpiler {
     doTranspile(file: any) {
         return new Promise((resolve, reject) => {
             this.worker.onmessage = async ({ data }) => {
-                const { success, file, type } = data;
+                const { file, type, error, additional } = data;
 
-                if (type === "worker--transpiled-file") {
-                    return success ? resolve(file) : reject(data);
+                if (
+                    type === TRANSPILE_STATUS.ERROR_ADDITIONAL ||
+                    type === TRANSPILE_STATUS.ERROR_PREPARING_AND_COMPILING
+                ) {
+                    return reject(error);
+                }
+
+                if (type === TRANSPILE_STATUS.PREPARE_ADDITIONAL) {
+                    try {
+                        const additionalTranspiled = await this.transpileAdditional(
+                            additional
+                        );
+
+                        this.worker.postMessage({
+                            type: TRANSPILE_STATUS.ADDITIONAL_TRANSPILED,
+                            file,
+                            additional: additionalTranspiled
+                        });
+                    } catch (error) {
+                        return reject(error);
+                    }
+                }
+
+                if (type === TRANSPILE_STATUS.TRANSPILE_COMPLETE) {
+                    return resolve(file);
                 }
             };
 
             this.worker.postMessage({
-                type: "transpiler--prepare-file",
-                file,
-                files: this.context.files
+                type: TRANSPILE_STATUS.PREPARE_FILES,
+                file
             });
         });
+    }
+
+    async transpileAdditional({
+        styles,
+        html
+    }: {
+        styles: any[];
+        html: any[];
+    }) {
+        const stylePromises = [];
+
+        for (const style of styles) {
+            const code = style.content;
+
+            if (style.lang === "css") {
+                stylePromises.push(Promise.resolve({ code }));
+            } else {
+                const transpiler = this.fetchTranspiler(style.lang);
+                stylePromises.push(transpiler.transpile({ code }));
+            }
+        }
+
+        return {
+            styles: await Promise.all(stylePromises)
+        };
+    }
+
+    fetchTranspiler(lang: string) {
+        // @ts-ignore
+        let transpiler = this.additionalTranspilers[lang];
+
+        if (transpiler) {
+            const activeTranspiler = this.context.cache.transpilers.get(
+                `${lang}-transpiler`
+            );
+            if (activeTranspiler) return activeTranspiler;
+
+            transpiler = new transpiler(this.context);
+            this.context.cache.transpilers.set(
+                `${lang}-transpiler`,
+                transpiler
+            );
+
+            return transpiler;
+        }
+
+        throw Error(
+            `Additional transpiler (${lang})  does not exist or isn't supported for ${this.name}`
+        );
     }
 }

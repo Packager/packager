@@ -28,8 +28,7 @@ export default function transformVueFiles(context: PackagerContext): Plugin {
 
                 if (completed) {
                     return {
-                        code: completed.code,
-                        syntheticNamedExports: true
+                        code: completed.code
                     };
                 }
 
