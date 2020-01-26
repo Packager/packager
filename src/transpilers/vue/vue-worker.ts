@@ -30,7 +30,7 @@ self.addEventListener("message", async ({ data }) => {
 
     if (type === TRANSPILE_STATUS.PREPARE_FILES) {
         try {
-            if (!file || file.path)
+            if (!file || !file.path)
                 throw new Error(
                     "File isn't supplied or it has an incorrect format."
                 );
@@ -39,21 +39,26 @@ self.addEventListener("message", async ({ data }) => {
                 file
             );
 
+            console.log(styles, script, html);
+
             if ((styles || html) && (styles.length || html)) {
                 const additional = { styles, html };
 
+                // @ts-ignore wrong scope
                 self.postMessage({
                     type: TRANSPILE_STATUS.PREPARE_ADDITIONAL,
                     file: { ...file, code: script },
                     additional
                 });
             } else {
+                // @ts-ignore wrong scope
                 self.postMessage({
                     type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
                     file: { ...file, code: script }
                 });
             }
         } catch (error) {
+            // @ts-ignore wrong scope
             self.postMessage({
                 type: TRANSPILE_STATUS.ERROR_PREPARING_AND_COMPILING,
                 error
@@ -71,6 +76,7 @@ self.addEventListener("message", async ({ data }) => {
                 // do something with html stuff here like vue pug. but later.
                 // code + styles
             } catch (error) {
+                // @ts-ignore wrong scope
                 self.postMessage({
                     type: TRANSPILE_STATUS.ERROR_ADDITIONAL,
                     error
@@ -80,6 +86,7 @@ self.addEventListener("message", async ({ data }) => {
             }
         }
 
+        // @ts-ignore wrong scope
         self.postMessage({
             type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
             file: {
@@ -98,11 +105,12 @@ const prepareFileAndCompileTemplate = (file: any) => {
     );
 
     const scopeId = `data-v-${hashSum(file.path)}`;
+    const scoped = styles.some((style: any) => style.scoped === true);
 
     return {
         styles: prepareStyles(styles),
         html: [],
-        script: compileTemplate(script.content, template, scopeId)
+        script: compileTemplate(script.content, template, scopeId, scoped)
     };
 };
 
@@ -126,12 +134,22 @@ const prepareStyles = (styles: Style[] = []) =>
  * and creates an object later to be used by SystemJS to render
  * the template.
  */
-const compileTemplate = (content: string, template: any, scopeId: string) => {
+const compileTemplate = (
+    content: string,
+    template: any,
+    scopeId: string,
+    scoped: boolean
+) => {
     const { render, staticRenderFns } = VueTemplateCompiler.compileToFunctions(
         template.content
     );
 
-    content = insertTemplateInExport(content, template.content, scopeId);
+    content = insertTemplateInExport(
+        content,
+        template.content,
+        scopeId,
+        scoped
+    );
 
     return `var __renderFns__ = { 
         render: ${toFn(render)},
@@ -185,7 +203,7 @@ const insertTemplateInExport = (
             template: ${_template},
             render: __renderFns__.render,
             staticRenderFns: __renderFns__.staticRenderFns, 
-            ${scoped ? `_scoped:"` + scopeId + `",` : ""}
+            ${scoped ? `_scopeId:"` + scopeId + `",` : ""}
             ${insideExport && insideExport.length ? insideExport[1] : ""} }`;
     }
 

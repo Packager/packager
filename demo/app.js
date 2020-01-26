@@ -24,7 +24,7 @@ new Vue({
 <script>
 export default { name: 'app' };
 </script>
-<style lang="scss">
+<style scoped>
 h1 {
     color: red;
 }
@@ -109,13 +109,13 @@ export default { name: 'app' };
         eval(code);
         console.timeEnd("First Load");
 
-        setTimeout(async () => {
-            console.time("Second Load");
-            const { code } = await pkger.bundle(files2);
-            console.log(code);
-            eval(code);
-            console.timeEnd("Second Load");
-        }, 2000);
+        // setTimeout(async () => {
+        //     console.time("Second Load");
+        //     const { code } = await pkger.bundle(files2);
+        //     console.log(code);
+        //     eval(code);
+        //     console.timeEnd("Second Load");
+        // }, 2000);
     } catch (e) {
         console.error(e);
     }

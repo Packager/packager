@@ -105,7 +105,7 @@ export default class Transpiler {
         }
 
         throw Error(
-            `Additional transpiler (${lang})  does not exist or isn't supported for ${this.name}`
+            `Additional transpiler (${lang}-transpiler) does not exist or isn't supported for ${this.name}`
         );
     }
 }
