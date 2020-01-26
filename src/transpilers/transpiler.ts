@@ -70,13 +70,13 @@ export default class Transpiler {
         const stylePromises = [];
 
         for (const style of styles) {
-            const code = style.content;
+            const { content: code, scopeId } = style;
 
             if (style.lang === "css") {
-                stylePromises.push(Promise.resolve({ code }));
+                stylePromises.push(Promise.resolve({ code, scopeId }));
             } else {
                 const transpiler = this.fetchTranspiler(style.lang);
-                stylePromises.push(transpiler.transpile({ code }));
+                stylePromises.push(transpiler.transpile({ code, scopeId }));
             }
         }
 

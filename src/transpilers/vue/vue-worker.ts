@@ -3,6 +3,8 @@ import { TRANSPILE_STATUS } from "../transpiler";
 declare var VueTemplateCompiler: any;
 declare var buble: any;
 declare var hashSum: any;
+declare var css: any;
+declare var postcssSelectorParser: any;
 
 // @ts-ignore
 if (!self.VueTemplateCompiler) {
@@ -25,7 +27,20 @@ if (!self.hashSum) {
     );
 }
 
-self.addEventListener("message", async ({ data }) => {
+// @ts-ignore
+if (!self.css) {
+    self.importScripts("https://wzrd.in/standalone/css@latest");
+    // self.importScripts("https://bundle.run/css@2.2.4");
+}
+
+// @ts-ignore
+if (!self.postcssSelectorParser) {
+    self.importScripts(
+        "https://wzrd.in/standalone/postcss-selector-parser@latest"
+    );
+}
+
+self.addEventListener("message", async ({ data }: any) => {
     const { file, type, additional } = data;
 
     if (type === TRANSPILE_STATUS.PREPARE_FILES) {
@@ -38,8 +53,6 @@ self.addEventListener("message", async ({ data }) => {
             const { styles, script, html } = prepareFileAndCompileTemplate(
                 file
             );
-
-            console.log(styles, script, html);
 
             if ((styles || html) && (styles.length || html)) {
                 const additional = { styles, html };
@@ -75,6 +88,7 @@ self.addEventListener("message", async ({ data }) => {
                 // append the style injector here
                 // do something with html stuff here like vue pug. but later.
                 // code + styles
+                code += appendStyles(additional.styles, file.path);
             } catch (error) {
                 // @ts-ignore wrong scope
                 self.postMessage({
@@ -108,7 +122,7 @@ const prepareFileAndCompileTemplate = (file: any) => {
     const scoped = styles.some((style: any) => style.scoped === true);
 
     return {
-        styles: prepareStyles(styles),
+        styles: prepareStyles(styles, scoped ? scopeId : null),
         html: [],
         script: compileTemplate(script.content, template, scopeId, scoped)
     };
@@ -123,11 +137,73 @@ type Style = {
     end: number;
 };
 
-const prepareStyles = (styles: Style[] = []) =>
+const prepareStyles = (styles: Style[] = [], scopeId: string | null) =>
     styles.map(style => ({
         ...style,
-        lang: style.lang || "css"
+        lang: style.lang || "css",
+        scopeId
     }));
+
+const appendStyles = (styles: any[], filePath: string) => {
+    const parsedStyles = [];
+    for (const style of styles) {
+        parsedStyles.push(parseCssStyle(style.code, style.scopeId));
+    }
+    return wrapStyleInFunction(parsedStyles, filePath);
+};
+
+const parseCssStyle = (code: string, scopeId: string = "") => {
+    const parsed = css.parse(code);
+    return css.stringify({
+        ...parsed,
+        stylesheet: applyAttributeToSelector(parsed.stylesheet, scopeId)
+    });
+};
+
+const applyAttributeToSelector = (tree: any, scopeId: string) => {
+    if ("selectors" in tree) {
+        for (const i in tree.selectors) {
+            const selector = tree.selectors[i];
+            tree.selectors[i] = postcssSelectorParser((selectors: any) => {
+                selectors.each((selector: any) => {
+                    let node = null;
+                    selector.each((n: any) => {
+                        if (n.type !== "pseudo") node = n;
+                    });
+                    selector.insertAfter(
+                        node,
+                        postcssSelectorParser.attribute({
+                            attribute: scopeId
+                        })
+                    );
+                });
+            }).processSync(selector);
+        }
+    }
+
+    if ("rules" in tree) {
+        for (const i in tree.rules) {
+            const rule = tree.rules[i];
+            tree.rules[i] = applyAttributeToSelector(rule, scopeId);
+        }
+    }
+
+    return tree;
+};
+
+const wrapStyleInFunction = (styles: string[], filePath: string) => {
+    const result = styles.join(" ").replace(/\s/g, "");
+
+    return (
+        `function addStyles () {` +
+        `const tag = document.createElement('style');` +
+        `tag.type = 'text/css';` +
+        `tag.appendChild(document.createTextNode(\`${result}\`));` +
+        `tag.setAttribute('data-src', '${filePath}');` +
+        `document.head.appendChild(tag);` +
+        `} addStyles();`
+    );
+};
 
 /**
  * Compiled the template using vue-template-compiler
@@ -204,7 +280,7 @@ const insertTemplateInExport = (
             render: __renderFns__.render,
             staticRenderFns: __renderFns__.staticRenderFns, 
             ${scoped ? `_scopeId:"` + scopeId + `",` : ""}
-            ${insideExport && insideExport.length ? insideExport[1] : ""} }`;
+            ${insideExport && insideExport.length ? insideExport[1] : ""} }; `;
     }
 
     return content;
