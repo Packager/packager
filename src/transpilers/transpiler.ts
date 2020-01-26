@@ -41,7 +41,10 @@ export default class Transpiler {
                         this.worker.postMessage({
                             type: TRANSPILE_STATUS.ADDITIONAL_TRANSPILED,
                             file,
-                            additional: additionalTranspiled
+                            additional: additionalTranspiled,
+                            context: {
+                                files: this.context.files
+                            }
                         });
                     } catch (error) {
                         return reject(error);
@@ -55,7 +58,10 @@ export default class Transpiler {
 
             this.worker.postMessage({
                 type: TRANSPILE_STATUS.PREPARE_FILES,
-                file
+                file,
+                context: {
+                    files: this.context.files
+                }
             });
         });
     }
@@ -70,13 +76,15 @@ export default class Transpiler {
         const stylePromises = [];
 
         for (const style of styles) {
-            const { content: code, scopeId } = style;
+            const { code, scopeId, path, lang } = style;
 
             if (style.lang === "css") {
                 stylePromises.push(Promise.resolve({ code, scopeId }));
             } else {
                 const transpiler = this.fetchTranspiler(style.lang);
-                stylePromises.push(transpiler.transpile({ code, scopeId }));
+                stylePromises.push(
+                    transpiler.transpile({ code, scopeId, lang, path })
+                );
             }
         }
 

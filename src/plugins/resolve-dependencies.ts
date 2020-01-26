@@ -1,5 +1,5 @@
 import { Plugin } from "rollup";
-import path from "../utils/path";
+import { dirname, resolve } from "../utils/path";
 import { PackagerContext, File } from "./";
 
 export const resolveRelative = (
@@ -20,13 +20,14 @@ export const resolveRelative = (
                 f.path === `${path}.tsx`
         );
 
-    const resolved = path
-        .resolve(path.dirname(parentPath), childPath)
-        .replace(/^\.\//, "");
+    const resolved = resolve(dirname(parentPath), childPath).replace(
+        /^\.\//,
+        ""
+    );
 
     if (context.files.find(f => f.path === resolved)) return resolved;
 
-    const absolute = path.resolve(path.dirname(parentPath), childPath);
+    const absolute = resolve(dirname(parentPath), childPath);
     const retriedFile = retryFileFind(absolute) || { path: null };
 
     return retriedFile.path;
@@ -35,12 +36,13 @@ export const resolveRelative = (
 const resolveRelativeExternal = (childPath: string, parentPath: string) => {
     if (!parentPath.startsWith("@")) {
         if (!!~parentPath.indexOf("/")) {
-            return path
-                .resolve(path.dirname(`/${parentPath}`), childPath)
-                .replace(/^\.\//, "");
+            return resolve(dirname(`/${parentPath}`), childPath).replace(
+                /^\.\//,
+                ""
+            );
         }
 
-        return path.resolve(`/${parentPath}`, childPath);
+        return resolve(`/${parentPath}`, childPath);
     }
 
     throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);

@@ -19,7 +19,7 @@ export default function transformVueFiles(context: PackagerContext): Plugin {
 
                 const file = context.files.find(f => f.path === modulePath)!;
 
-                await context.transpileQueue.push(() =>
+                await context.transpileQueue.push("Vue-Transpiler", () =>
                     transpiler.transpile({ ...file, code })
                 );
                 const completed = context.transpileQueue.completed.find(

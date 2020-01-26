@@ -10,6 +10,8 @@ const files = [
         code: `import Vue from 'vue';
 import App from './App.vue';
 
+import './app.scss';
+
 new Vue({
     el: '#app',
     render: h => h(App)
@@ -28,7 +30,20 @@ export default { name: 'app' };
 h1 {
     color: red;
 }
+</style>
+<style lang="scss">
+h1 {
+    text-decoration: underline;
+}
 </style>`
+    },
+    {
+        name: "app.scss",
+        path: "/src/app.scss",
+        code: `$color: pink;
+body {
+    background: $color;
+}`
     },
     {
         name: "Test.vue",

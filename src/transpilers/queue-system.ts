@@ -86,9 +86,9 @@ export interface CancellationToken {
  */
 export let cancellationTokenReasons = {
     /** Used when the task was cancelled in response to a call to {@link SequentialTaskQueue.cancel} */
-    cancel: Object.create(null),
+    cancel: "Background queue has been cancelled.",
     /** Used when the task was cancelled after its timeout has passed */
-    timeout: Object.create(null)
+    timeout: "Background queue has timed out."
 };
 
 /**
@@ -150,14 +150,16 @@ export default class SequentialTaskQueue {
 
     /**
      * Adds a new task to the queue.
+     * @param {string} name - The name of the task being performed
      * @param {Function} task - The function to call when the task is run
      * @param {TaskOptions} options - An object containing arguments and options for the task.
-     * @returns {PromiseLike<any>>} A promise that can be used to await or cancel the task.
+     * @returns {Promise<any>>} A promise that can be used to await or cancel the task.
      */
-    push(task: Function, options?: TaskOptions): PromiseLike<any> {
+    push(name: string, task: Function, options?: TaskOptions): Promise<any> {
         if (this._isClosed)
             throw new Error(`${this.name} has been previously closed`);
         let taskEntry: TaskEntry = {
+            name,
             callback: task,
             args:
                 options && options.args
@@ -224,7 +226,7 @@ export default class SequentialTaskQueue {
      * Returns a promise that is fulfilled when the queue is empty.
      * @returns {Promise}
      */
-    wait(): PromiseLike<any> {
+    wait(): Promise<any> {
         if (!this.currentTask && this.queue.length === 0)
             return Promise.resolve();
         return new Promise(resolve => {
@@ -305,7 +307,7 @@ export default class SequentialTaskQueue {
                             this.emit(sequentialTaskQueueEvents.timeout);
                             this.cancelTask(
                                 task!,
-                                cancellationTokenReasons.timeout
+                                `The task took longer than ${task?.timeout}ms and timed out in ${task?.name}.`
                             );
                         }, task.timeout);
                     }
@@ -337,6 +339,7 @@ export default class SequentialTaskQueue {
     private cancelTask(task: TaskEntry, reason?: any) {
         task.cancellationToken.cancelled = true;
         task.cancellationToken.reason = reason;
+
         this.doneTask(task);
     }
 
@@ -368,6 +371,7 @@ export default class SequentialTaskQueue {
 }
 
 interface TaskEntry {
+    name: string;
     args: any[];
     callback: Function;
     timeout?: number;

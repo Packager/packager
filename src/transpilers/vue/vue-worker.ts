@@ -29,14 +29,17 @@ if (!self.hashSum) {
 
 // @ts-ignore
 if (!self.css) {
-    self.importScripts("https://wzrd.in/standalone/css@latest");
-    // self.importScripts("https://bundle.run/css@2.2.4");
+    self.importScripts(
+        "https://wzrd.in/standalone/css@latest"
+        // https://bundle.run/css@latest
+    );
 }
 
 // @ts-ignore
 if (!self.postcssSelectorParser) {
     self.importScripts(
         "https://wzrd.in/standalone/postcss-selector-parser@latest"
+        // https://bundle.run/postcss-selector-parser@latest
     );
 }
 
@@ -88,6 +91,7 @@ self.addEventListener("message", async ({ data }: any) => {
                 // append the style injector here
                 // do something with html stuff here like vue pug. but later.
                 // code + styles
+                console.log(additional);
                 code += appendStyles(additional.styles, file.path);
             } catch (error) {
                 // @ts-ignore wrong scope
@@ -122,7 +126,7 @@ const prepareFileAndCompileTemplate = (file: any) => {
     const scoped = styles.some((style: any) => style.scoped === true);
 
     return {
-        styles: prepareStyles(styles, scoped ? scopeId : null),
+        styles: prepareStyles(styles, scoped ? scopeId : null, file),
         html: [],
         script: compileTemplate(script.content, template, scopeId, scoped)
     };
@@ -132,16 +136,22 @@ type Style = {
     content: string;
     type: string;
     lang?: string;
+    scoped?: boolean;
     attrs: { [key: string]: string };
     start: number;
     end: number;
 };
 
-const prepareStyles = (styles: Style[] = [], scopeId: string | null) =>
+const prepareStyles = (
+    styles: Style[] = [],
+    scopeId: string | null,
+    file: any
+) =>
     styles.map(style => ({
-        ...style,
+        code: style.content,
         lang: style.lang || "css",
-        scopeId
+        scopeId: style.scoped ? scopeId : null,
+        path: file.path
     }));
 
 const appendStyles = (styles: any[], filePath: string) => {
@@ -170,12 +180,14 @@ const applyAttributeToSelector = (tree: any, scopeId: string) => {
                     selector.each((n: any) => {
                         if (n.type !== "pseudo") node = n;
                     });
-                    selector.insertAfter(
-                        node,
-                        postcssSelectorParser.attribute({
-                            attribute: scopeId
-                        })
-                    );
+                    if (scopeId && scopeId != "") {
+                        selector.insertAfter(
+                            node,
+                            postcssSelectorParser.attribute({
+                                attribute: scopeId
+                            })
+                        );
+                    }
                 });
             }).processSync(selector);
         }

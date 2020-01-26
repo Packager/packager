@@ -3,6 +3,7 @@ import resolveDependencies from "./resolve-dependencies";
 import loadDependencies from "./load-dependencies";
 import transformExternalDependencies from "./transform-external-dependencies";
 import transformVueFiles from "./transform-vue-files";
+import transformSassFiles from "./transform-sass-files";
 import cacheFactory, { ApplicationCache } from "../utils/application-cache";
 import QueueSystem from "../transpilers/queue-system";
 
@@ -70,6 +71,7 @@ export default function setup(
         resolveDependencies(context),
         loadDependencies(context),
         transformExternalDependencies(context),
-        transformVueFiles(context)
+        transformVueFiles(context),
+        transformSassFiles(context)
     ];
 }

@@ -3,6 +3,7 @@ import { walk } from "estree-walker";
 import * as acornLoose from "acorn-loose";
 import { File, PackagerContext } from "../plugins";
 import { resolveRelative } from "../plugins/resolve-dependencies";
+import { extname } from "../utils/path";
 
 let dependencies: { [path: string]: any } = {};
 
@@ -53,7 +54,10 @@ export default function findDependencies(
 
     if (recursive && Object.keys(dependencies[file.path] || {}).length) {
         for (const dependency in dependencies[file.path]) {
-            if (!dependencies[file.path][dependency].external) {
+            if (
+                !dependencies[file.path][dependency].external &&
+                notInExcludedDependencies(dependency)
+            ) {
                 const absolute = resolveRelative(
                     dependency,
                     file.path,
@@ -63,10 +67,18 @@ export default function findDependencies(
                     f => f.path === absolute
                 );
 
-                if (absoluteFile) findDependencies(absoluteFile, context, true);
+                if (absoluteFile && !existsInDependencies(absoluteFile))
+                    findDependencies(absoluteFile, context, true);
             }
         }
     }
 
     return dependencies;
 }
+
+const existsInDependencies = (file: any) => Boolean(dependencies[file.path]);
+
+const notInExcludedDependencies = (dependency: string) =>
+    ![".scss", ".sass", ".less", ".styl", ".stylus"].includes(
+        extname(dependency)
+    );
