@@ -28,7 +28,8 @@ export default function transformVueFiles(context: PackagerContext): Plugin {
 
                 if (completed) {
                     return {
-                        code: completed.code
+                        code: completed.code,
+                        map: completed.map || { mappings: "" }
                     };
                 }
 

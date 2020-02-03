@@ -9,6 +9,7 @@ const loadBabel = () => {
         const script = document.createElement("script");
         script.src =
             "https://cdn.jsdelivr.net/npm/@babel/standalone@latest/babel.min.js";
+        script.setAttribute("data-packager", "true");
         script.onload = resolve;
         document.head.appendChild(script);
     });
@@ -17,7 +18,8 @@ const loadBabel = () => {
 const loadBabelTypes = () => {
     return new Promise(resolve => {
         const script = document.createElement("script");
-        script.src = "https://bundle.run/@babel/types";
+        script.src = "https://unpkg.com/@bloxy/iife-libs/libs/babel-types.js";
+        script.setAttribute("data-packager", "true");
         script.onload = resolve;
         document.head.appendChild(script);
     });

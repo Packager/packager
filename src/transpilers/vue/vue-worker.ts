@@ -1,47 +1,20 @@
 import { TRANSPILE_STATUS } from "../transpiler";
+import "../source-maps";
 
 declare var VueTemplateCompiler: any;
 declare var buble: any;
 declare var hashSum: any;
 declare var css: any;
 declare var postcssSelectorParser: any;
+declare var generateSourceMap: any;
 
-// @ts-ignore
-if (!self.VueTemplateCompiler) {
-    self.importScripts(
-        "https://unpkg.com/vue-template-compiler@latest/browser.js"
-    );
-}
-
-// @ts-ignore
-if (!self.buble) {
-    self.importScripts(
-        "https://unpkg.com/vue-template-es2015-compiler@1.9.1/buble.js"
-    );
-}
-
-// @ts-ignore
-if (!self.hashSum) {
-    self.importScripts(
-        "https://unpkg.com/hash-sum-browser@latest/dist/index.min.js"
-    );
-}
-
-// @ts-ignore
-if (!self.css) {
-    self.importScripts(
-        "https://wzrd.in/standalone/css@latest"
-        // https://bundle.run/css@latest
-    );
-}
-
-// @ts-ignore
-if (!self.postcssSelectorParser) {
-    self.importScripts(
-        "https://wzrd.in/standalone/postcss-selector-parser@latest"
-        // https://bundle.run/postcss-selector-parser@latest
-    );
-}
+self.importScripts(
+    "https://unpkg.com/vue-template-compiler/browser.js",
+    "https://unpkg.com/hash-sum-browser/dist/index.min.js",
+    "https://unpkg.com/@bloxy/iife-libs/libs/buble.js",
+    "https://unpkg.com/@bloxy/iife-libs/libs/css.js",
+    "https://unpkg.com/@bloxy/iife-libs/libs/postcss-selector-parser.js"
+);
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, additional } = data;
@@ -57,7 +30,7 @@ self.addEventListener("message", async ({ data }: any) => {
                 file
             );
 
-            if ((styles || html) && (styles.length || html)) {
+            if ((styles || html) && (styles.length || html.length)) {
                 const additional = { styles, html };
 
                 // @ts-ignore wrong scope
@@ -70,7 +43,11 @@ self.addEventListener("message", async ({ data }: any) => {
                 // @ts-ignore wrong scope
                 self.postMessage({
                     type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
-                    file: { ...file, code: script }
+                    file: {
+                        ...file,
+                        code: script,
+                        map: generateSourceMap(file.path, file.code, script)
+                    }
                 });
             }
         } catch (error) {
@@ -91,7 +68,6 @@ self.addEventListener("message", async ({ data }: any) => {
                 // append the style injector here
                 // do something with html stuff here like vue pug. but later.
                 // code + styles
-                console.log(additional);
                 code += appendStyles(additional.styles, file.path);
             } catch (error) {
                 // @ts-ignore wrong scope
@@ -109,7 +85,8 @@ self.addEventListener("message", async ({ data }: any) => {
             type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
             file: {
                 ...file,
-                code
+                code,
+                map: generateSourceMap(file.path, file.code, code)
             }
         });
 
@@ -118,9 +95,11 @@ self.addEventListener("message", async ({ data }: any) => {
 });
 
 const prepareFileAndCompileTemplate = (file: any) => {
-    const { template, script, styles } = VueTemplateCompiler.parseComponent(
-        file.code
-    );
+    const {
+        template,
+        script,
+        styles
+    } = VueTemplateCompiler.parseComponent(file.code, { pad: "line" });
 
     const scopeId = `data-v-${hashSum(file.path)}`;
     const scoped = styles.some((style: any) => style.scoped === true);

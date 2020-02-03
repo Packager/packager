@@ -10,8 +10,6 @@ const files = [
         code: `import Vue from 'vue';
 import App from './App.vue';
 
-import './app.scss';
-
 new Vue({
     el: '#app',
     render: h => h(App)
@@ -26,34 +24,29 @@ new Vue({
 <script>
 export default { name: 'app' };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import "./app.scss";
+
 h1 {
     color: red;
-}
-</style>
-<style lang="scss">
-h1 {
-    text-decoration: underline;
 }
 </style>`
     },
     {
         name: "app.scss",
         path: "/src/app.scss",
-        code: `$color: pink;
+        code: `@import "./test";
+$color: pink;
 body {
     background: $color;
 }`
     },
     {
-        name: "Test.vue",
-        path: "/src/Test.vue",
-        code: `<template>
-    <h1>Hello World!</h1>
-</template>
-<script>
-export default { name: 'test' };
-</script>`
+        name: "test.scss",
+        path: "/src/test.scss",
+        code: `* {
+    text-decoration: underline;
+}`
     }
 ];
 

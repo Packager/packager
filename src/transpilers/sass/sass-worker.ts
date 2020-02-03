@@ -3,10 +3,7 @@ import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var Sass: any;
 
-// @ts-ignore
-if (!self.Sass) {
-    importScripts("https://unpkg.com/sass.js@latest/dist/sass.sync.js");
-}
+self.importScripts("https://unpkg.com/sass.js@latest/dist/sass.sync.js");
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, context } = data;

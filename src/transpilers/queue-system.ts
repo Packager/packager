@@ -356,7 +356,12 @@ export default class SequentialTaskQueue {
 
         if (this.currentTask === task) {
             this.currentTask = undefined;
-            this.completed.push(task.result);
+            if (task.result) {
+                this.completed.push(task.result);
+            } else {
+                this.failed.push(task);
+            }
+
             if (!this.queue.length) {
                 this.emit(sequentialTaskQueueEvents.drained);
                 this.callWaiters();
