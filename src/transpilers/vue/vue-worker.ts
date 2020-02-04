@@ -138,6 +138,7 @@ const appendStyles = (styles: any[], filePath: string) => {
     for (const style of styles) {
         parsedStyles.push(parseCssStyle(style.code, style.scopeId));
     }
+
     return wrapStyleInFunction(parsedStyles, filePath);
 };
 
@@ -183,7 +184,7 @@ const applyAttributeToSelector = (tree: any, scopeId: string) => {
 };
 
 const wrapStyleInFunction = (styles: string[], filePath: string) => {
-    const result = styles.join(" ").replace(/\s/g, "");
+    const result = styles.join("\n\n");
 
     return (
         `function addStyles () {` +

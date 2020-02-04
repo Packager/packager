@@ -1,29 +1,29 @@
 import { Plugin } from "rollup";
-import SassTranspiler from "../transpilers/sass";
+import StylusTranspiler from "../transpilers/stylus";
 import { PackagerContext } from "./";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
 
-export default function transformSassFiles(context: PackagerContext): Plugin {
-    const isSass = verifyExtensions([".sass", ".scss"]);
-    let transpiler: SassTranspiler;
+export default function transformStylusFiles(context: PackagerContext): Plugin {
+    const isStylus = verifyExtensions([".styl", ".stylus"]);
+    let transpiler: StylusTranspiler;
 
     return {
-        name: "transform-sass-files",
+        name: "transform-stylus-files",
         async transform(code: string, modulePath: string) {
-            if (isSass(modulePath)) {
-                transpiler = context.cache.transpilers.get("sass-transpiler");
+            if (isStylus(modulePath)) {
+                transpiler = context.cache.transpilers.get("stylus-transpiler");
                 if (!transpiler) {
-                    transpiler = new SassTranspiler(context);
+                    transpiler = new StylusTranspiler(context);
                     context.cache.transpilers.set(
-                        "sass-transpiler",
+                        "stylus-transpiler",
                         transpiler
                     );
                 }
 
                 const file = context.files.find(f => f.path === modulePath)!;
 
-                await context.transpileQueue.push("Sass-Transpiler", () =>
+                await context.transpileQueue.push("Stylus-Transpiler", () =>
                     transpiler.transpile({ ...file, code })
                 );
                 const completed = context.transpileQueue.completed.find(
@@ -38,7 +38,7 @@ export default function transformSassFiles(context: PackagerContext): Plugin {
                 }
 
                 throw new Error(
-                    "Failed to transpile Sass/Scss file " + modulePath
+                    "Failed to transpile Stylus file " + modulePath
                 );
             }
         }

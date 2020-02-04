@@ -4,7 +4,9 @@ import loadDependencies from "./load-dependencies";
 import transformExternalDependencies from "./transform-external-dependencies";
 import transformVueFiles from "./transform-vue-files";
 import transformSassFiles from "./transform-sass-files";
+import transformStylusFiles from "./transform-stylus-files";
 import cacheFactory, { ApplicationCache } from "../utils/application-cache";
+import normalizeBundleOptions from "../utils/normalize-bundle-options";
 import QueueSystem from "../transpilers/queue-system";
 
 export type File = {
@@ -25,29 +27,11 @@ export type PackagerContext = {
 };
 
 export type BundleOptions = {
-    externalModules: { [moduleName: string]: string };
+    externalModules?: { [moduleName: string]: string };
 };
 
 const defaultBundleOptions: BundleOptions = {
     externalModules: {}
-};
-
-const normalizeBundleOptions = (
-    bundleOptions: BundleOptions
-): BundleOptions => {
-    const externalModules = Object.keys(
-        bundleOptions.externalModules || {}
-    ).reduce(
-        (acc, curr) => ({
-            ...acc,
-            [curr.toLowerCase()]: bundleOptions.externalModules[curr]
-        }),
-        {}
-    );
-
-    return {
-        externalModules
-    };
 };
 
 const cache = {
@@ -72,6 +56,7 @@ export default function setup(
         loadDependencies(context),
         transformExternalDependencies(context),
         transformVueFiles(context),
-        transformSassFiles(context)
+        transformSassFiles(context),
+        transformStylusFiles(context)
     ];
 }

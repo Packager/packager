@@ -3,11 +3,13 @@ import Transpiler from "../transpiler";
 import VueWorker from "web-worker:./vue-worker.ts";
 import { PackagerContext } from "../../plugins";
 import SassTranspiler from "../sass";
+import StylusTranspiler from "../stylus";
 
 export default class VueTranspiler extends Transpiler {
     public additionalTranspilers = {
         sass: SassTranspiler,
-        scss: SassTranspiler
+        scss: SassTranspiler,
+        styl: StylusTranspiler
     };
 
     constructor(context: PackagerContext) {
