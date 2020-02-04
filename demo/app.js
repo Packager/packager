@@ -10,6 +10,8 @@ const files = [
         code: `import Vue from 'vue';
 import App from './App.vue';
 
+import './test.less';
+
 new Vue({
     el: '#app',
     render: h => h(App)
@@ -19,7 +21,7 @@ new Vue({
         name: "App.vue",
         path: "/src/App.vue",
         code: `<template>
-    <h1>Hello World!</h1>
+    <h1 class="heading">Hello World!</h1>
 </template>
 <script>
 export default { name: 'app' };
@@ -30,15 +32,6 @@ export default { name: 'app' };
 h1 {
     color: red;
 }
-</style>
-<style lang="styl">
-body {
-    font: 14px/1.5 Helvetica, arial, sans-serif;
-    
-    h1 {
-        text-decoration: underline;
-    }
-}
 </style>`
     },
     {
@@ -47,6 +40,25 @@ body {
         code: `$color: pink;
 body {
     background: $color;
+}`
+    },
+    {
+        name: "test.less",
+        path: "/src/test.less",
+        code: `@import './cool';
+
+@my-selector: heading;
+
+.@{my-selector} {
+    font-weight: bold;
+    text-decoration: underline;
+}`
+    },
+    {
+        name: "cool.css",
+        path: "/src/cool.css",
+        code: `body {
+    background: yellow;
 }`
     }
 ];

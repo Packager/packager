@@ -5,6 +5,7 @@ import transformExternalDependencies from "./transform-external-dependencies";
 import transformVueFiles from "./transform-vue-files";
 import transformSassFiles from "./transform-sass-files";
 import transformStylusFiles from "./transform-stylus-files";
+import transformLessFiles from "./transform-less-files";
 import cacheFactory, { ApplicationCache } from "../utils/application-cache";
 import normalizeBundleOptions from "../utils/normalize-bundle-options";
 import QueueSystem from "../transpilers/queue-system";
@@ -46,7 +47,7 @@ export default function setup(
     const context: PackagerContext = {
         cache,
         files,
-        transpileQueue: new QueueSystem({ timeout: 3000 }),
+        transpileQueue: new QueueSystem({ timeout: 30000 }),
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 
@@ -57,6 +58,7 @@ export default function setup(
         transformExternalDependencies(context),
         transformVueFiles(context),
         transformSassFiles(context),
-        transformStylusFiles(context)
+        transformStylusFiles(context),
+        transformLessFiles(context)
     ];
 }

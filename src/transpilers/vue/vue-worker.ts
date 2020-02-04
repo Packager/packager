@@ -1,3 +1,4 @@
+import generateExport from "../../utils/style-plugin-export-generator";
 import { TRANSPILE_STATUS } from "../transpiler";
 import "../source-maps";
 
@@ -183,19 +184,8 @@ const applyAttributeToSelector = (tree: any, scopeId: string) => {
     return tree;
 };
 
-const wrapStyleInFunction = (styles: string[], filePath: string) => {
-    const result = styles.join("\n\n");
-
-    return (
-        `function addStyles () {` +
-        `const tag = document.createElement('style');` +
-        `tag.type = 'text/css';` +
-        `tag.appendChild(document.createTextNode(\`${result}\`));` +
-        `tag.setAttribute('data-src', '${filePath}');` +
-        `document.head.appendChild(tag);` +
-        `} addStyles();`
-    );
-};
+const wrapStyleInFunction = (styles: string[], filePath: string) =>
+    generateExport({ path: filePath, code: styles.join("\n\n") }, false);
 
 /**
  * Compiled the template using vue-template-compiler
