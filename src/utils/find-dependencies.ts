@@ -1,8 +1,8 @@
 import { Program, BaseNode } from "estree";
 import { walk } from "estree-walker";
 import * as acornLoose from "acorn-loose";
-import { File, PackagerContext } from "../plugins";
-import { resolveRelative } from "../plugins/resolve-dependencies";
+import { File, PackagerContext } from "../types/packager";
+import { resolveRelative } from "../resolvers/dependency-resolver";
 import { extname } from "../utils/path";
 
 let dependencies: { [path: string]: any } = {};

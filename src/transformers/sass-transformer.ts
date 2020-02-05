@@ -1,16 +1,22 @@
-import { Plugin } from "rollup";
 import SassTranspiler from "../transpilers/sass";
-import { PackagerContext } from "./";
+import {
+    PackagerContext,
+    Transformer,
+    TransformResult
+} from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
 
-export default function transformSassFiles(context: PackagerContext): Plugin {
+export default function sassTransformer(context: PackagerContext): Transformer {
     const isSass = verifyExtensions([".sass", ".scss"]);
     let transpiler: SassTranspiler;
 
     return {
-        name: "transform-sass-files",
-        async transform(code: string, modulePath: string) {
+        name: "sass-transformer",
+        async transform(
+            code: string,
+            modulePath: string
+        ): Promise<TransformResult> {
             if (isSass(modulePath)) {
                 transpiler = context.cache.transpilers.get("sass-transpiler");
                 if (!transpiler) {

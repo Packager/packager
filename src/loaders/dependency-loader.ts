@@ -1,13 +1,11 @@
-import { Plugin } from "rollup";
-
-import { PackagerContext } from "./";
+import { PackagerContext, Loader, LoadResult } from "../types/packager";
 import fetchNpmDependency from "../utils/fetch-npm-dependency";
 import parsePackagePath from "../utils/parse-package-path";
 
-export default function loadDependencies(context: PackagerContext): Plugin {
+export default function dependencyLoader(context: PackagerContext): Loader {
     return {
-        name: "load-dependencies",
-        async load(modulePath: string) {
+        name: "dependency-loader",
+        async load(modulePath: string): Promise<LoadResult> {
             const file = context.files.find(f => f.path === modulePath);
 
             if (!file) {

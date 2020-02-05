@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import VueWorker from "web-worker:./vue-worker.ts";
-import { PackagerContext } from "../../plugins";
+import { PackagerContext } from "../../types/packager";
 import SassTranspiler from "../sass";
 import StylusTranspiler from "../stylus";
 import LessTranspiler from "../less";

@@ -1,29 +1,35 @@
-import { Plugin } from "rollup";
-import StylusTranspiler from "../transpilers/stylus";
-import { PackagerContext } from "./";
+import LessTranspiler from "../transpilers/less";
+import {
+    PackagerContext,
+    TransformResult,
+    Transformer
+} from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
 
-export default function transformStylusFiles(context: PackagerContext): Plugin {
-    const isStylus = verifyExtensions([".styl", ".stylus"]);
-    let transpiler: StylusTranspiler;
+export default function lessTransformer(context: PackagerContext): Transformer {
+    const isLess = verifyExtensions([".less"]);
+    let transpiler: LessTranspiler;
 
     return {
-        name: "transform-stylus-files",
-        async transform(code: string, modulePath: string) {
-            if (isStylus(modulePath)) {
-                transpiler = context.cache.transpilers.get("stylus-transpiler");
+        name: "less-transformer",
+        async transform(
+            code: string,
+            modulePath: string
+        ): Promise<TransformResult> {
+            if (isLess(modulePath)) {
+                transpiler = context.cache.transpilers.get("less-transpiler");
                 if (!transpiler) {
-                    transpiler = new StylusTranspiler(context);
+                    transpiler = new LessTranspiler(context);
                     context.cache.transpilers.set(
-                        "stylus-transpiler",
+                        "less-transpiler",
                         transpiler
                     );
                 }
 
                 const file = context.files.find(f => f.path === modulePath)!;
 
-                await context.transpileQueue.push("Stylus-Transpiler", () =>
+                await context.transpileQueue.push("Less-Transpiler", () =>
                     transpiler.transpile({ ...file, code })
                 );
                 const completed = context.transpileQueue.completed.find(
@@ -37,9 +43,7 @@ export default function transformStylusFiles(context: PackagerContext): Plugin {
                     };
                 }
 
-                throw new Error(
-                    "Failed to transpile Stylus file " + modulePath
-                );
+                throw new Error("Failed to transpile Less file " + modulePath);
             }
         }
     };

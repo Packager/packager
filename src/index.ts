@@ -2,29 +2,9 @@ import { InputOptions, OutputOptions, RollupCache } from "rollup";
 // @ts-ignore
 import rollup from "rollup/dist/rollup.browser";
 
-import setupPlugins, { File, BundleOptions } from "./plugins";
-
-type PackagerOptions = {
-    sourcemaps: boolean;
-};
-
-const findEntryFile = (files: File[]) => {
-    const foundFile = files.find(f => f.entry);
-
-    if (!foundFile) {
-        throw Error(
-            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files."
-        );
-    }
-
-    return foundFile;
-};
-
-const applyPreCode = () => {
-    const windowProcess = `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
-
-    return windowProcess;
-};
+import plugin from "./plugin";
+import { PackagerOptions, BundleOptions, File } from "./types/packager";
+import { applyPreCode, findEntryFile } from "./utils/setup";
 
 export default class Packager {
     public files: File[] = [];
@@ -60,7 +40,7 @@ export default class Packager {
             this.inputOptions = {
                 ...this.inputOptions,
                 input: entryFile?.path,
-                plugins: setupPlugins(this.files, bundleOptions)
+                plugins: plugin(this.files, bundleOptions)
             };
 
             const bundle = await rollup.rollup(this.inputOptions);

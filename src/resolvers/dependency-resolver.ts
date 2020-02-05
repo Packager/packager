@@ -1,6 +1,10 @@
-import { Plugin } from "rollup";
 import { dirname, resolve } from "../utils/path";
-import { PackagerContext, File } from "./";
+import {
+    PackagerContext,
+    File,
+    Resolver,
+    ResolveResult
+} from "../types/packager";
 
 export const resolveRelative = (
     childPath: string,
@@ -48,12 +52,12 @@ const resolveRelativeExternal = (childPath: string, parentPath: string) => {
     throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
 };
 
-export default function resolveDependencies(context: PackagerContext): Plugin {
+export default function dependencyResolver(context: PackagerContext): Resolver {
     const isExternal = (modulePath: string) => !modulePath.startsWith(".");
 
     return {
-        name: "resolve-dependencies",
-        resolveId(modulePath: string, parent?: string) {
+        name: "dependency-resolver",
+        resolveId(modulePath: string, parent?: string): ResolveResult {
             if (!parent) return modulePath;
 
             if (isExternal(modulePath)) return modulePath;

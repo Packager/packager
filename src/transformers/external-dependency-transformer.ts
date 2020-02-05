@@ -1,12 +1,15 @@
-import { Plugin } from "rollup";
-import { PackagerContext } from "./";
+import {
+    PackagerContext,
+    Transformer,
+    TransformResult
+} from "../types/packager";
 
-export default function transformExternalDependencies(
+export default function externalDependencyTransformer(
     context: PackagerContext
-): Plugin {
+): Transformer {
     return {
-        name: "transform-external-dependencies",
-        transform(code: string, modulePath: string) {
+        name: "external-dependency-transformer",
+        transform(code: string, modulePath: string): TransformResult {
             // @ts-ignore
             if (!modulePath.startsWith("/") && window.Babel) {
                 let tempCode = code;

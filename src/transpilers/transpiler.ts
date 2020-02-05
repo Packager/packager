@@ -1,4 +1,4 @@
-import { PackagerContext } from "../plugins";
+import { PackagerContext } from "../types/packager";
 
 export const TRANSPILE_STATUS = {
     PREPARE_FILES: "transpiler:file:prepare",

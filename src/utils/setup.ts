@@ -1,11 +1,24 @@
-import { Plugin } from "rollup";
+import findDependencies from "./find-dependencies";
+import { File, PackagerContext, Setup } from "../types/packager";
+import babelCjsPlugin from "./babel-cjs-plugin";
 
-import { PackagerContext } from "./";
-import findDependencies from "../utils/find-dependencies";
-import babelCjsPlugin from "../utils/babel-cjs-plugin";
+export const applyPreCode = () =>
+    `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
 
-const loadBabel = () => {
-    return new Promise(resolve => {
+export const findEntryFile = (files: File[]) => {
+    const foundFile = files.find(f => f.entry);
+
+    if (!foundFile) {
+        throw Error(
+            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files."
+        );
+    }
+
+    return foundFile;
+};
+
+export const loadBabel = () =>
+    new Promise(resolve => {
         const script = document.createElement("script");
         script.src =
             "https://cdn.jsdelivr.net/npm/@babel/standalone@latest/babel.min.js";
@@ -13,22 +26,20 @@ const loadBabel = () => {
         script.onload = resolve;
         document.head.appendChild(script);
     });
-};
 
-const loadBabelTypes = () => {
-    return new Promise(resolve => {
+export const loadBabelTypes = () =>
+    new Promise(resolve => {
         const script = document.createElement("script");
         script.src = "https://unpkg.com/@bloxy/iife-libs/libs/babel-types.js";
         script.setAttribute("data-packager", "true");
         script.onload = resolve;
         document.head.appendChild(script);
     });
-};
 
-export default function initialSetup(context: PackagerContext): Plugin {
+export default function initialSetup(context: PackagerContext): Setup {
     return {
         name: "initial-setup",
-        async buildStart() {
+        async buildStart(): Promise<void> {
             const entryFile = context.files.find(f => f.entry)!;
             const dependencies = findDependencies(entryFile, context, true);
 

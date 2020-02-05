@@ -1,15 +1,21 @@
-import { Plugin } from "rollup";
 import VueTranspiler from "../transpilers/vue";
-import { PackagerContext } from "./";
+import {
+    PackagerContext,
+    Transformer,
+    TransformResult
+} from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 
-export default function transformVueFiles(context: PackagerContext): Plugin {
+export default function vueTransformer(context: PackagerContext): Transformer {
     const isVue = verifyExtensions([".vue"]);
     let transpiler: VueTranspiler;
 
     return {
-        name: "transform-vue-files",
-        async transform(code: string, modulePath: string) {
+        name: "vue-transformer",
+        async transform(
+            code: string,
+            modulePath: string
+        ): Promise<TransformResult> {
             if (isVue(modulePath)) {
                 transpiler = context.cache.transpilers.get("vue-transpiler");
                 if (!transpiler) {

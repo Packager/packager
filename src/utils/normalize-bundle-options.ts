@@ -1,4 +1,4 @@
-import { BundleOptions } from "../plugins";
+import { BundleOptions } from "../types/packager";
 
 export default function(bundleOptions: BundleOptions): BundleOptions {
     return {
