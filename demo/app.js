@@ -45,98 +45,59 @@ body {
     {
         name: "test.less",
         path: "/src/test.less",
-        code: `@import './cool';
-
-@my-selector: heading;
+        code: `@my-selector: heading;
 
 .@{my-selector} {
     font-weight: bold;
     text-decoration: underline;
 }`
-    },
-    {
-        name: "cool.css",
-        path: "/src/cool.css",
-        code: `body {
-    background: yellow;
-}`
     }
 ];
 
-const files2 = [
+const reactFiles = [
     {
         name: "app.js",
         path: "/src/app.js",
-        entry: true,
-        code: `import Vue from 'vue';
-import App2 from './App2.vue';
+        code: `import React from 'react';
+import ReactDOM from 'react-dom';
+import Clock from './Clock';
 
-new Vue({
-    el: '#app2',
-    render: h => h(App2)
-});`
+ReactDOM.render(
+    <Clock />,
+    document.getElementById('app')
+);
+`,
+        entry: true
     },
     {
-        name: "App.vue",
-        path: "/src/App2.vue",
-        code: `<template>
-    <h1>Hello World from App2.vue!</h1>
-</template>
-<script>
-export default { 
-    name: 'app',
-    mounted () {
-        console.log('log from mounted!');
+        name: "Clock.js",
+        path: "/src/Clock.js",
+        code: `import React from 'react';
+
+export default class Clock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: new Date()};
     }
-};
-</script>`
-    },
-    {
-        name: "App.vue",
-        path: "/src/App3.vue",
-        code: `<template>
-    <h1>Hello World from App3.vue!</h1>
-</template>
-<script>
-export default { name: 'app' };
-</script>`
-    },
-    {
-        name: "App.vue",
-        path: "/src/App4.vue",
-        code: `<template>
-    <h1>Hello World from App4.vue!</h1>
-</template>
-<script>
-export default { name: 'app' };
-</script>`
-    },
-    {
-        name: "App.vue",
-        path: "/src/App5.vue",
-        code: `<template>
-    <h1>Hello World from App5.vue!</h1>
-</template>
-<script>
-export default { name: 'app' };
-</script>`
+
+    render() {
+        return (
+            <div>
+                <h1>Hello, world!</h1>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+        );
+    }
+}`
     }
 ];
 
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(files);
+        const { code } = await pkger.bundle(reactFiles);
         eval(code);
         console.timeEnd("First Load");
-
-        // setTimeout(async () => {
-        //     console.time("Second Load");
-        //     const { code } = await pkger.bundle(files2);
-        //     console.log(code);
-        //     eval(code);
-        //     console.timeEnd("Second Load");
-        // }, 2000);
     } catch (e) {
         console.error(e);
     }

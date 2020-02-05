@@ -1,4 +1,6 @@
 import { dirname, resolve } from "../utils/path";
+import isExternal from "../utils/is-external";
+
 import {
     PackagerContext,
     File,
@@ -53,8 +55,6 @@ const resolveRelativeExternal = (childPath: string, parentPath: string) => {
 };
 
 export default function dependencyResolver(context: PackagerContext): Resolver {
-    const isExternal = (modulePath: string) => !modulePath.startsWith(".");
-
     return {
         name: "dependency-resolver",
         resolveId(modulePath: string, parent?: string): ResolveResult {

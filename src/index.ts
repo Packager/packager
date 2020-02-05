@@ -4,7 +4,7 @@ import rollup from "rollup/dist/rollup.browser";
 
 import plugin from "./plugin";
 import { PackagerOptions, BundleOptions, File } from "./types/packager";
-import { applyPreCode, findEntryFile } from "./utils/setup";
+import { applyPreCode, findEntryFile, handleWarnings } from "./utils/setup";
 
 export default class Packager {
     public files: File[] = [];
@@ -40,6 +40,7 @@ export default class Packager {
             this.inputOptions = {
                 ...this.inputOptions,
                 input: entryFile?.path,
+                onwarn: handleWarnings,
                 plugins: plugin(this.files, bundleOptions)
             };
 

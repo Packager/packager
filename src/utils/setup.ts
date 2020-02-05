@@ -36,6 +36,10 @@ export const loadBabelTypes = () =>
         document.head.appendChild(script);
     });
 
+export const handleWarnings = (warning: any) => {
+    if (warning.code === "THIS_IS_UNDEFINED") return;
+};
+
 export default function initialSetup(context: PackagerContext): Setup {
     return {
         name: "initial-setup",
