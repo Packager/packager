@@ -5,13 +5,16 @@ import {
     TransformResult
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
+import TransformationException from "../exceptions/TransformationException";
 
 export default function vueTransformer(context: PackagerContext): Transformer {
+    const transformerName = "vue-transformer";
     const isVue = verifyExtensions([".vue"]);
+
     let transpiler: VueTranspiler;
 
     return {
-        name: "vue-transformer",
+        name: transformerName,
         async transform(
             code: string,
             modulePath: string
@@ -39,7 +42,7 @@ export default function vueTransformer(context: PackagerContext): Transformer {
                     };
                 }
 
-                throw new Error("Failed to transpile Vue file " + modulePath);
+                throw new TransformationException(modulePath, transformerName);
             }
         }
     };

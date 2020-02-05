@@ -6,13 +6,16 @@ import {
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
+import TransformationException from "../exceptions/TransformationException";
 
 export default function sassTransformer(context: PackagerContext): Transformer {
+    const transformerName = "sass-transformer";
     const isSass = verifyExtensions([".sass", ".scss"]);
+
     let transpiler: SassTranspiler;
 
     return {
-        name: "sass-transformer",
+        name: transformerName,
         async transform(
             code: string,
             modulePath: string
@@ -43,9 +46,7 @@ export default function sassTransformer(context: PackagerContext): Transformer {
                     };
                 }
 
-                throw new Error(
-                    "Failed to transpile Sass/Scss file " + modulePath
-                );
+                throw new TransformationException(modulePath, transformerName);
             }
         }
     };

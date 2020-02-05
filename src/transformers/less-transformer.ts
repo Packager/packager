@@ -6,13 +6,16 @@ import {
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
+import TransformationException from "../exceptions/TransformationException";
 
 export default function lessTransformer(context: PackagerContext): Transformer {
+    const transformerName = "less-transformer";
     const isLess = verifyExtensions([".less"]);
+
     let transpiler: LessTranspiler;
 
     return {
-        name: "less-transformer",
+        name: transformerName,
         async transform(
             code: string,
             modulePath: string
@@ -43,7 +46,7 @@ export default function lessTransformer(context: PackagerContext): Transformer {
                     };
                 }
 
-                throw new Error("Failed to transpile Less file " + modulePath);
+                throw new TransformationException(modulePath, transformerName);
             }
         }
     };

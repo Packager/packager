@@ -7,13 +7,13 @@ import {
 export default function externalDependencyTransformer(
     context: PackagerContext
 ): Transformer {
+    const transformerName = "external-dependency-transformer";
+
     return {
-        name: "external-dependency-transformer",
+        name: transformerName,
         transform(code: string, modulePath: string): TransformResult {
             // @ts-ignore
             if (!modulePath.startsWith("/") && window.Babel) {
-                let tempCode = code;
-
                 if (
                     // @ts-ignore
                     !window.__dependencies ||
@@ -21,7 +21,7 @@ export default function externalDependencyTransformer(
                     !window.__dependencies[modulePath]
                 ) {
                     // @ts-ignore
-                    const { code: _code } = window.Babel.transform(tempCode, {
+                    const { code: _code } = window.Babel.transform(code, {
                         plugins: ["transform-commonjs"],
                         compact: false,
                         moduleId: modulePath

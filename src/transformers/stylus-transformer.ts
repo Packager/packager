@@ -6,15 +6,18 @@ import {
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
 import generateExport from "../utils/style-plugin-export-generator";
+import TransformationException from "../exceptions/TransformationException";
 
 export default function stylusTransformer(
     context: PackagerContext
 ): Transformer {
+    const transformerName = "stylus-transformer";
     const isStylus = verifyExtensions([".styl", ".stylus"]);
+
     let transpiler: StylusTranspiler;
 
     return {
-        name: "stylus-transformer",
+        name: transformerName,
         async transform(
             code: string,
             modulePath: string
@@ -45,9 +48,7 @@ export default function stylusTransformer(
                     };
                 }
 
-                throw new Error(
-                    "Failed to transpile Stylus file " + modulePath
-                );
+                throw new TransformationException(modulePath, transformerName);
             }
         }
     };
