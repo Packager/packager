@@ -1,20 +1,19 @@
-import StylusTranspiler from "../transpilers/stylus";
+import SvelteTranspiler from "../transpilers/svelte";
 import {
     PackagerContext,
     Transformer,
     TransformResult
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
-import { generateExport } from "../utils/style-plugin-helpers";
 import TransformationException from "../exceptions/TransformationException";
 
-export default function stylusTransformer(
+export default function svelteTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "stylus-transformer";
-    const isStylus = verifyExtensions([".styl", ".stylus"]);
+    const transformerName = "svelte-transformer";
+    const isSvelte = verifyExtensions([".svelte"]);
 
-    let transpiler: StylusTranspiler;
+    let transpiler: SvelteTranspiler;
 
     return {
         name: transformerName,
@@ -22,19 +21,19 @@ export default function stylusTransformer(
             code: string,
             modulePath: string
         ): Promise<TransformResult> {
-            if (isStylus(modulePath)) {
-                transpiler = context.cache.transpilers.get("stylus-transpiler");
+            if (isSvelte(modulePath)) {
+                transpiler = context.cache.transpilers.get("svelte-transpiler");
                 if (!transpiler) {
-                    transpiler = new StylusTranspiler(context);
+                    transpiler = new SvelteTranspiler(context);
                     context.cache.transpilers.set(
-                        "stylus-transpiler",
+                        "svelte-transpiler",
                         transpiler
                     );
                 }
 
                 const file = context.files.find(f => f.path === modulePath)!;
 
-                await context.transpileQueue.push("Stylus-Transpiler", () =>
+                await context.transpileQueue.push("Svelte-Transpiler", () =>
                     transpiler.transpile({ ...file, code })
                 );
                 const completed = context.transpileQueue.completed.find(
@@ -43,7 +42,7 @@ export default function stylusTransformer(
 
                 if (completed) {
                     return {
-                        code: generateExport(completed),
+                        code: completed.code,
                         map: completed.map || { mappings: "" }
                     };
                 }

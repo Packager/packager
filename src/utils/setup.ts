@@ -1,6 +1,8 @@
+import { extname } from "./path";
 import findDependencies from "./find-dependencies";
 import { File, PackagerContext, Setup } from "../types/packager";
 import babelCjsPlugin from "./babel-cjs-plugin";
+import transpilers from "../transpilers";
 
 export const applyPreCode = () =>
     `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
@@ -41,14 +43,34 @@ export const handleWarnings = (warning: any) => {
 };
 
 export default function initialSetup(context: PackagerContext): Setup {
+    const checkExternalLibs = (depsHaveExternal: boolean = false): boolean => {
+        const langs = context.files.reduce((acc: string[], curr: any) => {
+            const extension: string = extname(curr.path).slice(1);
+            if (!acc.includes(extension)) {
+                acc.push(extension);
+                return acc;
+            }
+            return acc;
+        }, []);
+
+        const forceExternal = langs.some(
+            (lang: string) => transpilers[lang].forceExternal
+        );
+
+        return forceExternal || depsHaveExternal;
+    };
+
     return {
         name: "initial-setup",
         async buildStart(): Promise<void> {
             const entryFile = context.files.find(f => f.entry)!;
             const dependencies = findDependencies(entryFile, context, true);
+            const hasExternalLibs = checkExternalLibs(
+                dependencies._hasExternal
+            );
 
             if (
-                dependencies._hasExternal &&
+                hasExternalLibs &&
                 // @ts-ignore
                 (!window.Babel || !window._babel_types)
             ) {

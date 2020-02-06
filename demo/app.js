@@ -92,10 +92,45 @@ export default class Clock extends React.Component {
     }
 ];
 
+const svelteFiles = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import SvelteApp from './App.svelte';
+
+new SvelteApp({
+    target: document.getElementById('app')
+});
+`,
+        entry: true
+    },
+    {
+        name: "App.svelte",
+        path: "/src/App.svelte",
+        code: `<script>
+    let count = 1;
+
+    $: doubled = count * 2;
+    $: quadrupled = doubled * 2;
+
+    function handleClick() {
+        count += 1;
+    }
+</script>
+    
+<button on:click={handleClick}>
+    Count: {count}
+</button>
+
+<p>{count} * 2 = {doubled}</p>
+<p>{doubled} * 2 = {quadrupled}</p>`
+    }
+];
+
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(reactFiles);
+        const { code } = await pkger.bundle(svelteFiles);
         eval(code);
         console.timeEnd("First Load");
     } catch (e) {

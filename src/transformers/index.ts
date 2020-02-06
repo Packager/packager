@@ -5,6 +5,7 @@ import stylusTransformer from "./stylus-transformer";
 import lessTransformer from "./less-transformer";
 import vueTransformer from "./vue-transformer";
 import typescriptTransformer from "./typescript-transformer";
+import svelteTransformer from "./svelte-transformer";
 
 export default (context: PackagerContext) => [
     externalDependencyTransformer(context),
@@ -12,5 +13,6 @@ export default (context: PackagerContext) => [
     stylusTransformer(context),
     lessTransformer(context),
     typescriptTransformer(context),
-    vueTransformer(context)
+    vueTransformer(context),
+    svelteTransformer(context)
 ];

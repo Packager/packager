@@ -3,7 +3,7 @@ import { TRANSPILE_STATUS } from "../transpiler";
 declare var ts: any;
 
 self.importScripts(
-    "https://cdn.jsdelivr.net/npm/typescript@3.7.5/lib/typescript.js"
+    "https://cdn.jsdelivr.net/npm/typescript@latest/lib/typescript.js"
 );
 
 self.addEventListener("message", async ({ data }: any) => {

@@ -5,7 +5,7 @@ import {
     TransformResult
 } from "../types/packager";
 import verifyExtensions from "../utils/verify-extensions";
-import generateExport from "../utils/style-plugin-export-generator";
+import { generateExport } from "../utils/style-plugin-helpers";
 import TransformationException from "../exceptions/TransformationException";
 
 export default function sassTransformer(context: PackagerContext): Transformer {

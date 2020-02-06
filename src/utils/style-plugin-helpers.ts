@@ -1,7 +1,7 @@
-export default function generateExport(
+export const generateExport = (
     file: any,
     prependExportDefault: boolean = true
-) {
+) => {
     return (
         `${
             prependExportDefault ? "export default " : ""
@@ -13,4 +13,9 @@ export default function generateExport(
         `document.head.appendChild(tag);` +
         `} addStyles();`
     );
-}
+};
+
+export const generateExportsForAllStyles = (
+    styles: string[],
+    filePath: string
+) => generateExport({ path: filePath, code: styles.join("\n\n") }, false);
