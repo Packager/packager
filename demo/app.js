@@ -221,7 +221,7 @@ export default Home;`
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(files);
+        const { code } = await pkger.bundle(svelteTest);
         eval(code);
         console.timeEnd("First Load");
 

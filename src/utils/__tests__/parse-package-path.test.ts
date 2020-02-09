@@ -31,6 +31,16 @@ describe("parse package path", () => {
         });
     });
 
+    it("should parse package without a version but with a path", () => {
+        const path = "vue/compiler";
+
+        expect(parsePackagePath(path)).toEqual({
+            name: "vue",
+            version: null,
+            path: "compiler"
+        });
+    });
+
     it("should parse package with a version after package name following by path", () => {
         const path = "vue@latest/dist/vue.js";
 
