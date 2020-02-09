@@ -31,14 +31,6 @@ export default function commonjsTransformer(
                     code = _code;
                 }
 
-                if (
-                    modulePath === "react" ||
-                    modulePath === "react/cjs/react.production.min.js" ||
-                    modulePath === "react/cjs/react.development.js"
-                ) {
-                    console.log(code);
-                }
-
                 return {
                     code: `${code} export default window.__dependencies['${modulePath}']`,
                     map: { mappings: "" },

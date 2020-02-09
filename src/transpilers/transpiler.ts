@@ -11,10 +11,10 @@ export const TRANSPILE_STATUS = {
 
 export default class Transpiler {
     public name: string;
-    public worker: Worker;
+    public worker: Worker | null;
     public context: PackagerContext;
 
-    constructor(name: string, worker: Worker, context: PackagerContext) {
+    constructor(name: string, worker: Worker | null, context: PackagerContext) {
         this.name = name;
         this.worker = worker;
         this.context = context;
@@ -22,6 +22,10 @@ export default class Transpiler {
 
     doTranspile(file: any) {
         return new Promise((resolve, reject) => {
+            if (!this.worker) {
+                return resolve();
+            }
+
             this.worker.onmessage = async ({ data }) => {
                 const { file, type, error, additional } = data;
 
@@ -38,7 +42,7 @@ export default class Transpiler {
                             additional
                         );
 
-                        this.worker.postMessage({
+                        this.worker!.postMessage({
                             type: TRANSPILE_STATUS.ADDITIONAL_TRANSPILED,
                             file,
                             additional: additionalTranspiled,

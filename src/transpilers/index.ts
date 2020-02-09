@@ -4,6 +4,7 @@ import StylusTranspiler from "./stylus";
 import SvelteTranspiler from "./svelte";
 import TypescriptTranspiler from "./typescript";
 import VueTranspiler from "./vue";
+import HtmlTranspiler from "./html";
 
 export default {
     less: LessTranspiler,
@@ -16,5 +17,6 @@ export default {
     tsx: TypescriptTranspiler,
     js: TypescriptTranspiler,
     jsx: TypescriptTranspiler,
-    vue: VueTranspiler
+    vue: VueTranspiler,
+    html: HtmlTranspiler
 } as { [name: string]: any };
