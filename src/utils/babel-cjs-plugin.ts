@@ -71,6 +71,9 @@ export default function(babelTypes: any) {
         visitor: {
             Program: {
                 exit(path: any) {
+                    // @ts-ignore
+                    const moduleId = this.file.opts.moduleId;
+
                     path.traverse({
                         CallExpression: {
                             exit(path: any) {
@@ -158,7 +161,6 @@ export default function(babelTypes: any) {
                                     else if (str) {
                                         const { parentPath } = path;
                                         const { left } = parentPath.node;
-                                        // @ts-ignore
                                         const oldId = !babelTypes.isMemberExpression(
                                             left
                                         )
@@ -234,8 +236,6 @@ export default function(babelTypes: any) {
                         }
                     });
                     const programPath = path.scope.getProgramParent().path;
-                    // @ts-ignore
-                    const moduleId = this.file.opts.moduleId;
                     // Even though we are pretty sure this isn't a CommonJS file, lets
                     // do one last sanity check for an `import` or `export` in the
                     // program path.

@@ -1,12 +1,18 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
 // @ts-ignore
-import rollup from "rollup/dist/rollup.browser";
+// import rollup from "rollup/dist/rollup.browser";
 
 import plugin from "./plugin";
 import { PackagerOptions, BundleOptions, File } from "./types/packager";
-import { applyPreCode, findEntryFile, handleWarnings } from "./utils/setup";
+import {
+    applyPreCode,
+    findEntryFile,
+    handleWarnings,
+    loadRollup
+} from "./utils/setup";
 
 export default class Packager {
+    public rollup: any;
     public files: File[] = [];
     public inputOptions: InputOptions;
     public outputOptions: OutputOptions;
@@ -36,6 +42,12 @@ export default class Packager {
 
         try {
             const entryFile = findEntryFile(this.files);
+            // @ts-ignore
+            if (!this.rollup || !window.rollup) {
+                await loadRollup();
+                //@ts-ignore
+                this.rollup = window.rollup;
+            }
 
             this.inputOptions = {
                 ...this.inputOptions,
@@ -44,7 +56,7 @@ export default class Packager {
                 plugins: plugin(this.files, bundleOptions)
             };
 
-            const bundle = await rollup.rollup(this.inputOptions);
+            const bundle = await this.rollup.rollup(this.inputOptions);
 
             this.cachedBundle = bundle.cache;
 

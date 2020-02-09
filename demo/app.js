@@ -58,9 +58,13 @@ const reactFiles = [
     {
         name: "app.js",
         path: "/src/app.js",
-        code: `import React from 'react';
+        code: `import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Clock from './Clock';
+import random from './random';
+
+console.log(Component);
+console.log(random);
 
 ReactDOM.render(
     <Clock />,
@@ -89,50 +93,89 @@ export default class Clock extends React.Component {
         );
     }
 }`
+    },
+    {
+        name: "random.js",
+        path: "/src/random.js",
+        code: `import react from 'react';
+
+export default react;`
     }
 ];
 
-const svelteFiles = [
+const svelteTest = [
     {
         name: "app.js",
         path: "/src/app.js",
+        entry: true,
         code: `import SvelteApp from './App.svelte';
 
 new SvelteApp({
     target: document.getElementById('app')
-});
-`,
-        entry: true
+});`
     },
     {
         name: "App.svelte",
         path: "/src/App.svelte",
         code: `<script>
-    let count = 1;
+import { time, elapsed } from './stores.js';
 
-    $: doubled = count * 2;
-    $: quadrupled = doubled * 2;
-
-    function handleClick() {
-        count += 1;
-    }
+const formatter = new Intl.DateTimeFormat('en', {
+    hour12: true,
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit'
+});
 </script>
-    
-<button on:click={handleClick}>
-    Count: {count}
-</button>
 
-<p>{count} * 2 = {doubled}</p>
-<p>{doubled} * 2 = {quadrupled}</p>`
+<h1>The time is {formatter.format($time)}</h1>
+
+<p>
+This page has been open for
+{$elapsed} {$elapsed === 1 ? 'second' : 'seconds'}
+</p>`
+    },
+    {
+        name: "stores.js",
+        path: "/src/stores.js",
+        code: `import { readable, derived } from 'svelte/store';
+
+export const time = readable(new Date(), function start(set) {
+    const interval = setInterval(() => {
+        set(new Date());
+    }, 1000);
+
+    return function stop() {
+        clearInterval(interval);
+    };
+});
+
+const start = new Date();
+
+export const elapsed = derived(
+    time,
+    $time => Math.round(($time - start) / 1000)
+);`
     }
 ];
-
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(svelteFiles);
+        const { code } = await pkger.bundle(svelteTest);
         eval(code);
         console.timeEnd("First Load");
+
+        // console.time("First Load");
+        // const { code } = await pkger.bundle(reactFiles);
+        // eval(code);
+        // console.timeEnd("First Load");
+
+        // setTimeout(async () => {
+        //     console.time("Second Load");
+        //     const { code } = await pkger.bundle(svelteTest);
+        //     eval(code);
+        //     console.timeEnd("Second Load");
+        // }, 2000);
     } catch (e) {
         console.error(e);
     }

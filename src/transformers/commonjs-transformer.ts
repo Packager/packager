@@ -4,10 +4,10 @@ import {
     TransformResult
 } from "../types/packager";
 
-export default function externalDependencyTransformer(
+export default function commonjsTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "external-dependency-transformer";
+    const transformerName = "commonjs-transformer";
 
     return {
         name: transformerName,
@@ -21,18 +21,28 @@ export default function externalDependencyTransformer(
                     !window.__dependencies[modulePath]
                 ) {
                     // @ts-ignore
-                    const { code: _code } = window.Babel.transform(code, {
+                    const { code: _code, map } = window.Babel.transform(code, {
                         plugins: ["transform-commonjs"],
                         compact: false,
+                        // minified: true,
                         moduleId: modulePath
                     });
 
                     code = _code;
                 }
 
+                if (
+                    modulePath === "react" ||
+                    modulePath === "react/cjs/react.production.min.js" ||
+                    modulePath === "react/cjs/react.development.js"
+                ) {
+                    console.log(code);
+                }
+
                 return {
-                    code: `${code} export default window.__dependencies['${modulePath}'];`,
-                    map: { mappings: "" }
+                    code: `${code} export default window.__dependencies['${modulePath}']`,
+                    map: { mappings: "" },
+                    syntheticNamedExports: true
                 };
             }
         }

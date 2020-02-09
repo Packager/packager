@@ -81,6 +81,8 @@ export function normalize(path: string): string {
     return path.replace(/\/\//gi, "/");
 }
 
+export const sep = "/";
+
 export default {
     isAbsolute,
     isRelative,
@@ -89,5 +91,6 @@ export default {
     extname,
     relative,
     resolve,
-    normalize
+    normalize,
+    sep
 };

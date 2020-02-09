@@ -35,7 +35,7 @@ const extractRest = (rest: string | null) => {
 
         if (extractedVersion) {
             const version = extractedVersion[1] || null;
-            const path = extractedVersion[2] || null;
+            const path = extractedVersion[2] ? `/${extractedVersion[2]}` : null;
 
             return { version, path };
         }

@@ -23,8 +23,11 @@ const getNextService = (currentService: string): string | null => {
 
 type FetchedNpmDependecy = {
     code: string;
-    metadata: {
-        link: string;
+    transformedCode?: string;
+    meta: {
+        name: string;
+        status: number;
+        url: string;
     };
 };
 
@@ -39,12 +42,7 @@ export default async function fetchNpmDependency(
         const fullPath = `${_service.url}/${name}@${version}${path}`;
         const data = await resolver(fullPath);
 
-        return {
-            code: data,
-            metadata: {
-                link: fullPath
-            }
-        };
+        return data;
     } catch (e) {
         const nextService = getNextService(service);
 

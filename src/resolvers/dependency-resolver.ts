@@ -39,9 +39,21 @@ export const resolveRelative = (
     return retriedFile.path;
 };
 
-const resolveRelativeExternal = (childPath: string, parentPath: string) => {
+const resolveRelativeExternal = (
+    childPath: string,
+    parentPath: string,
+    context: PackagerContext
+) => {
     if (!parentPath.startsWith("@")) {
         if (!!~parentPath.indexOf("/")) {
+            const cachedParent = context.cache.dependencies.get(parentPath);
+            if (cachedParent) {
+                const relativeExternalUrl = new URL(cachedParent.meta.url)
+                    .pathname;
+
+                return resolve(dirname(relativeExternalUrl), childPath);
+            }
+
             return resolve(dirname(`/${parentPath}`), childPath).replace(
                 /^\.\//,
                 ""
@@ -66,8 +78,16 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
 
             if (relativePath) return relativePath;
 
-            if (!parent.startsWith(".") || !parent.startsWith("/")) {
-                const pkgPath = resolveRelativeExternal(modulePath, parent);
+            if (
+                !parent.startsWith(".") ||
+                !parent.startsWith("/") ||
+                isExternal(parent)
+            ) {
+                const pkgPath = resolveRelativeExternal(
+                    modulePath,
+                    parent,
+                    context
+                );
 
                 return {
                     id: pkgPath.substr(1)

@@ -38,6 +38,15 @@ export const loadBabelTypes = () =>
         document.head.appendChild(script);
     });
 
+export const loadRollup = () =>
+    new Promise(resolve => {
+        const script = document.createElement("script");
+        script.src = "https://unpkg.com/rollup@1.31.0/dist/rollup.browser.js";
+        script.setAttribute("data-packager", "true");
+        script.onload = resolve;
+        document.head.appendChild(script);
+    });
+
 export const handleWarnings = (warning: any) => {
     if (warning.code === "THIS_IS_UNDEFINED") return;
 };

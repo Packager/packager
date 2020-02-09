@@ -11,23 +11,21 @@ export default function dependencyLoader(context: PackagerContext): Loader {
             if (!file) {
                 const moduleMeta = parsePackagePath(modulePath);
                 const moduleName = moduleMeta.name?.split("__")[0];
-
                 if (!moduleName)
                     throw new Error(
                         "There was an issue with loading deps for " + modulePath
                     );
 
                 const version =
+                    moduleMeta.version ||
                     context.bundleOptions.externalModules[moduleName] ||
                     "latest";
-                const cacheKey = `${moduleName}@${version}${moduleMeta.path ||
-                    ""}`;
+
                 const cachedNpmDependency = context.cache.dependencies.get(
-                    cacheKey
+                    modulePath
                 );
-                if (cachedNpmDependency) {
-                    return "";
-                } else {
+
+                if (!cachedNpmDependency) {
                     const npmDependency =
                         (await fetchNpmDependency(
                             moduleName,
@@ -36,15 +34,21 @@ export default function dependencyLoader(context: PackagerContext): Loader {
                         )) || "";
 
                     if (npmDependency) {
-                        context.cache.dependencies.set(cacheKey, true);
+                        context.cache.dependencies.set(modulePath, {
+                            ...npmDependency,
+                            name: modulePath
+                        });
 
                         return {
-                            code: npmDependency.code
+                            code: npmDependency.code,
+                            syntheticNamedExports: true
                         };
                     }
 
                     return null;
                 }
+
+                return { code: "" };
             }
 
             return {

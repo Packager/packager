@@ -1,5 +1,5 @@
 import { PackagerContext } from "../types/packager";
-import externalDependencyTransformer from "./external-dependency-transformer";
+import commonjsTransformer from "./commonjs-transformer";
 import sassTransformer from "./sass-transformer";
 import stylusTransformer from "./stylus-transformer";
 import lessTransformer from "./less-transformer";
@@ -8,7 +8,7 @@ import typescriptTransformer from "./typescript-transformer";
 import svelteTransformer from "./svelte-transformer";
 
 export default (context: PackagerContext) => [
-    externalDependencyTransformer(context),
+    commonjsTransformer(context),
     sassTransformer(context),
     stylusTransformer(context),
     lessTransformer(context),

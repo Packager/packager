@@ -4,7 +4,13 @@ const resolver = async (
     maxRetries = 3
 ): Promise<any | never> => {
     try {
-        const data = await fetch(path).then(data => data.text());
+        const data = await fetch(path).then(async res => ({
+            code: await res.text(),
+            meta: {
+                url: res.url,
+                status: res.status
+            }
+        }));
 
         return data;
     } catch ({ response }) {
