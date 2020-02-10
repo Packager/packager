@@ -6,6 +6,7 @@ import lessTransformer from "./less-transformer";
 import vueTransformer from "./vue-transformer";
 import typescriptTransformer from "./typescript-transformer";
 import svelteTransformer from "./svelte-transformer";
+import jsonTransformer from "./json-transformer";
 
 export default (context: PackagerContext) => [
     commonjsTransformer(context),
@@ -14,5 +15,6 @@ export default (context: PackagerContext) => [
     lessTransformer(context),
     typescriptTransformer(context),
     vueTransformer(context),
-    svelteTransformer(context)
+    svelteTransformer(context),
+    jsonTransformer(context)
 ];

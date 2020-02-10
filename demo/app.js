@@ -9,13 +9,19 @@ const files = [
         entry: true,
         code: `import Vue from 'vue';
 import App from './App.vue';
+import Test from '../package.json';
 
-import './test.less';
+console.log(Test);
 
 new Vue({
     el: '#app',
     render: h => h(App)
 });`
+    },
+    {
+        name: "index.js",
+        path: "/src/index.js",
+        code: `console.log('new main!');`
     },
     {
         name: "App.vue",
@@ -25,32 +31,12 @@ new Vue({
 </template>
 <script>
 export default { name: 'app' };
-</script>
-<style lang="scss" scoped>
-@import "./app.scss";
-
-h1 {
-    color: red;
-}
-</style>`
+</script>`
     },
     {
-        name: "app.scss",
-        path: "/src/app.scss",
-        code: `$color: pink;
-body {
-    background: $color;
-}`
-    },
-    {
-        name: "test.less",
-        path: "/src/test.less",
-        code: `@my-selector: heading;
-
-.@{my-selector} {
-    font-weight: bold;
-    text-decoration: underline;
-}`
+        name: "package.json",
+        path: "/package.json",
+        code: `{\"name\":\"cool-name\",\"private\":true, \"dependencies\":{\"vue\":\"2.6.10\"}}`
     }
 ];
 
@@ -221,7 +207,7 @@ export default Home;`
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(svelteTest);
+        const { code } = await pkger.bundle(files);
         eval(code);
         console.timeEnd("First Load");
 

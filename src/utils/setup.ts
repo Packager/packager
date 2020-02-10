@@ -7,16 +7,26 @@ import transpilers from "../transpilers";
 export const applyPreCode = () =>
     `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
 
-export const findEntryFile = (files: File[]) => {
-    const foundFile = files.find(f => f.entry);
+export const findEntryFile = (files: File[], forcePath?: string) => {
+    const pkgMain = files.find(f => f.path === forcePath);
+    const foundFile = pkgMain || files.find(f => f.entry);
 
     if (!foundFile) {
         throw Error(
-            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files."
+            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files or use the 'main' in a package.json file.."
         );
     }
 
     return foundFile;
+};
+
+export const extractOptionsFromPackageJson = (packgeJson: any) => {
+    return {
+        dependencies: {
+            ...packgeJson.dependencies,
+            ...packgeJson.peerDependencies
+        }
+    };
 };
 
 export const loadBabel = () =>

@@ -23,7 +23,7 @@ export default class Transpiler {
     doTranspile(file: any) {
         return new Promise((resolve, reject) => {
             if (!this.worker) {
-                return resolve();
+                return resolve(file);
             }
 
             this.worker.onmessage = async ({ data }) => {

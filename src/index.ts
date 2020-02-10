@@ -1,4 +1,5 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
+import merge from "deepmerge";
 // @ts-ignore
 // import rollup from "rollup/dist/rollup.browser";
 
@@ -8,7 +9,8 @@ import {
     applyPreCode,
     findEntryFile,
     handleWarnings,
-    loadRollup
+    loadRollup,
+    extractOptionsFromPackageJson
 } from "./utils/setup";
 
 export default class Packager {
@@ -41,13 +43,38 @@ export default class Packager {
         this.files = files;
 
         try {
-            const entryFile = findEntryFile(this.files);
             // @ts-ignore
             if (!this.rollup || !window.rollup) {
                 await loadRollup();
                 //@ts-ignore
                 this.rollup = window.rollup;
             }
+
+            let entryFile;
+            const packageJson = this.files.find(
+                f => f.path === "/package.json"
+            );
+
+            if (packageJson && packageJson.code != "") {
+                const parsed =
+                    typeof packageJson.code === "string"
+                        ? JSON.parse(packageJson.code)
+                        : packageJson.code;
+
+                const pkgBundleOptions = extractOptionsFromPackageJson(parsed);
+                bundleOptions = merge(pkgBundleOptions, bundleOptions || {});
+
+                if (parsed.main) {
+                    entryFile = findEntryFile(
+                        this.files,
+                        parsed.main.startsWith("/")
+                            ? parsed.main
+                            : `/${parsed.main}`
+                    );
+                }
+            }
+
+            entryFile = entryFile || findEntryFile(this.files);
 
             this.inputOptions = {
                 ...this.inputOptions,

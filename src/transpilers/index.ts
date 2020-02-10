@@ -5,6 +5,7 @@ import SvelteTranspiler from "./svelte";
 import TypescriptTranspiler from "./typescript";
 import VueTranspiler from "./vue";
 import HtmlTranspiler from "./html";
+import JsonTranspiler from "./json";
 
 export default {
     less: LessTranspiler,
@@ -18,5 +19,6 @@ export default {
     js: TypescriptTranspiler,
     jsx: TypescriptTranspiler,
     vue: VueTranspiler,
-    html: HtmlTranspiler
+    html: HtmlTranspiler,
+    json: JsonTranspiler
 } as { [name: string]: any };
