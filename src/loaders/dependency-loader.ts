@@ -18,7 +18,7 @@ export default function dependencyLoader(context: PackagerContext): Loader {
 
                 const version =
                     moduleMeta.version ||
-                    context.bundleOptions.externalModules[moduleName] ||
+                    context.bundleOptions.dependencies[moduleName] ||
                     "latest";
 
                 const cachedNpmDependency = context.cache.dependencies.get(

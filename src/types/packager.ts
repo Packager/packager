@@ -29,7 +29,7 @@ export type PackagerContext = {
 };
 
 export type BundleOptions = {
-    externalModules: { [moduleName: string]: string };
+    dependencies: { [moduleName: string]: string };
 };
 
 export interface Transformer extends Plugin {}

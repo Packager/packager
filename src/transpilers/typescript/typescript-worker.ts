@@ -50,7 +50,6 @@ const transpileFile = (file: any) =>
                 map: JSON.parse(transpiled.sourceMapText)
             });
         } else {
-            console.log("ts failed!", transpiled);
             reject(`Failed to transpile ${file.path}`);
         }
     });

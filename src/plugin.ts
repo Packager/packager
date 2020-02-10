@@ -8,7 +8,7 @@ import loaders from "./loaders";
 import setup from "./utils/setup";
 
 const defaultBundleOptions: BundleOptions = {
-    externalModules: {}
+    dependencies: {}
 };
 
 const cache = {

@@ -2,18 +2,16 @@ import { BundleOptions } from "../types/packager";
 
 export default function(bundleOptions: BundleOptions): BundleOptions {
     return {
-        externalModules: normalizeExternalModules(bundleOptions.externalModules)
+        dependencies: normalizeDependencies(bundleOptions.dependencies)
     };
 }
 
-const normalizeExternalModules = (externalModules?: {
-    [key: string]: string;
-}) =>
-    externalModules
-        ? Object.keys(externalModules || {}).reduce(
+const normalizeDependencies = (dependencies?: { [key: string]: string }) =>
+    dependencies
+        ? Object.keys(dependencies || {}).reduce(
               (acc, curr) => ({
                   ...acc,
-                  [curr.toLowerCase()]: externalModules[curr]
+                  [curr.toLowerCase()]: dependencies[curr]
               }),
               {}
           )

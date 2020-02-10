@@ -20,7 +20,7 @@ try {
 Self-explanatory but it will essentially inline the sourcemap to the bundle.
 This can greatly increase the size of the generated bundle so use with caution.
 
-#### External Modules | externalModules (Object) | Bundle function
+#### Dependencies | dependencies (Object) | Bundle function
 
 Packager uses this for figuring out which version of an NPM module to fetch & use in the bundle.
 The keys of the object are the module names and the value is the version.
@@ -38,7 +38,7 @@ const files = [
 ];
 
 const bundleOptions = {
-    externalModules: {
+    dependencies: {
         vue: "2.6.10"
     }
 };
@@ -47,4 +47,4 @@ const pkger = new Packager();
 pkger.bundle(files, bundleOptions);
 ```
 
-If we use an external module in the code but don't specify it in `externalModules`, Packager will use `latest` as the version.
+If we use an external module in the code but don't specify it in `dependencies`, Packager will use `latest` as the version.
