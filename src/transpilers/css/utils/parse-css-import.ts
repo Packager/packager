@@ -18,7 +18,7 @@ const getCondition = (str: string) =>
         .replace(/(?:@import)(?:\s)*/g, "")
         .trim();
 
-export default function(cssImport: string) {
+export default (cssImport: string) => {
     cssImport = cssImport.replace(/(?:;)$/g, "");
 
     return {
@@ -26,4 +26,4 @@ export default function(cssImport: string) {
         condition: getCondition(cssImport) || null,
         rule: cssImport
     };
-}
+};

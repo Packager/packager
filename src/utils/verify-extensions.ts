@@ -1,9 +1,9 @@
 import isExternal from "./is-external";
 
-export default function(extensions: string[]) {
+export default (extensions: string[]) => {
     const regex = new RegExp(`\\${extensions.join("$|\\")}$`, "i");
 
-    return function(path: string, ignoreExternal: boolean = true) {
+    return (path: string, ignoreExternal: boolean = true) => {
         const external = isExternal(path);
 
         return (
@@ -11,4 +11,4 @@ export default function(extensions: string[]) {
             ((external && !ignoreExternal) || !external ? true : false)
         );
     };
-}
+};

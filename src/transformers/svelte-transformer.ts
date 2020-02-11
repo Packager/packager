@@ -10,7 +10,7 @@ import TransformationException from "../exceptions/TransformationException";
 export default function svelteTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "svelte-transformer";
+    const transformerName = "packager::transformer::svelte-transformer";
     const isSvelte = verifyExtensions([".svelte"]);
 
     let transpiler: SvelteTranspiler;

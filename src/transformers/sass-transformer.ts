@@ -9,7 +9,7 @@ import { generateExport } from "../utils/style-plugin-helpers";
 import TransformationException from "../exceptions/TransformationException";
 
 export default function sassTransformer(context: PackagerContext): Transformer {
-    const transformerName = "sass-transformer";
+    const transformerName = "packager::transformer::sass-transformer";
     const isSass = verifyExtensions([".sass", ".scss"]);
 
     let transpiler: SassTranspiler;

@@ -9,7 +9,7 @@ import { generateExport } from "../utils/style-plugin-helpers";
 import TransformationException from "../exceptions/TransformationException";
 
 export default function lessTransformer(context: PackagerContext): Transformer {
-    const transformerName = "less-transformer";
+    const transformerName = "packager::transformer::less-transformer";
     const isLess = verifyExtensions([".less"]);
 
     let transpiler: LessTranspiler;

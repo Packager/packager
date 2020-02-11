@@ -7,7 +7,7 @@ import {
 import verifyExtensions from "../utils/verify-extensions";
 
 export default function jsonTransformer(context: PackagerContext): Transformer {
-    const transformerName = "json-transformer";
+    const transformerName = "packager::transformer::json-transformer";
     const isJson = verifyExtensions([".json"]);
 
     let transpiler: JsonTranspiler;

@@ -7,7 +7,7 @@ import {
 export default function commonjsTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "commonjs-transformer";
+    const transformerName = "packager::transformer::commonjs-transformer";
 
     return {
         name: transformerName,

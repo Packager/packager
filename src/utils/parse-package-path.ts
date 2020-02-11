@@ -1,4 +1,11 @@
-export default function(name: string) {
+export default (name: string) => {
+    if (!name || name == "") {
+        return {
+            name: null,
+            version: null,
+            path: null
+        };
+    }
     const scopedRegex = /^(@[^/]+\/[^/@]+)(?:([\s\S]+))?/;
     const regRegex = /^([^/@]+)(?:([\s\S]+))?/;
 
@@ -20,10 +27,10 @@ export default function(name: string) {
         version: null,
         path: null
     };
-}
+};
 
 const extractRest = (rest: string | null) => {
-    if (!rest) {
+    if (!rest || rest == "") {
         return {
             version: null,
             path: null

@@ -8,7 +8,7 @@ import verifyExtensions from "../utils/verify-extensions";
 import { generateExport } from "../utils/style-plugin-helpers";
 
 export default function cssTransformer(context: PackagerContext): Transformer {
-    const transformerName = "css-transformer";
+    const transformerName = "packager::transformer::css-transformer";
     const isCss = verifyExtensions([".css"]);
 
     let transpiler: CssTranspiler;

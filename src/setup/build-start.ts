@@ -1,65 +1,10 @@
-import { extname } from "./path";
-import findDependencies from "./find-dependencies";
-import { File, PackagerContext, Setup } from "../types/packager";
-import babelCjsPlugin from "./babel-cjs-plugin";
+import { extname } from "../utils/path";
 import transpilers from "../transpilers";
+import findDependencies from "../loaders/utils/find-dependencies";
+import babelCjsPlugin from "./utils/babel-cjs-plugin";
+import { loadBabel, loadBabelTypes } from "./utils";
 
-export const applyPreCode = () =>
-    `window.process = {}; window.process.env = {}; window.process.env.NODE_ENV = 'development'; `;
-
-export const findEntryFile = (files: File[], forcePath?: string) => {
-    const pkgMain = files.find(f => f.path === forcePath);
-    const foundFile = pkgMain || files.find(f => f.entry);
-
-    if (!foundFile) {
-        throw Error(
-            "You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files or use the 'main' in a package.json file.."
-        );
-    }
-
-    return foundFile;
-};
-
-export const extractOptionsFromPackageJson = (packgeJson: any) => {
-    return {
-        dependencies: {
-            ...packgeJson.dependencies,
-            ...packgeJson.peerDependencies
-        }
-    };
-};
-
-export const loadBabel = () =>
-    new Promise(resolve => {
-        const script = document.createElement("script");
-        script.src =
-            "https://cdn.jsdelivr.net/npm/@babel/standalone@latest/babel.min.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-
-export const loadBabelTypes = () =>
-    new Promise(resolve => {
-        const script = document.createElement("script");
-        script.src = "https://unpkg.com/@bloxy/iife-libs/libs/babel-types.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-
-export const loadRollup = () =>
-    new Promise(resolve => {
-        const script = document.createElement("script");
-        script.src = "https://unpkg.com/rollup@1.31.0/dist/rollup.browser.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-
-export const handleWarnings = (warning: any) => {
-    if (warning.code === "THIS_IS_UNDEFINED") return;
-};
+import { PackagerContext, Setup } from "../types/packager";
 
 export default function initialSetup(context: PackagerContext): Setup {
     const getAllLangsFromFiles = () =>
@@ -102,7 +47,7 @@ export default function initialSetup(context: PackagerContext): Setup {
     };
 
     return {
-        name: "initial-setup",
+        name: "packager::setup::build-start",
         async buildStart(): Promise<void> {
             const { unsupportedFiles, extensions } = usingUnsupportedFiles();
 

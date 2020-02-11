@@ -1,17 +1,15 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
 import merge from "deepmerge";
-// @ts-ignore
-// import rollup from "rollup/dist/rollup.browser";
 
-import plugin from "./plugin";
+import pluginFactory from "./utils/plugin-factory";
 import { PackagerOptions, BundleOptions, File } from "./types/packager";
 import {
-    applyPreCode,
-    findEntryFile,
-    handleWarnings,
     loadRollup,
-    extractOptionsFromPackageJson
-} from "./utils/setup";
+    loadMagicString,
+    findEntryFile,
+    extractPackageJsonOptions,
+    handleBuildWarnings
+} from "./setup/utils";
 
 export default class Packager {
     public rollup: any;
@@ -46,6 +44,7 @@ export default class Packager {
             // @ts-ignore
             if (!this.rollup || !window.rollup) {
                 await loadRollup();
+                await loadMagicString();
                 //@ts-ignore
                 this.rollup = window.rollup;
             }
@@ -61,7 +60,7 @@ export default class Packager {
                         ? JSON.parse(packageJson.code)
                         : packageJson.code;
 
-                const pkgBundleOptions = extractOptionsFromPackageJson(parsed);
+                const pkgBundleOptions = extractPackageJsonOptions(parsed);
                 bundleOptions = merge(pkgBundleOptions, bundleOptions || {});
 
                 if (parsed.main) {
@@ -79,8 +78,8 @@ export default class Packager {
             this.inputOptions = {
                 ...this.inputOptions,
                 input: entryFile?.path,
-                onwarn: handleWarnings,
-                plugins: plugin(this.files, bundleOptions)
+                onwarn: handleBuildWarnings,
+                plugins: pluginFactory(this.files, bundleOptions)
             };
 
             const bundle = await this.rollup.rollup(this.inputOptions);
@@ -90,7 +89,7 @@ export default class Packager {
             const { output } = await bundle.generate(this.outputOptions);
 
             return {
-                code: `${applyPreCode()} ${output[0].code}${
+                code: `${output[0].code}${
                     this.outputOptions.sourcemap && output[0].map
                         ? `\n//# sourceMappingURL=` + output[0].map.toUrl()
                         : ""

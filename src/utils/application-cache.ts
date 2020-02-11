@@ -7,7 +7,7 @@ export type ApplicationCache = {
     clear: () => void;
 };
 
-export default function() {
+export default () => {
     const cache = new Map();
 
     return {
@@ -41,4 +41,4 @@ export default function() {
             cache.clear();
         }
     } as ApplicationCache;
-}
+};

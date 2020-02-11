@@ -5,7 +5,7 @@
  * Special thanks to @tbranyen (https://github.com/tbranyen)
  * for his work on the original plugin (https://github.com/tbranyen/babel-plugin-transform-commonjs).
  */
-export default function(babelTypes: any) {
+export default (babelTypes: any) => {
     const options: any = {};
     const state = {
         globals: new Set(),
@@ -258,11 +258,6 @@ export default function(babelTypes: any) {
                     //     return;
                     // }
 
-                    const preDependencyAlias = babelTypes.variableDeclarator(
-                        babelTypes.identifier(
-                            "window.__dependencies = { ...window.__dependencies || {} };"
-                        )
-                    );
                     const exportsAlias = babelTypes.variableDeclaration("var", [
                         babelTypes.variableDeclarator(
                             babelTypes.identifier("exports"),
@@ -302,14 +297,9 @@ export default function(babelTypes: any) {
                         .filter((p: any) => p.isImportDeclaration())
                         .pop();
                     if (lastImport) {
-                        lastImport.insertAfter(preDependencyAlias);
                         lastImport.insertAfter(exportsAlias);
                         lastImport.insertAfter(moduleExportsAlias);
                     } else {
-                        programPath.unshiftContainer(
-                            "body",
-                            preDependencyAlias
-                        );
                         programPath.unshiftContainer("body", exportsAlias);
                         programPath.unshiftContainer(
                             "body",
@@ -451,4 +441,4 @@ export default function(babelTypes: any) {
             }
         }
     };
-}
+};

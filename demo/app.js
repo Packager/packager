@@ -233,10 +233,22 @@ export default Home;`
     }
 ];
 
+const testFiles = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import React, { Component } from 'react';
+
+console.log(Component);
+console.log(<h1>Hello!</h1>);`,
+        entry: true
+    }
+];
+
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(files);
+        const { code } = await pkger.bundle(testFiles);
         eval(code);
         console.timeEnd("First Load");
 

@@ -8,7 +8,7 @@ import verifyExtensions from "../utils/verify-extensions";
 import TransformationException from "../exceptions/TransformationException";
 
 export default function vueTransformer(context: PackagerContext): Transformer {
-    const transformerName = "vue-transformer";
+    const transformerName = "packager::transformer::vue-transformer";
     const isVue = verifyExtensions([".vue"]);
 
     let transpiler: VueTranspiler;

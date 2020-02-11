@@ -11,7 +11,7 @@ import TransformationException from "../exceptions/TransformationException";
 export default function stylusTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "stylus-transformer";
+    const transformerName = "packager::transformer::stylus-transformer";
     const isStylus = verifyExtensions([".styl", ".stylus"]);
 
     let transpiler: StylusTranspiler;

@@ -1,10 +1,10 @@
 import { PackagerContext, Loader, LoadResult } from "../types/packager";
-import fetchNpmDependency from "../utils/fetch-npm-dependency";
 import parsePackagePath from "../utils/parse-package-path";
+import { fetchNpmDependency } from "./utils";
 
 export default function dependencyLoader(context: PackagerContext): Loader {
     return {
-        name: "dependency-loader",
+        name: "packager::loader::dependency-loader",
         async load(modulePath: string): Promise<LoadResult> {
             const file = context.files.find(f => f.path === modulePath);
 

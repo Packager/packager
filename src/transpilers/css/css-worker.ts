@@ -1,10 +1,9 @@
 import { TRANSPILE_STATUS } from "../transpiler";
 import { resolveRelative } from "../../resolvers/dependency-resolver";
-import { PackagerContext, File } from "../../types/packager";
-import parseCssImport from "../../utils/parse-css-import";
+import { File } from "../../types/packager";
+import parseCssImport from "./utils/parse-css-import";
 
 declare var css: any;
-declare var postcssSelectorParser: any;
 
 self.importScripts(
     "https://unpkg.com/@bloxy/iife-libs/libs/css.js",
@@ -12,7 +11,7 @@ self.importScripts(
 );
 
 self.addEventListener("message", async ({ data }: any) => {
-    const { file, type, additional, context } = data;
+    const { file, type, context } = data;
 
     if (type === TRANSPILE_STATUS.PREPARE_FILES) {
         try {

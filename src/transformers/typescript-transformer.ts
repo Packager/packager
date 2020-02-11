@@ -10,7 +10,7 @@ import TransformationException from "../exceptions/TransformationException";
 export default function typescriptTransformer(
     context: PackagerContext
 ): Transformer {
-    const transformerName = "typescript-transformer";
+    const transformerName = "packager::transformer::typescript-transformer";
     const isTypescriptOrJavascript = verifyExtensions([
         ".js",
         ".jsx",
