@@ -1,4 +1,4 @@
-import { dirname } from "../../utils/path";
+import { dirname, resolve } from "../../utils/path";
 import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var Sass: any;
@@ -56,7 +56,7 @@ const importer = (
     request: any,
     done: Function
 ) => {
-    const path = resolveRelativePath(dirname(file.path), request.current);
+    const path = resolve(dirname(file.path), request.current);
     const potentialPaths = Sass.getPathVariations(path);
     const actualFile = sassFiles.find(
         (file: any) => ~potentialPaths.indexOf(file.path)
@@ -90,28 +90,4 @@ const transpileFile = (file: any) => {
             }
         });
     });
-};
-
-const resolveRelativePath = (...paths: string[]) => {
-    const absolutePath = /^(?:\/|(?:[A-Za-z]:)?[\\|\/])/;
-    let resolvedParts = paths.shift()!.split(/[\/\\]/);
-
-    paths.forEach(path => {
-        if (absolutePath.test(path)) {
-            resolvedParts = path.split(/[\/\\]/);
-        } else {
-            const parts = path.split(/[\/\\]/);
-
-            while (parts[0] === "." || parts[0] === "..") {
-                const part = parts.shift();
-                if (part === "..") {
-                    resolvedParts.pop();
-                }
-            }
-
-            resolvedParts.push.apply(resolvedParts, parts);
-        }
-    });
-
-    return resolvedParts.join("/").replace(/\/\//gi, "/");
 };

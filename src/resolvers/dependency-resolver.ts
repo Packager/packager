@@ -1,4 +1,4 @@
-import { dirname, resolve } from "../utils/path";
+import { dirname, resolve, relative } from "../utils/path";
 import isExternal from "../utils/is-external";
 
 import {
@@ -11,9 +11,10 @@ import {
 export const resolveRelative = (
     childPath: string,
     parentPath: string,
-    context: PackagerContext
-): string | null => {
-    const retryFileFind = (path: string): File | undefined =>
+    context: PackagerContext,
+    pathOnly: boolean = true
+): File | string | null => {
+    const retryFileFind = (path: string): File | null =>
         context.files.find(
             f =>
                 f.path === `${path}/index.js` ||
@@ -24,19 +25,21 @@ export const resolveRelative = (
                 f.path === `${path}.ts` ||
                 f.path === `${path}.jsx` ||
                 f.path === `${path}.tsx`
-        );
+        ) || null;
 
     const resolved = resolve(dirname(parentPath), childPath).replace(
         /^\.\//,
         ""
     );
 
-    if (context.files.find(f => f.path === resolved)) return resolved;
+    const foundFile = context.files.find(f => f.path === resolved);
+
+    if (foundFile) return pathOnly ? foundFile.path : foundFile;
 
     const absolute = resolve(dirname(parentPath), childPath);
-    const retriedFile = retryFileFind(absolute) || { path: null };
+    const retriedFile = retryFileFind(absolute);
 
-    return retriedFile.path;
+    return pathOnly ? retriedFile || null : retriedFile || null;
 };
 
 const resolveRelativeExternal = (
@@ -74,7 +77,9 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
 
             if (isExternal(modulePath)) return modulePath;
 
-            const relativePath = resolveRelative(modulePath, parent, context);
+            const relativePath = <string | null>(
+                resolveRelative(modulePath, parent, context)
+            );
 
             if (relativePath) return relativePath;
 

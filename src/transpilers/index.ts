@@ -6,6 +6,7 @@ import TypescriptTranspiler from "./typescript";
 import VueTranspiler from "./vue";
 import HtmlTranspiler from "./html";
 import JsonTranspiler from "./json";
+import CssTranspiler from "./css";
 
 export default {
     less: LessTranspiler,
@@ -20,5 +21,6 @@ export default {
     jsx: TypescriptTranspiler,
     vue: VueTranspiler,
     html: HtmlTranspiler,
-    json: JsonTranspiler
+    json: JsonTranspiler,
+    css: CssTranspiler
 } as { [name: string]: any };

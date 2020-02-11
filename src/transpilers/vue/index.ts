@@ -5,13 +5,15 @@ import { PackagerContext } from "../../types/packager";
 import SassTranspiler from "../sass";
 import StylusTranspiler from "../stylus";
 import LessTranspiler from "../less";
+import CssTranspiler from "../css";
 
 export default class VueTranspiler extends Transpiler {
     public additionalTranspilers = {
         sass: SassTranspiler,
         scss: SassTranspiler,
         styl: StylusTranspiler,
-        less: LessTranspiler
+        less: LessTranspiler,
+        css: CssTranspiler
     };
 
     constructor(context: PackagerContext) {

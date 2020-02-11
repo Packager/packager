@@ -9,9 +9,8 @@ const files = [
         entry: true,
         code: `import Vue from 'vue';
 import App from './App.vue';
-import Test from '../package.json';
 
-console.log(Test);
+import './styles/app.css';
 
 new Vue({
     el: '#app',
@@ -34,9 +33,39 @@ export default { name: 'app' };
 </script>`
     },
     {
-        name: "package.json",
-        path: "/package.json",
-        code: `{\"name\":\"cool-name\",\"private\":true, \"dependencies\":{\"vue\":\"2.6.10\"}}`
+        name: "app.css",
+        path: "/src/styles/app.css",
+        code: `@import "./test.css";
+* {
+    margin: 0;
+}
+
+body { 
+    background: red; 
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        background: black !important;
+    }
+}`
+    },
+    {
+        name: "test.css",
+        path: "/src/styles/test.css",
+        code: `@import "./another.css";
+* {
+    padding: 0;
+}
+
+h1 {
+    color: white;
+}`
+    },
+    {
+        name: "another.css",
+        path: "/src/styles/another.css",
+        code: `* { color: pink !important; }`
     }
 ];
 

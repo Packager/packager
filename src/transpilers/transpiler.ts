@@ -81,15 +81,11 @@ export default class Transpiler {
 
         for (const style of styles) {
             const { code, scopeId, path, lang } = style;
+            const transpiler = this.fetchTranspiler(style.lang);
 
-            if (style.lang === "css") {
-                stylePromises.push(Promise.resolve({ code, scopeId }));
-            } else {
-                const transpiler = this.fetchTranspiler(style.lang);
-                stylePromises.push(
-                    transpiler.transpile({ code, scopeId, lang, path })
-                );
-            }
+            stylePromises.push(
+                transpiler.transpile({ code, scopeId, lang, path })
+            );
         }
 
         return {

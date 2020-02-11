@@ -7,12 +7,14 @@ import vueTransformer from "./vue-transformer";
 import typescriptTransformer from "./typescript-transformer";
 import svelteTransformer from "./svelte-transformer";
 import jsonTransformer from "./json-transformer";
+import cssTransformer from "./css-transformer";
 
 export default (context: PackagerContext) => [
     commonjsTransformer(context),
     sassTransformer(context),
     stylusTransformer(context),
     lessTransformer(context),
+    cssTransformer(context),
     typescriptTransformer(context),
     vueTransformer(context),
     svelteTransformer(context),
