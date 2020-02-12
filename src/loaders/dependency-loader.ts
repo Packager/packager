@@ -2,6 +2,9 @@ import { PackagerContext, Loader, LoadResult } from "../types/packager";
 import parsePackagePath from "../utils/parse-package-path";
 import { fetchNpmDependency } from "./utils";
 
+const cleanupExternalDependency = (code: string): string =>
+    code.replace(/process.env.NODE_ENV/g, "'production'");
+
 export default function dependencyLoader(context: PackagerContext): Loader {
     return {
         name: "packager::loader::dependency-loader",
@@ -34,13 +37,18 @@ export default function dependencyLoader(context: PackagerContext): Loader {
                         )) || "";
 
                     if (npmDependency) {
+                        const cleanUpCode = cleanupExternalDependency(
+                            npmDependency.code
+                        );
+
                         context.cache.dependencies.set(modulePath, {
                             ...npmDependency,
+                            code: cleanUpCode,
                             name: modulePath
                         });
 
                         return {
-                            code: npmDependency.code,
+                            code: cleanUpCode,
                             syntheticNamedExports: true
                         };
                     }
@@ -48,7 +56,9 @@ export default function dependencyLoader(context: PackagerContext): Loader {
                     return null;
                 }
 
-                return { code: "" };
+                return {
+                    code: ""
+                };
             }
 
             return {

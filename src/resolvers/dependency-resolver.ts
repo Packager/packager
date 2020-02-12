@@ -73,7 +73,6 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
     return {
         name: "packager::resolver::dependency-resolver",
         resolveId(modulePath: string, parent?: string): ResolveResult {
-            console.log(modulePath);
             if (!parent) return modulePath;
 
             if (isExternal(modulePath)) return modulePath;

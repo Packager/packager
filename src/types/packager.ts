@@ -22,6 +22,8 @@ export type PackagerContext = {
     cache: {
         dependencies: ApplicationCache;
         transpilers: ApplicationCache;
+        esModulesWithDefaultExport: any;
+        esModulesWithoutDefaultExport: any;
     };
     transpileQueue: QueueSystem;
     files: File[];

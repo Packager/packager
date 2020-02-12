@@ -51,6 +51,7 @@ export default function typescriptTransformer(
                     return {
                         code: completed.code,
                         map: completed.map || { mappings: "" }
+                        // syntheticNamedExports: true
                     };
                 }
 

@@ -30,7 +30,14 @@ new Vue({
 </template>
 <script>
 export default { name: 'app' };
-</script>`
+</script>
+<style lang="scss">
+$pink: pink;
+
+h1 {
+    color: $pink;
+}
+</style>`
     },
     {
         name: "app.css",
@@ -240,7 +247,8 @@ const testFiles = [
         code: `import React, { Component } from 'react';
 
 console.log(Component);
-console.log(<h1>Hello!</h1>);`,
+
+console.log(<h1>Hello World</h1>);`,
         entry: true
     }
 ];
@@ -248,7 +256,7 @@ console.log(<h1>Hello!</h1>);`,
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(testFiles);
+        const { code } = await pkger.bundle(svelteTest);
         eval(code);
         console.timeEnd("First Load");
 
@@ -259,7 +267,7 @@ console.log(<h1>Hello!</h1>);`,
 
         // setTimeout(async () => {
         //     console.time("Second Load");
-        //     const { code } = await pkger.bundle(files2);
+        //     const { code } = await pkger.bundle(testFiles);
         //     eval(code);
         //     console.timeEnd("Second Load");
         // }, 2000);

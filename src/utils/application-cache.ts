@@ -3,8 +3,13 @@ export type ApplicationCache = {
     getAll: () => { [name: string]: any };
     set: (name: string, value: any) => boolean;
     has: (name: string) => boolean;
+    update: (name: string, value: any) => boolean;
     delete: (name: string) => boolean;
     clear: () => void;
+};
+
+const isObject = (value: any) => {
+    return value && typeof value === "object" && value.constructor === Object;
 };
 
 export default () => {
@@ -32,7 +37,19 @@ export default () => {
             return this.has(name);
         },
         has(name: string): boolean {
-            return Boolean(cache.get(name));
+            return Boolean(this.get(name));
+        },
+        update(name: string, value: any) {
+            const found = this.get(name);
+            if (found) {
+                if (isObject(value)) {
+                    this.set(name, { ...found, ...value });
+                    return this.has(name);
+                } else {
+                    this.set(name, value);
+                    return this.has(name);
+                }
+            }
         },
         delete(name: string): boolean {
             return cache.delete(name);

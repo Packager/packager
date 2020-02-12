@@ -48,4 +48,13 @@ describe("cachedData cache", () => {
 
         expect(cache.getAll()).toEqual({});
     });
+    it("should successfully update cache", () => {
+        cache.set("test1", cachedData);
+        cache.update("test1", { test: 123 });
+
+        expect(cache.get("test1")).toEqual({
+            ...cachedData,
+            test: 123
+        });
+    });
 });

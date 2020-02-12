@@ -13,7 +13,9 @@ const defaultBundleOptions: BundleOptions = {
 
 const cache = {
     dependencies: cacheFactory(),
-    transpilers: cacheFactory()
+    transpilers: cacheFactory(),
+    esModulesWithoutDefaultExport: new Set(),
+    esModulesWithDefaultExport: new Set()
 };
 
 export default (
