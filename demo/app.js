@@ -253,10 +253,71 @@ console.log(<h1>Hello World</h1>);`,
     }
 ];
 
+const testFiles2 = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import React, { Component } from 'react';
+
+console.log(Component);
+
+console.log(<h1>Hello World</h1>);`,
+        entry: true
+    }
+];
+
+const backboneTest = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import Backbone from 'backbone';
+import _ from 'underscore';
+import $ from 'jquery';
+
+var ListView = Backbone.View.extend({    
+    el: $('#app'),
+    initialize: function(){
+        _.bindAll(this, 'render'); 
+        
+        this.render();
+    },
+    render: function(){
+        $(this.el).append("<ul> <li>hello world!</li> </ul>");
+    }
+    });
+var listView = new ListView();`,
+        entry: true
+    }
+];
+
+const backboneTest2 = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import Backbone from 'backbone';
+import _ from 'underscore';
+import $ from 'jquery';
+
+var ListView = Backbone.View.extend({    
+    el: $('#app2'),
+    initialize: function(){
+        _.bindAll(this, 'render'); 
+        
+        this.render();
+    },
+    render: function(){
+        $(this.el).append("<ul> <li>hello world!</li> </ul>");
+    }
+    });
+var listView = new ListView();`,
+        entry: true
+    }
+];
+
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(svelteTest);
+        const { code } = await pkger.bundle(backboneTest);
         eval(code);
         console.timeEnd("First Load");
 
@@ -267,7 +328,12 @@ console.log(<h1>Hello World</h1>);`,
 
         // setTimeout(async () => {
         //     console.time("Second Load");
-        //     const { code } = await pkger.bundle(testFiles);
+        //     // svelteTest[0].code = `import SvelteApp from './App.svelte';
+
+        //     // new SvelteApp({
+        //     //     target: document.getElementById('app2')
+        //     // });`;
+        //     const { code } = await pkger.bundle(testFiles2);
         //     eval(code);
         //     console.timeEnd("Second Load");
         // }, 2000);
