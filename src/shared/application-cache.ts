@@ -12,7 +12,7 @@ const isObject = (value: any) => {
     return value && typeof value === "object" && value.constructor === Object;
 };
 
-export default () => {
+export const cacheFactory = () => {
     const cache = new Map();
 
     return {
@@ -59,3 +59,5 @@ export default () => {
         }
     } as ApplicationCache;
 };
+
+export default cacheFactory;

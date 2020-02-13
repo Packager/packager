@@ -2,7 +2,8 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { basename, extname, dirname, sep } from "../../../utils/path";
+import { basename, extname, dirname, sep } from "@shared/path";
+import { extractors } from "./ast-utils";
 import { walk } from "estree-walker";
 
 export const PROXY_SUFFIX = "?commonjs-proxy";
@@ -44,34 +45,6 @@ export default {
     createCommonjsModule,
     getCjsExportFromNamespace
 }`;
-
-export const extractors: any = {
-    ArrayPattern(names: any, param: any) {
-        for (const element of param.elements) {
-            if (element) extractors[element.type](names, element);
-        }
-    },
-    AssignmentPattern(names: any, param: any) {
-        extractors[param.left.type](names, param.left);
-    },
-    Identifier(names: any, param: any) {
-        names.push(param.name);
-    },
-    MemberExpression() {},
-    ObjectPattern(names: any, param: any) {
-        for (const prop of param.properties) {
-            // @ts-ignore Typescript reports that this is not a valid type
-            if (prop.type === "RestElement") {
-                extractors.RestElement(names, prop);
-            } else {
-                extractors[prop.value.type](names, prop.value);
-            }
-        }
-    },
-    RestElement(names: any, param: any) {
-        extractors[param.argument.type](names, param.argument);
-    }
-};
 
 export const extractAssignedNames = (param: any) => {
     const names: any = [];

@@ -1,6 +1,5 @@
-import { extname } from "../utils/path";
-import transpilers from "../transpilers";
-// import findDependencies from "../loaders/utils/find-dependencies";
+import { extname } from "@shared/path";
+import transpilers from "@transpilers";
 
 import { PackagerContext, Setup } from "../types/packager";
 
@@ -14,16 +13,6 @@ export default function initialSetup(context: PackagerContext): Setup {
             }
             return acc;
         }, []);
-
-    // const checkExternalLibs = (depsHaveExternal: boolean = false): boolean => {
-    //     const langs = getAllLangsFromFiles();
-
-    //     const forceExternal = langs.some(
-    //         (lang: string) => transpilers[lang].forceExternal
-    //     );
-
-    //     return forceExternal || depsHaveExternal;
-    // };
 
     const usingUnsupportedFiles = () => {
         const givenLangs = getAllLangsFromFiles();
@@ -56,12 +45,6 @@ export default function initialSetup(context: PackagerContext): Setup {
                     )}.`
                 );
             }
-
-            // const entryFile = context.files.find(f => f.entry)!;
-            // const dependencies = findDependencies(entryFile, context, true);
-            // const hasExternalLibs = checkExternalLibs(
-            //     dependencies._hasExternal
-            // );
         }
     };
 }

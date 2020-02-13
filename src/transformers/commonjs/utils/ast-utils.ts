@@ -42,7 +42,8 @@ export const extractors: any = {
 
     AssignmentPattern(names: string[], node: any) {
         getExtractor(node.left.type)(names, node.left);
-    }
+    },
+    MemberExpression() {}
 };
 
 export const flatten = (node: any) => {

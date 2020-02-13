@@ -1,11 +1,11 @@
-import LessTranspiler from "../transpilers/less";
+import LessTranspiler from "@transpilers/less";
 import {
     PackagerContext,
     TransformResult,
     Transformer
-} from "../types/packager";
-import verifyExtensions from "../utils/verify-extensions";
-import { generateExport } from "../utils/style-plugin-helpers";
+} from "@typedefs/packager";
+import verifyExtensions from "@shared/verify-extensions";
+import { generateExport } from "@shared/style-plugin-helpers";
 import TransformationException from "../exceptions/TransformationException";
 
 export default function lessTransformer(context: PackagerContext): Transformer {

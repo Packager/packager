@@ -1,5 +1,5 @@
-import { dirname, resolve, relative } from "../utils/path";
-import isExternal from "../utils/is-external";
+import { dirname, resolve } from "@shared/path";
+import isModuleExternal from "@shared/is-module-external";
 
 import {
     PackagerContext,
@@ -75,7 +75,7 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
         resolveId(modulePath: string, parent?: string): ResolveResult {
             if (!parent) return modulePath;
 
-            if (isExternal(modulePath)) return modulePath;
+            if (isModuleExternal(modulePath)) return modulePath;
 
             const relativePath = <string | null>(
                 resolveRelative(modulePath, parent, context)
@@ -86,7 +86,7 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
             if (
                 !parent.startsWith(".") ||
                 !parent.startsWith("/") ||
-                isExternal(parent)
+                isModuleExternal(parent)
             ) {
                 const pkgPath = resolveRelativeExternal(
                     modulePath,

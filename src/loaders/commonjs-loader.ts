@@ -2,7 +2,7 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { PackagerContext, Loader, LoadResult } from "../types/packager";
+import { PackagerContext, Loader, LoadResult } from "@typedefs/packager";
 import {
     HELPERS,
     HELPERS_ID,
@@ -10,9 +10,9 @@ import {
     PROXY_SUFFIX,
     getIdFromExternalProxyId,
     getIdFromProxyId,
-    getName
-} from "../transformers/commonjs/utils/helpers";
-import { getIsCjsPromise } from "../transformers/commonjs/utils/is-cjs-promise";
+    getName,
+    getIsCjsPromise
+} from "@transformers/commonjs/utils";
 
 export default function commonjsLoader(context: PackagerContext): Loader {
     return {

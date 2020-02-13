@@ -1,5 +1,5 @@
 {
-    "name": "pkger",
+    "name": "packager",
     "version": "0.0.1",
     "private": true,
     "description": "Browser-based trans-bundler.",
@@ -11,7 +11,7 @@
         "dev": "rollup -w -c",
         "build": "rollup -c",
         "build-prod": "NODE_ENV=production rollup -c",
-        "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit",
+        "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json"
     },
@@ -27,6 +27,7 @@
         "@rollup/plugin-typescript": "^2.1.0",
         "@types/acorn": "^4.0.5",
         "@types/jest": "^24.9.0",
+        "husky": "^4.2.3",
         "jest": "^24.9.0",
         "prettier": "^1.19.1",
         "rollup-plugin-terser": "^5.2.0",
@@ -35,6 +36,12 @@
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.7.4"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn test",
+            "pre-push": "yarn format"
+        }
     },
     "jest": {
         "roots": [

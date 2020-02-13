@@ -1,11 +1,11 @@
-import SvelteTranspiler from "../transpilers/svelte";
+import SvelteTranspiler from "@transpilers/svelte";
 import {
     PackagerContext,
     Transformer,
     TransformResult
-} from "../types/packager";
-import verifyExtensions from "../utils/verify-extensions";
-import TransformationException from "../exceptions/TransformationException";
+} from "@typedefs/packager";
+import verifyExtensions from "@shared/verify-extensions";
+import { TransformationException } from "@exceptions";
 
 export default function svelteTransformer(
     context: PackagerContext

@@ -1,15 +1,15 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
 import merge from "deepmerge";
 
-import pluginFactory from "./utils/plugin-factory";
-import { PackagerOptions, BundleOptions, File } from "./types/packager";
+import pluginFactory from "@setup/plugin-factory";
+import { PackagerOptions, BundleOptions, File } from "@typedefs/packager";
 import {
     loadRollup,
     loadMagicString,
     findEntryFile,
     extractPackageJsonOptions,
     handleBuildWarnings
-} from "./setup/utils";
+} from "@setup/utils";
 
 export default class Packager {
     public rollup: any;

@@ -1,6 +1,6 @@
 import { TRANSPILE_STATUS } from "../transpiler";
-import { resolveRelative } from "../../resolvers/dependency-resolver";
-import { File } from "../../types/packager";
+import { resolveRelative } from "@resolvers/dependency-resolver";
+import { File } from "@typedefs/packager";
 import parseCssImport from "./utils/parse-css-import";
 
 declare var css: any;

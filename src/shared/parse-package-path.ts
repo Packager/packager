@@ -1,4 +1,10 @@
-export default (name: string) => {
+export type ParsedPackagePath = {
+    name: string | null;
+    version: string | null;
+    path: string | null;
+};
+
+export default (name: string): ParsedPackagePath => {
     if (!name || name == "") {
         return {
             name: null,

@@ -1,4 +1,4 @@
-import { generateExportsForAllStyles } from "../../utils/style-plugin-helpers";
+import { generateExportsForAllStyles } from "@shared/style-plugin-helpers";
 import { TRANSPILE_STATUS } from "../transpiler";
 import "../source-maps";
 

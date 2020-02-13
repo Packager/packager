@@ -1,5 +1,24 @@
 {
+    "include": ["src"],
+    "exclude": ["node_modules", "**/__tests__/*"],
     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@shared/*": ["src/shared/*"],
+            "@setup": ["src/setup/index.ts"],
+            "@setup/*": ["src/setup/*"],
+            "@exceptions": ["src/exceptions/index.ts"],
+            "@exceptions/*": ["src/exceptions/*"],
+            "@transformers": ["src/transformers/index.ts"],
+            "@transformers/*": ["src/transformers/*"],
+            "@transpilers": ["src/transpilers/index.ts"],
+            "@transpilers/*": ["src/transpilers/*"],
+            "@resolvers": ["src/resolvers/index.ts"],
+            "@resolvers/*": ["src/resolvers/*"],
+            "@loaders": ["src/loaders/index.ts"],
+            "@loaders/*": ["src/loaders*"],
+            "@typedefs/*": ["src/types/*"]
+        },
         "target": "es5",
         "module": "commonjs",
         "declaration": true,
@@ -7,7 +26,5 @@
         "strict": true,
         "esModuleInterop": true,
         "downlevelIteration": true
-    },
-    "include": ["src"],
-    "exclude": ["node_modules", "**/__tests__/*"]
+    }
 }

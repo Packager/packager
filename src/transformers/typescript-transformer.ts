@@ -1,11 +1,11 @@
-import TypescriptTranspiler from "../transpilers/typescript";
+import TypescriptTranspiler from "@transpilers/typescript";
 import {
     PackagerContext,
     Transformer,
     TransformResult
-} from "../types/packager";
-import verifyExtensions from "../utils/verify-extensions";
-import TransformationException from "../exceptions/TransformationException";
+} from "@typedefs/packager";
+import verifyExtensions from "@shared/verify-extensions";
+import { TransformationException } from "@exceptions";
 
 export default function typescriptTransformer(
     context: PackagerContext

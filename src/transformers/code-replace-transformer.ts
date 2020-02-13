@@ -2,9 +2,9 @@ import {
     PackagerContext,
     TransformResult,
     Transformer
-} from "../types/packager";
-import verifyExtensions from "../utils/verify-extensions";
-import replaceModuleCodeWith from "../utils/replace-module-code-with";
+} from "@typedefs/packager";
+import verifyExtensions from "@shared/verify-extensions";
+import replaceCodeWith from "@shared/replace-code-with";
 
 export default function codeReplaceTransformer(
     context: PackagerContext

@@ -1,11 +1,11 @@
-import cacheFactory from "../utils/application-cache";
-import normalizeBundleOptions from "../utils/normalize-bundle-options";
-import QueueSystem from "../utils/queue-system";
-import { BundleOptions, PackagerContext, File } from "../types/packager";
-import resolvers from "../resolvers";
-import transformers from "../transformers";
-import loaders from "../loaders";
-import setup from "../setup";
+import cacheFactory from "@shared/application-cache";
+import normalizeBundleOptions from "@shared/normalize-bundle-options";
+import QueueSystem from "@shared/queue-system";
+import { BundleOptions, PackagerContext, File } from "@typedefs/packager";
+import resolvers from "@resolvers";
+import transformers from "@transformers";
+import loaders from "@loaders";
+import setup from "./";
 
 const defaultBundleOptions: BundleOptions = {
     dependencies: {}

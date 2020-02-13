@@ -1,12 +1,14 @@
-import { BundleOptions } from "../types/packager";
+import { BundleOptions } from "@typedefs/packager";
 
 export default (bundleOptions: BundleOptions): BundleOptions => {
     return {
-        dependencies: normalizeDependencies(bundleOptions.dependencies)
+        dependencies: convertKeysToLowercase(bundleOptions.dependencies)
     };
 };
 
-const normalizeDependencies = (dependencies?: { [key: string]: string }) =>
+export const convertKeysToLowercase = (dependencies?: {
+    [key: string]: string;
+}) =>
     dependencies
         ? Object.keys(dependencies || {}).reduce(
               (acc, curr) => ({

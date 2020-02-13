@@ -1,5 +1,5 @@
-import { PackagerContext, Loader, LoadResult } from "../types/packager";
-import parsePackagePath from "../utils/parse-package-path";
+import { PackagerContext, Loader, LoadResult } from "@typedefs/packager";
+import parsePackagePath from "@shared/parse-package-path";
 import { fetchNpmDependency } from "./utils";
 
 const cleanupExternalDependency = (code: string): string =>

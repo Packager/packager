@@ -1,5 +1,12 @@
+import { File } from "@typedefs/packager";
+
+type ModifiedFile = {
+    code: string;
+    path: string;
+};
+
 export const generateExport = (
-    file: any,
+    file: File | ModifiedFile,
     prependExportDefault: boolean = true
 ) => {
     return (

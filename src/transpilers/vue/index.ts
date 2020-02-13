@@ -1,11 +1,12 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import VueWorker from "web-worker:./vue-worker.ts";
-import { PackagerContext } from "../../types/packager";
-import SassTranspiler from "../sass";
-import StylusTranspiler from "../stylus";
-import LessTranspiler from "../less";
-import CssTranspiler from "../css";
+import { PackagerContext } from "@typedefs/packager";
+
+import SassTranspiler from "@transpilers/sass";
+import StylusTranspiler from "@transpilers/stylus";
+import LessTranspiler from "@transpilers/less";
+import CssTranspiler from "@transpilers/css";
 
 export default class VueTranspiler extends Transpiler {
     public additionalTranspilers = {

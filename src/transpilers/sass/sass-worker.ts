@@ -1,4 +1,4 @@
-import { dirname, resolve } from "../../utils/path";
+import { dirname, resolve } from "@shared/path";
 import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var Sass: any;

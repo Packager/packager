@@ -2,9 +2,9 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { normalize } from "../../utils/path";
-import isExternal from "../../utils/is-external";
-import verifyExtensions from "../../utils/verify-extensions";
+import { normalize } from "@shared/path";
+import isModuleExternal from "@shared/is-module-external";
+import verifyExtensions from "@shared/verify-extensions";
 import performTransformation, {
     checkEsModule,
     hasCjsKeywords
@@ -20,7 +20,7 @@ import {
 const isNotTransformable = (modulePath: string, couldBeCjs: Function) =>
     !couldBeCjs(modulePath) &&
     !modulePath.endsWith("?commonjs-proxy") &&
-    !isExternal(modulePath);
+    !isModuleExternal(modulePath);
 
 export default function commonjsTransformer(
     context: PackagerContext

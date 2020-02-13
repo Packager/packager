@@ -1,11 +1,11 @@
-import CssTranspiler from "../transpilers/css";
+import CssTranspiler from "@transpilers/css";
 import {
     PackagerContext,
     TransformResult,
     Transformer
-} from "../types/packager";
-import verifyExtensions from "../utils/verify-extensions";
-import { generateExport } from "../utils/style-plugin-helpers";
+} from "@typedefs/packager";
+import verifyExtensions from "@shared/verify-extensions";
+import { generateExport } from "@shared/style-plugin-helpers";
 
 export default function cssTransformer(context: PackagerContext): Transformer {
     const transformerName = "packager::transformer::css-transformer";

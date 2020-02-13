@@ -1,6 +1,6 @@
 import applicationCache from "../application-cache";
 
-describe("cachedData cache", () => {
+describe("application cache", () => {
     const cache = applicationCache();
 
     const cachedData = {

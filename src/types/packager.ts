@@ -4,8 +4,8 @@ import {
     ResolveIdResult as RollupResolveIdResult,
     LoadResult as RollupLoadResult
 } from "rollup";
-import QueueSystem from "../utils/queue-system";
-import { ApplicationCache } from "../utils/application-cache";
+import QueueSystem from "@shared/queue-system";
+import { ApplicationCache } from "@shared/application-cache";
 
 export type PackagerOptions = {
     sourcemaps: boolean;

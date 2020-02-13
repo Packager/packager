@@ -2,3 +2,4 @@
 /yarn*
 /dist
 /demo/packager.js
+/coverage
