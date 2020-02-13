@@ -2,7 +2,24 @@ import {
     generateExport,
     generateExportsForAllStyles
 } from "../style-plugin-helpers";
-import { test1, test2 } from "./utils/style-plugin-helpers";
+
+export const test1 =
+    `export default function addStyles () {` +
+    `const tag = document.createElement('style');` +
+    `tag.type = 'text/css';` +
+    `tag.appendChild(document.createTextNode(\`* { color: red; }\`));` +
+    `tag.setAttribute('data-src', 'red.css');` +
+    `document.head.appendChild(tag);` +
+    `} addStyles();`;
+
+export const test2 =
+    `function addStyles () {` +
+    `const tag = document.createElement('style');` +
+    `tag.type = 'text/css';` +
+    `tag.appendChild(document.createTextNode(\`* { color: red; }\`));` +
+    `tag.setAttribute('data-src', 'red.css');` +
+    `document.head.appendChild(tag);` +
+    `} addStyles();`;
 
 describe("style plugin helpers", () => {
     it("should generate a string with a function and a default export", () => {
