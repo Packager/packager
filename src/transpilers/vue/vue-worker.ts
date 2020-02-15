@@ -12,9 +12,9 @@ declare var generateSourceMap: any;
 self.importScripts(
     "https://unpkg.com/vue-template-compiler/browser.js",
     "https://unpkg.com/hash-sum-browser/dist/index.min.js",
-    "https://unpkg.com/@bloxy/iife-libs/libs/buble.js",
-    "https://unpkg.com/@bloxy/iife-libs/libs/css.js",
-    "https://unpkg.com/@bloxy/iife-libs/libs/postcss-selector-parser.js"
+    "https://unpkg.com/@bloxy/iife-libs@latest/libs/buble.js",
+    "https://unpkg.com/@bloxy/iife-libs@latest/libs/css.js",
+    "https://unpkg.com/@bloxy/iife-libs@latest/libs/postcss-selector-parser.js"
 );
 
 self.addEventListener("message", async ({ data }: any) => {

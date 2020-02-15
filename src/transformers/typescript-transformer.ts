@@ -50,8 +50,8 @@ export default function typescriptTransformer(
                 if (completed) {
                     return {
                         code: completed.code,
-                        map: completed.map || { mappings: "" }
-                        // syntheticNamedExports: true
+                        map: completed.map || { mappings: "" },
+                        syntheticNamedExports: true
                     };
                 }
 

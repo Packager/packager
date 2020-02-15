@@ -39,7 +39,9 @@ export const resolveRelative = (
     const absolute = resolve(dirname(parentPath), childPath);
     const retriedFile = retryFileFind(absolute);
 
-    return pathOnly ? retriedFile || null : retriedFile || null;
+    if (!retriedFile) return null;
+
+    return pathOnly ? retriedFile.path || null : retriedFile || null;
 };
 
 const resolveRelativeExternal = (
@@ -77,11 +79,11 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
 
             if (isModuleExternal(modulePath)) return modulePath;
 
-            const relativePath = <File | null>(
+            const relativePath = <string | null>(
                 resolveRelative(modulePath, parent, context)
             );
 
-            if (relativePath) return relativePath.path;
+            if (relativePath) return relativePath;
 
             if (
                 !parent.startsWith(".") ||

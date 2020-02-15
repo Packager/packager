@@ -3,7 +3,7 @@ import parsePackagePath from "packager/shared/parse-package-path";
 import { fetchNpmDependency } from "./utils";
 
 const cleanupExternalDependency = (code: string): string =>
-    code.replace(/process.env.NODE_ENV/g, "'production'");
+    code.replace(/process.env.NODE_ENV/g, "'development'");
 
 export default function dependencyLoader(context: PackagerContext): Loader {
     return {
@@ -65,6 +65,8 @@ export default function dependencyLoader(context: PackagerContext): Loader {
                     syntheticNamedExports: true
                 };
             }
+
+            return null;
         }
     };
 }

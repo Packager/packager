@@ -17,12 +17,12 @@ import {
 export default function commonjsLoader(context: PackagerContext): Loader {
     return {
         name: "packager::loader::commonjs-loader",
-        async load(id: string): Promise<LoadResult> {
-            if (id === HELPERS_ID) return HELPERS;
+        async load(modulePath: string): Promise<LoadResult> {
+            if (modulePath === HELPERS_ID) return HELPERS;
 
             // generate proxy modules
-            if (id.endsWith(EXTERNAL_SUFFIX)) {
-                const actualId = getIdFromExternalProxyId(id);
+            if (modulePath.endsWith(EXTERNAL_SUFFIX)) {
+                const actualId = getIdFromExternalProxyId(modulePath);
                 const name = getName(actualId);
 
                 return `import ${name} from ${JSON.stringify(
@@ -30,8 +30,8 @@ export default function commonjsLoader(context: PackagerContext): Loader {
                 )}; export default ${name};`;
             }
 
-            if (id.endsWith(PROXY_SUFFIX)) {
-                const actualId = getIdFromProxyId(id);
+            if (modulePath.endsWith(PROXY_SUFFIX)) {
+                const actualId = getIdFromProxyId(modulePath);
                 const name = getName(actualId);
 
                 return getIsCjsPromise(actualId).then((isCjs: boolean) => {

@@ -2,7 +2,7 @@ import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var stylus: any;
 
-self.importScripts("https://unpkg.com/@bloxy/iife-libs/libs/stylus.js");
+self.importScripts("https://unpkg.com/@bloxy/iife-libs@latest/libs/stylus.js");
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, context } = data;

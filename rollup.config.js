@@ -26,7 +26,7 @@ export default {
         },
         {
             ...baseOutputSettings,
-            file: "demo/packager.js"
+            file: "examples/packager.js"
         },
         {
             file: "dist/index.js",

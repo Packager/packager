@@ -7,7 +7,7 @@ declare var sucrase: any;
 //     "https://cdn.jsdelivr.net/npm/typescript@latest/lib/typescript.js"
 // );
 
-self.importScripts("https://unpkg.com/@bloxy/iife-libs/libs/sucrase.js");
+self.importScripts("https://unpkg.com/@bloxy/iife-libs@latest/libs/sucrase.js");
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, context } = data;
@@ -33,7 +33,12 @@ self.addEventListener("message", async ({ data }: any) => {
 const transpileFile = (file: any) =>
     new Promise((resolve, reject) => {
         const transpiled = sucrase.transform(file.code, {
-            transforms: ["typescript", "jsx"]
+            transforms: ["typescript", "jsx"],
+            filePath: file.path,
+            enableLegacyTypeScriptModuleInterop: true,
+            sourceMapOptions: {
+                compiledFilename: file.path
+            }
         });
         // const transpiled = ts.transpileModule(file.code, {
         //     fileName: file.name,
@@ -49,13 +54,23 @@ const transpileFile = (file: any) =>
         //     }
         // });
 
-        if (transpiled.code) {
+        if (transpiled && transpiled.code) {
             resolve({
                 ...file,
                 code: transpiled.code,
-                map: JSON.parse(transpiled.map || "{}")
+                map: transpiled.sourceMap || {}
             });
         } else {
             reject(`Failed to transpile ${file.path}`);
         }
+
+        // if (transpiled.outputText) {
+        //     resolve({
+        //         ...file,
+        //         code: transpiled.outputText,
+        //         map: JSON.parse(transpiled.sourceMapText || "{}")
+        //     });
+        // } else {
+        //     reject(`Failed to transpile ${file.path}`);
+        // }
     });
