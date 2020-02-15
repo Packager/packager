@@ -77,11 +77,11 @@ export default function dependencyResolver(context: PackagerContext): Resolver {
 
             if (isModuleExternal(modulePath)) return modulePath;
 
-            const relativePath = <string | null>(
+            const relativePath = <File | null>(
                 resolveRelative(modulePath, parent, context)
             );
 
-            if (relativePath) return relativePath;
+            if (relativePath) return relativePath.path;
 
             if (
                 !parent.startsWith(".") ||

@@ -89,11 +89,11 @@ export default class Packager {
             const { output } = await bundle.generate(this.outputOptions);
 
             return {
-                code:
-                    output[0].code + this.outputOptions.sourcemap &&
-                    output[0].map
+                code: `${output[0].code} ${
+                    this.outputOptions.sourcemap && output[0].map
                         ? ` \n //# sourceMappingURL=${output[0].map.toUrl()}`
                         : ""
+                }`
             };
         } catch (e) {
             console.error(e);

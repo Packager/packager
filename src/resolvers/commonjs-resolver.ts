@@ -33,8 +33,7 @@ export default function commonjsResolver(context: PackagerContext): Resolver {
     const extensions = [".js"];
 
     function resolveExtensions(importee: any, importer: any) {
-        // not our problem
-        if (importee[0] !== "." || !importer) return undefined;
+        if (importee[0] !== "." || !importer) return null;
 
         const resolved = resolve(dirname(importer), importee);
         const candidates = getCandidates(resolved, extensions);
@@ -47,7 +46,7 @@ export default function commonjsResolver(context: PackagerContext): Resolver {
             }
         }
 
-        return undefined;
+        return null;
     }
 
     return {

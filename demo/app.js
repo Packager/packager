@@ -80,13 +80,13 @@ const reactFiles = [
     {
         name: "app.js",
         path: "/src/app.js",
+        entry: true,
         code: `import React, { Component } from 'react';
 import random from './random';
 
 console.log(Component);
 console.log(random);
-console.log(<h1>Hello!</h1>);`,
-        entry: true
+console.log(<h1>Hello!</h1>);`
     },
     {
         name: "random.js",
@@ -319,7 +319,7 @@ var listView = new ListView();`,
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(backboneTest2);
+        const { code } = await pkger.bundle(reactFiles);
         eval(code);
         console.log(code);
         console.timeEnd("First Load");
@@ -329,17 +329,12 @@ var listView = new ListView();`,
         // eval(code);
         // console.timeEnd("First Load");
 
-        // setTimeout(async () => {
-        //     console.time("Second Load");
-        //     // svelteTest[0].code = `import SvelteApp from './App.svelte';
-
-        //     // new SvelteApp({
-        //     //     target: document.getElementById('app2')
-        //     // });`;
-        //     const { code } = await pkger.bundle(testFiles2);
-        //     eval(code);
-        //     console.timeEnd("Second Load");
-        // }, 2000);
+        setTimeout(async () => {
+            console.time("Second Load");
+            const { code } = await pkger.bundle(reactFiles);
+            eval(code);
+            console.timeEnd("Second Load");
+        }, 2000);
     } catch (e) {
         console.error(e);
     }

@@ -1,10 +1,13 @@
 import { TRANSPILE_STATUS } from "../transpiler";
 
-declare var ts: any;
+// declare var ts: any;
+declare var sucrase: any;
 
-self.importScripts(
-    "https://cdn.jsdelivr.net/npm/typescript@latest/lib/typescript.js"
-);
+// self.importScripts(
+//     "https://cdn.jsdelivr.net/npm/typescript@latest/lib/typescript.js"
+// );
+
+self.importScripts("https://unpkg.com/@bloxy/iife-libs/libs/sucrase.js");
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, context } = data;
@@ -29,25 +32,28 @@ self.addEventListener("message", async ({ data }: any) => {
 
 const transpileFile = (file: any) =>
     new Promise((resolve, reject) => {
-        const transpiled = ts.transpileModule(file.code, {
-            fileName: file.name,
-            compilerOptions: {
-                allowSyntheticDefaultImports: true,
-                target: ts.ScriptTarget.ES5,
-                module: ts.ModuleKind.ESNext,
-                importHelpers: true,
-                noEmitHelpers: false,
-                moduleResolution: ts.ModuleResolutionKind.NodeJs,
-                jsx: ts.JsxEmit.React,
-                sourceMap: true
-            }
+        const transpiled = sucrase.transform(file.code, {
+            transforms: ["typescript", "jsx"]
         });
+        // const transpiled = ts.transpileModule(file.code, {
+        //     fileName: file.name,
+        //     compilerOptions: {
+        //         allowSyntheticDefaultImports: true,
+        //         target: ts.ScriptTarget.ES5,
+        //         module: ts.ModuleKind.ESNext,
+        //         importHelpers: true,
+        //         noEmitHelpers: false,
+        //         moduleResolution: ts.ModuleResolutionKind.NodeJs,
+        //         jsx: ts.JsxEmit.React,
+        //         sourceMap: true
+        //     }
+        // });
 
-        if (transpiled.outputText) {
+        if (transpiled.code) {
             resolve({
                 ...file,
-                code: transpiled.outputText,
-                map: JSON.parse(transpiled.sourceMapText || "{}")
+                code: transpiled.code,
+                map: JSON.parse(transpiled.map || "{}")
             });
         } else {
             reject(`Failed to transpile ${file.path}`);

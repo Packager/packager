@@ -11,7 +11,7 @@ export default function dependencyLoader(context: PackagerContext): Loader {
         async load(modulePath: string): Promise<LoadResult> {
             const file = context.files.find(f => f.path === modulePath);
 
-            if (!file) {
+            if (modulePath && !file) {
                 const moduleMeta = parsePackagePath(modulePath);
                 const moduleName = moduleMeta.name?.split("__")[0];
                 if (!moduleName)
@@ -59,12 +59,12 @@ export default function dependencyLoader(context: PackagerContext): Loader {
                 return {
                     code: ""
                 };
+            } else if (modulePath && file) {
+                return {
+                    code: file.code,
+                    syntheticNamedExports: true
+                };
             }
-
-            return {
-                code: file.code,
-                syntheticNamedExports: true
-            };
         }
     };
 }
