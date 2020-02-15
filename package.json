@@ -42,8 +42,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "yarn test",
-            "pre-push": "yarn format"
+            "pre-commit": "yarn test && yarn format && yarn build-prod"
         }
     },
     "jest": {
