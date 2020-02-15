@@ -1,5 +1,5 @@
-import { extname } from "@shared/path";
-import transpilers from "@transpilers";
+import { extname } from "packager/shared/path";
+import transpilers from "packager/transpilers";
 
 import { PackagerContext, Setup } from "../types/packager";
 

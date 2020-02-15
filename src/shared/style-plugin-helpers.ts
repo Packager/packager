@@ -1,4 +1,4 @@
-import { File } from "@typedefs/packager";
+import { File } from "packager/types/packager";
 
 type ModifiedFile = {
     code: string;

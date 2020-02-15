@@ -2,7 +2,7 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { basename, extname, dirname, sep } from "@shared/path";
+import { basename, extname, dirname, sep } from "packager/shared/path";
 import { extractors } from "./ast-utils";
 import { walk } from "estree-walker";
 

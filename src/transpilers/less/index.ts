@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import LessWorker from "web-worker:./less-worker.ts";
-import { PackagerContext } from "@typedefs/packager";
+import { PackagerContext } from "packager/types/packager";
 
 export default class LessTranspiler extends Transpiler {
     public additionalTranspilers = {};

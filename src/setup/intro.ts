@@ -1,4 +1,4 @@
-import { PackagerContext, Setup } from "@typedefs/packager";
+import { PackagerContext, Setup } from "packager/types/packager";
 
 export const applyPreCode = () =>
     `window.__dependencies = { ...window.__dependencies || {} };`;

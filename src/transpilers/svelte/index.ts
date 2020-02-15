@@ -1,12 +1,12 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import SvelteWorker from "web-worker:./svelte-worker.ts";
-import { PackagerContext } from "@typedefs/packager";
+import { PackagerContext } from "packager/types/packager";
 
-import SassTranspiler from "@transpilers/sass";
-import StylusTranspiler from "@transpilers/stylus";
-import LessTranspiler from "@transpilers/less";
-import CssTranspiler from "@transpilers/css";
+import SassTranspiler from "packager/transpilers/sass";
+import StylusTranspiler from "packager/transpilers/stylus";
+import LessTranspiler from "packager/transpilers/less";
+import CssTranspiler from "packager/transpilers/css";
 
 export default class SvelteTranspiler extends Transpiler {
     public static forceExternal = true;

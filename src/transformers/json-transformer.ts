@@ -1,10 +1,10 @@
-import JsonTranspiler from "@transpilers/json";
+import JsonTranspiler from "packager/transpilers/json";
 import {
     PackagerContext,
     TransformResult,
     Transformer
-} from "@typedefs/packager";
-import verifyExtensions from "@shared/verify-extensions";
+} from "packager/types/packager";
+import verifyExtensions from "packager/shared/verify-extensions";
 
 export default function jsonTransformer(context: PackagerContext): Transformer {
     const transformerName = "packager::transformer::json-transformer";

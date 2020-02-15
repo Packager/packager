@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import TypescriptWorker from "web-worker:./typescript-worker.ts";
-import { PackagerContext } from "@typedefs/packager";
+import { PackagerContext } from "packager/types/packager";
 
 export default class TypescriptTranspiler extends Transpiler {
     public additionalTranspilers = {};

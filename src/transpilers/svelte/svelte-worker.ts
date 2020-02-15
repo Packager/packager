@@ -1,4 +1,4 @@
-import { generateExportsForAllStyles } from "@shared/style-plugin-helpers";
+import { generateExportsForAllStyles } from "packager/shared/style-plugin-helpers";
 import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var svelte: any;

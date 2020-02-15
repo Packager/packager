@@ -1,5 +1,5 @@
-import { dirname, resolve } from "@shared/path";
-import isModuleExternal from "@shared/is-module-external";
+import { dirname, resolve } from "packager/shared/path";
+import isModuleExternal from "packager/shared/is-module-external";
 
 import {
     PackagerContext,

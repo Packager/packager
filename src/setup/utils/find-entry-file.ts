@@ -1,4 +1,4 @@
-import { File } from "@typedefs/packager";
+import { File } from "packager/types/packager";
 
 export default (files: File[], forcePath?: string) => {
     const pkgMain = files.find(f => f.path === forcePath);

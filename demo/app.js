@@ -298,6 +298,8 @@ const backboneTest2 = [
 import _ from 'underscore';
 import $ from 'jquery';
 
+console.log('here!');
+
 var ListView = Backbone.View.extend({    
     el: $('#app2'),
     initialize: function(){
@@ -317,8 +319,9 @@ var listView = new ListView();`,
 (async () => {
     try {
         console.time("First Load");
-        const { code } = await pkger.bundle(backboneTest);
+        const { code } = await pkger.bundle(backboneTest2);
         eval(code);
+        console.log(code);
         console.timeEnd("First Load");
 
         // console.time("First Load");

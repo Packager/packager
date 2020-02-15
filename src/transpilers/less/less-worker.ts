@@ -1,5 +1,5 @@
-import { resolve as resolveRelativePath } from "@shared/path";
-import { PackagerContext } from "@typedefs/packager";
+import { resolve as resolveRelativePath } from "packager/shared/path";
+import { PackagerContext } from "packager/types/packager";
 import { TRANSPILE_STATUS } from "../transpiler";
 
 declare var less: any;

@@ -8,10 +8,14 @@ import {
     getProxyId,
     HELPERS_ID,
     PROXY_SUFFIX
-} from "@transformers/commonjs/utils/helpers";
-import { sep, resolve, dirname } from "@shared/path";
+} from "packager/transformers/commonjs/utils/helpers";
+import { sep, resolve, dirname } from "packager/shared/path";
 
-import { PackagerContext, Resolver, ResolveResult } from "@typedefs/packager";
+import {
+    PackagerContext,
+    Resolver,
+    ResolveResult
+} from "packager/types/packager";
 
 function getCandidatesForExtension(resolved: string, extension: string) {
     return [resolved + extension, `${resolved}${sep}index${extension}`];

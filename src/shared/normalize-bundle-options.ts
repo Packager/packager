@@ -1,4 +1,4 @@
-import { BundleOptions } from "@typedefs/packager";
+import { BundleOptions } from "packager/types/packager";
 
 export default (bundleOptions: BundleOptions): BundleOptions => {
     return {

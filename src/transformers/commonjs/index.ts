@@ -2,9 +2,9 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { normalize } from "@shared/path";
-import isModuleExternal from "@shared/is-module-external";
-import verifyExtensions from "@shared/verify-extensions";
+import { normalize } from "packager/shared/path";
+import isModuleExternal from "packager/shared/is-module-external";
+import verifyExtensions from "packager/shared/verify-extensions";
 import performTransformation, {
     checkEsModule,
     hasCjsKeywords

@@ -22,11 +22,16 @@ export default {
     output: [
         {
             ...baseOutputSettings,
-            file: "dist/index.js"
+            file: "dist/index.browser.js"
         },
         {
             ...baseOutputSettings,
             file: "demo/packager.js"
+        },
+        {
+            file: "dist/index.js",
+            format: "esm",
+            sourcemap: true
         }
     ],
     plugins

@@ -1,5 +1,5 @@
 import Transpiler from "../transpiler";
-import { PackagerContext } from "@typedefs/packager";
+import { PackagerContext } from "packager/types/packager";
 
 export default class HtmlTranspiler extends Transpiler {
     public additionalTranspilers = {};

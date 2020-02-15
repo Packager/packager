@@ -1,12 +1,12 @@
-import SassTranspiler from "@transpilers/sass";
+import SassTranspiler from "packager/transpilers/sass";
 import {
     PackagerContext,
     Transformer,
     TransformResult
-} from "@typedefs/packager";
-import verifyExtensions from "@shared/verify-extensions";
-import { generateExport } from "@shared/style-plugin-helpers";
-import { TransformationException } from "@exceptions";
+} from "packager/types/packager";
+import verifyExtensions from "packager/shared/verify-extensions";
+import { generateExport } from "packager/shared/style-plugin-helpers";
+import { TransformationException } from "packager/exceptions";
 
 export default function sassTransformer(context: PackagerContext): Transformer {
     const transformerName = "packager::transformer::sass-transformer";

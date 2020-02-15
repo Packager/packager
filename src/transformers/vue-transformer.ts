@@ -1,11 +1,11 @@
-import VueTranspiler from "@transpilers/vue";
+import VueTranspiler from "packager/transpilers/vue";
 import {
     PackagerContext,
     Transformer,
     TransformResult
-} from "@typedefs/packager";
-import verifyExtensions from "@shared/verify-extensions";
-import { TransformationException } from "@exceptions";
+} from "packager/types/packager";
+import verifyExtensions from "packager/shared/verify-extensions";
+import { TransformationException } from "packager/exceptions";
 
 export default function vueTransformer(context: PackagerContext): Transformer {
     const transformerName = "packager::transformer::vue-transformer";

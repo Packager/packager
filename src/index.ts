@@ -1,15 +1,15 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
 import merge from "deepmerge";
 
-import pluginFactory from "@setup/plugin-factory";
-import { PackagerOptions, BundleOptions, File } from "@typedefs/packager";
+import pluginFactory from "packager/setup/plugin-factory";
+import { PackagerOptions, BundleOptions, File } from "packager/types/packager";
 import {
     loadRollup,
     loadMagicString,
     findEntryFile,
     extractPackageJsonOptions,
     handleBuildWarnings
-} from "@setup/utils";
+} from "packager/setup/utils";
 
 export default class Packager {
     public rollup: any;
@@ -89,11 +89,11 @@ export default class Packager {
             const { output } = await bundle.generate(this.outputOptions);
 
             return {
-                code: `${output[0].code}${
-                    this.outputOptions.sourcemap && output[0].map
-                        ? `\n//# sourceMappingURL=` + output[0].map.toUrl()
+                code:
+                    output[0].code + this.outputOptions.sourcemap &&
+                    output[0].map
+                        ? ` \n //# sourceMappingURL=${output[0].map.toUrl()}`
                         : ""
-                }`
             };
         } catch (e) {
             console.error(e);
