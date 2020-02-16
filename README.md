@@ -25,4 +25,4 @@ For example on how to use Packager, visit the `examples` folder :)
 
 ## Documentation
 
-WIP.
+For more information, head over to the docs section.

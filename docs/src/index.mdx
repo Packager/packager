@@ -1,0 +1,37 @@
+---
+name: Getting Started
+route: /
+---
+
+**Packager** is a browser-based trans-bundler which uses [Rollup's JavaScript API](https://rollupjs.org/guide/en/#javascript-api) under the hood, primarily for its `resolveId`, `load` and `transform` hooks.
+
+# Getting Started
+
+Getting started with Packager is super easy. 👇
+
+## Installation
+
+If you want to start using it in your project by installing it through your favourite package manager, you can do it with:
+
+```bash
+$ yarn add packager
+# or...
+$ npm install packager
+```
+
+Alternatively, you can just add a script tag with a link to a CDN to use Packager :)
+
+```html
+<script src="https://unpkg.com/packager"></script>
+```
+
+## Usage
+
+Once you have Packager installed, you can go ahead and use it like this:
+
+```js
+const packager = new Packager(packagerOptions);
+await packager.bundle(files);
+```
+
+For more information about `packagerOptions` and `files`, head over to [Configuration](/configuration) and [API Reference](/api-reference).

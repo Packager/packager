@@ -1,4 +1,11 @@
+# Main
 /node_modules
 /yarn*
 /dist
 /coverage
+/.DS_Store
+
+# Documentation website
+/docs/node_modules
+/docs/yarn*
+/docs/.docz
