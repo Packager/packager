@@ -4,6 +4,7 @@
 /dist
 /coverage
 /.DS_Store
+/demo
 
 # Documentation website
 /docs/node_modules

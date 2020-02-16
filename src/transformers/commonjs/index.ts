@@ -38,9 +38,7 @@ export default function commonjsTransformer(
 
             const cachedDependency = context.cache.dependencies.get(modulePath);
             if (cachedDependency && cachedDependency.transformedCode) {
-                code = cachedDependency.iife
-                    ? `export default window.__dependencies['${modulePath}']`
-                    : cachedDependency.transformedCode;
+                code = `const __default = window.__dependencies['${modulePath}']; export default __default;`;
 
                 return { code, syntheticNamedExports: true };
             }
