@@ -98,8 +98,7 @@ export default function commonjsTransformer(
             setIsCjsPromise(modulePath, Boolean(transformed));
 
             if (transformed) {
-                context.cache.dependencies.set(modulePath, {
-                    ...context.cache.dependencies.get(modulePath),
+                context.cache.dependencies.update(modulePath, {
                     transformedCode: transformed.code
                 });
 

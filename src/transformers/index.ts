@@ -1,28 +1,29 @@
 import { PackagerContext } from "../types/packager";
 import commonjsTransformer from "./commonjs";
-import sassTransformer from "./sass-transformer";
-import stylusTransformer from "./stylus-transformer";
-import lessTransformer from "./less-transformer";
-import vueTransformer from "./vue-transformer";
-import typescriptTransformer from "./typescript-transformer";
-import svelteTransformer from "./svelte-transformer";
-import jsonTransformer from "./json-transformer";
-import cssTransformer from "./css-transformer";
-import codeReplaceTransformer from "./code-replace-transformer";
+import sassTransformer from "./sass";
+import stylusTransformer from "./stylus";
+import lessTransformer from "./less";
+import vueTransformer from "./vue";
+import typescriptTransformer from "./typescript";
+import svelteTransformer from "./svelte";
+import jsonTransformer from "./json";
+import cssTransformer from "./css";
 
 export default (context: PackagerContext) => [
+    // General
     typescriptTransformer(context),
     commonjsTransformer(context),
 
-    codeReplaceTransformer(context),
-
+    // JS Frameworks
     vueTransformer(context),
     svelteTransformer(context),
 
+    // Styles
     sassTransformer(context),
     stylusTransformer(context),
     lessTransformer(context),
     cssTransformer(context),
 
+    // Other
     jsonTransformer(context)
 ];
