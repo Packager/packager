@@ -18,8 +18,8 @@ export const innerContainer = {
 export const menuIcon = {
     display: "none",
     position: "absolute",
-    top: "calc(100% + 15px)",
-    left: 30,
+    top: "calc(100% - 7px)",
+    left: 15,
     [media.tablet]: {
         display: "block"
     }
