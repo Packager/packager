@@ -8,6 +8,7 @@ import typescriptTransformer from "./typescript";
 import svelteTransformer from "./svelte";
 import jsonTransformer from "./json";
 import cssTransformer from "./css";
+import coffeescriptTransformer from "./coffeescript";
 
 export default (context: PackagerContext) => [
     // General
@@ -25,5 +26,6 @@ export default (context: PackagerContext) => [
     cssTransformer(context),
 
     // Other
-    jsonTransformer(context)
+    jsonTransformer(context),
+    coffeescriptTransformer(context)
 ];

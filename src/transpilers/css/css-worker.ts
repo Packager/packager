@@ -5,10 +5,7 @@ import parseCssImport from "./utils/parse-css-import";
 
 declare var css: any;
 
-self.importScripts(
-    "https://unpkg.com/@bloxy/iife-libs@latest/libs/css.js",
-    "https://unpkg.com/@bloxy/iife-libs@latest/libs/postcss-selector-parser.js"
-);
+self.importScripts("https://unpkg.com/@bloxy/iife-libs@latest/libs/css.js");
 
 self.addEventListener("message", async ({ data }: any) => {
     const { file, type, context } = data;
