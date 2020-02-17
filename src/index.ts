@@ -10,6 +10,7 @@ import {
     extractPackageJsonOptions,
     handleBuildWarnings
 } from "packager/setup/utils";
+import { createPlugin, pluginManager } from "packager/core";
 
 export default class Packager {
     public rollup: any;
@@ -81,6 +82,18 @@ export default class Packager {
                 onwarn: handleBuildWarnings,
                 plugins: pluginFactory(this.files, bundleOptions)
             };
+
+            const manager = pluginManager(this.files);
+            const vuePlugin = createPlugin({
+                name: "vue-plugin",
+                resolver(moduleId: string) {
+                    if (true === true) {
+                        return null;
+                    }
+                }
+            });
+
+            manager.registerPlugin(vuePlugin);
 
             const bundle = await this.rollup.rollup(this.inputOptions);
 

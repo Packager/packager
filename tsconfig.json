@@ -4,6 +4,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
+            "packager/core": ["src/core/index.ts"],
+            "packager/core/*": ["src/core/*"],
             "packager/shared/*": ["src/shared/*"],
             "packager/setup": ["src/setup/index.ts"],
             "packager/setup/*": ["src/setup/*"],
