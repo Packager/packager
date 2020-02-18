@@ -1,8 +1,13 @@
 import { File } from "packager/types/packager";
+import Transpiler from "packager/transpilers";
 import { SourceMap } from "rollup";
 
 export type PluginContext = {
     files: File[];
+};
+export type PluginContextTransformer = {
+    files: File[];
+    transpiler: any;
 };
 export type PluginResolverResult =
     | { id: string }
@@ -16,15 +21,25 @@ export type PluginResolverHook = (
     parentId: string
 ) => Promise<PluginResolverResult> | PluginResolverResult;
 
-export type PluginLoaderResult = string | { id: string };
+export type PluginLoaderResult =
+    | { id: string }
+    | string
+    | null
+    | false
+    | undefined;
 export type PluginLoaderHook = (
     this: PluginContext,
     moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 
-export type PluginTransformerResult = string | { id: string; map: SourceMap };
+export type PluginTransformerResult =
+    | { id: string; map: SourceMap }
+    | string
+    | null
+    | false
+    | undefined;
 export type PluginTransformerHook = (
-    this: PluginContext,
+    this: PluginContextTransformer,
     code: string,
     moduleId: string
 ) => Promise<PluginTransformerResult> | PluginTransformerResult;
@@ -33,7 +48,7 @@ export type PluginAPIName = string;
 
 export type PluginAPI = {
     name: PluginAPIName;
-    worker?: Worker;
+    transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
     transformer?: PluginTransformerHook;
@@ -54,7 +69,7 @@ export type PluginAPIHooks = {
 
 export type PluginFactoryResult = {
     name: string;
-    worker?: Worker;
+    transpiler?: any;
     hooks?: PluginAPIHooks;
 };
 
@@ -68,6 +83,6 @@ export type PluginManager = {
 export const pluginHooksMap: { [key: string]: string } = {
     resolver: "resolveId",
     loader: "load",
-    transform: "transformer"
+    transformer: "transform"
 };
 export const pluginHooks = ["resolver", "loader", "transformer"];

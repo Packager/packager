@@ -15,16 +15,18 @@ const reducePlugin = (context: PluginContext, pluginArgs: PluginAPI) =>
             return { ...acc, name: pluginArgs["name"] };
         }
 
-        if (curr === "worker") {
-            return { ...acc, worker: pluginArgs["worker"] };
+        if (curr === "transpiler") {
+            return { ...acc, worker: pluginArgs["transpiler"] };
         }
 
         if (pluginHooks.includes(curr)) {
             const hookId = pluginHooksMap[curr];
-            const boundHook: PluginHook = Object.defineProperty(
-                (pluginArgs as any)[curr].bind(context),
-                "name",
-                { value: hookId }
+            const preBoundHook = (pluginArgs as any)[curr];
+            const boundHook = bindContextToHook(
+                preBoundHook,
+                hookId,
+                context,
+                pluginArgs["transpiler"] || undefined
             );
 
             return { ...acc, [hookId]: boundHook };
@@ -32,6 +34,27 @@ const reducePlugin = (context: PluginContext, pluginArgs: PluginAPI) =>
 
         return acc;
     }, {});
+
+const bindContextToHook = (
+    preBoundHook: any,
+    hookId: string,
+    context: PluginContext,
+    transpiler?: Worker
+) => {
+    const updateProperties = (hook: any) =>
+        Object.defineProperties(hook, {
+            name: { value: hookId }
+        });
+
+    if (hookId === "transform") {
+        if (!transpiler)
+            throw new Error("Transformer hooks require a transpiler.");
+
+        return updateProperties(preBoundHook.bind({ transpiler, ...context }));
+    }
+
+    return updateProperties(preBoundHook.bind(context));
+};
 
 export const pluginManager = (context: PluginContext): PluginManager => ({
     registerPlugin(plugin: PluginAPI) {

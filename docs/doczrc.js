@@ -7,5 +7,11 @@ export default {
         showDarkModeSwitch: false
     },
     repository: "https://github.com/baryla/packager",
-    menu: ["Getting Started", "Configuration", "API Reference", "Roadmap"]
+    menu: [
+        "Getting Started",
+        "Configuration",
+        "API Reference",
+        "Plugins",
+        "Roadmap"
+    ]
 };

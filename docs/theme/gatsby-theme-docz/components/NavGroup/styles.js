@@ -1,9 +1,9 @@
 export const wrapper = {
-    my: 3
+    my: 2
 };
 
 export const sublinkWrapper = {
-    ml: 2
+    ml: 3
 };
 
 export const title = {

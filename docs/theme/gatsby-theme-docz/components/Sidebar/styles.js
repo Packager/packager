@@ -21,6 +21,7 @@ export const overlay = ({ open }) => ({
 
 export const wrapper = ({ open }) => ({
     py: 4,
+    pr: 4,
     flexDirection: "column",
     position: "sticky",
     top: 0,

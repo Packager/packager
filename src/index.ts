@@ -16,7 +16,7 @@ import {
     PluginManager
 } from "packager/core/plugins";
 // @ts-ignore
-import VueWorker from "web-worker:./transpilers/vue/vue-worker.ts";
+import VueTranspiler from "packager/transpilers/vue";
 
 export default class Packager {
     public rollup: any;
@@ -63,12 +63,11 @@ export default class Packager {
              */
             const vuePlugin = createPlugin({
                 name: "vue-plugin",
-                worker: new VueWorker(),
-                resolver(moduleId: string, parentId: string) {
-                    console.log("resolver", moduleId, parentId);
+                transpiler: VueTranspiler,
+                transformer(code: string, moduleId: string) {
+                    console.log("transformer", this.transpiler);
                     if (moduleId === "./testing.js") {
-                        console.log("fired hook!", moduleId);
-                        return undefined;
+                        return "";
                     }
                 }
             });
