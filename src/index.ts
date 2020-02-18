@@ -12,9 +12,10 @@ import {
 } from "packager/setup/utils";
 import {
     createPlugin,
-    pluginManager,
+    createPluginManager,
     PluginManager,
-    PluginContext
+    PluginContext,
+    PluginAPI
 } from "packager/core/plugins";
 // @ts-ignore
 import VueTranspiler from "packager/transpilers/vue";
@@ -30,13 +31,21 @@ const generatePluginManagerContext = (context: any): PluginContext => {
     };
 };
 
+const pluginManager = createPluginManager();
+/**
+ * DEMO ONLY
+ */
+const vuePlugin = createPlugin({
+    name: "vue-plugin",
+    transpiler: VueTranspiler,
+    extensions: [".vue"]
+});
 export default class Packager {
     public rollup: any;
     public files = <File[]>[];
     public inputOptions: InputOptions;
     public outputOptions: OutputOptions;
     public cachedBundle = <RollupCache>{ modules: [] };
-    public pluginManager = <PluginManager>{};
 
     constructor(
         options: PackagerOptions,
@@ -55,13 +64,16 @@ export default class Packager {
             sourcemap: options && options.sourcemaps ? "inline" : false,
             freeze: false
         };
+
+        this.registerPlugin(vuePlugin);
+    }
+
+    registerPlugin(plugin: PluginAPI) {
+        pluginManager.registerPlugin(plugin);
     }
 
     async bundle(files: File[], bundleOptions?: BundleOptions) {
         this.files = files;
-        this.pluginManager = pluginManager(
-            generatePluginManagerContext({ files: this.files })
-        );
 
         try {
             // @ts-ignore
@@ -71,25 +83,6 @@ export default class Packager {
                 //@ts-ignore
                 this.rollup = window.rollup;
             }
-
-            /**
-             * Example ONLY.
-             */
-            const vuePlugin = createPlugin({
-                name: "vue-plugin",
-                transpiler: VueTranspiler,
-                beforeRender(code: string) {
-                    // console.log(this, code);
-                }
-                // transformer(code: string, moduleId: string) {
-                //     console.log("transformer", this);
-                //     if (moduleId === "./testing.js") {
-                //         return "";
-                //     }
-                // }
-            });
-
-            this.pluginManager.registerPlugin(vuePlugin);
 
             let entryFile;
             const packageJson = this.files.find(
@@ -121,7 +114,7 @@ export default class Packager {
                 ...this.inputOptions,
                 input: entryFile?.path,
                 onwarn: handleBuildWarnings,
-                plugins: pluginFactory.bind(this)(this.files, bundleOptions)
+                plugins: pluginFactory(this.files, bundleOptions, pluginManager)
             };
 
             const bundle = await this.rollup.rollup(this.inputOptions);

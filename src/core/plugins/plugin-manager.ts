@@ -6,133 +6,142 @@ import {
     pluginHooksMap
 } from "./shared";
 import { PackagerContext } from "packager/types/packager";
+import { TransformationException } from "packager/exceptions";
+import verifyExtensions from "packager/shared/verify-extensions";
 
-const plugins = new Map();
+const pluginRegistry = new Map();
 
-// const reducePlugin = (context: PluginContext, pluginArgs: PluginAPI) =>
-//     Object.keys(pluginArgs).reduce((acc: any, curr: string) => {
-//         if (curr === "name") {
-//             return { ...acc, name: pluginArgs["name"] };
-//         }
-
-//         if (curr === "transpiler") {
-//             return { ...acc, transpiler: pluginArgs["transpiler"] };
-//         }
-
-//         // const hookId = pluginHooksMap[curr];
-//         // const preBoundHook =
-//         // const preBoundHook = (pluginArgs as any)[curr];
-//         // const boundHook = bindContextToHook(
-//         //     preBoundHook,
-//         //     hookId,
-//         //     context,
-//         //     pluginArgs["transpiler"] || undefined
-//         // );
-
-//         return { ...acc, [curr]: pluginArgs[curr] };
-
-//         // if (pluginHooks.includes(curr)) {
-//         //     const hookId = pluginHooksMap[curr];
-//         //     const preBoundHook = (pluginArgs as any)[curr];
-//         //     const boundHook = bindContextToHook(
-//         //         preBoundHook,
-//         //         hookId,
-//         //         context,
-//         //         pluginArgs["transpiler"] || undefined
-//         //     );
-
-//         //     return { ...acc, [hookId]: boundHook };
-//         // }
-
-//         return acc;
-//     }, {});
-
-// const bindContextToHook = (
-//     preBoundHook: any,
-//     hookId: string,
-//     context: PluginContext,
-//     transpiler?: Worker
-// ) => {
-//     const updateProperties = (hook: any) =>
-//         Object.defineProperties(hook, {
-//             name: { value: hookId }
-//         });
-
-//     if (hookId === "transform") {
-//         if (!transpiler)
-//             throw new Error("Transformer hooks require a transpiler.");
-
-//         return updateProperties(preBoundHook.bind({ transpiler, ...context }));
-//     }
-
-//     return updateProperties(preBoundHook.bind(context));
-// };
-
-const transformProxyFactory = (plugin: PluginAPI, context: PluginContext) => {
+const transformProxyFactory = (plugin: PluginAPI, context: PackagerContext) => {
     if (!plugin.transpiler) return null;
 
+    const transpilerName = `${plugin.name}-transpiler`;
+    const canBeTransformed = verifyExtensions(plugin.extensions);
     const transformFunction = async (code: string, moduleId: string) => {
-        // const transpiler =
-        //     typeof plugin.transpiler === "function"
-        //         ? new plugin.transpiler(context)
-        //         : plugin.transpiler;
+        if (!canBeTransformed(moduleId)) return null;
 
-        // const file = context.files.find(f => f.path === moduleId)!;
+        let transpiler: any;
+        transpiler = context.cache.transpilers.get(transpilerName);
+        if (!transpiler) {
+            transpiler =
+                typeof plugin.transpiler === "function"
+                    ? new plugin.transpiler(context)
+                    : plugin.transpiler;
+            context.cache.transpilers.set(transpilerName, transpiler);
+        }
 
-        // await context.transpileQueue.push("Vue-Transpiler", () =>
-        //     transpiler.transpile({ ...file, code })
-        // );
-        // const completed = context.transpileQueue.completed.find(
-        //     c => c.path === moduleId
-        // );
+        const file = context.files.find(f => f.path === moduleId)!;
 
-        return "testing!!";
+        await context.transpileQueue.push(transpilerName, () =>
+            transpiler.transpile({ ...file, code })
+        );
+        const completed = context.transpileQueue.completed.find(
+            c => c.path === moduleId
+        );
+
+        if (completed) {
+            return {
+                code: completed.code,
+                map: completed.map || { mappings: "" }
+            };
+        }
+
+        throw new TransformationException(moduleId, transpilerName);
     };
 
     return new Proxy(transformFunction, {
-        apply(target, thisArg, argumentsList) {
-            const handledTransformFunction = Reflect.apply(
+        async apply(target, thisArg, argumentsList) {
+            const handledTransformFunction = await Reflect.apply(
                 target,
                 context,
                 argumentsList
             );
 
-            if (!plugin.beforeRender) {
-                return handledTransformFunction;
+            if (handledTransformFunction) {
+                if (!plugin.beforeRender) {
+                    return handledTransformFunction;
+                }
+
+                const { code, map } = handledTransformFunction;
+
+                return {
+                    code: plugin.beforeRender.bind(context)(code) || code,
+                    map
+                };
             }
 
-            return plugin.beforeRender.bind(context)(handledTransformFunction);
+            return Promise.resolve();
         }
     });
 };
 
-const transformPluginAsProxy = (plugin: PluginAPI, context: PluginContext) => {
+const transformPluginAsProxy = (
+    plugin: PluginAPI,
+    context: PackagerContext
+) => {
     let pluginProxy = {
-        name: plugin.name,
+        ...plugin,
         transform: transformProxyFactory(plugin, context)
     };
 
     return pluginProxy;
 };
 
-export function pluginManager(context: PluginContext): PluginManager {
-    return {
-        registerPlugin(plugin: PluginAPI) {
-            // console.log(plugin);
-            // const reducedPlugin = reducePlugin(context, plugin);
-            const transformedPlugin = transformPluginAsProxy(plugin, context);
-            plugins.set(plugin.name, transformedPlugin);
-        },
-        getRegisteredPlugins(asArray: boolean = false) {
-            if (!asArray)
-                return Array.from(plugins.entries()).reduce(
-                    (acc, val) => ({
-                        ...acc,
-                        [val[0]]: val[1] || null
-                    }),
-                    {}
-                );
-            return Array.from(plugins.values());
+type PluginManagerPlugin = PluginAPI & { transformed: boolean };
+
+const validatePlugin = (plugin: PluginAPI): void | never => {
+    if (!plugin.name) {
+        throw new Error(`'name' is a required field on a plugin.`);
+    }
+
+    if (!plugin.extensions) {
+        throw new Error(`${plugin.name} is missing 'extensions'.`);
+    }
+};
+
+const normalizePlugin = (plugin: PluginAPI): PluginAPI => ({
+    // Meta
+    name: plugin.name,
+    extensions: plugin.extensions,
+    transpiler: plugin.transpiler,
+    // Hooks
+    resolver: plugin.resolver,
+    loader: plugin.loader,
+    beforeRender: plugin.beforeRender
+});
+
+export const createPluginManager = () => ({
+    context: <PackagerContext>{},
+    setContext(context: PackagerContext) {
+        this.context = context;
+    },
+    registerPlugin(plugin: PluginAPI): void {
+        validatePlugin(plugin);
+
+        pluginRegistry.set(plugin.name || null, {
+            ...normalizePlugin(plugin),
+            transformed: false
+        });
+    },
+    prepareAndGetPlugins() {
+        for (const plugin of this.getRegisteredPlugins(false)) {
+            pluginRegistry.set(plugin.name, {
+                ...transformPluginAsProxy(plugin, this.context),
+                transformed: true
+            });
         }
-    };
-}
+
+        return this.getRegisteredPlugins(true);
+    },
+    getRegisteredPlugins(
+        onlyTransformed: boolean = true
+    ): PluginManagerPlugin[] {
+        const plugins = Array.from(pluginRegistry.entries()).map(
+            (p: any) =>
+                ({
+                    ...p[1]
+                } as PluginManagerPlugin)
+        );
+
+        return onlyTransformed ? plugins.filter(p => p.transformed) : plugins;
+    }
+});

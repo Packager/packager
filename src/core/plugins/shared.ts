@@ -52,6 +52,7 @@ export type PluginAPIName = string;
 
 export type PluginAPI = {
     name: PluginAPIName;
+    extensions: string[];
     transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
@@ -73,6 +74,7 @@ export type PluginAPIHooks = {
 
 export type PluginCreateFactoryResult = {
     name: string;
+    extensions: string[];
     transpiler?: any;
     beforeRender?: any;
     // hooks?: PluginAPIHooks;

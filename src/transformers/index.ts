@@ -16,7 +16,7 @@ export default (context: PackagerContext) => [
     commonjsTransformer(context),
 
     // JS Frameworks
-    vueTransformer(context),
+    // vueTransformer(context),
     svelteTransformer(context),
 
     // Styles

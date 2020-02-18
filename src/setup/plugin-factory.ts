@@ -20,9 +20,10 @@ const cache = {
 };
 
 export default function(
-    this: Packager,
+    // this: Packager,
     files: File[],
-    bundleOptions: BundleOptions = defaultBundleOptions
+    bundleOptions: BundleOptions = defaultBundleOptions,
+    pluginManager: any
 ) {
     const context: PackagerContext = {
         cache,
@@ -31,7 +32,11 @@ export default function(
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 
-    const registeredPlugins = this.pluginManager.getRegisteredPlugins(true);
+    pluginManager.setContext(context);
+    // console.log(pluginManager.getRegisteredPlugins(false));
+    const registeredPlugins = pluginManager.prepareAndGetPlugins();
+    console.log(registeredPlugins);
+    // const registeredPlugins = pluginManager.getRegisteredPlugins(true);
     const plugins = [
         ...registeredPlugins,
         ...setup(context),
@@ -40,7 +45,7 @@ export default function(
         ...transformers(context)
     ];
 
-    console.log(plugins);
+    // console.log(plugins);
 
     return plugins;
 }
