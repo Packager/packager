@@ -5,8 +5,8 @@ import { BundleOptions, PackagerContext, File } from "packager/types/packager";
 import resolvers from "packager/resolvers";
 import transformers from "packager/transformers";
 import loaders from "packager/loaders";
-import { PluginManager } from "packager/core/plugins";
 import setup from "./";
+import Packager from "src";
 
 const defaultBundleOptions: BundleOptions = {
     dependencies: {}
@@ -19,11 +19,11 @@ const cache = {
     esModulesWithDefaultExport: new Set()
 };
 
-export default (
+export default function(
+    this: Packager,
     files: File[],
-    pluginManager: PluginManager,
     bundleOptions: BundleOptions = defaultBundleOptions
-) => {
+) {
     const context: PackagerContext = {
         cache,
         files,
@@ -31,13 +31,16 @@ export default (
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 
-    const registeredPlugins = pluginManager.getRegisteredPlugins(true);
-
-    return [
+    const registeredPlugins = this.pluginManager.getRegisteredPlugins(true);
+    const plugins = [
         ...registeredPlugins,
         ...setup(context),
         ...resolvers(context),
         ...loaders(context),
         ...transformers(context)
     ];
-};
+
+    console.log(plugins);
+
+    return plugins;
+}

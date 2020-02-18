@@ -1,14 +1,18 @@
-import { File } from "packager/types/packager";
-import Transpiler from "packager/transpilers";
+import { File, PackagerContext } from "packager/types/packager";
 import { SourceMap } from "rollup";
 
+export type PluginUtils = {
+    verifyExtensions: (
+        allowedExtensions: string[]
+    ) => (filePath: string) => boolean;
+};
 export type PluginContext = {
     files: File[];
+    utils: PluginUtils;
 };
 export type PluginContextTransformer = {
-    files: File[];
     transpiler: any;
-};
+} & PluginContext;
 export type PluginResolverResult =
     | { id: string }
     | string
@@ -51,7 +55,7 @@ export type PluginAPI = {
     transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
-    transformer?: PluginTransformerHook;
+    beforeRender?: any;
 };
 
 export type PluginHook =
@@ -67,10 +71,11 @@ export type PluginAPIHooks = {
     transformer?: PluginTransformerHook;
 };
 
-export type PluginFactoryResult = {
+export type PluginCreateFactoryResult = {
     name: string;
     transpiler?: any;
-    hooks?: PluginAPIHooks;
+    beforeRender?: any;
+    // hooks?: PluginAPIHooks;
 };
 
 export type PluginManager = {

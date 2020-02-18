@@ -13,10 +13,22 @@ import {
 import {
     createPlugin,
     pluginManager,
-    PluginManager
+    PluginManager,
+    PluginContext
 } from "packager/core/plugins";
 // @ts-ignore
 import VueTranspiler from "packager/transpilers/vue";
+import verifyExtensions from "packager/shared/verify-extensions";
+
+const generatePluginManagerContext = (context: any): PluginContext => {
+    return {
+        ...context,
+        utils: {
+            ...context.utils,
+            verifyExtensions
+        }
+    };
+};
 
 export default class Packager {
     public rollup: any;
@@ -47,7 +59,9 @@ export default class Packager {
 
     async bundle(files: File[], bundleOptions?: BundleOptions) {
         this.files = files;
-        this.pluginManager = pluginManager({ files: this.files });
+        this.pluginManager = pluginManager(
+            generatePluginManagerContext({ files: this.files })
+        );
 
         try {
             // @ts-ignore
@@ -64,12 +78,15 @@ export default class Packager {
             const vuePlugin = createPlugin({
                 name: "vue-plugin",
                 transpiler: VueTranspiler,
-                transformer(code: string, moduleId: string) {
-                    console.log("transformer", this.transpiler);
-                    if (moduleId === "./testing.js") {
-                        return "";
-                    }
+                beforeRender(code: string) {
+                    // console.log(this, code);
                 }
+                // transformer(code: string, moduleId: string) {
+                //     console.log("transformer", this);
+                //     if (moduleId === "./testing.js") {
+                //         return "";
+                //     }
+                // }
             });
 
             this.pluginManager.registerPlugin(vuePlugin);
@@ -104,11 +121,7 @@ export default class Packager {
                 ...this.inputOptions,
                 input: entryFile?.path,
                 onwarn: handleBuildWarnings,
-                plugins: pluginFactory(
-                    this.files,
-                    this.pluginManager,
-                    bundleOptions
-                )
+                plugins: pluginFactory.bind(this)(this.files, bundleOptions)
             };
 
             const bundle = await this.rollup.rollup(this.inputOptions);

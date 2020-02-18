@@ -2831,7 +2831,7 @@ var cache = {
     esModulesWithoutDefaultExport: new Set(),
     esModulesWithDefaultExport: new Set()
 };
-var pluginFactory = (function (files, pluginManager, bundleOptions) {
+function pluginFactory (files, bundleOptions) {
     if (bundleOptions === void 0) { bundleOptions = defaultBundleOptions; }
     var context = {
         cache: cache,
@@ -2839,9 +2839,11 @@ var pluginFactory = (function (files, pluginManager, bundleOptions) {
         transpileQueue: new SequentialTaskQueue({ timeout: 30000 }),
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
-    var registeredPlugins = pluginManager.getRegisteredPlugins(true);
-    return __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
-});var loadRollup = function () {
+    var registeredPlugins = this.pluginManager.getRegisteredPlugins(true);
+    var plugins = __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
+    console.log(plugins);
+    return plugins;
+}var loadRollup = function () {
     return new Promise(function (resolve) {
         var script = document.createElement("script");
         script.src = "https://unpkg.com/rollup@latest/dist/rollup.browser.js";
@@ -2881,63 +2883,124 @@ var handleBuildWarnings = (function (warning) {
         return;
 });
 //# sourceMappingURL=handle-build-warnings.js.map
-var createPlugin = function (args) { return args; };
+var createPlugin = function (args) {
+    // let pluginProxy = {
+    //     name: args.name,
+    //     transform: args.transformer
+    //         ? new Proxy(args.transformer, transformerHandler)
+    //         : null
+    // } as any;
+    return args;
+};
 //# sourceMappingURL=create-plugin.js.map
-var pluginHooksMap = {
-    resolver: "resolveId",
-    loader: "load",
-    transformer: "transform"
-};
-var pluginHooks = ["resolver", "loader", "transformer"];
-//# sourceMappingURL=shared.js.map
 var plugins = new Map();
-var reducePlugin = function (context, pluginArgs) {
-    return Object.keys(pluginArgs).reduce(function (acc, curr) {
-        var _a;
-        if (curr === "name") {
-            return __assign(__assign({}, acc), { name: pluginArgs["name"] });
-        }
-        if (curr === "transpiler") {
-            return __assign(__assign({}, acc), { worker: pluginArgs["transpiler"] });
-        }
-        if (pluginHooks.includes(curr)) {
-            var hookId = pluginHooksMap[curr];
-            var preBoundHook = pluginArgs[curr];
-            var boundHook = bindContextToHook(preBoundHook, hookId, context, pluginArgs["transpiler"] || undefined);
-            return __assign(__assign({}, acc), (_a = {}, _a[hookId] = boundHook, _a));
-        }
-        return acc;
-    }, {});
-};
-var bindContextToHook = function (preBoundHook, hookId, context, transpiler) {
-    var updateProperties = function (hook) {
-        return Object.defineProperties(hook, {
-            name: { value: hookId }
+// const reducePlugin = (context: PluginContext, pluginArgs: PluginAPI) =>
+//     Object.keys(pluginArgs).reduce((acc: any, curr: string) => {
+//         if (curr === "name") {
+//             return { ...acc, name: pluginArgs["name"] };
+//         }
+//         if (curr === "transpiler") {
+//             return { ...acc, transpiler: pluginArgs["transpiler"] };
+//         }
+//         // const hookId = pluginHooksMap[curr];
+//         // const preBoundHook =
+//         // const preBoundHook = (pluginArgs as any)[curr];
+//         // const boundHook = bindContextToHook(
+//         //     preBoundHook,
+//         //     hookId,
+//         //     context,
+//         //     pluginArgs["transpiler"] || undefined
+//         // );
+//         return { ...acc, [curr]: pluginArgs[curr] };
+//         // if (pluginHooks.includes(curr)) {
+//         //     const hookId = pluginHooksMap[curr];
+//         //     const preBoundHook = (pluginArgs as any)[curr];
+//         //     const boundHook = bindContextToHook(
+//         //         preBoundHook,
+//         //         hookId,
+//         //         context,
+//         //         pluginArgs["transpiler"] || undefined
+//         //     );
+//         //     return { ...acc, [hookId]: boundHook };
+//         // }
+//         return acc;
+//     }, {});
+// const bindContextToHook = (
+//     preBoundHook: any,
+//     hookId: string,
+//     context: PluginContext,
+//     transpiler?: Worker
+// ) => {
+//     const updateProperties = (hook: any) =>
+//         Object.defineProperties(hook, {
+//             name: { value: hookId }
+//         });
+//     if (hookId === "transform") {
+//         if (!transpiler)
+//             throw new Error("Transformer hooks require a transpiler.");
+//         return updateProperties(preBoundHook.bind({ transpiler, ...context }));
+//     }
+//     return updateProperties(preBoundHook.bind(context));
+// };
+var transformProxyFactory = function (plugin, context) {
+    if (!plugin.transpiler)
+        return null;
+    var transformFunction = function (code, moduleId) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            // const transpiler =
+            //     typeof plugin.transpiler === "function"
+            //         ? new plugin.transpiler(context)
+            //         : plugin.transpiler;
+            // const file = context.files.find(f => f.path === moduleId)!;
+            // await context.transpileQueue.push("Vue-Transpiler", () =>
+            //     transpiler.transpile({ ...file, code })
+            // );
+            // const completed = context.transpileQueue.completed.find(
+            //     c => c.path === moduleId
+            // );
+            return [2 /*return*/, "testing!!"];
         });
-    };
-    if (hookId === "transform") {
-        if (!transpiler)
-            throw new Error("Transformer hooks require a transpiler.");
-        return updateProperties(preBoundHook.bind(__assign({ transpiler: transpiler }, context)));
-    }
-    return updateProperties(preBoundHook.bind(context));
+    }); };
+    return new Proxy(transformFunction, {
+        apply: function (target, thisArg, argumentsList) {
+            var handledTransformFunction = Reflect.apply(target, context, argumentsList);
+            if (!plugin.beforeRender) {
+                return handledTransformFunction;
+            }
+            return plugin.beforeRender.bind(context)(handledTransformFunction);
+        }
+    });
 };
-var pluginManager = function (context) { return ({
-    registerPlugin: function (plugin) {
-        var reducedPlugin = reducePlugin(context, plugin);
-        plugins.set(plugin.name, reducedPlugin);
-    },
-    getRegisteredPlugins: function (asArray) {
-        if (asArray === void 0) { asArray = false; }
-        if (!asArray)
-            return Array.from(plugins.entries()).reduce(function (acc, val) {
-                var _a;
-                return (__assign(__assign({}, acc), (_a = {}, _a[val[0]] = val[1] || null, _a)));
-            }, {});
-        return Array.from(plugins.values());
-    }
-}); };
+var transformPluginAsProxy = function (plugin, context) {
+    var pluginProxy = {
+        name: plugin.name,
+        transform: transformProxyFactory(plugin, context)
+    };
+    return pluginProxy;
+};
+function pluginManager(context) {
+    return {
+        registerPlugin: function (plugin) {
+            // console.log(plugin);
+            // const reducedPlugin = reducePlugin(context, plugin);
+            var transformedPlugin = transformPluginAsProxy(plugin, context);
+            plugins.set(plugin.name, transformedPlugin);
+        },
+        getRegisteredPlugins: function (asArray) {
+            if (asArray === void 0) { asArray = false; }
+            if (!asArray)
+                return Array.from(plugins.entries()).reduce(function (acc, val) {
+                    var _a;
+                    return (__assign(__assign({}, acc), (_a = {}, _a[val[0]] = val[1] || null, _a)));
+                }, {});
+            return Array.from(plugins.values());
+        }
+    };
+}
 //# sourceMappingURL=plugin-manager.js.map
+var generatePluginManagerContext = function (context) {
+    return __assign(__assign({}, context), { utils: __assign(__assign({}, context.utils), { verifyExtensions: verifyExtensions }) });
+};
 var Packager = /** @class */ (function () {
     function Packager(options, inputOptions, outputOptions) {
         if (inputOptions === void 0) { inputOptions = {}; }
@@ -2956,7 +3019,7 @@ var Packager = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         this.files = files;
-                        this.pluginManager = pluginManager({ files: this.files });
+                        this.pluginManager = pluginManager(generatePluginManagerContext({ files: this.files }));
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 7, , 8]);
@@ -2974,12 +3037,15 @@ var Packager = /** @class */ (function () {
                         vuePlugin = createPlugin({
                             name: "vue-plugin",
                             transpiler: VueTranspiler,
-                            transformer: function (code, moduleId) {
-                                console.log("transformer", this.transpiler);
-                                if (moduleId === "./testing.js") {
-                                    return "";
-                                }
+                            beforeRender: function (code) {
+                                // console.log(this, code);
                             }
+                            // transformer(code: string, moduleId: string) {
+                            //     console.log("transformer", this);
+                            //     if (moduleId === "./testing.js") {
+                            //         return "";
+                            //     }
+                            // }
                         });
                         this.pluginManager.registerPlugin(vuePlugin);
                         entryFile = void 0;
@@ -2997,7 +3063,7 @@ var Packager = /** @class */ (function () {
                             }
                         }
                         entryFile = entryFile || findEntryFile(this.files);
-                        this.inputOptions = __assign(__assign({}, this.inputOptions), { input: (_a = entryFile) === null || _a === void 0 ? void 0 : _a.path, onwarn: handleBuildWarnings, plugins: pluginFactory(this.files, this.pluginManager, bundleOptions) });
+                        this.inputOptions = __assign(__assign({}, this.inputOptions), { input: (_a = entryFile) === null || _a === void 0 ? void 0 : _a.path, onwarn: handleBuildWarnings, plugins: pluginFactory.bind(this)(this.files, bundleOptions) });
                         return [4 /*yield*/, this.rollup.rollup(this.inputOptions)];
                     case 5:
                         bundle = _b.sent();
