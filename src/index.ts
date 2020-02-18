@@ -1,4 +1,4 @@
-import { InputOptions, OutputOptions, RollupCache } from "rollup";
+import { InputOptions, OutputOptions, RollupBuild, RollupCache } from "rollup";
 import merge from "deepmerge";
 
 import pluginFactory from "packager/setup/plugin-factory";
@@ -10,14 +10,21 @@ import {
     extractPackageJsonOptions,
     handleBuildWarnings
 } from "packager/setup/utils";
-import { createPlugin, pluginManager } from "packager/core";
+import {
+    createPlugin,
+    pluginManager,
+    PluginManager
+} from "packager/core/plugins";
+// @ts-ignore
+import VueWorker from "web-worker:./transpilers/vue/vue-worker.ts";
 
 export default class Packager {
     public rollup: any;
-    public files: File[] = [];
+    public files = <File[]>[];
     public inputOptions: InputOptions;
     public outputOptions: OutputOptions;
-    public cachedBundle: RollupCache = { modules: [] };
+    public cachedBundle = <RollupCache>{ modules: [] };
+    public pluginManager = <PluginManager>{};
 
     constructor(
         options: PackagerOptions,
@@ -40,6 +47,7 @@ export default class Packager {
 
     async bundle(files: File[], bundleOptions?: BundleOptions) {
         this.files = files;
+        this.pluginManager = pluginManager({ files: this.files });
 
         try {
             // @ts-ignore
@@ -49,6 +57,23 @@ export default class Packager {
                 //@ts-ignore
                 this.rollup = window.rollup;
             }
+
+            /**
+             * Example ONLY.
+             */
+            const vuePlugin = createPlugin({
+                name: "vue-plugin",
+                worker: new VueWorker(),
+                resolver(moduleId: string, parentId: string) {
+                    console.log("resolver", moduleId, parentId);
+                    if (moduleId === "./testing.js") {
+                        console.log("fired hook!", moduleId);
+                        return undefined;
+                    }
+                }
+            });
+
+            this.pluginManager.registerPlugin(vuePlugin);
 
             let entryFile;
             const packageJson = this.files.find(
@@ -80,20 +105,12 @@ export default class Packager {
                 ...this.inputOptions,
                 input: entryFile?.path,
                 onwarn: handleBuildWarnings,
-                plugins: pluginFactory(this.files, bundleOptions)
+                plugins: pluginFactory(
+                    this.files,
+                    this.pluginManager,
+                    bundleOptions
+                )
             };
-
-            const manager = pluginManager(this.files);
-            const vuePlugin = createPlugin({
-                name: "vue-plugin",
-                resolver(moduleId: string) {
-                    if (true === true) {
-                        return null;
-                    }
-                }
-            });
-
-            manager.registerPlugin(vuePlugin);
 
             const bundle = await this.rollup.rollup(this.inputOptions);
 
