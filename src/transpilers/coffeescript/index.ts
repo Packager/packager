@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import CoffeescriptWorker from "web-worker:./coffeescript-worker.ts";
-import { PackagerContext } from "packager/types/packager";
+import { PackagerContext } from "packager/types";
 
 export default class CoffeescriptTranspiler extends Transpiler {
     public additionalTranspilers = {};

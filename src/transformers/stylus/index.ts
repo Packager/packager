@@ -1,9 +1,5 @@
 import StylusTranspiler from "packager/transpilers/stylus";
-import {
-    PackagerContext,
-    Transformer,
-    TransformResult
-} from "packager/types/packager";
+import { PackagerContext, Transformer, TransformResult } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 import { generateExport } from "packager/shared/style-plugin-helpers";
 import { TransformationException } from "packager/exceptions";

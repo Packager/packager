@@ -1,8 +1,3 @@
-import {
-    PluginAPI,
-    PluginCreateFactoryResult,
-    PluginTransformerResult
-} from "./shared";
+import { PluginAPI } from "packager/types";
 
-export const createPlugin = (args: PluginAPI): PluginCreateFactoryResult =>
-    args;
+export const createPlugin = (args: PluginAPI): PluginAPI => args;

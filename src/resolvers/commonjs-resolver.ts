@@ -11,11 +11,7 @@ import {
 } from "packager/transformers/commonjs/utils/helpers";
 import { sep, resolve, dirname } from "packager/shared/path";
 
-import {
-    PackagerContext,
-    Resolver,
-    ResolveResult
-} from "packager/types/packager";
+import { PackagerContext, Resolver, ResolveResult } from "packager/types";
 
 function getCandidatesForExtension(resolved: string, extension: string) {
     return [resolved + extension, `${resolved}${sep}index${extension}`];

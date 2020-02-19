@@ -19,6 +19,7 @@
             "packager/resolvers/*": ["src/resolvers/*"],
             "packager/loaders": ["src/loaders/index.ts"],
             "packager/loaders/*": ["src/loaders*"],
+            "packager/types": ["src/types/index.ts"],
             "packager/types/*": ["src/types/*"]
         },
         "lib": ["WebWorker", "DOM", "ES5", "ScriptHost"],

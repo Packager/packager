@@ -2,7 +2,12 @@ import { InputOptions, OutputOptions, RollupBuild, RollupCache } from "rollup";
 import merge from "deepmerge";
 
 import pluginFactory from "packager/setup/plugin-factory";
-import { PackagerOptions, BundleOptions, File } from "packager/types/packager";
+import {
+    PackagerOptions,
+    BundleOptions,
+    File,
+    PluginAPI
+} from "packager/types";
 import {
     loadRollup,
     loadMagicString,
@@ -10,27 +15,9 @@ import {
     extractPackageJsonOptions,
     handleBuildWarnings
 } from "packager/setup/utils";
-import {
-    createPlugin,
-    createPluginManager,
-    PluginManager,
-    PluginContext,
-    PluginAPI
-} from "packager/core/plugins";
+import { createPlugin, createPluginManager } from "packager/core/plugins";
 // @ts-ignore
 import VueTranspiler from "packager/transpilers/vue";
-import verifyExtensions from "packager/shared/verify-extensions";
-
-const generatePluginManagerContext = (context: any): PluginContext => {
-    return {
-        ...context,
-        utils: {
-            ...context.utils,
-            verifyExtensions
-        }
-    };
-};
-
 const pluginManager = createPluginManager();
 /**
  * DEMO ONLY

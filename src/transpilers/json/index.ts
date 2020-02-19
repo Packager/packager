@@ -1,5 +1,5 @@
 import Transpiler from "../transpiler";
-import { PackagerContext } from "packager/types/packager";
+import { PackagerContext } from "packager/types";
 
 export default class JsonTranspiler extends Transpiler {
     public additionalTranspilers = {};

@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import CssWorker from "web-worker:./css-worker.ts";
-import { PackagerContext } from "packager/types/packager";
+import { PackagerContext } from "packager/types";
 
 export default class CssTranspiler extends Transpiler {
     public additionalTranspilers = {};

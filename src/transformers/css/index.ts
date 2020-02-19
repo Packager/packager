@@ -1,9 +1,5 @@
 import CssTranspiler from "packager/transpilers/css";
-import {
-    PackagerContext,
-    TransformResult,
-    Transformer
-} from "packager/types/packager";
+import { PackagerContext, TransformResult, Transformer } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 import { generateExport } from "packager/shared/style-plugin-helpers";
 

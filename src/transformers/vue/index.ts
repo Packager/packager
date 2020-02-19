@@ -1,9 +1,5 @@
 import VueTranspiler from "packager/transpilers/vue";
-import {
-    PackagerContext,
-    Transformer,
-    TransformResult
-} from "packager/types/packager";
+import { PackagerContext, Transformer, TransformResult } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 import { TransformationException } from "packager/exceptions";
 

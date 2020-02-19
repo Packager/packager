@@ -2,7 +2,7 @@
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 
-import { PackagerContext, Loader, LoadResult } from "packager/types/packager";
+import { PackagerContext, Loader, LoadResult } from "packager/types";
 import {
     HELPERS,
     HELPERS_ID,

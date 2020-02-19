@@ -2851,12 +2851,9 @@ var handleBuildWarnings = (function (warning) {
         return;
 });
 //# sourceMappingURL=handle-build-warnings.js.map
-var createPlugin = function (args) {
-    return args;
-};
+var createPlugin = function (args) { return args; };
 //# sourceMappingURL=create-plugin.js.map
-var pluginRegistry = new Map();
-var transformProxyFactory = function (plugin, context) {
+var transformProxyHook = (function (plugin, context) {
     if (!plugin.transpiler)
         return null;
     var transpilerName = plugin.name + "-transpiler";
@@ -2918,20 +2915,9 @@ var transformProxyFactory = function (plugin, context) {
             });
         }
     });
-};
-var transformPluginAsProxy = function (plugin, context) {
-    var pluginProxy = __assign(__assign({}, plugin), { transform: transformProxyFactory(plugin, context) });
-    return pluginProxy;
-};
-var validatePlugin = function (plugin) {
-    if (!plugin.name) {
-        throw new Error("'name' is a required field on a plugin.");
-    }
-    if (!plugin.extensions) {
-        throw new Error(plugin.name + " is missing 'extensions'.");
-    }
-};
-var normalizePlugin = function (plugin) { return ({
+});
+//# sourceMappingURL=transform.js.map
+var normalizePlugin = (function (plugin) { return ({
     // Meta
     name: plugin.name,
     extensions: plugin.extensions,
@@ -2940,7 +2926,22 @@ var normalizePlugin = function (plugin) { return ({
     resolver: plugin.resolver,
     loader: plugin.loader,
     beforeRender: plugin.beforeRender
-}); };
+}); });
+//# sourceMappingURL=normalize-plugin.js.map
+var validatePlugin = (function (plugin) {
+    if (!plugin.name) {
+        throw new Error("'name' is a required field on a plugin.");
+    }
+    if (!plugin.extensions) {
+        throw new Error(plugin.name + " is missing 'extensions'.");
+    }
+});
+//# sourceMappingURL=validate-plugin.js.map
+var pluginRegistry = new Map();
+var transformPluginAsProxy = function (plugin, context) {
+    var pluginProxy = __assign(__assign({}, plugin), { transform: transformProxyHook(plugin, context) });
+    return pluginProxy;
+};
 var createPluginManager = function () { return ({
     context: {},
     setContext: function (context) {
@@ -2974,7 +2975,9 @@ var createPluginManager = function () { return ({
         });
         return onlyTransformed ? plugins.filter(function (p) { return p.transformed; }) : plugins;
     }
-}); };var pluginManager = createPluginManager();
+}); };
+//# sourceMappingURL=plugin-manager.js.map
+var pluginManager = createPluginManager();
 /**
  * DEMO ONLY
  */

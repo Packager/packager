@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import SvelteWorker from "web-worker:./svelte-worker.ts";
-import { PackagerContext } from "packager/types/packager";
+import { PackagerContext } from "packager/types";
 
 import SassTranspiler from "packager/transpilers/sass";
 import StylusTranspiler from "packager/transpilers/stylus";

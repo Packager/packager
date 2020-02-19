@@ -1,4 +1,4 @@
-import { PackagerContext, Loader, LoadResult } from "packager/types/packager";
+import { PackagerContext, Loader, LoadResult } from "packager/types";
 import parsePackagePath from "packager/shared/parse-package-path";
 import { fetchNpmDependency } from "./utils";
 

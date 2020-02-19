@@ -1,9 +1,5 @@
 import JsonTranspiler from "packager/transpilers/json";
-import {
-    PackagerContext,
-    TransformResult,
-    Transformer
-} from "packager/types/packager";
+import { PackagerContext, TransformResult, Transformer } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 
 export default function jsonTransformer(context: PackagerContext): Transformer {

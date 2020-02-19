@@ -1,7 +1,7 @@
 import cacheFactory from "packager/shared/application-cache";
 import normalizeBundleOptions from "packager/shared/normalize-bundle-options";
 import QueueSystem from "packager/shared/queue-system";
-import { BundleOptions, PackagerContext, File } from "packager/types/packager";
+import { BundleOptions, PackagerContext, File } from "packager/types";
 import resolvers from "packager/resolvers";
 import transformers from "packager/transformers";
 import loaders from "packager/loaders";

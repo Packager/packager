@@ -1,4 +1,4 @@
-import { PackagerContext } from "../types/packager";
+import { PackagerContext } from "packager/types";
 import commonjsTransformer from "./commonjs";
 import sassTransformer from "./sass";
 import stylusTransformer from "./stylus";

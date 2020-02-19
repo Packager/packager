@@ -1,7 +1,7 @@
 import Transpiler from "../transpiler";
 // @ts-ignore
 import SassWorker from "web-worker:./sass-worker.ts";
-import { PackagerContext } from "packager/types/packager";
+import { PackagerContext } from "packager/types";
 
 export default class SassTranspiler extends Transpiler {
     public additionalTranspilers = {};
