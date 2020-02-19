@@ -11,11 +11,7 @@ import performTransformation, {
 } from "./utils/perform-transform";
 import { setIsCjsPromise } from "./utils/is-cjs-promise";
 
-import {
-    PackagerContext,
-    Transformer,
-    TransformResult
-} from "../../types/packager";
+import { PackagerContext, Transformer, TransformResult } from "packager/types";
 
 const isNotTransformable = (modulePath: string, couldBeCjs: Function) =>
     !couldBeCjs(modulePath) &&

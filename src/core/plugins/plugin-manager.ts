@@ -8,22 +8,17 @@ import transformProxyHook from "./proxy-hooks/transform";
 import { validatePlugin, normalizePlugin } from "./utils";
 
 const pluginRegistry = new Map();
-
 const transformPluginAsProxy = (
     plugin: PluginAPI,
     context: PackagerContext
-) => {
-    let pluginProxy = {
-        ...plugin,
-        transform: transformProxyHook(plugin, context)
-    };
-
-    return pluginProxy;
-};
+) => ({
+    ...plugin,
+    transform: transformProxyHook(plugin, context)
+});
 
 export const createPluginManager = (): PluginManager => ({
     context: <PackagerContext>{},
-    setContext(context: PackagerContext) {
+    setContext(context: PackagerContext): void {
         this.context = context;
     },
     registerPlugin(plugin: PluginAPI): void {

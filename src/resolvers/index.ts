@@ -1,4 +1,4 @@
-import { PackagerContext } from "../types/packager";
+import { PackagerContext } from "packager/types";
 import dependencyResolver from "./dependency-resolver";
 import commonsJsResolver from "./commonjs-resolver";
 

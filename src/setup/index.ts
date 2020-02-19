@@ -1,4 +1,4 @@
-import { PackagerContext } from "../types/packager";
+import { PackagerContext } from "packager/types";
 import buildStart from "./build-start";
 import intro from "./intro";
 

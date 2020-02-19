@@ -1,4 +1,4 @@
-import { PluginAPI } from "../shared";
+import { PluginAPI } from "packager/types";
 
 export default (plugin: PluginAPI): PluginAPI => ({
     // Meta

@@ -1,7 +1,7 @@
 import { extname } from "packager/shared/path";
 import transpilers from "packager/transpilers";
 
-import { PackagerContext, Setup } from "../types/packager";
+import { PackagerContext, Setup } from "packager/types";
 
 export default function initialSetup(context: PackagerContext): Setup {
     const getAllLangsFromFiles = () =>

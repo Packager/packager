@@ -1775,9 +1775,7 @@ function commonjsTransformer(context) {
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-var TRANSPILE_STATUS = {
+}var TRANSPILE_STATUS = {
     PREPARE_FILES: "transpiler:file:prepare",
     PREPARE_ADDITIONAL: "transpiler:additional:prepare",
     ADDITIONAL_TRANSPILED: "transpiler:additional:transpiled",
@@ -2802,10 +2800,7 @@ files, bundleOptions, pluginManager) {
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
     pluginManager.setContext(context);
-    // console.log(pluginManager.getRegisteredPlugins(false));
     var registeredPlugins = pluginManager.prepareAndGetPlugins();
-    console.log(registeredPlugins);
-    // const registeredPlugins = pluginManager.getRegisteredPlugins(true);
     var plugins = __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
     // console.log(plugins);
     return plugins;
@@ -2938,10 +2933,7 @@ var validatePlugin = (function (plugin) {
 });
 //# sourceMappingURL=validate-plugin.js.map
 var pluginRegistry = new Map();
-var transformPluginAsProxy = function (plugin, context) {
-    var pluginProxy = __assign(__assign({}, plugin), { transform: transformProxyHook(plugin, context) });
-    return pluginProxy;
-};
+var transformPluginAsProxy = function (plugin, context) { return (__assign(__assign({}, plugin), { transform: transformProxyHook(plugin, context) })); };
 var createPluginManager = function () { return ({
     context: {},
     setContext: function (context) {

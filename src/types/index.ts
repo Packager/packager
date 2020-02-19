@@ -42,6 +42,12 @@ export type TransformResult = RollupTransformResult;
 export type ResolveResult = RollupResolveIdResult;
 export type LoadResult = RollupLoadResult;
 
+export type ParsedPackagePath = {
+    name: string | null;
+    version: string | null;
+    path: string | null;
+};
+
 export type PluginContext = {
     files: File[];
 };
