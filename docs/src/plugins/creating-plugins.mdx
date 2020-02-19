@@ -5,6 +5,7 @@ menu: Plugins
 ---
 
 import { ApiProps } from "~components/ApiProps";
+import { Note } from "~components/Note";
 
 # Creating Plugins
 
@@ -30,18 +31,32 @@ There are of course other properties (or hooks) that you may add to your plugin 
 
 #### name
 
-This property is used primarily for displaying more descriptive error messages and internally, to keep track of transpilers and a few other things ;)
+This property is used primarily for displaying more descriptive error messages and internally, to keep track of transpilers and a few other things that you'll learn below 👇
 
-<ApiProps type="string" />
+<ApiProps type="string" required="true" />
 
 ```js usage=true
-const tinyPlugin = {
-    name: "tiny-plugin"
+const amazingPlugin = {
+    name: "amazing-plugin"
     // ...
 };
 ```
 
 #### extensions
+
+Extensions property is required because Packager uses it to determine which types of files it should call the hooks on. Without it, it would call the hooks on every single file that passes through it and 99% of time, this is not what we want.
+
+<ApiProps type="string[]" required="true" />
+
+```js usage=true
+const amazingPlugin = {
+    // ...
+    extensions: [".js", ".jsx", ".ts", ".tsx"]
+    // ...
+};
+```
+
+<Note>Note that extensions have dots in them.</Note>
 
 #### transpiler
 
