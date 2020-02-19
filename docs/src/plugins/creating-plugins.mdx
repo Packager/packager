@@ -60,6 +60,21 @@ const amazingPlugin = {
 
 #### transpiler
 
+Transpiler is a Class object which is responsible for transpiling code and is arguably the most important part in a plugin. At its core, every transpiler has a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) to offload the transpilation process from the UI thread.  
+Head over to [Creating a Transpiler]('/plugins/creating-a-transpiler') to see how to create one.
+
+<ApiProps type="Transpiler" required="false" />
+
+```js usage=true
+import MyTranspiler from "./MyTranspiler";
+
+const amazingPlugin = {
+    // ...
+    transpiler: MyTranspiler
+    // ...
+};
+```
+
 ## Hooks
 
 There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeRender`.
