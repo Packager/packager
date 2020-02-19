@@ -27,6 +27,13 @@ const vuePlugin = createPlugin({
     transpiler: VueTranspiler,
     extensions: [".vue"]
 });
+const testPlugin = createPlugin({
+    name: "test-plugin",
+    extensions: [".vue"],
+    beforeBundle(code: string) {
+        console.log(code);
+    }
+});
 export default class Packager {
     public rollup: any;
     public files = <File[]>[];
@@ -57,6 +64,7 @@ export default class Packager {
 
     registerPlugin(plugin: PluginAPI) {
         pluginManager.registerPlugin(plugin);
+        pluginManager.registerPlugin(testPlugin);
     }
 
     async bundle(files: File[], bundleOptions?: BundleOptions) {

@@ -77,12 +77,32 @@ const amazingPlugin = {
 
 ## Hooks
 
-There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeRender`.
+There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeBundle`.
 
 #### resolver
 
 #### loader
 
-#### beforeRender
+#### beforeBundle
+
+This hook fires right before Packager is done bundling the code. It's useful if you want to add a piece of code in the final bundle.
+
+<ApiProps type="(code: string) => string | void" required="false" />
+
+```js usage=true
+const amazingPlugin = {
+    // ...
+    beforeBundle(code: string): string {
+        return `function wrapCode () {
+            ${code}
+        }`;
+    }
+};
+```
+
+<Note>
+    Only the files with extensions supplied in the extensions property will be
+    affected.
+</Note>
 
 ## Registering your plugin

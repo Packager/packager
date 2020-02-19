@@ -75,15 +75,15 @@ export type PluginLoaderHook = (
     moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 
-export type PluginBeforeRenderHookResult = string | null | false | undefined;
-export type PluginBeforeRenderHook = (
+export type PluginBeforeBundleHookResult = string | void;
+export type PluginBeforeBundleHook = (
     code: string
-) => PluginBeforeRenderHookResult;
+) => PluginBeforeBundleHookResult;
 
 export type PluginHook =
     | PluginResolverHook
     | PluginLoaderHook
-    | PluginBeforeRenderHook;
+    | PluginBeforeBundleHook;
 
 export type PluginAPI = {
     name: string;
@@ -91,7 +91,7 @@ export type PluginAPI = {
     transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
-    beforeRender?: PluginBeforeRenderHook;
+    beforeBundle?: PluginBeforeBundleHook;
 };
 
 export type PluginManagerPlugin = PluginAPI & { transformed: boolean };

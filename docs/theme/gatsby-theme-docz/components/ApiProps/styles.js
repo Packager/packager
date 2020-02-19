@@ -15,6 +15,11 @@ export const li = {
     }
 };
 
+export const pre = {
+    display: "inline",
+    m: 0
+};
+
 export const liHeading = {
     bg: "grayIsh",
     px: 2,

@@ -4,7 +4,11 @@ import {
     PluginAPI,
     PluginManager
 } from "packager/types";
-import transformProxyHook from "./proxy-hooks/transform";
+import {
+    transform as transformProxyHook,
+    beforeBundle as beforeBundleProxyHook
+} from "./proxy-hooks";
+
 import { validatePlugin, normalizePlugin } from "./utils";
 
 const pluginRegistry = new Map();
@@ -13,7 +17,9 @@ const transformPluginAsProxy = (
     context: PackagerContext
 ) => ({
     ...plugin,
-    transform: transformProxyHook(plugin, context)
+    transform: plugin.transpiler
+        ? transformProxyHook(plugin, context)
+        : beforeBundleProxyHook(plugin, context)
 });
 
 export const createPluginManager = (): PluginManager => ({

@@ -8,5 +8,5 @@ export default (plugin: PluginAPI): PluginAPI => ({
     // Hooks
     resolver: plugin.resolver,
     loader: plugin.loader,
-    beforeRender: plugin.beforeRender
+    beforeBundle: plugin.beforeBundle
 });

@@ -7,11 +7,15 @@ export const ApiProps = ({ type, required, children }) => (
     <ul sx={styles.ul}>
         <li sx={styles.li}>
             <span sx={styles.liHeading}>Type</span>
-            <span sx={styles.liBody}>{type}</span>
+            <span sx={styles.liBody}>
+                <pre sx={styles.pre}>{type}</pre>
+            </span>
         </li>
         <li sx={styles.li}>
             <span sx={styles.liHeading}>Required</span>
-            <span sx={styles.liBody}>{required}</span>
+            <span sx={styles.liBody}>
+                <pre sx={styles.pre}>{required}</pre>
+            </span>
         </li>
         <li sx={styles.li}>
             <span sx={{ ...styles.liHeading, ...styles.liHeadingUsage }}>

@@ -47,20 +47,20 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
                 argumentsList
             );
 
-            if (handledTransformFunction) {
-                if (!plugin.beforeRender) {
-                    return handledTransformFunction;
-                }
-
-                const { code, map } = handledTransformFunction;
-
-                return {
-                    code: plugin.beforeRender.bind(context)(code) || code,
-                    map
-                };
+            if (!handledTransformFunction) {
+                return Promise.resolve();
             }
 
-            return Promise.resolve();
+            if (!plugin.beforeBundle) {
+                return handledTransformFunction;
+            }
+
+            const { code, map } = handledTransformFunction;
+
+            return {
+                code: plugin.beforeBundle.bind(context)(code) || code,
+                map
+            };
         }
     });
 };
