@@ -4,6 +4,55 @@ route: /plugins/creating-plugins
 menu: Plugins
 ---
 
+import { ApiProps } from "~components/ApiProps";
+
 # Creating Plugins
 
-TBC.
+Packager supports adding custom plugins in a form of [hooks](#hooks) that get fired in a sequential order.
+
+## Simplest plugin
+
+Creating a plugin is super simple. Let's take a look at the simplest plugin that you can write.
+
+```js
+const tinyPlugin = {
+    name: "tiny-plugin",
+    extensions: [".ts", ".tsx"]
+};
+```
+
+That's it, seriously. It does absolutely nothing for us so let's build something more complex and usable.
+But first, you may be wondering why we need `name` and `extensions` properties? Well, there are only 2 required properties when creating a plugin and they are (you guessed it) `name` and `extensions`. Trying to register a plugin without one of them, will throw an error.
+
+There are of course other properties (or hooks) that you may add to your plugin to give it some super powers.
+
+## Properties
+
+#### name
+
+This property is used primarily for displaying more descriptive error messages and internally, to keep track of transpilers and a few other things ;)
+
+<ApiProps type="string" />
+
+```js usage=true
+const tinyPlugin = {
+    name: "tiny-plugin"
+    // ...
+};
+```
+
+#### extensions
+
+#### transpiler
+
+## Hooks
+
+There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeRender`.
+
+#### resolver
+
+#### loader
+
+#### beforeRender
+
+## Registering your plugin

@@ -1775,7 +1775,9 @@ function commonjsTransformer(context) {
             });
         }
     };
-}var TRANSPILE_STATUS = {
+}
+//# sourceMappingURL=index.js.map
+var TRANSPILE_STATUS = {
     PREPARE_FILES: "transpiler:file:prepare",
     PREPARE_ADDITIONAL: "transpiler:additional:prepare",
     ADDITIONAL_TRANSPILED: "transpiler:additional:transpiled",

@@ -4,7 +4,8 @@ export default {
     title: "Packager Documentation",
     ignore: ["readme.md"],
     themeConfig: {
-        showDarkModeSwitch: false
+        showDarkModeSwitch: false,
+        showLivePreview: false
     },
     repository: "https://github.com/baryla/packager",
     menu: [
