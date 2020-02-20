@@ -2803,9 +2803,7 @@ files, bundleOptions, pluginManager) {
     };
     pluginManager.setContext(context);
     var registeredPlugins = pluginManager.prepareAndGetPlugins();
-    var plugins = __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
-    // console.log(plugins);
-    return plugins;
+    return __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
 }
 //# sourceMappingURL=plugin-factory.js.map
 var loadRollup = function () {
@@ -2850,6 +2848,40 @@ var handleBuildWarnings = (function (warning) {
 //# sourceMappingURL=handle-build-warnings.js.map
 var createPlugin = function (args) { return args; };
 //# sourceMappingURL=create-plugin.js.map
+var resolverProxyHook = (function (plugin, context) {
+    if (!plugin.resolver)
+        return null;
+    var canBeResolved = verifyExtensions(plugin.extensions);
+    var resolverFunction = function (moduleId, parentId) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (!canBeResolved(moduleId))
+                return [2 /*return*/, null];
+            return [2 /*return*/, moduleId];
+        });
+    }); };
+    return new Proxy(resolverFunction, {
+        apply: function (target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function () {
+                var handledResolverFunction;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
+                        case 1:
+                            handledResolverFunction = _a.sent();
+                            if (!handledResolverFunction) {
+                                return [2 /*return*/, Promise.resolve()];
+                            }
+                            return [4 /*yield*/, plugin.resolver.bind(context)(argumentsList[0], argumentsList[1])];
+                        case 2: return [2 /*return*/, ((_a.sent()) || null)];
+                    }
+                });
+            });
+        }
+    });
+});
+//# sourceMappingURL=resolver.js.map
+var loaderProxyHook = (function (plugin, context) { });
+//# sourceMappingURL=loader.js.map
 var transformProxyHook = (function (plugin, context) {
     if (!plugin.transpiler)
         return null;
@@ -2939,20 +2971,21 @@ var beforeBundleProxyHook = (function (plugin, context) {
     return new Proxy(beforeBundleFunction, {
         apply: function (target, thisArg, argumentsList) {
             return __awaiter(this, void 0, void 0, function () {
-                var handledTransformFunction, code, map;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
+                var handledTransformFunction, code, map, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
                         case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
                         case 1:
-                            handledTransformFunction = _a.sent();
+                            handledTransformFunction = _b.sent();
                             if (!handledTransformFunction) {
                                 return [2 /*return*/, Promise.resolve()];
                             }
                             code = handledTransformFunction.code, map = handledTransformFunction.map;
-                            return [2 /*return*/, {
-                                    code: plugin.beforeBundle.bind(context)(code) || code,
-                                    map: map
-                                }];
+                            _a = {};
+                            return [4 /*yield*/, plugin.beforeBundle.bind(context)(code)];
+                        case 2: return [2 /*return*/, (_a.code = (_b.sent()) || code,
+                                _a.map = map,
+                                _a)];
                     }
                 });
             });
@@ -2981,9 +3014,24 @@ var validatePlugin = (function (plugin) {
 });
 //# sourceMappingURL=validate-plugin.js.map
 var pluginRegistry = new Map();
-var transformPluginAsProxy = function (plugin, context) { return (__assign(__assign({}, plugin), { transform: plugin.transpiler
-        ? transformProxyHook(plugin, context)
-        : beforeBundleProxyHook(plugin, context) })); };
+var transformPluginAsProxy = function (plugin, context) {
+    var propertiesAndHooks = {
+        name: plugin.name
+    };
+    if (plugin.resolver) {
+        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { resolveId: resolverProxyHook(plugin, context) });
+    }
+    if (plugin.loader) {
+        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { load: loaderProxyHook() });
+    }
+    if (plugin.transpiler) {
+        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { transform: transformProxyHook(plugin, context) });
+    }
+    if (!plugin.transpiler && plugin.beforeBundle) {
+        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { transform: beforeBundleProxyHook(plugin, context) });
+    }
+    return propertiesAndHooks;
+};
 var createPluginManager = function () { return ({
     context: {},
     setContext: function (context) {
@@ -3031,8 +3079,21 @@ var vuePlugin = createPlugin({
 var testPlugin = createPlugin({
     name: "test-plugin",
     extensions: [".vue"],
+    resolver: function (moduleId, parentId) {
+        console.log("here", moduleId);
+        // console.log(this);
+        return null;
+        // if () {
+        //     return moduleId;
+        // }
+    },
     beforeBundle: function (code) {
-        console.log(code);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log(code);
+                return [2 /*return*/];
+            });
+        });
     }
 });
 var Packager = /** @class */ (function () {
@@ -3109,4 +3170,6 @@ var Packager = /** @class */ (function () {
         });
     };
     return Packager;
-}());return Packager;}());
+}());
+//# sourceMappingURL=index.js.map
+return Packager;}());

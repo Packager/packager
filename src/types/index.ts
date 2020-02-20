@@ -1,8 +1,11 @@
 import {
     Plugin,
-    TransformResult as RollupTransformResult,
+    ResolveIdHook as RollupResolveIdHook,
     ResolveIdResult as RollupResolveIdResult,
-    LoadResult as RollupLoadResult
+    LoadHook as RollupLoadHook,
+    LoadResult as RollupLoadResult,
+    TransformHook as RollupTransformHook,
+    TransformResult as RollupTransformResult
 } from "rollup";
 import QueueSystem from "packager/shared/queue-system";
 import { ApplicationCache } from "packager/shared/application-cache";
@@ -53,23 +56,17 @@ export type PluginContext = {
 };
 
 export type PluginResolverResult =
-    | { id: string }
+    | { id: string; syntheticNamedExports?: boolean | null }
     | string
     | null
-    | false
-    | undefined;
+    | void;
 export type PluginResolverHook = (
     this: PluginContext,
     moduleId: string,
-    parentId: string
+    parentId?: string
 ) => Promise<PluginResolverResult> | PluginResolverResult;
 
-export type PluginLoaderResult =
-    | { id: string }
-    | string
-    | null
-    | false
-    | undefined;
+export type PluginLoaderResult = { id: string } | string | null | void;
 export type PluginLoaderHook = (
     this: PluginContext,
     moduleId: string
@@ -78,7 +75,7 @@ export type PluginLoaderHook = (
 export type PluginBeforeBundleHookResult = string | void;
 export type PluginBeforeBundleHook = (
     code: string
-) => PluginBeforeBundleHookResult;
+) => Promise<PluginBeforeBundleHookResult> | PluginBeforeBundleHookResult;
 
 export type PluginHook =
     | PluginResolverHook
@@ -92,6 +89,13 @@ export type PluginAPI = {
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
     beforeBundle?: PluginBeforeBundleHook;
+};
+
+export type PluginAPIasRollupPlugin = {
+    name: string;
+    resolveId?: RollupResolveIdHook;
+    load?: RollupLoadHook;
+    transform?: RollupTransformHook;
 };
 
 export type PluginManagerPlugin = PluginAPI & { transformed: boolean };

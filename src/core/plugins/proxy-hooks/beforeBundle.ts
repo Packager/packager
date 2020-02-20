@@ -38,7 +38,7 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
             const { code, map } = handledTransformFunction;
 
             return {
-                code: plugin.beforeBundle!.bind(context)(code) || code,
+                code: (await plugin.beforeBundle!.bind(context)(code)) || code,
                 map
             };
         }

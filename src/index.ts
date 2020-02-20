@@ -30,7 +30,15 @@ const vuePlugin = createPlugin({
 const testPlugin = createPlugin({
     name: "test-plugin",
     extensions: [".vue"],
-    beforeBundle(code: string) {
+    resolver(moduleId: string, parentId?: string) {
+        console.log("here", moduleId);
+        // console.log(this);
+        return null;
+        // if () {
+        //     return moduleId;
+        // }
+    },
+    async beforeBundle(code: string) {
         console.log(code);
     }
 });

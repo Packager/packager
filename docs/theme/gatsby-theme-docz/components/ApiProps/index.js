@@ -5,8 +5,12 @@ import * as styles from "./styles";
 
 export const ApiProps = ({ type, required, children }) => (
     <ul sx={styles.ul}>
-        <li sx={styles.li}>
-            <span sx={styles.liHeading}>Type</span>
+        <li sx={{ ...styles.li, ...styles.liInline }}>
+            <span
+                sx={{ ...styles.liHeading, height: "20px", paddingTop: "2px" }}
+            >
+                Type
+            </span>
             <span sx={styles.liBody}>
                 <pre sx={styles.pre}>{type}</pre>
             </span>

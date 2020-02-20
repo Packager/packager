@@ -15,8 +15,14 @@ export const li = {
     }
 };
 
+export const liInline = {
+    display: "flex",
+    alignItems: "flex-start"
+};
+
 export const pre = {
     display: "inline",
+    whiteSpace: "normal",
     m: 0
 };
 

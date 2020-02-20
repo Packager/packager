@@ -40,15 +40,12 @@ export default function(
     pluginManager.setContext(context);
 
     const registeredPlugins = pluginManager.prepareAndGetPlugins();
-    const plugins = [
+
+    return [
         ...registeredPlugins,
         ...setup(context),
         ...resolvers(context),
         ...loaders(context),
         ...transformers(context)
     ];
-
-    // console.log(plugins);
-
-    return plugins;
 }

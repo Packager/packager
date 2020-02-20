@@ -81,11 +81,49 @@ There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeBun
 
 #### resolver
 
+Resolvers are your plugin's entry point and are used to verify whether a file (or package) that is being imported actually exists. It's quite possible that you'll never need to use this hook because Packager comes with very powerful resolvers capable of resolving even NPM dependencies but of course, you'll need to first include them first.
+
+Returning `null` will defer to the next resolver function in line and if there isn't one, it will ignore this file and you will most likely get an error because the imported file/package won't be resolved.
+
+For more information, see [Rollup's docs for resolvers](https://rollupjs.org/guide/en/#hooks).
+
+<ApiProps
+    type="(moduleId: string, parentId: string | undefined) => string | false | void | { id: string, syntheticNamedExports?: boolean | null }"
+    required="false"
+/>
+
+```js usage=true
+import { resolve, dirname } from "./path-utils";
+
+const amazingPlugin = {
+    // ...
+    resolver(moduleId: string, parentId?: string): string | null {
+        if (!parentId) {
+            // This will be the entry file
+            return moduleId;
+        }
+
+        const file = this.files.find(
+            f => f.path === resolve(dirname(parentId), moduleId)
+        );
+
+        if (!file) {
+            throw new Error("File could not be loaded.");
+        }
+
+        return file.path;
+    }
+    // ...
+};
+```
+
 #### loader
 
 #### beforeBundle
 
 This hook fires right before Packager is done bundling the code. It's useful if you want to add a piece of code in the final bundle.
+
+If your plugin has a `transpiler`, the code that is fed into this hook is what comes out of the transpiler.
 
 <ApiProps type="(code: string) => string | void" required="false" />
 
