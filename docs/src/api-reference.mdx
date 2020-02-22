@@ -3,6 +3,41 @@ name: API Reference
 route: /api-reference
 ---
 
+import { ApiProps } from "~components/ApiProps";
+
 # API Reference
 
-TBC.
+#### constructor
+
+<ApiProps type="PackagerOptions" defaultValue="{}" />
+
+```ts usage=true
+const packager = new Packager({
+    sourcemaps: true
+});
+```
+
+#### bundle
+
+<ApiProps type="BundleOptions" defaultValue="{}" />
+
+```ts usage=true
+const packager = new Packager({
+    sourcemaps: true
+});
+
+const files = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `import Vue from 'vue';`,
+        entry: true
+    }
+];
+
+packager.bundle(files, {
+    dependencies: {
+        vue: "2.6.10"
+    }
+});
+```

@@ -22,9 +22,12 @@ const pluginManager = createPluginManager();
 export default class Packager {
     public rollup: any;
     public files = <File[]>[];
-    public bundleOptions = <PackagerOptions>{
+    public packagerOptions = <PackagerOptions>{
         cache: true,
         sourcemaps: false
+    };
+    public bundleOptions = <BundleOptions>{
+        dependencies: {}
     };
     public inputOptions: InputOptions;
     public outputOptions: OutputOptions;
@@ -35,17 +38,17 @@ export default class Packager {
         inputOptions: InputOptions = {},
         outputOptions: OutputOptions = {}
     ) {
-        this.bundleOptions = { ...this.bundleOptions, ...options };
+        this.packagerOptions = { ...this.packagerOptions, ...options };
         this.inputOptions = {
             ...inputOptions,
             inlineDynamicImports: true,
-            cache: this.bundleOptions.cache && this.cachedBundle
+            cache: this.packagerOptions.cache && this.cachedBundle
         };
 
         this.outputOptions = {
             ...outputOptions,
             format: "iife",
-            sourcemap: this.bundleOptions.sourcemaps ? "inline" : false,
+            sourcemap: this.packagerOptions.sourcemaps ? "inline" : false,
             freeze: false
         };
     }
@@ -54,8 +57,9 @@ export default class Packager {
         pluginManager.registerPlugin(plugin);
     }
 
-    async bundle(files: File[], bundleOptions: BundleOptions = {}) {
+    async bundle(files: File[], bundleOptions: BundleOptions) {
         this.files = files;
+        this.bundleOptions = { ...this.bundleOptions, ...bundleOptions };
 
         try {
             // @ts-ignore
@@ -78,7 +82,10 @@ export default class Packager {
                         : packageJson.code;
 
                 const pkgBundleOptions = extractPackageJsonOptions(parsed);
-                bundleOptions = merge(pkgBundleOptions, bundleOptions || {});
+                this.bundleOptions = merge(
+                    pkgBundleOptions,
+                    this.bundleOptions || {}
+                );
 
                 if (parsed.main) {
                     entryFile = findEntryFile(
@@ -101,7 +108,7 @@ export default class Packager {
 
             const bundle = await this.rollup.rollup(this.inputOptions);
 
-            this.cachedBundle = this.bundleOptions.cache && bundle.cache;
+            this.cachedBundle = this.packagerOptions.cache && bundle.cache;
 
             const { output } = await bundle.generate(this.outputOptions);
 

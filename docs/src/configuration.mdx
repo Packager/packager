@@ -50,16 +50,30 @@ Sourcemaps allow you to show the code in the browser as it was when entering bun
 ## Bundle Options
 
 ```ts
-export type BundleOptions = {
-    dependencies?: { [moduleName: string]: string };
+type File = {
+    name: string;
+    path: string;
+    code: string;
+    entry?: boolean;
+};
+
+type BundleOptions = {
+    dependencies: { [moduleName: string]: string };
 };
 ```
 
 Bundle Options need to be registered when bundling files like this:
 
 ```js
-const files = [];
-const bundleOptions = {};
+const files: File[] = [
+    {
+        name: "app.js",
+        path: "/src/app.js",
+        code: `console.log('hello world!');`,
+        entry: true
+    }
+];
+const bundleOptions: BundleOptions = {};
 
 const packager = new Packager();
 

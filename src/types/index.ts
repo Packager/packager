@@ -19,8 +19,8 @@ export type PackagerOptions = {
 export type File = {
     name: string;
     path: string;
-    entry: boolean;
     code: string;
+    entry?: boolean;
 };
 
 export type PackagerContext = {
@@ -36,7 +36,7 @@ export type PackagerContext = {
 };
 
 export type BundleOptions = {
-    dependencies?: { [moduleName: string]: string };
+    dependencies: { [moduleName: string]: string };
 };
 
 export interface Transformer extends Plugin {}

@@ -3137,20 +3137,22 @@ var Packager = /** @class */ (function () {
         if (inputOptions === void 0) { inputOptions = {}; }
         if (outputOptions === void 0) { outputOptions = {}; }
         this.files = [];
-        this.bundleOptions = {
+        this.packagerOptions = {
             cache: true,
             sourcemaps: false
         };
+        this.bundleOptions = {
+            dependencies: {}
+        };
         this.cachedBundle = { modules: [] };
-        this.bundleOptions = __assign(__assign({}, this.bundleOptions), options);
-        this.inputOptions = __assign(__assign({}, inputOptions), { inlineDynamicImports: true, cache: this.bundleOptions.cache && this.cachedBundle });
-        this.outputOptions = __assign(__assign({}, outputOptions), { format: "iife", sourcemap: this.bundleOptions.sourcemaps ? "inline" : false, freeze: false });
+        this.packagerOptions = __assign(__assign({}, this.packagerOptions), options);
+        this.inputOptions = __assign(__assign({}, inputOptions), { inlineDynamicImports: true, cache: this.packagerOptions.cache && this.cachedBundle });
+        this.outputOptions = __assign(__assign({}, outputOptions), { format: "iife", sourcemap: this.packagerOptions.sourcemaps ? "inline" : false, freeze: false });
     }
     Packager.prototype.registerPlugin = function (plugin) {
         pluginManager.registerPlugin(plugin);
     };
     Packager.prototype.bundle = function (files, bundleOptions) {
-        if (bundleOptions === void 0) { bundleOptions = {}; }
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var entryFile, packageJson, parsed, pkgBundleOptions, bundle, output, e_1;
@@ -3158,6 +3160,7 @@ var Packager = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         this.files = files;
+                        this.bundleOptions = __assign(__assign({}, this.bundleOptions), bundleOptions);
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 7, , 8]);
@@ -3179,7 +3182,7 @@ var Packager = /** @class */ (function () {
                                 ? JSON.parse(packageJson.code)
                                 : packageJson.code;
                             pkgBundleOptions = extractPackageJsonOptions(parsed);
-                            bundleOptions = cjs(pkgBundleOptions, bundleOptions || {});
+                            this.bundleOptions = cjs(pkgBundleOptions, this.bundleOptions || {});
                             if (parsed.main) {
                                 entryFile = findEntryFile(this.files, parsed.main.startsWith("/")
                                     ? parsed.main
@@ -3191,7 +3194,7 @@ var Packager = /** @class */ (function () {
                         return [4 /*yield*/, this.rollup.rollup(this.inputOptions)];
                     case 5:
                         bundle = _b.sent();
-                        this.cachedBundle = this.bundleOptions.cache && bundle.cache;
+                        this.cachedBundle = this.packagerOptions.cache && bundle.cache;
                         return [4 /*yield*/, bundle.generate(this.outputOptions)];
                     case 6:
                         output = (_b.sent()).output;
