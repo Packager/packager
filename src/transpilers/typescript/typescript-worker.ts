@@ -23,7 +23,7 @@ self.addEventListener("message", async ({ data }: any) => {
         } catch (error) {
             // @ts-ignore wrong scope
             self.postMessage({
-                type: TRANSPILE_STATUS.ERROR_PREPARING_AND_COMPILING,
+                type: TRANSPILE_STATUS.ERROR_COMPILE,
                 error
             });
         }

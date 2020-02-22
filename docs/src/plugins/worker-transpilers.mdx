@@ -1,0 +1,152 @@
+---
+name: Worker Transpilers
+route: /plugins/worker-transpilers
+menu: Plugins
+---
+
+import { ApiProps } from "~components/ApiProps";
+
+# Worker Transpilers
+
+A Worker Transpiler is a dedicated Transpiler class with a WebWorker that is responsible for transpiling code in the worker thread.
+
+There are a few things which need to followed in order to successfully return the transpiled code to the plugin hooks but before we find this out, let's create a simple Worker Transpiler.
+
+## Example
+
+```js
+// MyTranspiler.ts
+
+import { File, PackagerContext } from "packager/types";
+import Transpiler from "packager/transpilers/transpiler";
+import MyWorker from "web-worker:./my-worker.ts";
+
+class MyTranspiler extends Transpiler {
+    constructor(context: PackagerContext) {
+        super("my-transpiler", new MyWorker(), context);
+    }
+
+    transpile(file: File) {
+        return this.doTranspile(file);
+    }
+}
+
+// MyWorker.ts
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+self.addEventListener("message", async ({ data }) => {
+    const { file, type, context } = data;
+
+    if (type === TRANSPILE_STATUS.PREPARE_FILES) {
+        self.postMessage({
+            type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
+            file
+        });
+    }
+});
+```
+
+It may be a little overwhelming at first when you look at the code above, especially if you haven't worked with Web Workers before don't worry, we'll walk through it :)
+
+Every Worker Transpiler has to extend `Transpiler` Class that Packager comes with because it handles [Transpiler Statuses](#statuses) and loading additional workers if needed.
+
+The Class that we have declared, doesn't really do anything special and it's very likely that all of your Transpiler classes will look like the one above. All you have to know is that the 3 arguments in the `super` keyword are required as well as the `transpile` method.
+
+## Statuses
+
+Statuses are used to enable 2-way communication between the Worker and the Parent Transpiler which our Transpiler extends.
+
+We enable this by `receiving` and `sending` statuses. So let's take `TRANSPILE_STATUS.PREPARE_FILES` as an example which is actually `TRANSPILER:FILE:PREPARE` under the hood but it's abstracted away using constants.  
+The Parent Transpiler will send this status and our Worker should receive it and respond accordingly.
+
+#### TRANSPILER:FILE:PREPARE
+
+This is a status that the Parent Transpiler sends to our Worker along with some data in the `data` object.
+
+<ApiProps type="Receivable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+if (type === TRANSPILE_STATUS.PREPARE_FILES) {
+    // code here
+}
+```
+
+#### TRANSPILER:ADDITIONAL:PREPARE
+
+Depending on the type of plugin you want to write, you may not use this status.
+
+It's used if your plugin depends on other transpilers and you want to delegate some of the transpilation logic to them.
+
+As an example, a `Vue Plugin` may have this because it depends on `Sass`, `Less` etc. Worker Transpilers to transpile those types of files.
+
+<ApiProps type="Sendable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+self.postMessage({
+    type: TRANSPILE_STATUS.PREPARE_ADDITIONAL
+    // ...
+});
+```
+
+#### TRANSPILER:ADDITIONAL:TRANSPILED
+
+Similar to `TRANSPILER:ADDITIONAL:PREPARE`, you may not used this one. It's used when the Parent Transpiler has transpiled our additional code after we sent the `TRANSPILER:ADDITIONAL:PREPARE` to it with additional code we wanted to transpile.
+
+<ApiProps type="Receivable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+if (type === TRANSPILE_STATUS.ADDITIONAL_TRANSPILED) {
+    // code here
+}
+```
+
+#### TRANSPILER:TRANSPILE:COMPLETE
+
+After we have completed all the transpilation in our Worker Transpiler, we will send this status to Parent Transpiler to let it know that we're done and we can move on :)
+
+<ApiProps type="Sendable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+self.postMessage({
+    type: TRANSPILE_STATUS.TRANSPILE_COMPLETE
+    // ...
+});
+```
+
+#### TRANSPILER:ERROR:COMPILE
+
+If we want to notify the Parent Transpiler that something messed up in the transpilation process which would notify our users, we can do so by sending this status.
+
+<ApiProps type="Sendable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+self.postMessage({
+    type: TRANSPILE_STATUS.ERROR_COMPILE
+    // ...
+});
+```
+
+#### TRANSPILER:ERROR:ADDITIONAL
+
+Same as `TRANSPILER:ERROR:COMPILE`, we can notify Parent Transpiler that something's not right with what we got from additional transpilers.
+
+<ApiProps type="Sendable" />
+
+```js usage=true
+import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+
+self.postMessage({
+    type: TRANSPILE_STATUS.ERROR_ADDITIONAL
+    // ...
+});
+```

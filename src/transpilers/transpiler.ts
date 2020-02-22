@@ -1,12 +1,12 @@
 import { PackagerContext } from "packager/types";
 
 export const TRANSPILE_STATUS = {
-    PREPARE_FILES: "transpiler:file:prepare",
-    PREPARE_ADDITIONAL: "transpiler:additional:prepare",
-    ADDITIONAL_TRANSPILED: "transpiler:additional:transpiled",
-    TRANSPILE_COMPLETE: "transpiler:transpile:complete",
-    ERROR_PREPARING_AND_COMPILING: "transpiler:error:compile",
-    ERROR_ADDITIONAL: "transpiler:error:additional"
+    PREPARE_FILES: "TRANSPILER:FILE:PREPARE",
+    PREPARE_ADDITIONAL: "TRANSPILER:ADDITIONAL:PREPARE",
+    ADDITIONAL_TRANSPILED: "TRANSPILER:ADDITIONAL:TRANSPILED",
+    TRANSPILE_COMPLETE: "TRANSPILER:TRANSPILE:COMPLETE",
+    ERROR_COMPILE: "TRANSPILER:ERROR:COMPILE",
+    ERROR_ADDITIONAL: "TRANSPILER:ERROR:ADDITIONAL"
 };
 
 export default class Transpiler {
@@ -31,7 +31,7 @@ export default class Transpiler {
 
                 if (
                     type === TRANSPILE_STATUS.ERROR_ADDITIONAL ||
-                    type === TRANSPILE_STATUS.ERROR_PREPARING_AND_COMPILING
+                    type === TRANSPILE_STATUS.ERROR_COMPILE
                 ) {
                     return reject(error);
                 }

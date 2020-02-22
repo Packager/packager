@@ -116,7 +116,7 @@ export const addCssExport = (code: string) =>
     `} addStyles();`;
 ```
 
-So Let's tie everything together and give this a go :)
+So let's tie everything together and give this a go :)
 
 ```js
 import { addCssExport } from "./utils";
@@ -158,6 +158,12 @@ const cssPlugin = {
 ```
 
 Congratulations - you have created a pretty useful plugin so now let's register this sexy looking thing! :)
+
+## Bundle up your plugin
+
+TBC.
+
+Bundling a plugin together to be used in Packager. Maybe explore a CLI here to make it even easier to create plugins.
 
 ## Registering your plugin
 
@@ -211,7 +217,7 @@ const amazingPlugin = {
 #### transpiler
 
 Transpiler is a Class object which is responsible for transpiling code and is arguably the most important part in a plugin. At its core, every transpiler has a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) to offload the transpilation process from the UI thread.  
-Head over to [Creating a Transpiler]('/plugins/creating-a-transpiler') to see how to create one.
+Head over to [Worker Transpilers](/plugins/worker-transpilers) to see how to create one.
 
 <ApiProps type="Transpiler" required="false" />
 
