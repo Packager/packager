@@ -5,6 +5,7 @@
 /coverage
 /.DS_Store
 /demo
+/.vscode
 
 # Documentation website
 /docs/node_modules
