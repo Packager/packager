@@ -22,7 +22,7 @@ const tinyPlugin = {
 };
 ```
 
-That's it, seriously. It does absolutely nothing for us so let's build something more complex and usable.
+That's it, seriously. It does absolutely nothing for us though so let's build something more complex and usable.
 But first, you may be wondering why we need `name` and `extensions` properties? Well, there are only 2 required properties when creating a plugin and they are (you guessed it) `name` and `extensions`. Trying to register a plugin without one of them, will throw an error.
 
 There are of course other properties (or hooks) that you may add to your plugin to give it some super powers.
@@ -68,6 +68,8 @@ const cssPlugin = {
 Once the file has been resolved, we'll need tell our plugin how to load it.
 
 ```js
+import { PluginLoaderResult } from "packager/types";
+
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"],
@@ -119,6 +121,7 @@ export const addCssExport = (code: string) =>
 So let's tie everything together and give this a go :)
 
 ```js
+import { PluginLoaderResult } from "packager/types";
 import { addCssExport } from "./utils";
 
 const cssPlugin = {

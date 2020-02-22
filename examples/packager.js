@@ -3064,16 +3064,18 @@ var normalizePlugin = (function (plugin) { return ({
     beforeBundle: plugin.beforeBundle
 }); });
 //# sourceMappingURL=normalize-plugin.js.map
+var MISSING_NAME_FIELD = "'name' is a required field on a plugin.";
+var MISSING_FIELD = function (pluginName, field) {
+    return pluginName + " is missing '" + field + "'.";
+};
 var validatePlugin = (function (plugin) {
     if (!plugin.name) {
-        throw new Error("'name' is a required field on a plugin.");
+        throw new Error(MISSING_NAME_FIELD);
     }
     if (!plugin.extensions) {
-        throw new Error(plugin.name + " is missing 'extensions'.");
+        throw new Error(MISSING_FIELD(plugin.name, "extensions"));
     }
-});
-//# sourceMappingURL=validate-plugin.js.map
-var pluginRegistry = new Map();
+});var pluginRegistry = new Map();
 var transformPluginAsProxy = function (plugin, context) {
     var propertiesAndHooks = {
         name: plugin.name

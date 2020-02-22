@@ -45,6 +45,11 @@
         }
     },
     "jest": {
+        "globals": {
+            "ts-jest": {
+                "diagnostics": false
+            }
+        },
         "roots": [
             "<rootDir>/src"
         ],
