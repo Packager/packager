@@ -3,7 +3,13 @@ import { jsx } from "theme-ui";
 
 import * as styles from "./styles";
 
-export const ApiProps = ({ type, required, children, showUsage = true }) => (
+export const ApiProps = ({
+    type,
+    required,
+    children,
+    defaultValue,
+    showUsage = true
+}) => (
     <ul sx={styles.ul}>
         {type && (
             <li sx={{ ...styles.li, ...styles.liInline }}>
@@ -18,6 +24,14 @@ export const ApiProps = ({ type, required, children, showUsage = true }) => (
                 </span>
                 <span sx={styles.liBody}>
                     <pre sx={styles.pre}>{type}</pre>
+                </span>
+            </li>
+        )}
+        {defaultValue && (
+            <li sx={styles.li}>
+                <span sx={styles.liHeading}>Default</span>
+                <span sx={styles.liBody}>
+                    <pre sx={styles.pre}>{defaultValue}</pre>
                 </span>
             </li>
         )}

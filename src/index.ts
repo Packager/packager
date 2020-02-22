@@ -22,6 +22,10 @@ const pluginManager = createPluginManager();
 export default class Packager {
     public rollup: any;
     public files = <File[]>[];
+    public bundleOptions = <PackagerOptions>{
+        cache: true,
+        sourcemaps: false
+    };
     public inputOptions: InputOptions;
     public outputOptions: OutputOptions;
     public cachedBundle = <RollupCache>{ modules: [] };
@@ -31,16 +35,17 @@ export default class Packager {
         inputOptions: InputOptions = {},
         outputOptions: OutputOptions = {}
     ) {
+        this.bundleOptions = { ...this.bundleOptions, ...options };
         this.inputOptions = {
             ...inputOptions,
             inlineDynamicImports: true,
-            cache: this.cachedBundle
+            cache: this.bundleOptions.cache && this.cachedBundle
         };
 
         this.outputOptions = {
             ...outputOptions,
             format: "iife",
-            sourcemap: options && options.sourcemaps ? "inline" : false,
+            sourcemap: this.bundleOptions.sourcemaps ? "inline" : false,
             freeze: false
         };
     }
@@ -49,7 +54,7 @@ export default class Packager {
         pluginManager.registerPlugin(plugin);
     }
 
-    async bundle(files: File[], bundleOptions?: BundleOptions) {
+    async bundle(files: File[], bundleOptions: BundleOptions = {}) {
         this.files = files;
 
         try {
@@ -96,7 +101,7 @@ export default class Packager {
 
             const bundle = await this.rollup.rollup(this.inputOptions);
 
-            this.cachedBundle = bundle.cache;
+            this.cachedBundle = this.bundleOptions.cache && bundle.cache;
 
             const { output } = await bundle.generate(this.outputOptions);
 

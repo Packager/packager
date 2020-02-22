@@ -12,6 +12,7 @@ import QueueSystem from "packager/shared/queue-system";
 import { ApplicationCache } from "packager/shared/application-cache";
 
 export type PackagerOptions = {
+    cache: boolean;
     sourcemaps: boolean;
 };
 
@@ -35,7 +36,7 @@ export type PackagerContext = {
 };
 
 export type BundleOptions = {
-    dependencies: { [moduleName: string]: string };
+    dependencies?: { [moduleName: string]: string };
 };
 
 export interface Transformer extends Plugin {}

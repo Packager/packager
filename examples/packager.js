@@ -3075,7 +3075,9 @@ var validatePlugin = (function (plugin) {
     if (!plugin.extensions) {
         throw new Error(MISSING_FIELD(plugin.name, "extensions"));
     }
-});var pluginRegistry = new Map();
+});
+//# sourceMappingURL=validate-plugin.js.map
+var pluginRegistry = new Map();
 var transformPluginAsProxy = function (plugin, context) {
     var propertiesAndHooks = {
         name: plugin.name
@@ -3135,14 +3137,20 @@ var Packager = /** @class */ (function () {
         if (inputOptions === void 0) { inputOptions = {}; }
         if (outputOptions === void 0) { outputOptions = {}; }
         this.files = [];
+        this.bundleOptions = {
+            cache: true,
+            sourcemaps: false
+        };
         this.cachedBundle = { modules: [] };
-        this.inputOptions = __assign(__assign({}, inputOptions), { inlineDynamicImports: true, cache: this.cachedBundle });
-        this.outputOptions = __assign(__assign({}, outputOptions), { format: "iife", sourcemap: options && options.sourcemaps ? "inline" : false, freeze: false });
+        this.bundleOptions = __assign(__assign({}, this.bundleOptions), options);
+        this.inputOptions = __assign(__assign({}, inputOptions), { inlineDynamicImports: true, cache: this.bundleOptions.cache && this.cachedBundle });
+        this.outputOptions = __assign(__assign({}, outputOptions), { format: "iife", sourcemap: this.bundleOptions.sourcemaps ? "inline" : false, freeze: false });
     }
     Packager.prototype.registerPlugin = function (plugin) {
         pluginManager.registerPlugin(plugin);
     };
     Packager.prototype.bundle = function (files, bundleOptions) {
+        if (bundleOptions === void 0) { bundleOptions = {}; }
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var entryFile, packageJson, parsed, pkgBundleOptions, bundle, output, e_1;
@@ -3183,7 +3191,7 @@ var Packager = /** @class */ (function () {
                         return [4 /*yield*/, this.rollup.rollup(this.inputOptions)];
                     case 5:
                         bundle = _b.sent();
-                        this.cachedBundle = bundle.cache;
+                        this.cachedBundle = this.bundleOptions.cache && bundle.cache;
                         return [4 /*yield*/, bundle.generate(this.outputOptions)];
                     case 6:
                         output = (_b.sent()).output;
@@ -3202,6 +3210,4 @@ var Packager = /** @class */ (function () {
         });
     };
     return Packager;
-}());
-//# sourceMappingURL=index.js.map
-return Packager;}());
+}());return Packager;}());

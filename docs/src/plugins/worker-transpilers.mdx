@@ -14,7 +14,7 @@ There are a few things which need to followed in order to successfully return th
 
 ## Example
 
-```js
+```ts
 // MyTranspiler.ts
 
 import { File, PackagerContext } from "packager/types";
@@ -65,7 +65,7 @@ This is a status that the Parent Transpiler sends to our Worker along with some 
 
 <ApiProps type="Receivable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 if (type === TRANSPILE_STATUS.PREPARE_FILES) {
@@ -83,7 +83,7 @@ As an example, a `Vue Plugin` may have this because it depends on `Sass`, `Less`
 
 <ApiProps type="Sendable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 self.postMessage({
@@ -98,7 +98,7 @@ Similar to `TRANSPILER:ADDITIONAL:PREPARE`, you may not used this one. It's used
 
 <ApiProps type="Receivable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 if (type === TRANSPILE_STATUS.ADDITIONAL_TRANSPILED) {
@@ -112,7 +112,7 @@ After we have completed all the transpilation in our Worker Transpiler, we will 
 
 <ApiProps type="Sendable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 self.postMessage({
@@ -127,7 +127,7 @@ If we want to notify the Parent Transpiler that something messed up in the trans
 
 <ApiProps type="Sendable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 self.postMessage({
@@ -142,7 +142,7 @@ Same as `TRANSPILER:ERROR:COMPILE`, we can notify Parent Transpiler that somethi
 
 <ApiProps type="Sendable" />
 
-```js usage=true
+```ts usage=true
 import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
 
 self.postMessage({

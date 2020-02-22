@@ -15,7 +15,7 @@ Packager supports adding custom plugins in a form of [hooks](#hooks) that get fi
 
 Creating a plugin is super simple. Let's take a look at the simplest plugin that you can write.
 
-```js
+```ts
 const tinyPlugin = {
     name: "tiny-plugin",
     extensions: [".ts", ".tsx"]
@@ -33,7 +33,7 @@ Ok, let's build something more usable. How about a little CSS plugin that will i
 
 We first need to give our plugin a name and the extensions it should be triggered on.
 
-```js
+```ts
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"]
@@ -42,7 +42,9 @@ const cssPlugin = {
 
 Now let's handle file resolution within our plugin by adding a resolver.
 
-```js
+```ts
+import { resolve, dirname } from "./path-utils";
+
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"],
@@ -67,7 +69,8 @@ const cssPlugin = {
 
 Once the file has been resolved, we'll need tell our plugin how to load it.
 
-```js
+```ts
+import { resolve, dirname } from "./path-utils";
 import { PluginLoaderResult } from "packager/types";
 
 const cssPlugin = {
@@ -105,7 +108,7 @@ const cssPlugin = {
 
 There's one last step we need to do. Packager _treats every file as a JS file_ so to get CSS files, you have to "export" them as JS files and in order to do that, we can do something like this:
 
-```js
+```ts
 // utils.ts
 
 export const addCssExport = (code: string) =>
@@ -120,7 +123,8 @@ export const addCssExport = (code: string) =>
 
 So let's tie everything together and give this a go :)
 
-```js
+```ts
+import { resolve, dirname } from "./path-utils";
 import { PluginLoaderResult } from "packager/types";
 import { addCssExport } from "./utils";
 
@@ -172,7 +176,7 @@ Bundling a plugin together to be used in Packager. Maybe explore a CLI here to m
 
 Registering a plugin is super easy. If you have instantiated your plugin, you can do this:
 
-```js
+```ts
 const packager = new Packager();
 
 const myPlugin = {
@@ -194,7 +198,7 @@ This property is used primarily for displaying more descriptive error messages a
 
 <ApiProps type="string" required="true" />
 
-```js usage=true
+```ts usage=true
 const amazingPlugin = {
     name: "amazing-plugin"
     // ...
@@ -207,7 +211,7 @@ Extensions property is required because Packager uses it to determine which type
 
 <ApiProps type="string[]" required="true" />
 
-```js usage=true
+```ts usage=true
 const amazingPlugin = {
     // ...
     extensions: [".js", ".jsx", ".ts", ".tsx"]
@@ -224,7 +228,7 @@ Head over to [Worker Transpilers](/plugins/worker-transpilers) to see how to cre
 
 <ApiProps type="Transpiler" required="false" />
 
-```js usage=true
+```ts usage=true
 import MyTranspiler from "./MyTranspiler";
 
 const amazingPlugin = {
@@ -258,7 +262,7 @@ For more information, see [Rollup's docs for resolvers](https://rollupjs.org/gui
     required="false"
 />
 
-```js usage=true
+```ts usage=true
 import { resolve, dirname } from "./path-utils";
 
 const amazingPlugin = {
@@ -294,7 +298,7 @@ For more information, see [Rollup's docs for loaders](https://rollupjs.org/guide
     required="false"
 />
 
-```js usage=true
+```ts usage=true
 import { PluginLoaderResult } from "packager/types";
 
 const amazingPlugin = {
@@ -322,7 +326,7 @@ If your plugin has a `transpiler`, the code that is fed into this hook is what c
 
 <ApiProps type="(code: string) => string | void" required="false" />
 
-```js usage=true
+```ts usage=true
 const amazingPlugin = {
     // ...
     beforeBundle(code: string): string {
