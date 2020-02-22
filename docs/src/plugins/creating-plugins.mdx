@@ -46,7 +46,7 @@ Now let's handle file resolution within our plugin by adding a resolver.
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"],
-    resolver(moduleId: string, parentId: string): string | never {
+    resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
             return moduleId;
@@ -71,7 +71,7 @@ Once the file has been resolved, we'll need tell our plugin how to load it.
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"],
-    resolver(moduleId: string, parentId: string): string | never {
+    resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
             return moduleId;
@@ -124,7 +124,7 @@ import { addCssExport } from "./utils";
 const cssPlugin = {
     name: "css-plugin",
     extensions: [".css"],
-    resolver(moduleId: string, parentId: string): string | never {
+    resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
             return moduleId;

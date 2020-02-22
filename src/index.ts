@@ -15,31 +15,10 @@ import {
     extractPackageJsonOptions,
     handleBuildWarnings
 } from "packager/setup/utils";
-import { createPlugin, createPluginManager } from "packager/core/plugins";
-// @ts-ignore
-import VueTranspiler from "packager/transpilers/vue";
-const pluginManager = createPluginManager();
-/**
- * DEMO ONLY
- */
-const vuePlugin = createPlugin({
-    name: "vue-plugin",
-    transpiler: VueTranspiler,
-    extensions: [".vue"]
-});
-const testPlugin = createPlugin({
-    name: "test-plugin",
-    extensions: [".vue"],
-    async loader(moduleId: string) {
-        const file = this.files.find(f => f.path === moduleId);
+import { createPluginManager } from "packager/core/plugins";
 
-        if (file) {
-            return {
-                code: file.code
-            };
-        }
-    }
-});
+const pluginManager = createPluginManager();
+
 export default class Packager {
     public rollup: any;
     public files = <File[]>[];
@@ -64,13 +43,10 @@ export default class Packager {
             sourcemap: options && options.sourcemaps ? "inline" : false,
             freeze: false
         };
-
-        this.registerPlugin(vuePlugin);
     }
 
     registerPlugin(plugin: PluginAPI) {
         pluginManager.registerPlugin(plugin);
-        pluginManager.registerPlugin(testPlugin);
     }
 
     async bundle(files: File[], bundleOptions?: BundleOptions) {
