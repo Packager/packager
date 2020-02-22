@@ -27,7 +27,157 @@ But first, you may be wondering why we need `name` and `extensions` properties? 
 
 There are of course other properties (or hooks) that you may add to your plugin to give it some super powers.
 
-## Properties
+## A slightly more usable plugin
+
+Ok, let's build something more usable. How about a little CSS plugin that will inject CSS into the head tag of our application?
+
+We first need to give our plugin a name and the extensions it should be triggered on.
+
+```js
+const cssPlugin = {
+    name: "css-plugin",
+    extensions: [".css"]
+};
+```
+
+Now let's handle file resolution within our plugin by adding a resolver.
+
+```js
+const cssPlugin = {
+    name: "css-plugin",
+    extensions: [".css"],
+    resolver(moduleId: string, parentId: string): string | never {
+        if (!parentId) {
+            // This will be the entry file
+            return moduleId;
+        }
+
+        const file = this.files.find(
+            f => f.path === resolve(dirname(parentId), moduleId)
+        );
+
+        if (!file) {
+            throw new Error("File could not be resolved.");
+        }
+
+        return file.path;
+    }
+};
+```
+
+Once the file has been resolved, we'll need tell our plugin how to load it.
+
+```js
+const cssPlugin = {
+    name: "css-plugin",
+    extensions: [".css"],
+    resolver(moduleId: string, parentId: string): string | never {
+        if (!parentId) {
+            // This will be the entry file
+            return moduleId;
+        }
+
+        const file = this.files.find(
+            f => f.path === resolve(dirname(parentId), moduleId)
+        );
+
+        if (!file) {
+            throw new Error("File could not be resolved.");
+        }
+
+        return file.path;
+    },
+    loader(moduleId: string): PluginLoaderResult | never {
+        const file = this.files.find(f => f.path === moduleId);
+
+        if (!file) {
+            throw new Error("File could not be loaded.");
+        }
+
+        return {
+            code: file.code
+        };
+    }
+};
+```
+
+There's one last step we need to do. Packager _treats every file as a JS file_ so to get CSS files, you have to "export" them as JS files and in order to do that, we can do something like this:
+
+```js
+// utils.ts
+
+export const addCssExport = (code: string) =>
+    `export default ` +
+    `function addStyles () {` +
+    `const tag = document.createElement('style');` +
+    `tag.type = 'text/css';` +
+    `tag.appendChild(document.createTextNode(\`${code}\`));` +
+    `document.head.appendChild(tag);` +
+    `} addStyles();`;
+```
+
+So Let's tie everything together and give this a go :)
+
+```js
+import { addCssExport } from "./utils";
+
+const cssPlugin = {
+    name: "css-plugin",
+    extensions: [".css"],
+    resolver(moduleId: string, parentId: string): string | never {
+        if (!parentId) {
+            // This will be the entry file
+            return moduleId;
+        }
+
+        const file = this.files.find(
+            f => f.path === resolve(dirname(parentId), moduleId)
+        );
+
+        if (!file) {
+            throw new Error("File could not be resolved.");
+        }
+
+        return file.path;
+    },
+    loader(moduleId: string): PluginLoaderResult | never {
+        const file = this.files.find(f => f.path === moduleId);
+
+        if (!file) {
+            throw new Error("File could not be loaded.");
+        }
+
+        return {
+            code: file.code
+        };
+    },
+    beforeBundle(code: string): string {
+        return addCssExport(code);
+    }
+};
+```
+
+Congratulations - you have created a pretty useful plugin so now let's register this sexy looking thing! :)
+
+## Registering your plugin
+
+Registering a plugin is super easy. If you have instantiated your plugin, you can do this:
+
+```js
+const packager = new Packager();
+
+const myPlugin = {
+    //...
+};
+
+packager.registerPlugin(myPlugin);
+```
+
+Check out the API reference for some additional information about properties and hooks.
+
+## API Reference
+
+### Properties
 
 #### name
 
@@ -75,7 +225,7 @@ const amazingPlugin = {
 };
 ```
 
-## Hooks
+### Hooks
 
 There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeBundle`.
 
@@ -173,5 +323,3 @@ const amazingPlugin = {
     }
 };
 ```
-
-## Registering your plugin
