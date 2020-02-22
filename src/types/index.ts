@@ -1,5 +1,6 @@
 import {
     Plugin,
+    SourceMap,
     ResolveIdHook as RollupResolveIdHook,
     ResolveIdResult as RollupResolveIdResult,
     LoadHook as RollupLoadHook,
@@ -61,14 +62,22 @@ export type PluginResolverResult =
     | null
     | void;
 export type PluginResolverHook = (
-    this: PluginContext,
+    this: PackagerContext,
     moduleId: string,
     parentId?: string
 ) => Promise<PluginResolverResult> | PluginResolverResult;
 
-export type PluginLoaderResult = { id: string } | string | null | void;
+export type PluginLoaderResult =
+    | {
+          code: string;
+          map?: string | SourceMap;
+          syntheticNamedExports?: boolean | null;
+      }
+    | string
+    | null
+    | void;
 export type PluginLoaderHook = (
-    this: PluginContext,
+    this: PackagerContext,
     moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 

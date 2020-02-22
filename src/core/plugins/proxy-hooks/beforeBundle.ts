@@ -2,8 +2,6 @@ import { PluginAPI, PackagerContext } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    if (!plugin.beforeBundle) return null;
-
     const canBeBeforeBundled = verifyExtensions(plugin.extensions);
     const checkIfFileIsAlreadyTranspiler = (path: string) =>
         context.transpileQueue.completed.find(f => f.path === path);

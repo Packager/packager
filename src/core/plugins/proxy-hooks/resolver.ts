@@ -2,8 +2,6 @@ import { PluginAPI, PackagerContext } from "packager/types";
 import verifyExtensions from "packager/shared/verify-extensions";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    if (!plugin.resolver) return null;
-
     const canBeResolved = verifyExtensions(plugin.extensions);
 
     const resolverFunction = async (moduleId: string, parentId?: string) => {

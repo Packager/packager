@@ -30,16 +30,14 @@ const vuePlugin = createPlugin({
 const testPlugin = createPlugin({
     name: "test-plugin",
     extensions: [".vue"],
-    resolver(moduleId: string, parentId?: string) {
-        console.log("here", moduleId);
-        // console.log(this);
-        return null;
-        // if () {
-        //     return moduleId;
-        // }
-    },
-    async beforeBundle(code: string) {
-        console.log(code);
+    async loader(moduleId: string) {
+        const file = this.files.find(f => f.path === moduleId);
+
+        if (file) {
+            return {
+                code: file.code
+            };
+        }
     }
 });
 export default class Packager {

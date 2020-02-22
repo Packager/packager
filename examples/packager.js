@@ -2849,8 +2849,6 @@ var handleBuildWarnings = (function (warning) {
 var createPlugin = function (args) { return args; };
 //# sourceMappingURL=create-plugin.js.map
 var resolverProxyHook = (function (plugin, context) {
-    if (!plugin.resolver)
-        return null;
     var canBeResolved = verifyExtensions(plugin.extensions);
     var resolverFunction = function (moduleId, parentId) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -2880,11 +2878,37 @@ var resolverProxyHook = (function (plugin, context) {
     });
 });
 //# sourceMappingURL=resolver.js.map
-var loaderProxyHook = (function (plugin, context) { });
+var loaderProxyHook = (function (plugin, context) {
+    var canBeLoaded = verifyExtensions(plugin.extensions);
+    var loaderFunction = function (moduleId) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (!canBeLoaded(moduleId))
+                return [2 /*return*/, null];
+            return [2 /*return*/, moduleId];
+        });
+    }); };
+    return new Proxy(loaderFunction, {
+        apply: function (target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function () {
+                var handledLoaderFunction;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
+                        case 1:
+                            handledLoaderFunction = _a.sent();
+                            if (!handledLoaderFunction) {
+                                return [2 /*return*/, Promise.resolve()];
+                            }
+                            return [4 /*yield*/, plugin.loader.bind(context)(argumentsList[0])];
+                        case 2: return [2 /*return*/, ((_a.sent()) || null)];
+                    }
+                });
+            });
+        }
+    });
+});
 //# sourceMappingURL=loader.js.map
 var transformProxyHook = (function (plugin, context) {
-    if (!plugin.transpiler)
-        return null;
     var transpilerName = plugin.name + "-transpiler";
     var canBeTransformed = verifyExtensions(plugin.extensions);
     var transformFunction = function (code, moduleId) { return __awaiter(void 0, void 0, void 0, function () {
@@ -2947,8 +2971,6 @@ var transformProxyHook = (function (plugin, context) {
 });
 //# sourceMappingURL=transform.js.map
 var beforeBundleProxyHook = (function (plugin, context) {
-    if (!plugin.beforeBundle)
-        return null;
     var canBeBeforeBundled = verifyExtensions(plugin.extensions);
     var checkIfFileIsAlreadyTranspiler = function (path) {
         return context.transpileQueue.completed.find(function (f) { return f.path === path; });
@@ -3022,7 +3044,7 @@ var transformPluginAsProxy = function (plugin, context) {
         propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { resolveId: resolverProxyHook(plugin, context) });
     }
     if (plugin.loader) {
-        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { load: loaderProxyHook() });
+        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { load: loaderProxyHook(plugin, context) });
     }
     if (plugin.transpiler) {
         propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { transform: transformProxyHook(plugin, context) });
@@ -3079,18 +3101,16 @@ var vuePlugin = createPlugin({
 var testPlugin = createPlugin({
     name: "test-plugin",
     extensions: [".vue"],
-    resolver: function (moduleId, parentId) {
-        console.log("here", moduleId);
-        // console.log(this);
-        return null;
-        // if () {
-        //     return moduleId;
-        // }
-    },
-    beforeBundle: function (code) {
+    loader: function (moduleId) {
         return __awaiter(this, void 0, void 0, function () {
+            var file;
             return __generator(this, function (_a) {
-                console.log(code);
+                file = this.files.find(function (f) { return f.path === moduleId; });
+                if (file) {
+                    return [2 /*return*/, {
+                            code: file.code
+                        }];
+                }
                 return [2 /*return*/];
             });
         });
@@ -3170,6 +3190,4 @@ var Packager = /** @class */ (function () {
         });
     };
     return Packager;
-}());
-//# sourceMappingURL=index.js.map
-return Packager;}());
+}());return Packager;}());

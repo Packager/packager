@@ -3,8 +3,6 @@ import { TransformationException } from "packager/exceptions";
 import verifyExtensions from "packager/shared/verify-extensions";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    if (!plugin.transpiler) return null;
-
     const transpilerName = `${plugin.name}-transpiler`;
     const canBeTransformed = verifyExtensions(plugin.extensions);
     const transformFunction = async (code: string, moduleId: string) => {
