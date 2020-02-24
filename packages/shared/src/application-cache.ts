@@ -1,4 +1,4 @@
-import { ApplicationCache } from "packager/types";
+import { ApplicationCache } from "../types";
 
 const isObject = (value: any) => {
     return value && typeof value === "object" && value.constructor === Object;

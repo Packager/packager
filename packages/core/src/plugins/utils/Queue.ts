@@ -4,14 +4,12 @@
  */
 
 import {
-    QueueSystem,
     QueueSystemScheduler,
     QueueSystemTaskOptions,
     QueueSystemTaskEntry,
-    QueueSystemCancellationToken,
     QueueSystemCancellablePromiseLike,
     QueueSystemSequentialTaskQueueOptions
-} from "packager/types";
+} from "../../../types";
 
 export let cancellationTokenReasons = {
     cancel: "Background queue has been cancelled.",
@@ -24,9 +22,9 @@ export let sequentialTaskQueueEvents = {
     timeout: "timeout"
 };
 
-export default class SequentialTaskQueue implements QueueSystem {
+export default class Queue {
     static defaultScheduler: QueueSystemScheduler = {
-        schedule: callback => setTimeout(<any>callback, 0)
+        schedule: callback => setTimeout(<(...args: any[]) => void>callback, 0)
     };
 
     public completed: any[] = [];
@@ -49,8 +47,7 @@ export default class SequentialTaskQueue implements QueueSystem {
         if (!options) options = {};
         this.defaultTimeout = options.timeout || this.defaultTimeout;
         this.name = "queue-system";
-        this.scheduler =
-            options.scheduler || SequentialTaskQueue.defaultScheduler;
+        this.scheduler = Queue.defaultScheduler;
     }
 
     push(
@@ -249,7 +246,3 @@ function noop() {}
 function isPromise(obj: any): obj is PromiseLike<any> {
     return obj && typeof obj.then === "function";
 }
-
-SequentialTaskQueue.defaultScheduler = {
-    schedule: callback => setTimeout(<(...args: any[]) => void>callback, 0)
-};

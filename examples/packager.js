@@ -3,7 +3,7 @@
 
     Packager v0.1.0
     @author baryla (Adrian Barylski)
-    @github https://github.com/baryla/pacakger
+    @github https://github.com/baryla/packager
 
     Released under the MIT License.
 */
@@ -21,31 +21,6 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 
 function __awaiter(thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -54,68 +29,6 @@ function __awaiter(thisArg, _arguments, P, generator) {
         function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
 }var isMergeableObject = function isMergeableObject(value) {
 	return isNonNullObject(value)
 		&& !isSpecial(value)
@@ -246,36 +159,33 @@ deepmerge.all = function deepmergeAll(array, options) {
 
 var deepmerge_1 = deepmerge;
 
-var cjs = deepmerge_1;var isObject = function (value) {
+var cjs = deepmerge_1;const isObject = (value) => {
     return value && typeof value === "object" && value.constructor === Object;
 };
-var cacheFactory = function () {
-    var cache = new Map();
+const cacheFactory = () => {
+    const cache = new Map();
     return {
-        get: function (name) {
+        get(name) {
             return cache.get(name);
         },
-        getAll: function () {
-            return Array.from(cache.entries()).reduce(function (acc, val) {
-                var _a;
-                return (__assign(__assign({}, acc), (_a = {}, _a[val[0]] = val[1] || null, _a)));
-            }, {});
+        getAll() {
+            return Array.from(cache.entries()).reduce((acc, val) => (Object.assign(Object.assign({}, acc), { [val[0]]: val[1] || null })), {});
         },
-        set: function (name, value) {
+        set(name, value) {
             if (name == null || name == "") {
                 return false;
             }
             cache.set(name, value);
             return this.has(name);
         },
-        has: function (name) {
+        has(name) {
             return Boolean(this.get(name));
         },
-        update: function (name, value) {
-            var found = this.get(name);
+        update(name, value) {
+            const found = this.get(name);
             if (found) {
                 if (isObject(value)) {
-                    this.set(name, __assign(__assign({}, found), value));
+                    this.set(name, Object.assign(Object.assign({}, found), value));
                     return this.has(name);
                 }
                 else {
@@ -284,30 +194,21 @@ var cacheFactory = function () {
                 }
             }
         },
-        delete: function (name) {
+        delete(name) {
             return cache.delete(name);
         },
-        clear: function () {
+        clear() {
             cache.clear();
         }
     };
-};
-//# sourceMappingURL=application-cache.js.map
-var normalizeBundleOptions = (function (bundleOptions) {
+};var normalizeBundleOptions = (bundleOptions) => {
     return {
         dependencies: convertKeysToLowercase(bundleOptions.dependencies)
     };
-});
-var convertKeysToLowercase = function (dependencies) {
-    return dependencies
-        ? Object.keys(dependencies || {}).reduce(function (acc, curr) {
-            var _a;
-            return (__assign(__assign({}, acc), (_a = {}, _a[curr.toLowerCase()] = dependencies[curr], _a)));
-        }, {})
-        : {};
 };
-//# sourceMappingURL=normalize-bundle-options.js.map
-/**
+const convertKeysToLowercase = (dependencies) => dependencies
+    ? Object.keys(dependencies || {}).reduce((acc, curr) => (Object.assign(Object.assign({}, acc), { [curr.toLowerCase()]: dependencies[curr] })), {})
+    : {};/**
  * This is a slightly modified version of sequential-task-queue by BalassaMarton.
  * Original repo: https://github.com/BalassaMarton/sequential-task-queue
  */
@@ -316,7 +217,7 @@ var convertKeysToLowercase = function (dependencies) {
  * to one of these values when cancelling a task for a reason other than the user code calling
  * {@link CancellationToken.cancel}.
  */
-var cancellationTokenReasons = {
+let cancellationTokenReasons = {
     /** Used when the task was cancelled in response to a call to {@link SequentialTaskQueue.cancel} */
     cancel: "Background queue has been cancelled.",
     /** Used when the task was cancelled after its timeout has passed */
@@ -325,7 +226,7 @@ var cancellationTokenReasons = {
 /**
  * Standard event names used by {@link SequentialTaskQueue}
  */
-var sequentialTaskQueueEvents = {
+let sequentialTaskQueueEvents = {
     drained: "drained",
     error: "error",
     timeout: "timeout"
@@ -333,12 +234,12 @@ var sequentialTaskQueueEvents = {
 /**
  * FIFO task queue to run tasks in predictable order, without concurrency.
  */
-var SequentialTaskQueue = /** @class */ (function () {
+class SequentialTaskQueue {
     /**
      * Creates a new instance of {@link SequentialTaskQueue}
      * @param options - Configuration options for the task queue.
      */
-    function SequentialTaskQueue(options) {
+    constructor(options) {
         this.completed = [];
         this.failed = [];
         this.queue = [];
@@ -353,14 +254,10 @@ var SequentialTaskQueue = /** @class */ (function () {
         this.scheduler =
             options.scheduler || SequentialTaskQueue.defaultScheduler;
     }
-    Object.defineProperty(SequentialTaskQueue.prototype, "isClosed", {
-        /** Indicates if the queue has been closed. Calling {@link SequentialTaskQueue.push} on a closed queue will result in an exception. */
-        get: function () {
-            return this._isClosed;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /** Indicates if the queue has been closed. Calling {@link SequentialTaskQueue.push} on a closed queue will result in an exception. */
+    get isClosed() {
+        return this._isClosed;
+    }
     /**
      * Adds a new task to the queue.
      * @param {string} name - The name of the task being performed
@@ -368,12 +265,11 @@ var SequentialTaskQueue = /** @class */ (function () {
      * @param {TaskOptions} options - An object containing arguments and options for the task.
      * @returns {Promise<any>>} A promise that can be used to await or cancel the task.
      */
-    SequentialTaskQueue.prototype.push = function (name, task, options) {
-        var _this = this;
+    push(name, task, options) {
         if (this._isClosed)
-            throw new Error(this.name + " has been previously closed");
-        var taskEntry = {
-            name: name,
+            throw new Error(`${this.name} has been previously closed`);
+        let taskEntry = {
+            name,
             callback: task,
             args: options && options.args
                 ? Array.isArray(options.args)
@@ -384,103 +280,92 @@ var SequentialTaskQueue = /** @class */ (function () {
                 ? options.timeout
                 : this.defaultTimeout,
             cancellationToken: {
-                cancel: function (reason) { return _this.cancelTask(taskEntry, reason); }
+                cancel: (reason) => this.cancelTask(taskEntry, reason)
             },
             resolve: undefined,
             reject: undefined
         };
         taskEntry.args.push(taskEntry.cancellationToken);
         this.queue.push(taskEntry);
-        this.scheduler.schedule(function () { return _this.next(); });
-        var result = new Promise(function (resolve, reject) {
+        this.scheduler.schedule(() => this.next());
+        let result = new Promise((resolve, reject) => {
             taskEntry.resolve = resolve;
             taskEntry.reject = reject;
         });
-        result.cancel = function (reason) {
-            return taskEntry.cancellationToken.cancel(reason);
-        };
+        result.cancel = (reason) => taskEntry.cancellationToken.cancel(reason);
         return this.wait();
-    };
+    }
     /**
      * Cancels the currently running task (if any), and clears the queue.
      * @returns {Promise} A Promise that is fulfilled when the queue is empty and the current task has been cancelled.
      */
-    SequentialTaskQueue.prototype.cancel = function () {
-        var _this = this;
+    cancel() {
         if (this.currentTask)
             this.cancelTask(this.currentTask, cancellationTokenReasons.cancel);
-        var queue = this.queue.splice(0);
+        const queue = this.queue.splice(0);
         // Cancel all and emit a drained event if there were tasks waiting in the queue
         if (queue.length) {
-            queue.forEach(function (task) {
-                return _this.cancelTask(task, cancellationTokenReasons.cancel);
-            });
+            queue.forEach(task => this.cancelTask(task, cancellationTokenReasons.cancel));
             this.emit(sequentialTaskQueueEvents.drained);
         }
         return this.wait();
-    };
+    }
     /**
      * Closes the queue, preventing new tasks to be added.
      * Any calls to {@link SequentialTaskQueue.push} after closing the queue will result in an exception.
      * @param {boolean} cancel - Indicates that the queue should also be cancelled.
      * @returns {Promise} A Promise that is fulfilled when the queue has finished executing remaining tasks.
      */
-    SequentialTaskQueue.prototype.close = function (cancel) {
+    close(cancel) {
         if (!this._isClosed) {
             this._isClosed = true;
             if (cancel)
                 return this.cancel();
         }
         return this.wait();
-    };
+    }
     /**
      * Returns a promise that is fulfilled when the queue is empty.
      * @returns {Promise}
      */
-    SequentialTaskQueue.prototype.wait = function () {
-        var _this = this;
+    wait() {
         if (!this.currentTask && this.queue.length === 0)
             return Promise.resolve();
-        return new Promise(function (resolve) {
-            _this.waiters.push(resolve);
+        return new Promise(resolve => {
+            this.waiters.push(resolve);
         });
-    };
+    }
     /**
      * Adds an event handler for a named event.
      * @param {string} evt - Event name. See the readme for a list of valid events.
      * @param {Function} handler - Event handler. When invoking the handler, the queue will set itself as the `this` argument of the call.
      */
-    SequentialTaskQueue.prototype.on = function (evt, handler) {
+    on(evt, handler) {
         this.events = this.events || {};
         (this.events[evt] || (this.events[evt] = [])).push(handler);
-    };
+    }
     /**
      * Adds a single-shot event handler for a named event.
      * @param {string} evt - Event name. See the readme for a list of valid events.
      * @param {Function} handler - Event handler. When invoking the handler, the queue will set itself as the `this` argument of the call.
      */
-    SequentialTaskQueue.prototype.once = function (evt, handler) {
-        var _this = this;
-        var cb = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            _this.removeListener(evt, cb);
-            handler.apply(_this, args);
+    once(evt, handler) {
+        const cb = (...args) => {
+            this.removeListener(evt, cb);
+            handler.apply(this, args);
         };
         this.on(evt, cb);
-    };
+    }
     /**
      * Removes an event handler.
      * @param {string} evt - Event name
      * @param {Function} handler - Event handler to be removed
      */
-    SequentialTaskQueue.prototype.removeListener = function (evt, handler) {
+    removeListener(evt, handler) {
         if (this.events) {
-            var list = this.events[evt];
+            let list = this.events[evt];
             if (list) {
-                var i = 0;
+                let i = 0;
                 while (i < list.length) {
                     if (list[i] === handler)
                         list.splice(i, 1);
@@ -489,59 +374,53 @@ var SequentialTaskQueue = /** @class */ (function () {
                 }
             }
         }
-    };
+    }
     /** @see {@link SequentialTaskQueue.removeListener} */
-    SequentialTaskQueue.prototype.off = function (evt, handler) {
+    off(evt, handler) {
         return this.removeListener(evt, handler);
-    };
-    SequentialTaskQueue.prototype.emit = function (evt) {
-        var _this = this;
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
+    }
+    emit(evt, ...args) {
         if (this.events && this.events[evt])
             try {
-                this.events[evt].forEach(function (fn) { return fn.apply(_this, args); });
+                this.events[evt].forEach(fn => fn.apply(this, args));
             }
             catch (e) {
-                console.error(this.name + ": Exception in '" + evt + "' event handler", e);
+                console.error(`${this.name}: Exception in '${evt}' event handler`, e);
             }
-    };
-    SequentialTaskQueue.prototype.next = function () {
-        var _this = this;
+    }
+    next() {
         // Try running the next task, if not currently running one
         if (!this.currentTask) {
-            var task_1 = this.queue.shift();
+            let task = this.queue.shift();
             // skip cancelled tasks
-            while (task_1 && task_1.cancellationToken.cancelled)
-                task_1 = this.queue.shift();
-            if (task_1) {
+            while (task && task.cancellationToken.cancelled)
+                task = this.queue.shift();
+            if (task) {
                 try {
-                    this.currentTask = task_1;
-                    if (task_1.timeout) {
-                        task_1.timeoutHandle = setTimeout(function () {
+                    this.currentTask = task;
+                    if (task.timeout) {
+                        task.timeoutHandle = setTimeout(() => {
                             var _a, _b;
-                            _this.emit(sequentialTaskQueueEvents.timeout);
-                            _this.cancelTask(task_1, "The task took longer than " + ((_a = task_1) === null || _a === void 0 ? void 0 : _a.timeout) + "ms and timed out in " + ((_b = task_1) === null || _b === void 0 ? void 0 : _b.name) + ".");
-                        }, task_1.timeout);
+                            this.emit(sequentialTaskQueueEvents.timeout);
+                            this.cancelTask(task, `The task took longer than ${(_a = task) === null || _a === void 0 ? void 0 : _a.timeout}ms and timed out in ${(_b = task) === null || _b === void 0 ? void 0 : _b.name}.`);
+                        }, task.timeout);
                     }
-                    var res = task_1.callback.apply(undefined, task_1.args);
+                    let res = task.callback.apply(undefined, task.args);
                     if (res && isPromise(res)) {
-                        res.then(function (result) {
-                            task_1.result = result;
-                            _this.doneTask(task_1);
-                        }, function (err) {
-                            _this.doneTask(task_1, err || "Task failed.");
+                        res.then(result => {
+                            task.result = result;
+                            this.doneTask(task);
+                        }, err => {
+                            this.doneTask(task, err || "Task failed.");
                         });
                     }
                     else {
-                        task_1.result = res;
-                        this.doneTask(task_1);
+                        task.result = res;
+                        this.doneTask(task);
                     }
                 }
                 catch (e) {
-                    this.doneTask(task_1, e);
+                    this.doneTask(task, e);
                 }
             }
             else {
@@ -549,14 +428,13 @@ var SequentialTaskQueue = /** @class */ (function () {
                 this.callWaiters();
             }
         }
-    };
-    SequentialTaskQueue.prototype.cancelTask = function (task, reason) {
+    }
+    cancelTask(task, reason) {
         task.cancellationToken.cancelled = true;
         task.cancellationToken.reason = reason;
         this.doneTask(task);
-    };
-    SequentialTaskQueue.prototype.doneTask = function (task, error) {
-        var _this = this;
+    }
+    doneTask(task, error) {
         var _a, _b, _c;
         if (task.timeoutHandle)
             clearTimeout(task.timeoutHandle);
@@ -584,29 +462,24 @@ var SequentialTaskQueue = /** @class */ (function () {
                 this.callWaiters();
             }
             else
-                this.scheduler.schedule(function () { return _this.next(); });
+                this.scheduler.schedule(() => this.next());
         }
-    };
-    SequentialTaskQueue.prototype.callWaiters = function () {
-        var waiters = this.waiters.splice(0);
-        waiters.forEach(function (waiter) { return waiter(); });
-    };
-    SequentialTaskQueue.defaultScheduler = {
-        schedule: function (callback) { return setTimeout(callback, 0); }
-    };
-    return SequentialTaskQueue;
-}());
+    }
+    callWaiters() {
+        let waiters = this.waiters.splice(0);
+        waiters.forEach(waiter => waiter());
+    }
+}
+SequentialTaskQueue.defaultScheduler = {
+    schedule: callback => setTimeout(callback, 0)
+};
 function noop() { }
 function isPromise(obj) {
     return obj && typeof obj.then === "function";
 }
 SequentialTaskQueue.defaultScheduler = {
-    schedule: typeof setImmediate === "function"
-        ? function (callback) { return setImmediate(callback); }
-        : function (callback) { return setTimeout(callback, 0); }
-};
-//# sourceMappingURL=queue-system.js.map
-var absolutePath = /^(?:\/|(?:[A-Za-z]:)?[\\|\/])/;
+    schedule: callback => setTimeout(callback, 0)
+};const absolutePath = /^(?:\/|(?:[A-Za-z]:)?[\\|\/])/;
 function isAbsolute(path) {
     return absolutePath.test(path);
 }
@@ -614,36 +487,32 @@ function basename(path) {
     return path.split(/(\/|\\)/).pop();
 }
 function dirname(path) {
-    var match = /(\/|\\)[^\/\\]*$/.exec(path);
+    const match = /(\/|\\)[^\/\\]*$/.exec(path);
     if (!match)
         return ".";
-    var dir = path.slice(0, -match[0].length);
+    const dir = path.slice(0, -match[0].length);
     // If `dir` is the empty string, we're at root.
     return dir ? dir : "/";
 }
 function extname(path) {
-    var bname = basename(path);
+    const bname = basename(path);
     if (!bname)
         return "";
-    var match = /\.[^\.]+$/.exec(bname);
+    const match = /\.[^\.]+$/.exec(bname);
     if (!match)
         return "";
     return match[0];
 }
-function resolve() {
-    var paths = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        paths[_i] = arguments[_i];
-    }
-    var resolvedParts = paths.shift().split(/[\/\\]/);
-    paths.forEach(function (path) {
+function resolve(...paths) {
+    let resolvedParts = paths.shift().split(/[\/\\]/);
+    paths.forEach(path => {
         if (isAbsolute(path)) {
             resolvedParts = path.split(/[\/\\]/);
         }
         else {
-            var parts = path.split(/[\/\\]/);
+            const parts = path.split(/[\/\\]/);
             while (parts[0] === "." || parts[0] === "..") {
-                var part = parts.shift();
+                const part = parts.shift();
                 if (part === "..") {
                     resolvedParts.pop();
                 }
@@ -656,113 +525,100 @@ function resolve() {
 function normalize(path) {
     return path.replace(/\/\//gi, "/");
 }
-var sep = "/";
-//# sourceMappingURL=path.js.map
-var isModuleExternal = (function (modulePath) {
-    return !modulePath.startsWith(".") && !modulePath.startsWith("/");
-});
-//# sourceMappingURL=is-module-external.js.map
-var resolveRelative = function (childPath, parentPath, context, pathOnly) {
-    if (pathOnly === void 0) { pathOnly = true; }
-    var retryFileFind = function (path) {
-        return context.files.find(function (f) {
-            return f.path === path + "/index.js" ||
-                f.path === path + "/index.ts" ||
-                f.path === path + "/index.jsx" ||
-                f.path === path + "/index.tsx" ||
-                f.path === path + ".js" ||
-                f.path === path + ".ts" ||
-                f.path === path + ".jsx" ||
-                f.path === path + ".tsx";
-        }) || null;
-    };
-    var resolved = resolve(dirname(parentPath), childPath).replace(/^\.\//, "");
-    var foundFile = context.files.find(function (f) { return f.path === resolved; });
+const sep = "/";var isModuleExternal = (modulePath) => !modulePath.startsWith(".") && !modulePath.startsWith("/");const resolveRelative = (childPath, parentPath, context, pathOnly = true) => {
+    const retryFileFind = (path) => context.files.find(f => f.path === `${path}/index.js` ||
+        f.path === `${path}/index.ts` ||
+        f.path === `${path}/index.jsx` ||
+        f.path === `${path}/index.tsx` ||
+        f.path === `${path}.js` ||
+        f.path === `${path}.ts` ||
+        f.path === `${path}.jsx` ||
+        f.path === `${path}.tsx`) || null;
+    const resolved = resolve(dirname(parentPath), childPath).replace(/^\.\//, "");
+    const foundFile = context.files.find(f => f.path === resolved);
     if (foundFile)
         return pathOnly ? foundFile.path : foundFile;
-    var absolute = resolve(dirname(parentPath), childPath);
-    var retriedFile = retryFileFind(absolute);
+    const absolute = resolve(dirname(parentPath), childPath);
+    const retriedFile = retryFileFind(absolute);
     if (!retriedFile)
         return null;
     return pathOnly ? retriedFile.path || null : retriedFile || null;
 };
-var resolveRelativeExternal = function (childPath, parentPath, context) {
+const resolveRelativeExternal = (childPath, parentPath, context) => {
     if (!parentPath.startsWith("@")) {
         if (!!~parentPath.indexOf("/")) {
-            var cachedParent = context.cache.dependencies.get(parentPath);
+            const cachedParent = context.cache.dependencies.get(parentPath);
             if (cachedParent) {
-                var relativeExternalUrl = new URL(cachedParent.meta.url)
+                const relativeExternalUrl = new URL(cachedParent.meta.url)
                     .pathname;
                 return resolve(dirname(relativeExternalUrl), childPath);
             }
-            return resolve(dirname("/" + parentPath), childPath).replace(/^\.\//, "");
+            return resolve(dirname(`/${parentPath}`), childPath).replace(/^\.\//, "");
         }
-        return resolve("/" + parentPath, childPath);
+        return resolve(`/${parentPath}`, childPath);
     }
-    throw new Error("Module " + childPath + " has a parent " + parentPath + " with @.");
+    throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
 };
 function dependencyResolver(context) {
     return {
         name: "packager::resolver::dependency-resolver",
-        resolveId: function (modulePath, parent) {
+        resolveId(modulePath, parent) {
             if (!parent)
                 return modulePath;
             if (isModuleExternal(modulePath))
                 return modulePath;
-            var relativePath = (resolveRelative(modulePath, parent, context));
+            const relativePath = (resolveRelative(modulePath, parent, context));
             if (relativePath)
                 return relativePath;
             if (!parent.startsWith(".") ||
                 !parent.startsWith("/") ||
                 isModuleExternal(parent)) {
-                var pkgPath = resolveRelativeExternal(modulePath, parent, context);
+                const pkgPath = resolveRelativeExternal(modulePath, parent, context);
                 return {
                     id: pkgPath.substr(1)
                 };
             }
-            throw new Error("Could not resolve '" + modulePath + "' from '" + parent + "'");
+            throw new Error(`Could not resolve '${modulePath}' from '${parent}'`);
         }
     };
-}
-//# sourceMappingURL=dependency-resolver.js.map
-/**
+}/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
-var operators = {
-    "==": function (x) { return equals(x.left, x.right, false); },
-    "!=": function (x) { return not(operators["=="](x)); },
-    "===": function (x) { return equals(x.left, x.right, true); },
-    "!==": function (x) { return not(operators["==="](x)); },
-    "!": function (x) { return isFalsy(x.argument); },
-    "&&": function (x) { return isTruthy(x.left) && isTruthy(x.right); },
-    "||": function (x) { return isTruthy(x.left) || isTruthy(x.right); }
+const operators = {
+    "==": (x) => equals(x.left, x.right, false),
+    "!=": (x) => not(operators["=="](x)),
+    "===": (x) => equals(x.left, x.right, true),
+    "!==": (x) => not(operators["==="](x)),
+    "!": (x) => isFalsy(x.argument),
+    "&&": (x) => isTruthy(x.left) && isTruthy(x.right),
+    "||": (x) => isTruthy(x.left) || isTruthy(x.right)
 };
-var extractors = {
-    Identifier: function (names, node) {
+const extractors = {
+    Identifier(names, node) {
         names.push(node.name);
     },
-    ObjectPattern: function (names, node) {
-        node.properties.forEach(function (prop) {
+    ObjectPattern(names, node) {
+        node.properties.forEach((prop) => {
             getExtractor(prop.value.type)(names, prop.value);
         });
     },
-    ArrayPattern: function (names, node) {
-        node.elements.forEach(function (element) {
+    ArrayPattern(names, node) {
+        node.elements.forEach((element) => {
             if (!element)
                 return;
             getExtractor(element.type)(names, element);
         });
     },
-    RestElement: function (names, node) {
+    RestElement(names, node) {
         getExtractor(node.argument.type)(names, node.argument);
     },
-    AssignmentPattern: function (names, node) {
+    AssignmentPattern(names, node) {
         getExtractor(node.left.type)(names, node.left);
     },
-    MemberExpression: function () { }
+    MemberExpression() { }
 };
-var flatten = function (node) {
-    var parts = [];
+const flatten = (node) => {
+    const parts = [];
     while (node.type === "MemberExpression") {
         if (node.computed)
             return null;
@@ -772,17 +628,17 @@ var flatten = function (node) {
     }
     if (node.type !== "Identifier")
         return null;
-    var name = node.name;
+    const { name } = node;
     parts.unshift(name);
-    return { name: name, keypath: parts.join(".") };
+    return { name, keypath: parts.join(".") };
 };
-var getExtractor = function (type) {
-    var extractor = extractors[type];
+const getExtractor = (type) => {
+    const extractor = extractors[type];
     if (!extractor)
-        throw new SyntaxError(type + " pattern not supported.");
+        throw new SyntaxError(`${type} pattern not supported.`);
     return extractor;
 };
-var isTruthy = function (node) {
+const isTruthy = (node) => {
     if (node.type === "Literal")
         return !!node.value;
     if (node.type === "ParenthesizedExpression")
@@ -791,13 +647,13 @@ var isTruthy = function (node) {
         return operators[node.operator](node);
     return undefined;
 };
-var isFalsy = function (node) {
+const isFalsy = (node) => {
     return not(isTruthy(node));
 };
-var not = function (value) {
+const not = (value) => {
     return value === undefined ? value : !value;
 };
-var equals = function (a, b, strict) {
+const equals = (a, b, strict) => {
     if (a.type !== b.type)
         return undefined;
     // eslint-disable-next-line eqeqeq
@@ -805,7 +661,7 @@ var equals = function (a, b, strict) {
         return strict ? a.value === b.value : a.value == b.value;
     return undefined;
 };
-var isReference = function (node, parent) {
+const isReference = (node, parent) => {
     if (node.type === "MemberExpression") {
         return !node.computed && isReference(node.object, node);
     }
@@ -837,9 +693,7 @@ var isReference = function (node, parent) {
         }
     }
     return false;
-};
-//# sourceMappingURL=ast-utils.js.map
-function walk(ast, { enter, leave }) {
+};function walk(ast, { enter, leave }) {
 	return visit(ast, null, enter, leave);
 }
 
@@ -964,69 +818,84 @@ function visit(
 }/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
-var PROXY_SUFFIX = "?commonjs-proxy";
-var getProxyId = function (id) { return "\0" + id + PROXY_SUFFIX; };
-var getIdFromProxyId = function (proxyId) {
-    return proxyId.slice(1, -PROXY_SUFFIX.length);
-};
-var EXTERNAL_SUFFIX = "?commonjs-external";
-var getExternalProxyId = function (id) { return "\0" + id + EXTERNAL_SUFFIX; };
-var getIdFromExternalProxyId = function (proxyId) {
-    return proxyId.slice(1, -EXTERNAL_SUFFIX.length);
-};
-var HELPERS_ID = "\0commonjsHelpers.js";
+const PROXY_SUFFIX = "?commonjs-proxy";
+const getProxyId = (id) => `\0${id}${PROXY_SUFFIX}`;
+const getIdFromProxyId = (proxyId) => proxyId.slice(1, -PROXY_SUFFIX.length);
+const EXTERNAL_SUFFIX = "?commonjs-external";
+const getExternalProxyId = (id) => `\0${id}${EXTERNAL_SUFFIX}`;
+const getIdFromExternalProxyId = (proxyId) => proxyId.slice(1, -EXTERNAL_SUFFIX.length);
+const HELPERS_ID = "\0commonjsHelpers.js";
 // `x['default']` is used instead of `x.default` for backward compatibility with ES3 browsers.
 // Minifiers like uglify will usually transpile it back if compatibility with ES3 is not enabled.
-var HELPERS = "\nexport var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};\n\nexport function commonjsRequire () {\n    throw new Error('Dynamic requires are not currently supported.');\n}\n\nexport function unwrapExports (x) {\n    return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;\n}\n\nexport function createCommonjsModule(fn, module) {\n    return module = { exports: {} }, fn(module, module.exports), module.exports;\n}\n\nexport function getCjsExportFromNamespace (n) {\n    return n && n['default'] || n;\n}\n\nexport default {\n    commonjsRequire,\n    unwrapExports,\n    createCommonjsModule,\n    getCjsExportFromNamespace\n}";
-var extractAssignedNames = function (param) {
-    var names = [];
+const HELPERS = `
+export var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+export function commonjsRequire () {
+    throw new Error('Dynamic requires are not currently supported.');
+}
+
+export function unwrapExports (x) {
+    return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+export function createCommonjsModule(fn, module) {
+    return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+export function getCjsExportFromNamespace (n) {
+    return n && n['default'] || n;
+}
+
+export default {
+    commonjsRequire,
+    unwrapExports,
+    createCommonjsModule,
+    getCjsExportFromNamespace
+}`;
+const extractAssignedNames = (param) => {
+    const names = [];
     extractors[param.type](names, param);
     return names;
 };
-var blockDeclarations = {
+const blockDeclarations = {
     const: true,
     let: true
 };
-var Scope = /** @class */ (function () {
-    function Scope(options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
+class Scope {
+    constructor(options = {}) {
         this.parent = options.parent;
         this.isBlockScope = !!options.block;
         this.declarations = Object.create(null);
         if (options.params) {
-            options.params.forEach(function (param) {
-                extractAssignedNames(param).forEach(function (name) {
-                    _this.declarations[name] = true;
+            options.params.forEach((param) => {
+                extractAssignedNames(param).forEach((name) => {
+                    this.declarations[name] = true;
                 });
             });
         }
     }
-    Scope.prototype.addDeclaration = function (node, isBlockDeclaration, isVar) {
-        var _this = this;
+    addDeclaration(node, isBlockDeclaration, isVar) {
         if (!isBlockDeclaration && this.isBlockScope) {
             // it's a `var` or function node, and this
             // is a block scope, so we need to go up
             this.parent.addDeclaration(node, isBlockDeclaration, isVar);
         }
         else if (node.id) {
-            extractAssignedNames(node.id).forEach(function (name) {
-                _this.declarations[name] = true;
+            extractAssignedNames(node.id).forEach((name) => {
+                this.declarations[name] = true;
             });
         }
-    };
-    Scope.prototype.contains = function (name) {
+    }
+    contains(name) {
         return (this.declarations[name] ||
             (this.parent ? this.parent.contains(name) : false));
-    };
-    return Scope;
-}());
-var attachScopes = function (ast, propertyName) {
-    if (propertyName === void 0) { propertyName = "scope"; }
-    var scope = new Scope();
+    }
+}
+const attachScopes = (ast, propertyName = "scope") => {
+    let scope = new Scope();
     walk(ast, {
-        enter: function (n, parent) {
-            var node = n;
+        enter(n, parent) {
+            const node = n;
             // function foo () {...}
             // class Foo {...}
             if (/(Function|Class)Declaration/.test(node.type)) {
@@ -1034,20 +903,20 @@ var attachScopes = function (ast, propertyName) {
             }
             // var foo = 1
             if (node.type === "VariableDeclaration") {
-                var kind = node.kind;
-                var isBlockDeclaration_1 = blockDeclarations[kind];
+                const { kind } = node;
+                const isBlockDeclaration = blockDeclarations[kind];
                 // don't add const/let declarations in the body of a for loop #113
-                var parentType = parent ? parent.type : "";
-                if (!(isBlockDeclaration_1 && /ForOfStatement/.test(parentType))) {
-                    node.declarations.forEach(function (declaration) {
-                        scope.addDeclaration(declaration, isBlockDeclaration_1, true);
+                const parentType = parent ? parent.type : "";
+                if (!(isBlockDeclaration && /ForOfStatement/.test(parentType))) {
+                    node.declarations.forEach((declaration) => {
+                        scope.addDeclaration(declaration, isBlockDeclaration, true);
                     });
                 }
             }
-            var newScope;
+            let newScope;
             // create new function scope
             if (/Function/.test(node.type)) {
-                var func = node;
+                const func = node;
                 newScope = new Scope({
                     parent: scope,
                     block: false,
@@ -1083,55 +952,51 @@ var attachScopes = function (ast, propertyName) {
                 scope = newScope;
             }
         },
-        leave: function (n) {
-            var node = n;
+        leave(n) {
+            const node = n;
             if (node[propertyName])
                 scope = scope.parent;
         }
     });
     return scope;
 };
-var reservedWords = "break case class catch const continue debugger default delete do else export extends finally for function if import in instanceof let new return super switch this throw try typeof var void while with yield enum await implements package protected static interface private public";
-var builtins = "arguments Infinity NaN undefined null true false eval uneval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent escape unescape Object Function Boolean Symbol Error EvalError InternalError RangeError ReferenceError SyntaxError TypeError URIError Number Math Date String RegExp Array Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array Map Set WeakMap WeakSet SIMD ArrayBuffer DataView JSON Promise Generator GeneratorFunction Reflect Proxy Intl";
-var forbiddenIdentifiers = new Set((reservedWords + " " + builtins).split(" "));
+const reservedWords = "break case class catch const continue debugger default delete do else export extends finally for function if import in instanceof let new return super switch this throw try typeof var void while with yield enum await implements package protected static interface private public";
+const builtins = "arguments Infinity NaN undefined null true false eval uneval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent escape unescape Object Function Boolean Symbol Error EvalError InternalError RangeError ReferenceError SyntaxError TypeError URIError Number Math Date String RegExp Array Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array Map Set WeakMap WeakSet SIMD ArrayBuffer DataView JSON Promise Generator GeneratorFunction Reflect Proxy Intl";
+const forbiddenIdentifiers = new Set(`${reservedWords} ${builtins}`.split(" "));
 forbiddenIdentifiers.add("");
-var makeLegalIdentifier = function (str) {
-    var identifier = str
-        .replace(/-(\w)/g, function (_, letter) { return letter.toUpperCase(); })
+const makeLegalIdentifier = (str) => {
+    let identifier = str
+        .replace(/-(\w)/g, (_, letter) => letter.toUpperCase())
         .replace(/[^$_a-zA-Z0-9]/g, "_");
     if (/\d/.test(identifier[0]) || forbiddenIdentifiers.has(identifier)) {
-        identifier = "_" + identifier;
+        identifier = `_${identifier}`;
     }
     return identifier || "_";
 };
-var getName = function (id) {
-    var name = makeLegalIdentifier(basename("" + id + extname(id)));
+const getName = (id) => {
+    const name = makeLegalIdentifier(basename(`${id}${extname(id)}`));
     if (name !== "index") {
         return name;
     }
-    var segments = dirname(id).split(sep);
+    const segments = dirname(id).split(sep);
     return makeLegalIdentifier(segments[segments.length - 1]);
-};
-//# sourceMappingURL=helpers.js.map
-/**
+};/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 function getCandidatesForExtension(resolved, extension) {
-    return [resolved + extension, "" + resolved + sep + "index" + extension];
+    return [resolved + extension, `${resolved}${sep}index${extension}`];
 }
 function getCandidates(resolved, extensions) {
-    return extensions.reduce(function (paths, extension) {
-        return paths.concat(getCandidatesForExtension(resolved, extension));
-    }, [resolved]);
+    return extensions.reduce((paths, extension) => paths.concat(getCandidatesForExtension(resolved, extension)), [resolved]);
 }
 function commonjsResolver(context) {
-    var extensions = [".js"];
+    const extensions = [".js"];
     function resolveExtensions(importee, importer) {
         if (importee[0] !== "." || !importer)
             return null;
-        var resolved = resolve(dirname(importer), importee);
-        var candidates = getCandidates(resolved, extensions);
-        for (var i = 0; i < candidates.length; i += 1) {
+        const resolved = resolve(dirname(importer), importee);
+        const candidates = getCandidates(resolved, extensions);
+        for (let i = 0; i < candidates.length; i += 1) {
             try {
                 console.log("found candidate!");
             }
@@ -1143,8 +1008,8 @@ function commonjsResolver(context) {
     }
     return {
         name: "packager::resolver::commonjs-resolver",
-        resolveId: function (importee, importer) {
-            var isProxyModule = importee.endsWith(PROXY_SUFFIX);
+        resolveId(importee, importer) {
+            const isProxyModule = importee.endsWith(PROXY_SUFFIX);
             if (isProxyModule) {
                 importee = getIdFromProxyId(importee);
             }
@@ -1158,7 +1023,7 @@ function commonjsResolver(context) {
                 importer = getIdFromProxyId(importer);
             }
             // @ts-ignore
-            return this.resolve(importee, importer, { skipSelf: true }).then(function (resolved) {
+            return this.resolve(importee, importer, { skipSelf: true }).then((resolved) => {
                 if (!resolved) {
                     resolved = resolveExtensions(importee, importer);
                 }
@@ -1179,109 +1044,102 @@ function commonjsResolver(context) {
             });
         }
     };
-}
-//# sourceMappingURL=commonjs-resolver.js.map
-var resolvers = (function (context) { return [
+}var resolvers = (context) => [
     commonjsResolver(),
     dependencyResolver(context)
-]; });
-//# sourceMappingURL=index.js.map
-var verifyExtensions = (function (extensions) {
-    var regex = new RegExp("\\" + extensions.join("$|\\") + "$", "i");
-    return function (path, ignoreExternal) {
-        if (ignoreExternal === void 0) { ignoreExternal = true; }
-        var external = isModuleExternal(path);
+];var verifyExtensions = (extensions) => {
+    const regex = new RegExp(`\\${extensions.join("$|\\")}$`, "i");
+    return (path, ignoreExternal = true) => {
+        const external = isModuleExternal(path);
         return (regex.test(path) &&
             ((external && !ignoreExternal) || !external ? true : false));
     };
-});
-//# sourceMappingURL=verify-extensions.js.map
-/**
+};/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
-var blacklist = { __esModule: true };
-var exportsPattern = /^(?:module\.)?exports(?:\.([a-zA-Z_$][a-zA-Z_$0-9]*))?$/;
-var firstpassGlobal = /\b(?:require|module|exports|global)\b/;
-var firstpassNoGlobal = /\b(?:require|module|exports)\b/;
-var importExportDeclaration = /^(?:Import|Export(?:Named|Default))Declaration/;
-var functionType = /^(?:FunctionDeclaration|FunctionExpression|ArrowFunctionExpression)$/;
-var deconflict = function (scope, globals, identifier) {
-    var i = 1;
-    var deconflicted = identifier;
+const blacklist = { __esModule: true };
+const exportsPattern = /^(?:module\.)?exports(?:\.([a-zA-Z_$][a-zA-Z_$0-9]*))?$/;
+const firstpassGlobal = /\b(?:require|module|exports|global)\b/;
+const firstpassNoGlobal = /\b(?:require|module|exports)\b/;
+const importExportDeclaration = /^(?:Import|Export(?:Named|Default))Declaration/;
+const functionType = /^(?:FunctionDeclaration|FunctionExpression|ArrowFunctionExpression)$/;
+const deconflict = (scope, globals, identifier) => {
+    let i = 1;
+    let deconflicted = identifier;
     while (scope.contains(deconflicted) ||
         globals.has(deconflicted) ||
         deconflicted in blacklist) {
-        deconflicted = identifier + "_" + i;
+        deconflicted = `${identifier}_${i}`;
         i += 1;
     }
     scope.declarations[deconflicted] = true;
     return deconflicted;
 };
-var tryParse = function (parse, code, id) {
+const tryParse = (parse, code, id) => {
     try {
         return parse(code, { allowReturnOutsideFunction: true });
     }
     catch (err) {
-        err.message += " in " + id;
+        err.message += ` in ${id}`;
         throw err;
     }
 };
-var hasCjsKeywords = function (code, ignoreGlobal) {
-    var firstpass = ignoreGlobal ? firstpassNoGlobal : firstpassGlobal;
+const hasCjsKeywords = (code, ignoreGlobal) => {
+    const firstpass = ignoreGlobal ? firstpassNoGlobal : firstpassGlobal;
     return firstpass.test(code);
 };
-var checkEsModule = function (parse, code, id) {
-    var e_1, _a, e_2, _b;
-    var ast = tryParse(parse, code, id);
-    var isEsModule = false;
-    try {
-        for (var _c = __values(ast.body), _d = _c.next(); !_d.done; _d = _c.next()) {
-            var node = _d.value;
-            if (node.type === "ExportDefaultDeclaration")
-                return { isEsModule: true, hasDefaultExport: true, ast: ast };
-            if (node.type === "ExportNamedDeclaration") {
-                isEsModule = true;
-                try {
-                    for (var _e = (e_2 = void 0, __values(node.specifiers)), _f = _e.next(); !_f.done; _f = _e.next()) {
-                        var specifier = _f.value;
-                        if (specifier.exported.name === "default") {
-                            return { isEsModule: true, hasDefaultExport: true, ast: ast };
-                        }
-                    }
-                }
-                catch (e_2_1) { e_2 = { error: e_2_1 }; }
-                finally {
-                    try {
-                        if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
-                    }
-                    finally { if (e_2) throw e_2.error; }
+const checkEsModule = (parse, code, id) => {
+    const ast = tryParse(parse, code, id);
+    let isEsModule = false;
+    for (const node of ast.body) {
+        if (node.type === "ExportDefaultDeclaration")
+            return { isEsModule: true, hasDefaultExport: true, ast };
+        if (node.type === "ExportNamedDeclaration") {
+            isEsModule = true;
+            for (const specifier of node.specifiers) {
+                if (specifier.exported.name === "default") {
+                    return { isEsModule: true, hasDefaultExport: true, ast };
                 }
             }
-            else if (importExportDeclaration.test(node.type))
-                isEsModule = true;
         }
+        else if (importExportDeclaration.test(node.type))
+            isEsModule = true;
     }
-    catch (e_1_1) { e_1 = { error: e_1_1 }; }
-    finally {
-        try {
-            if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
-        }
-        finally { if (e_1) throw e_1.error; }
-    }
-    return { isEsModule: isEsModule, hasDefaultExport: false, ast: ast };
+    return { isEsModule, hasDefaultExport: false, ast };
 };
-var loadMagicString = function () {
-    return new Promise(function (resolve) {
-        var script = document.createElement("script");
-        script.src =
-            "https://unpkg.com/@bloxy/iife-libs@0.0.4/libs/magic-string.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-};
+const loadMagicString = () => new Promise(resolve => {
+    const script = document.createElement("script");
+    script.src =
+        "https://unpkg.com/@bloxy/iife-libs@0.0.4/libs/magic-string.js";
+    script.setAttribute("data-packager", "true");
+    script.onload = resolve;
+    document.head.appendChild(script);
+});
 function performTransformation (parse, code, id, isEntry, ignoreGlobal, ignoreRequire, customNamedExports, sourceMap, allowDynamicRequire, astCache, context) {
-    return __awaiter(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        // @ts-ignore
+        if (!window.magicString) {
+            yield loadMagicString();
+        }
+        const ast = astCache || tryParse(parse, code, id);
+        // @ts-ignore
+        const magicString = new window.magicString.default(code);
+        const required = {};
+        const sources = [];
+        let uid = 0;
+        let scope = attachScopes(ast, "scope");
+        let lexicalDepth = 0;
+        let programDepth = 0;
+        let shouldWrap = /__esModule/.test(code);
+        const uses = {
+            module: false,
+            exports: false,
+            global: false,
+            require: false
+        };
+        const globals = new Set();
+        const HELPERS_NAME = deconflict(scope, globals, "commonjsHelpers");
+        const namedExports = {};
         function isRequireStatement(node) {
             if (!node)
                 return false;
@@ -1315,469 +1173,413 @@ function performTransformation (parse, code, id, isEntry, ignoreGlobal, ignoreRe
                 : node.arguments[0].quasis[0].value.cooked;
         }
         function getRequired(node, name) {
-            var sourceId = getRequireStringArg(node);
-            var existing = required[sourceId];
+            const sourceId = getRequireStringArg(node);
+            const existing = required[sourceId];
             // eslint-disable-next-line no-undefined
             if (existing === undefined) {
                 if (!name) {
                     do {
-                        name = "require$$" + uid;
+                        name = `require$$${uid}`;
                         uid += 1;
                     } while (scope.contains(name));
                 }
                 sources.push(sourceId);
                 required[sourceId] = {
                     source: sourceId,
-                    name: name,
+                    name,
                     importsDefault: false
                 };
             }
             return required[sourceId];
         }
+        // do a first pass, see which names are assigned to. This is necessary to prevent
+        // illegally replacing `var foo = require('foo')` with `import foo from 'foo'`,
+        // where `foo` is later reassigned. (This happens in the wild. CommonJS, sigh)
+        const assignedTo = new Set();
+        walk(ast, {
+            enter(node) {
+                if (node.type !== "AssignmentExpression")
+                    return;
+                if (node.left.type === "MemberExpression")
+                    return;
+                extractAssignedNames(node.left).forEach((name) => {
+                    assignedTo.add(name);
+                });
+            }
+        });
+        walk(ast, {
+            enter(node, parent) {
+                if (sourceMap) {
+                    magicString.addSourcemapLocation(node.start);
+                    magicString.addSourcemapLocation(node.end);
+                }
+                // skip dead branches
+                if (parent &&
+                    (parent.type === "IfStatement" ||
+                        parent.type === "ConditionalExpression")) {
+                    if (node === parent.consequent && isFalsy(parent.test)) {
+                        this.skip();
+                        return;
+                    }
+                    if (node === parent.alternate && isTruthy(parent.test)) {
+                        this.skip();
+                        return;
+                    }
+                }
+                if (node._skip) {
+                    this.skip();
+                    return;
+                }
+                programDepth += 1;
+                if (node.scope)
+                    ({ scope } = node);
+                if (functionType.test(node.type))
+                    lexicalDepth += 1;
+                // if toplevel return, we need to wrap it
+                if (node.type === "ReturnStatement" && lexicalDepth === 0) {
+                    shouldWrap = true;
+                }
+                // rewrite `this` as `commonjsHelpers.commonjsGlobal`
+                if (node.type === "ThisExpression" && lexicalDepth === 0) {
+                    uses.global = true;
+                    if (!ignoreGlobal)
+                        magicString.overwrite(node.start, node.end, `${HELPERS_NAME}.commonjsGlobal`, {
+                            storeName: true
+                        });
+                    return;
+                }
+                // rewrite `typeof module`, `typeof module.exports` and `typeof exports` (https://github.com/rollup/rollup-plugin-commonjs/issues/151)
+                if (node.type === "UnaryExpression" && node.operator === "typeof") {
+                    const flattened = flatten(node.argument);
+                    if (!flattened)
+                        return;
+                    if (scope.contains(flattened.name))
+                        return;
+                    if (flattened.keypath === "module.exports" ||
+                        flattened.keypath === "module" ||
+                        flattened.keypath === "exports") {
+                        magicString.overwrite(node.start, node.end, `'object'`, {
+                            storeName: false
+                        });
+                    }
+                }
+                // rewrite `require` (if not already handled) `global` and `define`, and handle free references to
+                // `module` and `exports` as these mean we need to wrap the module in commonjsHelpers.createCommonjsModule
+                if (node.type === "Identifier") {
+                    if (isReference(node, parent) && !scope.contains(node.name)) {
+                        if (node.name in uses) {
+                            if (node.name === "require") {
+                                if (allowDynamicRequire)
+                                    return;
+                                magicString.overwrite(node.start, node.end, `${HELPERS_NAME}.commonjsRequire`, {
+                                    storeName: true
+                                });
+                            }
+                            uses[node.name] = true;
+                            if (node.name === "global" && !ignoreGlobal) {
+                                magicString.overwrite(node.start, node.end, `${HELPERS_NAME}.commonjsGlobal`, {
+                                    storeName: true
+                                });
+                            }
+                            // if module or exports are used outside the context of an assignment
+                            // expression, we need to wrap the module
+                            if (node.name === "module" || node.name === "exports") {
+                                shouldWrap = true;
+                            }
+                        }
+                        if (node.name === "define") {
+                            magicString.overwrite(node.start, node.end, "undefined", { storeName: true });
+                        }
+                        globals.add(node.name);
+                    }
+                    return;
+                }
+                // Is this an assignment to exports or module.exports?
+                if (node.type === "AssignmentExpression") {
+                    if (node.left.type !== "MemberExpression")
+                        return;
+                    const flattened = flatten(node.left);
+                    if (!flattened)
+                        return;
+                    if (scope.contains(flattened.name))
+                        return;
+                    const match = exportsPattern.exec(flattened.keypath);
+                    if (!match || flattened.keypath === "exports")
+                        return;
+                    uses[flattened.name] = true;
+                    // we're dealing with `module.exports = ...` or `[module.]exports.foo = ...` –
+                    // if this isn't top-level, we'll need to wrap the module
+                    if (programDepth > 3)
+                        shouldWrap = true;
+                    node.left._skip = true;
+                    if (flattened.keypath === "module.exports" &&
+                        node.right.type === "ObjectExpression") {
+                        node.right.properties.forEach((prop) => {
+                            if (prop.computed ||
+                                !("key" in prop) ||
+                                prop.key.type !== "Identifier")
+                                return;
+                            const { name } = prop.key;
+                            if (name === makeLegalIdentifier(name))
+                                namedExports[name] = true;
+                        });
+                        return;
+                    }
+                    if (match[1])
+                        namedExports[match[1]] = true;
+                    return;
+                }
+                // if this is `var x = require('x')`, we can do `import x from 'x'`
+                if (node.type === "VariableDeclarator" &&
+                    node.id.type === "Identifier" &&
+                    isStaticRequireStatement(node.init)) {
+                    // for now, only do this for top-level requires. maybe fix this in future
+                    if (scope.parent)
+                        return;
+                    // edge case — CJS allows you to assign to imports. ES doesn't
+                    if (assignedTo.has(node.id.name))
+                        return;
+                    const required = getRequired(node.init, node.id.name);
+                    required.importsDefault = true;
+                    if (required.name === node.id.name) {
+                        node._shouldRemove = true;
+                    }
+                }
+                if (!isStaticRequireStatement(node))
+                    return;
+                const required = getRequired(node);
+                if (parent.type === "ExpressionStatement") {
+                    // is a bare import, e.g. `require('foo');`
+                    magicString.remove(parent.start, parent.end);
+                }
+                else {
+                    required.importsDefault = true;
+                    magicString.overwrite(node.start, node.end, required.name);
+                }
+                node.callee._skip = true;
+            },
+            leave(node) {
+                programDepth -= 1;
+                if (node.scope)
+                    scope = scope.parent;
+                if (functionType.test(node.type))
+                    lexicalDepth -= 1;
+                if (node.type === "VariableDeclaration") {
+                    let keepDeclaration = false;
+                    let c = node.declarations[0].start;
+                    for (let i = 0; i < node.declarations.length; i += 1) {
+                        const declarator = node.declarations[i];
+                        if (declarator._shouldRemove) {
+                            magicString.remove(c, declarator.end);
+                        }
+                        else {
+                            if (!keepDeclaration) {
+                                magicString.remove(c, declarator.start);
+                                keepDeclaration = true;
+                            }
+                            c = declarator.end;
+                        }
+                    }
+                    if (!keepDeclaration) {
+                        magicString.remove(node.start, node.end);
+                    }
+                }
+            }
+        });
+        if (!sources.length &&
+            !uses.module &&
+            !uses.exports &&
+            !uses.require &&
+            (ignoreGlobal || !uses.global)) {
+            if (Object.keys(namedExports).length) {
+                throw new Error(`Custom named exports were specified for ${id} but it does not appear to be a CommonJS module`);
+            }
+            // not a CommonJS module
+            return null;
+        }
+        const includeHelpers = shouldWrap || uses.global || uses.require;
+        const importBlock = `${(includeHelpers
+            ? [`import * as ${HELPERS_NAME} from '${HELPERS_ID}';`]
+            : [])
+            .concat(sources.map((source) => 
+        // import the actual module before the proxy, so that we know
+        // what kind of proxy to build
+        `import '${source}';`), sources.map((source) => {
+            const { name, importsDefault } = required[source];
+            return `import ${importsDefault ? `${name} from ` : ``}'${getProxyId(source)}';`;
+        }))
+            .join("\n")}\n\n`;
+        const namedExportDeclarations = [];
+        let wrapperStart = "";
+        let wrapperEnd = "";
+        const moduleName = deconflict(scope, globals, getName(id));
+        if (!isEntry) {
+            const exportModuleExports = {
+                str: `export { ${moduleName} as __moduleExports };`,
+                name: "__moduleExports"
+            };
+            namedExportDeclarations.push(exportModuleExports);
+        }
+        const name = getName(id);
         function addExport(x) {
-            var deconflicted = deconflict(scope, globals, name);
-            var declaration = deconflicted === name
-                ? "export var " + x + " = " + moduleName + "." + x + ";"
-                : "var " + deconflicted + " = " + moduleName + "." + x + ";\nexport { " + deconflicted + " as " + x + " };";
+            const deconflicted = deconflict(scope, globals, name);
+            const declaration = deconflicted === name
+                ? `export var ${x} = ${moduleName}.${x};`
+                : `var ${deconflicted} = ${moduleName}.${x};\nexport { ${deconflicted} as ${x} };`;
             namedExportDeclarations.push({
                 str: declaration,
                 name: x
             });
         }
-        var ast, magicString, required, sources, uid, scope, lexicalDepth, programDepth, shouldWrap, uses, globals, HELPERS_NAME, namedExports, assignedTo, includeHelpers, importBlock, namedExportDeclarations, wrapperStart, wrapperEnd, moduleName, exportModuleExports, name, defaultExportPropertyAssignments, hasDefaultExport, args, names_1, isIifeOrUmd, defaultExport, named, exportBlock, map;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!!window.magicString) return [3 /*break*/, 2];
-                    return [4 /*yield*/, loadMagicString()];
-                case 1:
-                    _a.sent();
-                    _a.label = 2;
-                case 2:
-                    ast = astCache || tryParse(parse, code, id);
-                    magicString = new window.magicString.default(code);
-                    required = {};
-                    sources = [];
-                    uid = 0;
-                    scope = attachScopes(ast, "scope");
-                    lexicalDepth = 0;
-                    programDepth = 0;
-                    shouldWrap = /__esModule/.test(code);
-                    uses = {
-                        module: false,
-                        exports: false,
-                        global: false,
-                        require: false
-                    };
-                    globals = new Set();
-                    HELPERS_NAME = deconflict(scope, globals, "commonjsHelpers");
-                    namedExports = {};
-                    assignedTo = new Set();
-                    walk(ast, {
-                        enter: function (node) {
-                            if (node.type !== "AssignmentExpression")
-                                return;
-                            if (node.left.type === "MemberExpression")
-                                return;
-                            extractAssignedNames(node.left).forEach(function (name) {
-                                assignedTo.add(name);
-                            });
-                        }
-                    });
-                    walk(ast, {
-                        enter: function (node, parent) {
-                            if (sourceMap) {
-                                magicString.addSourcemapLocation(node.start);
-                                magicString.addSourcemapLocation(node.end);
-                            }
-                            // skip dead branches
-                            if (parent &&
-                                (parent.type === "IfStatement" ||
-                                    parent.type === "ConditionalExpression")) {
-                                if (node === parent.consequent && isFalsy(parent.test)) {
-                                    this.skip();
-                                    return;
-                                }
-                                if (node === parent.alternate && isTruthy(parent.test)) {
-                                    this.skip();
-                                    return;
-                                }
-                            }
-                            if (node._skip) {
-                                this.skip();
-                                return;
-                            }
-                            programDepth += 1;
-                            if (node.scope)
-                                (scope = node.scope);
-                            if (functionType.test(node.type))
-                                lexicalDepth += 1;
-                            // if toplevel return, we need to wrap it
-                            if (node.type === "ReturnStatement" && lexicalDepth === 0) {
-                                shouldWrap = true;
-                            }
-                            // rewrite `this` as `commonjsHelpers.commonjsGlobal`
-                            if (node.type === "ThisExpression" && lexicalDepth === 0) {
-                                uses.global = true;
-                                if (!ignoreGlobal)
-                                    magicString.overwrite(node.start, node.end, HELPERS_NAME + ".commonjsGlobal", {
-                                        storeName: true
-                                    });
-                                return;
-                            }
-                            // rewrite `typeof module`, `typeof module.exports` and `typeof exports` (https://github.com/rollup/rollup-plugin-commonjs/issues/151)
-                            if (node.type === "UnaryExpression" && node.operator === "typeof") {
-                                var flattened = flatten(node.argument);
-                                if (!flattened)
-                                    return;
-                                if (scope.contains(flattened.name))
-                                    return;
-                                if (flattened.keypath === "module.exports" ||
-                                    flattened.keypath === "module" ||
-                                    flattened.keypath === "exports") {
-                                    magicString.overwrite(node.start, node.end, "'object'", {
-                                        storeName: false
-                                    });
-                                }
-                            }
-                            // rewrite `require` (if not already handled) `global` and `define`, and handle free references to
-                            // `module` and `exports` as these mean we need to wrap the module in commonjsHelpers.createCommonjsModule
-                            if (node.type === "Identifier") {
-                                if (isReference(node, parent) && !scope.contains(node.name)) {
-                                    if (node.name in uses) {
-                                        if (node.name === "require") {
-                                            if (allowDynamicRequire)
-                                                return;
-                                            magicString.overwrite(node.start, node.end, HELPERS_NAME + ".commonjsRequire", {
-                                                storeName: true
-                                            });
-                                        }
-                                        uses[node.name] = true;
-                                        if (node.name === "global" && !ignoreGlobal) {
-                                            magicString.overwrite(node.start, node.end, HELPERS_NAME + ".commonjsGlobal", {
-                                                storeName: true
-                                            });
-                                        }
-                                        // if module or exports are used outside the context of an assignment
-                                        // expression, we need to wrap the module
-                                        if (node.name === "module" || node.name === "exports") {
-                                            shouldWrap = true;
-                                        }
-                                    }
-                                    if (node.name === "define") {
-                                        magicString.overwrite(node.start, node.end, "undefined", { storeName: true });
-                                    }
-                                    globals.add(node.name);
-                                }
-                                return;
-                            }
-                            // Is this an assignment to exports or module.exports?
-                            if (node.type === "AssignmentExpression") {
-                                if (node.left.type !== "MemberExpression")
-                                    return;
-                                var flattened = flatten(node.left);
-                                if (!flattened)
-                                    return;
-                                if (scope.contains(flattened.name))
-                                    return;
-                                var match = exportsPattern.exec(flattened.keypath);
-                                if (!match || flattened.keypath === "exports")
-                                    return;
-                                uses[flattened.name] = true;
-                                // we're dealing with `module.exports = ...` or `[module.]exports.foo = ...` –
-                                // if this isn't top-level, we'll need to wrap the module
-                                if (programDepth > 3)
-                                    shouldWrap = true;
-                                node.left._skip = true;
-                                if (flattened.keypath === "module.exports" &&
-                                    node.right.type === "ObjectExpression") {
-                                    node.right.properties.forEach(function (prop) {
-                                        if (prop.computed ||
-                                            !("key" in prop) ||
-                                            prop.key.type !== "Identifier")
-                                            return;
-                                        var name = prop.key.name;
-                                        if (name === makeLegalIdentifier(name))
-                                            namedExports[name] = true;
-                                    });
-                                    return;
-                                }
-                                if (match[1])
-                                    namedExports[match[1]] = true;
-                                return;
-                            }
-                            // if this is `var x = require('x')`, we can do `import x from 'x'`
-                            if (node.type === "VariableDeclarator" &&
-                                node.id.type === "Identifier" &&
-                                isStaticRequireStatement(node.init)) {
-                                // for now, only do this for top-level requires. maybe fix this in future
-                                if (scope.parent)
-                                    return;
-                                // edge case — CJS allows you to assign to imports. ES doesn't
-                                if (assignedTo.has(node.id.name))
-                                    return;
-                                var required_1 = getRequired(node.init, node.id.name);
-                                required_1.importsDefault = true;
-                                if (required_1.name === node.id.name) {
-                                    node._shouldRemove = true;
-                                }
-                            }
-                            if (!isStaticRequireStatement(node))
-                                return;
-                            var required = getRequired(node);
-                            if (parent.type === "ExpressionStatement") {
-                                // is a bare import, e.g. `require('foo');`
-                                magicString.remove(parent.start, parent.end);
-                            }
-                            else {
-                                required.importsDefault = true;
-                                magicString.overwrite(node.start, node.end, required.name);
-                            }
-                            node.callee._skip = true;
-                        },
-                        leave: function (node) {
-                            programDepth -= 1;
-                            if (node.scope)
-                                scope = scope.parent;
-                            if (functionType.test(node.type))
-                                lexicalDepth -= 1;
-                            if (node.type === "VariableDeclaration") {
-                                var keepDeclaration = false;
-                                var c = node.declarations[0].start;
-                                for (var i = 0; i < node.declarations.length; i += 1) {
-                                    var declarator = node.declarations[i];
-                                    if (declarator._shouldRemove) {
-                                        magicString.remove(c, declarator.end);
-                                    }
-                                    else {
-                                        if (!keepDeclaration) {
-                                            magicString.remove(c, declarator.start);
-                                            keepDeclaration = true;
-                                        }
-                                        c = declarator.end;
-                                    }
-                                }
-                                if (!keepDeclaration) {
-                                    magicString.remove(node.start, node.end);
-                                }
-                            }
-                        }
-                    });
-                    if (!sources.length &&
-                        !uses.module &&
-                        !uses.exports &&
-                        !uses.require &&
-                        (ignoreGlobal || !uses.global)) {
-                        if (Object.keys(namedExports).length) {
-                            throw new Error("Custom named exports were specified for " + id + " but it does not appear to be a CommonJS module");
-                        }
-                        // not a CommonJS module
-                        return [2 /*return*/, null];
-                    }
-                    includeHelpers = shouldWrap || uses.global || uses.require;
-                    importBlock = (includeHelpers
-                        ? ["import * as " + HELPERS_NAME + " from '" + HELPERS_ID + "';"]
-                        : [])
-                        .concat(sources.map(function (source) {
-                        // import the actual module before the proxy, so that we know
-                        // what kind of proxy to build
-                        return "import '" + source + "';";
-                    }), sources.map(function (source) {
-                        var _a = required[source], name = _a.name, importsDefault = _a.importsDefault;
-                        return "import " + (importsDefault ? name + " from " : "") + "'" + getProxyId(source) + "';";
-                    }))
-                        .join("\n") + "\n\n";
-                    namedExportDeclarations = [];
-                    wrapperStart = "";
-                    wrapperEnd = "";
-                    moduleName = deconflict(scope, globals, getName(id));
-                    if (!isEntry) {
-                        exportModuleExports = {
-                            str: "export { " + moduleName + " as __moduleExports };",
-                            name: "__moduleExports"
-                        };
-                        namedExportDeclarations.push(exportModuleExports);
-                    }
-                    name = getName(id);
-                    if (customNamedExports)
-                        customNamedExports.forEach(addExport);
-                    defaultExportPropertyAssignments = [];
-                    hasDefaultExport = false;
-                    if (shouldWrap) {
-                        args = "module" + (uses.exports ? ", exports" : "");
-                        wrapperStart = "var " + moduleName + " = " + HELPERS_NAME + ".createCommonjsModule(function (" + args + ") {\n";
-                        wrapperEnd = "\n});";
+        if (customNamedExports)
+            customNamedExports.forEach(addExport);
+        const defaultExportPropertyAssignments = [];
+        let hasDefaultExport = false;
+        if (shouldWrap) {
+            const args = `module${uses.exports ? ", exports" : ""}`;
+            wrapperStart = `var ${moduleName} = ${HELPERS_NAME}.createCommonjsModule(function (${args}) {\n`;
+            wrapperEnd = `\n});`;
+        }
+        else {
+            const names = [];
+            ast.body.forEach((node) => {
+                if (node.type === "ExpressionStatement" &&
+                    node.expression.type === "AssignmentExpression") {
+                    const { left } = node.expression;
+                    const flattened = flatten(left);
+                    if (!flattened)
+                        return;
+                    const match = exportsPattern.exec(flattened.keypath);
+                    if (!match)
+                        return;
+                    if (flattened.keypath === "module.exports") {
+                        hasDefaultExport = true;
+                        magicString.overwrite(left.start, left.end, `var ${moduleName}`);
                     }
                     else {
-                        names_1 = [];
-                        ast.body.forEach(function (node) {
-                            if (node.type === "ExpressionStatement" &&
-                                node.expression.type === "AssignmentExpression") {
-                                var left = node.expression.left;
-                                var flattened = flatten(left);
-                                if (!flattened)
-                                    return;
-                                var match = exportsPattern.exec(flattened.keypath);
-                                if (!match)
-                                    return;
-                                if (flattened.keypath === "module.exports") {
-                                    hasDefaultExport = true;
-                                    magicString.overwrite(left.start, left.end, "var " + moduleName);
-                                }
-                                else {
-                                    var _a = __read(match, 2), name_1 = _a[1];
-                                    var deconflicted = deconflict(scope, globals, name_1);
-                                    names_1.push({ name: name_1, deconflicted: deconflicted });
-                                    magicString.overwrite(node.start, left.end, "var " + deconflicted);
-                                    var declaration = name_1 === deconflicted
-                                        ? "export { " + name_1 + " };"
-                                        : "export { " + deconflicted + " as " + name_1 + " };";
-                                    if (name_1 !== "default") {
-                                        namedExportDeclarations.push({
-                                            str: declaration,
-                                            name: name_1
-                                        });
-                                        delete namedExports[name_1];
-                                    }
-                                    defaultExportPropertyAssignments.push(moduleName + "." + name_1 + " = " + deconflicted + ";");
-                                }
-                            }
-                        });
-                        if (!hasDefaultExport && (names_1.length || !isEntry)) {
-                            wrapperEnd = "\n\nvar " + moduleName + " = {\n" + names_1
-                                .map(function (_a) {
-                                var name = _a.name, deconflicted = _a.deconflicted;
-                                return "\t" + name + ": " + deconflicted;
-                            })
-                                .join(",\n") + "\n};";
+                        const [, name] = match;
+                        const deconflicted = deconflict(scope, globals, name);
+                        names.push({ name, deconflicted });
+                        magicString.overwrite(node.start, left.end, `var ${deconflicted}`);
+                        const declaration = name === deconflicted
+                            ? `export { ${name} };`
+                            : `export { ${deconflicted} as ${name} };`;
+                        if (name !== "default") {
+                            namedExportDeclarations.push({
+                                str: declaration,
+                                name
+                            });
+                            delete namedExports[name];
                         }
+                        defaultExportPropertyAssignments.push(`${moduleName}.${name} = ${deconflicted};`);
                     }
-                    Object.keys(namedExports)
-                        .filter(function (key) { return !blacklist[key]; })
-                        .forEach(addExport);
-                    isIifeOrUmd = /__esModule/.test(code);
-                    defaultExport = isIifeOrUmd
-                        ? "export default " + HELPERS_NAME + ".unwrapExports(" + moduleName + ");"
-                        : "export default " + moduleName + ";";
-                    if (isIifeOrUmd) {
-                        context.cache.dependencies.update(id, { iife: true });
-                    }
-                    named = namedExportDeclarations
-                        .filter(function (x) { return x.name !== "default" || !hasDefaultExport; })
-                        .map(function (x) { return x.str; });
-                    exportBlock = "\n\n window.__dependencies['" + id + "'] = " + moduleName + "; " + [
-                        defaultExport
-                    ]
-                        .concat(named)
-                        .concat(hasDefaultExport ? defaultExportPropertyAssignments : [])
-                        .join("\n");
-                    magicString
-                        .trim()
-                        .prepend(importBlock + wrapperStart)
-                        .trim()
-                        .append(wrapperEnd);
-                    if (hasDefaultExport || named.length > 0 || shouldWrap || !isEntry) {
-                        magicString.append(exportBlock);
-                    }
-                    code = magicString.toString();
-                    map = sourceMap ? magicString.generateMap() : null;
-                    return [2 /*return*/, { code: code, map: map }];
+                }
+            });
+            if (!hasDefaultExport && (names.length || !isEntry)) {
+                wrapperEnd = `\n\nvar ${moduleName} = {\n${names
+                    .map(({ name, deconflicted }) => `\t${name}: ${deconflicted}`)
+                    .join(",\n")}\n};`;
             }
-        });
+        }
+        Object.keys(namedExports)
+            .filter(key => !blacklist[key])
+            .forEach(addExport);
+        const isIifeOrUmd = /__esModule/.test(code);
+        const defaultExport = isIifeOrUmd
+            ? `export default ${HELPERS_NAME}.unwrapExports(${moduleName});`
+            : `export default ${moduleName};`;
+        if (isIifeOrUmd) {
+            context.cache.dependencies.update(id, { iife: true });
+        }
+        const named = namedExportDeclarations
+            .filter(x => x.name !== "default" || !hasDefaultExport)
+            .map(x => x.str);
+        const exportBlock = `\n\n window.__dependencies['${id}'] = ${moduleName}; ${[
+            defaultExport
+        ]
+            .concat(named)
+            .concat(hasDefaultExport ? defaultExportPropertyAssignments : [])
+            .join("\n")}`;
+        magicString
+            .trim()
+            .prepend(importBlock + wrapperStart)
+            .trim()
+            .append(wrapperEnd);
+        if (hasDefaultExport || named.length > 0 || shouldWrap || !isEntry) {
+            magicString.append(exportBlock);
+        }
+        code = magicString.toString();
+        const map = sourceMap ? magicString.generateMap() : null;
+        return { code, map };
     });
-}
-//# sourceMappingURL=perform-transform.js.map
-/**
+}/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
-var isCjsPromises = new Map();
-var getIsCjsPromise = function (id) {
-    return new Promise(function (resolve) { return resolve(isCjsPromises.get(id) || false); });
-};
-var setIsCjsPromise = function (id, is) {
-    return isCjsPromises.set(id, is);
-};
-//# sourceMappingURL=is-cjs-promise.js.map
-/**
+const isCjsPromises = new Map();
+const getIsCjsPromise = (id) => new Promise(resolve => resolve(isCjsPromises.get(id) || false));
+const setIsCjsPromise = (id, is) => isCjsPromises.set(id, is);/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
-var isNotTransformable = function (modulePath, couldBeCjs) {
-    return !couldBeCjs(modulePath) &&
-        !modulePath.endsWith("?commonjs-proxy") &&
-        !isModuleExternal(modulePath);
-};
+const isNotTransformable = (modulePath, couldBeCjs) => !couldBeCjs(modulePath) &&
+    !modulePath.endsWith("?commonjs-proxy") &&
+    !isModuleExternal(modulePath);
 function commonjsTransformer(context) {
-    var transformerName = "packager::transformer::commonjs-transformer";
-    var couldBeCjs = verifyExtensions([".js"]);
+    const transformerName = "packager::transformer::commonjs-transformer";
+    const couldBeCjs = verifyExtensions([".js"]);
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var cachedDependency, options, ignoreGlobal, sourceMap, allowDynamicRequire, ignoreRequire, customNamedExports, _a, isEsModule, hasDefaultExport, ast, normalizedId, transformed;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0:
-                            if (isNotTransformable(modulePath, couldBeCjs))
-                                return [2 /*return*/, null];
-                            cachedDependency = context.cache.dependencies.get(modulePath);
-                            if (cachedDependency && cachedDependency.transformedCode) {
-                                code = "const __default = window.__dependencies['" + modulePath + "']; export default __default;";
-                                return [2 /*return*/, { code: code, syntheticNamedExports: true }];
-                            }
-                            options = {};
-                            ignoreGlobal = true;
-                            sourceMap = true;
-                            allowDynamicRequire = true;
-                            ignoreRequire = typeof options.ignore === "function"
-                                ? options.ignore
-                                : Array.isArray(options.ignore)
-                                    ? function (modulePath) {
-                                        return options.ignore.includes(modulePath);
-                                    }
-                                    : function () { return false; };
-                            customNamedExports = {};
-                            _a = checkEsModule(
-                            // @ts-ignore
-                            this.parse, code, modulePath), isEsModule = _a.isEsModule, hasDefaultExport = _a.hasDefaultExport, ast = _a.ast;
-                            if (isEsModule) {
-                                (hasDefaultExport
-                                    ? context.cache.esModulesWithDefaultExport
-                                    : context.cache.esModulesWithoutDefaultExport).add(modulePath);
-                                return [2 /*return*/, null];
-                            }
-                            // it is not an ES module but it does not have CJS-specific elements.
-                            if (!hasCjsKeywords(code, ignoreGlobal)) {
-                                context.cache.esModulesWithoutDefaultExport.add(modulePath);
-                                return [2 /*return*/, null];
-                            }
-                            normalizedId = normalize(modulePath);
-                            return [4 /*yield*/, performTransformation(
-                                // @ts-ignore
-                                this.parse, code, modulePath, 
-                                // @ts-ignore
-                                this.getModuleInfo(modulePath).isEntry, ignoreGlobal, ignoreRequire, customNamedExports[normalizedId], sourceMap, allowDynamicRequire, ast, context)];
-                        case 1:
-                            transformed = _b.sent();
-                            setIsCjsPromise(modulePath, Boolean(transformed));
-                            if (transformed) {
-                                context.cache.dependencies.update(modulePath, {
-                                    transformedCode: transformed.code
-                                });
-                                return [2 /*return*/, {
-                                        code: transformed.code || "",
-                                        map: transformed.map || { mappings: "" },
-                                        syntheticNamedExports: true
-                                    }];
-                            }
-                            return [2 /*return*/];
-                    }
-                });
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isNotTransformable(modulePath, couldBeCjs))
+                    return null;
+                const cachedDependency = context.cache.dependencies.get(modulePath);
+                if (cachedDependency && cachedDependency.transformedCode) {
+                    code = `const __default = window.__dependencies['${modulePath}']; export default __default;`;
+                    return { code, syntheticNamedExports: true };
+                }
+                const options = {};
+                const ignoreGlobal = true;
+                const sourceMap = true;
+                const allowDynamicRequire = true;
+                const ignoreRequire =  Array.isArray(options.ignore)
+                        ? (modulePath) => options.ignore.includes(modulePath)
+                        : () => false;
+                const customNamedExports = {};
+                const { isEsModule, hasDefaultExport, ast } = checkEsModule(
+                // @ts-ignore
+                this.parse, code, modulePath);
+                if (isEsModule) {
+                    (hasDefaultExport
+                        ? context.cache.esModulesWithDefaultExport
+                        : context.cache.esModulesWithoutDefaultExport).add(modulePath);
+                    return null;
+                }
+                // it is not an ES module but it does not have CJS-specific elements.
+                if (!hasCjsKeywords(code, ignoreGlobal)) {
+                    context.cache.esModulesWithoutDefaultExport.add(modulePath);
+                    return null;
+                }
+                const normalizedId = normalize(modulePath);
+                const transformed = yield performTransformation(
+                // @ts-ignore
+                this.parse, code, modulePath, 
+                // @ts-ignore
+                this.getModuleInfo(modulePath).isEntry, ignoreGlobal, ignoreRequire, customNamedExports[normalizedId], sourceMap, allowDynamicRequire, ast, context);
+                setIsCjsPromise(modulePath, Boolean(transformed));
+                if (transformed) {
+                    context.cache.dependencies.update(modulePath, {
+                        transformedCode: transformed.code
+                    });
+                    return {
+                        code: transformed.code || "",
+                        map: transformed.map || { mappings: "" },
+                        syntheticNamedExports: true
+                    };
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-var TRANSPILE_STATUS = {
+}const TRANSPILE_STATUS = {
     PREPARE_FILES: "TRANSPILER:FILE:PREPARE",
     PREPARE_ADDITIONAL: "TRANSPILER:ADDITIONAL:PREPARE",
     ADDITIONAL_TRANSPILED: "TRANSPILER:ADDITIONAL:TRANSPILED",
@@ -1785,116 +1587,79 @@ var TRANSPILE_STATUS = {
     ERROR_COMPILE: "TRANSPILER:ERROR:COMPILE",
     ERROR_ADDITIONAL: "TRANSPILER:ERROR:ADDITIONAL"
 };
-var Transpiler = /** @class */ (function () {
-    function Transpiler(name, worker, context) {
+class Transpiler {
+    constructor(name, worker, context) {
         this.name = name;
         this.worker = worker;
         this.context = context;
     }
-    Transpiler.prototype.doTranspile = function (file) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (!_this.worker) {
+    doTranspile(file) {
+        return new Promise((resolve, reject) => {
+            if (!this.worker) {
                 return resolve(file);
             }
-            _this.worker.onmessage = function (_a) {
-                var data = _a.data;
-                return __awaiter(_this, void 0, void 0, function () {
-                    var file, type, error, additional, additionalTranspiled, error_1;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0:
-                                file = data.file, type = data.type, error = data.error, additional = data.additional;
-                                if (type === TRANSPILE_STATUS.ERROR_ADDITIONAL ||
-                                    type === TRANSPILE_STATUS.ERROR_COMPILE) {
-                                    return [2 /*return*/, reject(error)];
-                                }
-                                if (!(type === TRANSPILE_STATUS.PREPARE_ADDITIONAL)) return [3 /*break*/, 4];
-                                _b.label = 1;
-                            case 1:
-                                _b.trys.push([1, 3, , 4]);
-                                return [4 /*yield*/, this.transpileAdditional(additional)];
-                            case 2:
-                                additionalTranspiled = _b.sent();
-                                this.worker.postMessage({
-                                    type: TRANSPILE_STATUS.ADDITIONAL_TRANSPILED,
-                                    file: file,
-                                    additional: additionalTranspiled,
-                                    context: {
-                                        files: this.context.files
-                                    }
-                                });
-                                return [3 /*break*/, 4];
-                            case 3:
-                                error_1 = _b.sent();
-                                return [2 /*return*/, reject(error_1)];
-                            case 4:
-                                if (type === TRANSPILE_STATUS.TRANSPILE_COMPLETE) {
-                                    return [2 /*return*/, resolve(file)];
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                });
-            };
-            _this.worker.postMessage({
+            this.worker.onmessage = ({ data }) => __awaiter(this, void 0, void 0, function* () {
+                const { file, type, error, additional } = data;
+                if (type === TRANSPILE_STATUS.ERROR_ADDITIONAL ||
+                    type === TRANSPILE_STATUS.ERROR_COMPILE) {
+                    return reject(error);
+                }
+                if (type === TRANSPILE_STATUS.PREPARE_ADDITIONAL) {
+                    try {
+                        const additionalTranspiled = yield this.transpileAdditional(additional);
+                        this.worker.postMessage({
+                            type: TRANSPILE_STATUS.ADDITIONAL_TRANSPILED,
+                            file,
+                            additional: additionalTranspiled,
+                            context: {
+                                files: this.context.files
+                            }
+                        });
+                    }
+                    catch (error) {
+                        return reject(error);
+                    }
+                }
+                if (type === TRANSPILE_STATUS.TRANSPILE_COMPLETE) {
+                    return resolve(file);
+                }
+            });
+            this.worker.postMessage({
                 type: TRANSPILE_STATUS.PREPARE_FILES,
-                file: file,
+                file,
                 context: {
-                    files: _this.context.files
+                    files: this.context.files
                 }
             });
         });
-    };
-    Transpiler.prototype.transpileAdditional = function (_a) {
-        var styles = _a.styles, html = _a.html;
-        return __awaiter(this, void 0, void 0, function () {
-            var stylePromises, styles_1, styles_1_1, style, code, scopeId, path, lang, transpiler, _b;
-            var e_1, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        stylePromises = [];
-                        try {
-                            for (styles_1 = __values(styles), styles_1_1 = styles_1.next(); !styles_1_1.done; styles_1_1 = styles_1.next()) {
-                                style = styles_1_1.value;
-                                code = style.code, scopeId = style.scopeId, path = style.path, lang = style.lang;
-                                transpiler = this.fetchTranspiler(style.lang);
-                                stylePromises.push(transpiler.transpile({ code: code, scopeId: scopeId, lang: lang, path: path }));
-                            }
-                        }
-                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                        finally {
-                            try {
-                                if (styles_1_1 && !styles_1_1.done && (_c = styles_1.return)) _c.call(styles_1);
-                            }
-                            finally { if (e_1) throw e_1.error; }
-                        }
-                        _b = {};
-                        return [4 /*yield*/, Promise.all(stylePromises)];
-                    case 1: return [2 /*return*/, (_b.styles = _d.sent(),
-                            _b)];
-                }
-            });
+    }
+    transpileAdditional({ styles, html }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const stylePromises = [];
+            for (const style of styles) {
+                const { code, scopeId, path, lang } = style;
+                const transpiler = this.fetchTranspiler(style.lang);
+                stylePromises.push(transpiler.transpile({ code, scopeId, lang, path }));
+            }
+            return {
+                styles: yield Promise.all(stylePromises)
+            };
         });
-    };
-    Transpiler.prototype.fetchTranspiler = function (lang) {
+    }
+    fetchTranspiler(lang) {
         // @ts-ignore
-        var transpiler = this.additionalTranspilers[lang];
+        let transpiler = this.additionalTranspilers[lang];
         if (transpiler) {
-            var activeTranspiler = this.context.cache.transpilers.get(lang + "-transpiler");
+            const activeTranspiler = this.context.cache.transpilers.get(`${lang}-transpiler`);
             if (activeTranspiler)
                 return activeTranspiler;
             transpiler = new transpiler(this.context);
-            this.context.cache.transpilers.set(lang + "-transpiler", transpiler);
+            this.context.cache.transpilers.set(`${lang}-transpiler`, transpiler);
             return transpiler;
         }
-        throw Error("Additional transpiler (" + lang + "-transpiler) does not exist or isn't supported for " + this.name);
-    };
-    return Transpiler;
-}());
-//# sourceMappingURL=transpiler.js.map
-const kIsNodeJS = Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
+        throw Error(`Additional transpiler (${lang}-transpiler) does not exist or isn't supported for ${this.name}`);
+    }
+}const kIsNodeJS = Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
 const kRequire = kIsNodeJS && typeof module.require === 'function' ? module.require : null; // eslint-disable-line
 
 function browserDecodeBase64(base64, enableUnicode) {
@@ -1933,541 +1698,377 @@ function createBase64WorkerFactory(base64, sourcemap = null, enableUnicode = fal
         return new Worker(url, options);
     };
 }/* eslint-disable */
-const WorkerFactory = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0NCg0KZnVuY3Rpb24gX192YWx1ZXMobykgew0KICAgIHZhciBtID0gdHlwZW9mIFN5bWJvbCA9PT0gImZ1bmN0aW9uIiAmJiBvW1N5bWJvbC5pdGVyYXRvcl0sIGkgPSAwOw0KICAgIGlmIChtKSByZXR1cm4gbS5jYWxsKG8pOw0KICAgIHJldHVybiB7DQogICAgICAgIG5leHQ6IGZ1bmN0aW9uICgpIHsNCiAgICAgICAgICAgIGlmIChvICYmIGkgPj0gby5sZW5ndGgpIG8gPSB2b2lkIDA7DQogICAgICAgICAgICByZXR1cm4geyB2YWx1ZTogbyAmJiBvW2krK10sIGRvbmU6ICFvIH07DQogICAgICAgIH0NCiAgICB9Ow0KfQoKdmFyIGFic29sdXRlUGF0aCA9IC9eKD86XC98KD86W0EtWmEtel06KT9bXFx8XC9dKS87CmZ1bmN0aW9uIGlzQWJzb2x1dGUocGF0aCkgewogICAgcmV0dXJuIGFic29sdXRlUGF0aC50ZXN0KHBhdGgpOwp9CmZ1bmN0aW9uIGRpcm5hbWUocGF0aCkgewogICAgdmFyIG1hdGNoID0gLyhcL3xcXClbXlwvXFxdKiQvLmV4ZWMocGF0aCk7CiAgICBpZiAoIW1hdGNoKQogICAgICAgIHJldHVybiAiLiI7CiAgICB2YXIgZGlyID0gcGF0aC5zbGljZSgwLCAtbWF0Y2hbMF0ubGVuZ3RoKTsKICAgIC8vIElmIGBkaXJgIGlzIHRoZSBlbXB0eSBzdHJpbmcsIHdlJ3JlIGF0IHJvb3QuCiAgICByZXR1cm4gZGlyID8gZGlyIDogIi8iOwp9CmZ1bmN0aW9uIHJlc29sdmUoKSB7CiAgICB2YXIgcGF0aHMgPSBbXTsKICAgIGZvciAodmFyIF9pID0gMDsgX2kgPCBhcmd1bWVudHMubGVuZ3RoOyBfaSsrKSB7CiAgICAgICAgcGF0aHNbX2ldID0gYXJndW1lbnRzW19pXTsKICAgIH0KICAgIHZhciByZXNvbHZlZFBhcnRzID0gcGF0aHMuc2hpZnQoKS5zcGxpdCgvW1wvXFxdLyk7CiAgICBwYXRocy5mb3JFYWNoKGZ1bmN0aW9uIChwYXRoKSB7CiAgICAgICAgaWYgKGlzQWJzb2x1dGUocGF0aCkpIHsKICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOwogICAgICAgIH0KICAgICAgICBlbHNlIHsKICAgICAgICAgICAgdmFyIHBhcnRzID0gcGF0aC5zcGxpdCgvW1wvXFxdLyk7CiAgICAgICAgICAgIHdoaWxlIChwYXJ0c1swXSA9PT0gIi4iIHx8IHBhcnRzWzBdID09PSAiLi4iKSB7CiAgICAgICAgICAgICAgICB2YXIgcGFydCA9IHBhcnRzLnNoaWZ0KCk7CiAgICAgICAgICAgICAgICBpZiAocGFydCA9PT0gIi4uIikgewogICAgICAgICAgICAgICAgICAgIHJlc29sdmVkUGFydHMucG9wKCk7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cy5wdXNoLmFwcGx5KHJlc29sdmVkUGFydHMsIHBhcnRzKTsKICAgICAgICB9CiAgICB9KTsKICAgIHJldHVybiBub3JtYWxpemUocmVzb2x2ZWRQYXJ0cy5qb2luKCIvIikpOwp9CmZ1bmN0aW9uIG5vcm1hbGl6ZShwYXRoKSB7CiAgICByZXR1cm4gcGF0aC5yZXBsYWNlKC9cL1wvL2dpLCAiLyIpOwp9Cgp2YXIgVFJBTlNQSUxFX1NUQVRVUyA9IHsKICAgIFBSRVBBUkVfRklMRVM6ICJUUkFOU1BJTEVSOkZJTEU6UFJFUEFSRSIsCiAgICBQUkVQQVJFX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6UFJFUEFSRSIsCiAgICBBRERJVElPTkFMX1RSQU5TUElMRUQ6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6VFJBTlNQSUxFRCIsCiAgICBUUkFOU1BJTEVfQ09NUExFVEU6ICJUUkFOU1BJTEVSOlRSQU5TUElMRTpDT01QTEVURSIsCiAgICBFUlJPUl9DT01QSUxFOiAiVFJBTlNQSUxFUjpFUlJPUjpDT01QSUxFIiwKICAgIEVSUk9SX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkVSUk9SOkFERElUSU9OQUwiCn07CgpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL3Nhc3MuanNAbGF0ZXN0L2Rpc3Qvc2Fzcy5zeW5jLmpzIik7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcigibWVzc2FnZSIsIGZ1bmN0aW9uIChfYSkgewogICAgdmFyIGRhdGEgPSBfYS5kYXRhOwogICAgcmV0dXJuIF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiAoKSB7CiAgICAgICAgdmFyIGZpbGUsIHR5cGUsIGNvbnRleHQsIHRyYW5zcGlsZWRGaWxlLCBlcnJvcl8xOwogICAgICAgIHJldHVybiBfX2dlbmVyYXRvcih0aGlzLCBmdW5jdGlvbiAoX2IpIHsKICAgICAgICAgICAgc3dpdGNoIChfYi5sYWJlbCkgewogICAgICAgICAgICAgICAgY2FzZSAwOgogICAgICAgICAgICAgICAgICAgIGZpbGUgPSBkYXRhLmZpbGUsIHR5cGUgPSBkYXRhLnR5cGUsIGNvbnRleHQgPSBkYXRhLmNvbnRleHQ7CiAgICAgICAgICAgICAgICAgICAgaWYgKCEodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSkgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICAgICAgX2IubGFiZWwgPSAxOwogICAgICAgICAgICAgICAgY2FzZSAxOgogICAgICAgICAgICAgICAgICAgIF9iLnRyeXMucHVzaChbMSwgMywgLCA0XSk7CiAgICAgICAgICAgICAgICAgICAgc2V0dXBTYXNzKGNvbnRleHQpOwogICAgICAgICAgICAgICAgICAgIHJldHVybiBbNCAvKnlpZWxkKi8sIHRyYW5zcGlsZUZpbGUoZmlsZSldOwogICAgICAgICAgICAgICAgY2FzZSAyOgogICAgICAgICAgICAgICAgICAgIHRyYW5zcGlsZWRGaWxlID0gX2Iuc2VudCgpOwogICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUKICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlCiAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICBjYXNlIDM6CiAgICAgICAgICAgICAgICAgICAgZXJyb3JfMSA9IF9iLnNlbnQoKTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwKICAgICAgICAgICAgICAgICAgICAgICAgZXJyb3I6IGVycm9yXzEKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzMgLypicmVhayovLCA0XTsKICAgICAgICAgICAgICAgIGNhc2UgNDogcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfSk7CnZhciBzZXR1cFNhc3MgPSBmdW5jdGlvbiAoY29udGV4dCkgewogICAgdmFyIGVfMSwgX2E7CiAgICB2YXIgc2Fzc0ZpbGVzID0gY29udGV4dC5maWxlcy5maWx0ZXIoZnVuY3Rpb24gKGYpIHsgcmV0dXJuIGYucGF0aC5lbmRzV2l0aCgiLnNhc3MiKSB8fCBmLnBhdGguZW5kc1dpdGgoIi5zY3NzIik7IH0pOwogICAgU2Fzcy53cml0ZUZpbGUoc2Fzc0ZpbGVzLnJlZHVjZShmdW5jdGlvbiAoYWNjLCBjdXJyKSB7CiAgICAgICAgdmFyIF9hOwogICAgICAgIHJldHVybiAoX19hc3NpZ24oX19hc3NpZ24oe30sIGFjYyksIChfYSA9IHt9LCBfYVtjdXJyLnBhdGhdID0gY3Vyci5jb2RlLCBfYSkpKTsKICAgIH0sIHt9KSk7CiAgICB2YXIgX2xvb3BfMSA9IGZ1bmN0aW9uIChmaWxlKSB7CiAgICAgICAgU2Fzcy5pbXBvcnRlcihmdW5jdGlvbiAocmVxdWVzdCwgZG9uZSkgewogICAgICAgICAgICByZXR1cm4gaW1wb3J0ZXIoZmlsZSwgc2Fzc0ZpbGVzLCByZXF1ZXN0LCBkb25lKTsKICAgICAgICB9KTsKICAgIH07CiAgICB0cnkgewogICAgICAgIGZvciAodmFyIHNhc3NGaWxlc18xID0gX192YWx1ZXMoc2Fzc0ZpbGVzKSwgc2Fzc0ZpbGVzXzFfMSA9IHNhc3NGaWxlc18xLm5leHQoKTsgIXNhc3NGaWxlc18xXzEuZG9uZTsgc2Fzc0ZpbGVzXzFfMSA9IHNhc3NGaWxlc18xLm5leHQoKSkgewogICAgICAgICAgICB2YXIgZmlsZSA9IHNhc3NGaWxlc18xXzEudmFsdWU7CiAgICAgICAgICAgIF9sb29wXzEoZmlsZSk7CiAgICAgICAgfQogICAgfQogICAgY2F0Y2ggKGVfMV8xKSB7IGVfMSA9IHsgZXJyb3I6IGVfMV8xIH07IH0KICAgIGZpbmFsbHkgewogICAgICAgIHRyeSB7CiAgICAgICAgICAgIGlmIChzYXNzRmlsZXNfMV8xICYmICFzYXNzRmlsZXNfMV8xLmRvbmUgJiYgKF9hID0gc2Fzc0ZpbGVzXzEucmV0dXJuKSkgX2EuY2FsbChzYXNzRmlsZXNfMSk7CiAgICAgICAgfQogICAgICAgIGZpbmFsbHkgeyBpZiAoZV8xKSB0aHJvdyBlXzEuZXJyb3I7IH0KICAgIH0KfTsKdmFyIGltcG9ydGVyID0gZnVuY3Rpb24gKGZpbGUsIHNhc3NGaWxlcywgcmVxdWVzdCwgZG9uZSkgewogICAgdmFyIHBhdGggPSByZXNvbHZlKGRpcm5hbWUoZmlsZS5wYXRoKSwgcmVxdWVzdC5jdXJyZW50KTsKICAgIHZhciBwb3RlbnRpYWxQYXRocyA9IFNhc3MuZ2V0UGF0aFZhcmlhdGlvbnMocGF0aCk7CiAgICB2YXIgYWN0dWFsRmlsZSA9IHNhc3NGaWxlcy5maW5kKGZ1bmN0aW9uIChmaWxlKSB7IHJldHVybiB+cG90ZW50aWFsUGF0aHMuaW5kZXhPZihmaWxlLnBhdGgpOyB9KTsKICAgIGlmIChhY3R1YWxGaWxlICYmIGFjdHVhbEZpbGUucGF0aCkgewogICAgICAgIHJldHVybiBkb25lKHsKICAgICAgICAgICAgcGF0aDogYWN0dWFsRmlsZS5wYXRoLAogICAgICAgICAgICBjb250ZW50czogYWN0dWFsRmlsZS5jb2RlCiAgICAgICAgfSk7CiAgICB9CiAgICBlbHNlIHsKICAgICAgICB0aHJvdyBuZXcgRXJyb3IoIlRoZSBmaWxlICIgKyByZXF1ZXN0LmN1cnJlbnQgKyAiIGRvZXMgbm90IGV4aXN0Iik7CiAgICB9Cn07CnZhciB0cmFuc3BpbGVGaWxlID0gZnVuY3Rpb24gKGZpbGUpIHsKICAgIHJldHVybiBuZXcgUHJvbWlzZShmdW5jdGlvbiAocmVzb2x2ZSwgcmVqZWN0KSB7CiAgICAgICAgU2Fzcy5vcHRpb25zKHsKICAgICAgICAgICAgaW5kZW50ZWRTeW50YXg6IGZpbGUucGF0aC5lbmRzV2l0aCgiLnNhc3MiKSB8fCBmaWxlLmxhbmcgPT09ICJzYXNzIgogICAgICAgIH0pOwogICAgICAgIFNhc3MuY29tcGlsZShmaWxlLmNvZGUsIGZ1bmN0aW9uIChyZXN1bHQpIHsKICAgICAgICAgICAgaWYgKHJlc3VsdC5mb3JtYXR0ZWQpIHsKICAgICAgICAgICAgICAgIHJlamVjdChyZXN1bHQuZm9ybWF0dGVkKTsKICAgICAgICAgICAgfQogICAgICAgICAgICBlbHNlIHsKICAgICAgICAgICAgICAgIHJlc29sdmUoX19hc3NpZ24oX19hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IHJlc3VsdC50ZXh0LCBtYXA6IHJlc3VsdC5tYXAgfSkpOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfTsKCg==', null, false);
-/* eslint-enable */var SassTranspiler = /** @class */ (function (_super) {
-    __extends(SassTranspiler, _super);
-    function SassTranspiler(context) {
-        var _this = _super.call(this, "sass-transpiler", new WorkerFactory(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+const WorkerFactory = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IGFic29sdXRlUGF0aCA9IC9eKD86XC98KD86W0EtWmEtel06KT9bXFx8XC9dKS87DQpmdW5jdGlvbiBpc0Fic29sdXRlKHBhdGgpIHsNCiAgICByZXR1cm4gYWJzb2x1dGVQYXRoLnRlc3QocGF0aCk7DQp9DQpmdW5jdGlvbiBkaXJuYW1lKHBhdGgpIHsNCiAgICBjb25zdCBtYXRjaCA9IC8oXC98XFwpW15cL1xcXSokLy5leGVjKHBhdGgpOw0KICAgIGlmICghbWF0Y2gpDQogICAgICAgIHJldHVybiAiLiI7DQogICAgY29uc3QgZGlyID0gcGF0aC5zbGljZSgwLCAtbWF0Y2hbMF0ubGVuZ3RoKTsNCiAgICAvLyBJZiBgZGlyYCBpcyB0aGUgZW1wdHkgc3RyaW5nLCB3ZSdyZSBhdCByb290Lg0KICAgIHJldHVybiBkaXIgPyBkaXIgOiAiLyI7DQp9DQpmdW5jdGlvbiByZXNvbHZlKC4uLnBhdGhzKSB7DQogICAgbGV0IHJlc29sdmVkUGFydHMgPSBwYXRocy5zaGlmdCgpLnNwbGl0KC9bXC9cXF0vKTsNCiAgICBwYXRocy5mb3JFYWNoKHBhdGggPT4gew0KICAgICAgICBpZiAoaXNBYnNvbHV0ZShwYXRoKSkgew0KICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOw0KICAgICAgICB9DQogICAgICAgIGVsc2Ugew0KICAgICAgICAgICAgY29uc3QgcGFydHMgPSBwYXRoLnNwbGl0KC9bXC9cXF0vKTsNCiAgICAgICAgICAgIHdoaWxlIChwYXJ0c1swXSA9PT0gIi4iIHx8IHBhcnRzWzBdID09PSAiLi4iKSB7DQogICAgICAgICAgICAgICAgY29uc3QgcGFydCA9IHBhcnRzLnNoaWZ0KCk7DQogICAgICAgICAgICAgICAgaWYgKHBhcnQgPT09ICIuLiIpIHsNCiAgICAgICAgICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cy5wb3AoKTsNCiAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICB9DQogICAgICAgICAgICByZXNvbHZlZFBhcnRzLnB1c2guYXBwbHkocmVzb2x2ZWRQYXJ0cywgcGFydHMpOw0KICAgICAgICB9DQogICAgfSk7DQogICAgcmV0dXJuIG5vcm1hbGl6ZShyZXNvbHZlZFBhcnRzLmpvaW4oIi8iKSk7DQp9DQpmdW5jdGlvbiBub3JtYWxpemUocGF0aCkgew0KICAgIHJldHVybiBwYXRoLnJlcGxhY2UoL1wvXC8vZ2ksICIvIik7DQp9Cgpjb25zdCBUUkFOU1BJTEVfU1RBVFVTID0gew0KICAgIFBSRVBBUkVfRklMRVM6ICJUUkFOU1BJTEVSOkZJTEU6UFJFUEFSRSIsDQogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLA0KICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwNCiAgICBUUkFOU1BJTEVfQ09NUExFVEU6ICJUUkFOU1BJTEVSOlRSQU5TUElMRTpDT01QTEVURSIsDQogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsDQogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCINCn07CgpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL3Nhc3MuanNAbGF0ZXN0L2Rpc3Qvc2Fzcy5zeW5jLmpzIik7DQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCAoeyBkYXRhIH0pID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIGNvbnN0IHsgZmlsZSwgdHlwZSwgY29udGV4dCB9ID0gZGF0YTsNCiAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSB7DQogICAgICAgIHRyeSB7DQogICAgICAgICAgICBzZXR1cFNhc3MoY29udGV4dCk7DQogICAgICAgICAgICBjb25zdCB0cmFuc3BpbGVkRmlsZSA9IHlpZWxkIHRyYW5zcGlsZUZpbGUoZmlsZSk7DQogICAgICAgICAgICAvLyBAdHMtaWdub3JlDQogICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLlRSQU5TUElMRV9DT01QTEVURSwNCiAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQ0KICAgICAgICAgICAgfSk7DQogICAgICAgIH0NCiAgICAgICAgY2F0Y2ggKGVycm9yKSB7DQogICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlDQogICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0NPTVBJTEUsDQogICAgICAgICAgICAgICAgZXJyb3INCiAgICAgICAgICAgIH0pOw0KICAgICAgICB9DQogICAgfQ0KfSkpOw0KY29uc3Qgc2V0dXBTYXNzID0gKGNvbnRleHQpID0+IHsNCiAgICBjb25zdCBzYXNzRmlsZXMgPSBjb250ZXh0LmZpbGVzLmZpbHRlcigoZikgPT4gZi5wYXRoLmVuZHNXaXRoKCIuc2FzcyIpIHx8IGYucGF0aC5lbmRzV2l0aCgiLnNjc3MiKSk7DQogICAgU2Fzcy53cml0ZUZpbGUoc2Fzc0ZpbGVzLnJlZHVjZSgoYWNjLCBjdXJyKSA9PiAoT2JqZWN0LmFzc2lnbihPYmplY3QuYXNzaWduKHt9LCBhY2MpLCB7IFtjdXJyLnBhdGhdOiBjdXJyLmNvZGUgfSkpLCB7fSkpOw0KICAgIGZvciAoY29uc3QgZmlsZSBvZiBzYXNzRmlsZXMpIHsNCiAgICAgICAgU2Fzcy5pbXBvcnRlcigocmVxdWVzdCwgZG9uZSkgPT4gaW1wb3J0ZXIoZmlsZSwgc2Fzc0ZpbGVzLCByZXF1ZXN0LCBkb25lKSk7DQogICAgfQ0KfTsNCmNvbnN0IGltcG9ydGVyID0gKGZpbGUsIHNhc3NGaWxlcywgcmVxdWVzdCwgZG9uZSkgPT4gew0KICAgIGNvbnN0IHBhdGggPSByZXNvbHZlKGRpcm5hbWUoZmlsZS5wYXRoKSwgcmVxdWVzdC5jdXJyZW50KTsNCiAgICBjb25zdCBwb3RlbnRpYWxQYXRocyA9IFNhc3MuZ2V0UGF0aFZhcmlhdGlvbnMocGF0aCk7DQogICAgY29uc3QgYWN0dWFsRmlsZSA9IHNhc3NGaWxlcy5maW5kKChmaWxlKSA9PiB+cG90ZW50aWFsUGF0aHMuaW5kZXhPZihmaWxlLnBhdGgpKTsNCiAgICBpZiAoYWN0dWFsRmlsZSAmJiBhY3R1YWxGaWxlLnBhdGgpIHsNCiAgICAgICAgcmV0dXJuIGRvbmUoew0KICAgICAgICAgICAgcGF0aDogYWN0dWFsRmlsZS5wYXRoLA0KICAgICAgICAgICAgY29udGVudHM6IGFjdHVhbEZpbGUuY29kZQ0KICAgICAgICB9KTsNCiAgICB9DQogICAgZWxzZSB7DQogICAgICAgIHRocm93IG5ldyBFcnJvcihgVGhlIGZpbGUgJHtyZXF1ZXN0LmN1cnJlbnR9IGRvZXMgbm90IGV4aXN0YCk7DQogICAgfQ0KfTsNCmNvbnN0IHRyYW5zcGlsZUZpbGUgPSAoZmlsZSkgPT4gew0KICAgIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSwgcmVqZWN0KSA9PiB7DQogICAgICAgIFNhc3Mub3B0aW9ucyh7DQogICAgICAgICAgICBpbmRlbnRlZFN5bnRheDogZmlsZS5wYXRoLmVuZHNXaXRoKCIuc2FzcyIpIHx8IGZpbGUubGFuZyA9PT0gInNhc3MiDQogICAgICAgIH0pOw0KICAgICAgICBTYXNzLmNvbXBpbGUoZmlsZS5jb2RlLCAocmVzdWx0KSA9PiB7DQogICAgICAgICAgICBpZiAocmVzdWx0LmZvcm1hdHRlZCkgew0KICAgICAgICAgICAgICAgIHJlamVjdChyZXN1bHQuZm9ybWF0dGVkKTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIGVsc2Ugew0KICAgICAgICAgICAgICAgIHJlc29sdmUoT2JqZWN0LmFzc2lnbihPYmplY3QuYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiByZXN1bHQudGV4dCwgbWFwOiByZXN1bHQubWFwIH0pKTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgfSk7DQogICAgfSk7DQp9OwoK', null, false);
+/* eslint-enable */class SassTranspiler extends Transpiler {
+    constructor(context) {
+        super("sass-transpiler", new WorkerFactory(), context);
+        this.additionalTranspilers = {};
     }
-    SassTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return SassTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-var generateExport = function (file, prependExportDefault) {
-    if (prependExportDefault === void 0) { prependExportDefault = true; }
-    return ((prependExportDefault ? "export default " : "") + "function addStyles () {" +
-        "const tag = document.createElement('style');" +
-        "tag.type = 'text/css';" +
-        ("tag.appendChild(document.createTextNode(`" + file.code + "`));") +
-        ("tag.setAttribute('data-src', '" + file.path + "');") +
-        "document.head.appendChild(tag);" +
-        "} addStyles();");
-};
-//# sourceMappingURL=style-plugin-helpers.js.map
-var TransformationException = /** @class */ (function (_super) {
-    __extends(TransformationException, _super);
-    function TransformationException(filePath, transformerName) {
-        return _super.call(this, "Failed to transform " + filePath + (transformerName ? " in " + transformerName : "") + ".") || this;
     }
-    return TransformationException;
-}(Error));
-//# sourceMappingURL=TransformationException.js.map
-function sassTransformer(context) {
-    var transformerName = "packager::transformer::sass-transformer";
-    var isSass = verifyExtensions([".sass", ".scss"]);
-    var transpiler;
+}const generateExport = (file, prependExportDefault = true) => {
+    return (`${prependExportDefault ? "export default " : ""}function addStyles () {` +
+        `const tag = document.createElement('style');` +
+        `tag.type = 'text/css';` +
+        `tag.appendChild(document.createTextNode(\`${file.code}\`));` +
+        `tag.setAttribute('data-src', '${file.path}');` +
+        `document.head.appendChild(tag);` +
+        `} addStyles();`);
+};class TransformationException extends Error {
+    constructor(filePath, transformerName) {
+        super(`Failed to transform ${filePath}${transformerName ? " in " + transformerName : ""}.`);
+    }
+}function sassTransformer(context) {
+    const transformerName = "packager::transformer::sass-transformer";
+    const isSass = verifyExtensions([".sass", ".scss"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isSass(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("sass-transpiler");
-                            if (!transpiler) {
-                                transpiler = new SassTranspiler(context);
-                                context.cache.transpilers.set("sass-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Sass-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: generateExport(completed),
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isSass(modulePath)) {
+                    transpiler = context.cache.transpilers.get("sass-transpiler");
+                    if (!transpiler) {
+                        transpiler = new SassTranspiler(context);
+                        context.cache.transpilers.set("sass-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Sass-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: generateExport(completed),
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$1 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0KCnZhciBUUkFOU1BJTEVfU1RBVFVTID0gewogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwKICAgIFBSRVBBUkVfQURESVRJT05BTDogIlRSQU5TUElMRVI6QURESVRJT05BTDpQUkVQQVJFIiwKICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwKICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwKICAgIEVSUk9SX0NPTVBJTEU6ICJUUkFOU1BJTEVSOkVSUk9SOkNPTVBJTEUiLAogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCIKfTsKCnNlbGYuaW1wb3J0U2NyaXB0cygiaHR0cHM6Ly91bnBrZy5jb20vQGJsb3h5L2lpZmUtbGlic0BsYXRlc3QvbGlicy9zdHlsdXMuanMiKTsKc2VsZi5hZGRFdmVudExpc3RlbmVyKCJtZXNzYWdlIiwgZnVuY3Rpb24gKF9hKSB7CiAgICB2YXIgZGF0YSA9IF9hLmRhdGE7CiAgICByZXR1cm4gX19hd2FpdGVyKHZvaWQgMCwgdm9pZCAwLCB2b2lkIDAsIGZ1bmN0aW9uICgpIHsKICAgICAgICB2YXIgZmlsZSwgdHlwZSwgY29udGV4dCwgdHJhbnNwaWxlZEZpbGUsIGVycm9yXzE7CiAgICAgICAgcmV0dXJuIF9fZ2VuZXJhdG9yKHRoaXMsIGZ1bmN0aW9uIChfYikgewogICAgICAgICAgICBzd2l0Y2ggKF9iLmxhYmVsKSB7CiAgICAgICAgICAgICAgICBjYXNlIDA6CiAgICAgICAgICAgICAgICAgICAgZmlsZSA9IGRhdGEuZmlsZSwgdHlwZSA9IGRhdGEudHlwZSwgY29udGV4dCA9IGRhdGEuY29udGV4dDsKICAgICAgICAgICAgICAgICAgICBpZiAoISh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLlBSRVBBUkVfRklMRVMpKSByZXR1cm4gWzMgLypicmVhayovLCA0XTsKICAgICAgICAgICAgICAgICAgICBfYi5sYWJlbCA9IDE7CiAgICAgICAgICAgICAgICBjYXNlIDE6CiAgICAgICAgICAgICAgICAgICAgX2IudHJ5cy5wdXNoKFsxLCAzLCAsIDRdKTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzQgLyp5aWVsZCovLCB0cmFuc3BpbGVGaWxlKGZpbGUpXTsKICAgICAgICAgICAgICAgIGNhc2UgMjoKICAgICAgICAgICAgICAgICAgICB0cmFuc3BpbGVkRmlsZSA9IF9iLnNlbnQoKTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLAogICAgICAgICAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgICAgIHJldHVybiBbMyAvKmJyZWFrKi8sIDRdOwogICAgICAgICAgICAgICAgY2FzZSAzOgogICAgICAgICAgICAgICAgICAgIGVycm9yXzEgPSBfYi5zZW50KCk7CiAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQogICAgICAgICAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2UoewogICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0NPTVBJTEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGVycm9yOiBlcnJvcl8xCiAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICBjYXNlIDQ6IHJldHVybiBbMiAvKnJldHVybiovXTsKICAgICAgICAgICAgfQogICAgICAgIH0pOwogICAgfSk7Cn0pOwp2YXIgdHJhbnNwaWxlRmlsZSA9IGZ1bmN0aW9uIChmaWxlKSB7CiAgICByZXR1cm4gbmV3IFByb21pc2UoZnVuY3Rpb24gKHJlc29sdmUsIHJlamVjdCkgewogICAgICAgIHN0eWx1cyhmaWxlLmNvZGUpCiAgICAgICAgICAgIC5zZXQoImZpbGVuYW1lIiwgZmlsZS5wYXRoKQogICAgICAgICAgICAucmVuZGVyKGZ1bmN0aW9uIChlcnIsIGNzcykgewogICAgICAgICAgICBpZiAoZXJyKSB7CiAgICAgICAgICAgICAgICByZWplY3QoZXJyKTsKICAgICAgICAgICAgfQogICAgICAgICAgICBlbHNlIHsKICAgICAgICAgICAgICAgIHJlc29sdmUoX19hc3NpZ24oX19hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IGNzcyB9KSk7CiAgICAgICAgICAgIH0KICAgICAgICB9KTsKICAgIH0pOwp9OwoK', null, false);
-/* eslint-enable */var StylusTranspiler = /** @class */ (function (_super) {
-    __extends(StylusTranspiler, _super);
-    function StylusTranspiler(context) {
-        var _this = _super.call(this, "stylus-transpiler", new WorkerFactory$1(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+}/* eslint-disable */
+const WorkerFactory$1 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IFRSQU5TUElMRV9TVEFUVVMgPSB7DQogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwNCiAgICBQUkVQQVJFX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6UFJFUEFSRSIsDQogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLA0KICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwNCiAgICBFUlJPUl9DT01QSUxFOiAiVFJBTlNQSUxFUjpFUlJPUjpDT01QSUxFIiwNCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIg0KfTsKCnNlbGYuaW1wb3J0U2NyaXB0cygiaHR0cHM6Ly91bnBrZy5jb20vQGJsb3h5L2lpZmUtbGlic0BsYXRlc3QvbGlicy9zdHlsdXMuanMiKTsNCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcigibWVzc2FnZSIsICh7IGRhdGEgfSkgPT4gX19hd2FpdGVyKHZvaWQgMCwgdm9pZCAwLCB2b2lkIDAsIGZ1bmN0aW9uKiAoKSB7DQogICAgY29uc3QgeyBmaWxlLCB0eXBlLCBjb250ZXh0IH0gPSBkYXRhOw0KICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLlBSRVBBUkVfRklMRVMpIHsNCiAgICAgICAgdHJ5IHsNCiAgICAgICAgICAgIGNvbnN0IHRyYW5zcGlsZWRGaWxlID0geWllbGQgdHJhbnNwaWxlRmlsZShmaWxlKTsNCiAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUNCiAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2Uoew0KICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLA0KICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgICAgICBjYXRjaCAoZXJyb3IpIHsNCiAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2Uoew0KICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwNCiAgICAgICAgICAgICAgICBlcnJvcg0KICAgICAgICAgICAgfSk7DQogICAgICAgIH0NCiAgICB9DQp9KSk7DQpjb25zdCB0cmFuc3BpbGVGaWxlID0gKGZpbGUpID0+IG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IHsNCiAgICBzdHlsdXMoZmlsZS5jb2RlKQ0KICAgICAgICAuc2V0KCJmaWxlbmFtZSIsIGZpbGUucGF0aCkNCiAgICAgICAgLnJlbmRlcigoZXJyLCBjc3MpID0+IHsNCiAgICAgICAgaWYgKGVycikgew0KICAgICAgICAgICAgcmVqZWN0KGVycik7DQogICAgICAgIH0NCiAgICAgICAgZWxzZSB7DQogICAgICAgICAgICByZXNvbHZlKE9iamVjdC5hc3NpZ24oT2JqZWN0LmFzc2lnbih7fSwgZmlsZSksIHsgY29kZTogY3NzIH0pKTsNCiAgICAgICAgfQ0KICAgIH0pOw0KfSk7Cgo=', null, false);
+/* eslint-enable */class StylusTranspiler extends Transpiler {
+    constructor(context) {
+        super("stylus-transpiler", new WorkerFactory$1(), context);
+        this.additionalTranspilers = {};
     }
-    StylusTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return StylusTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function stylusTransformer(context) {
-    var transformerName = "packager::transformer::stylus-transformer";
-    var isStylus = verifyExtensions([".styl", ".stylus"]);
-    var transpiler;
+    }
+}function stylusTransformer(context) {
+    const transformerName = "packager::transformer::stylus-transformer";
+    const isStylus = verifyExtensions([".styl", ".stylus"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isStylus(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("stylus-transpiler");
-                            if (!transpiler) {
-                                transpiler = new StylusTranspiler(context);
-                                context.cache.transpilers.set("stylus-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Stylus-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: generateExport(completed),
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isStylus(modulePath)) {
+                    transpiler = context.cache.transpilers.get("stylus-transpiler");
+                    if (!transpiler) {
+                        transpiler = new StylusTranspiler(context);
+                        context.cache.transpilers.set("stylus-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Stylus-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: generateExport(completed),
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$2 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0KCnZhciBhYnNvbHV0ZVBhdGggPSAvXig/OlwvfCg/OltBLVphLXpdOik/W1xcfFwvXSkvOwpmdW5jdGlvbiBpc0Fic29sdXRlKHBhdGgpIHsKICAgIHJldHVybiBhYnNvbHV0ZVBhdGgudGVzdChwYXRoKTsKfQpmdW5jdGlvbiByZXNvbHZlKCkgewogICAgdmFyIHBhdGhzID0gW107CiAgICBmb3IgKHZhciBfaSA9IDA7IF9pIDwgYXJndW1lbnRzLmxlbmd0aDsgX2krKykgewogICAgICAgIHBhdGhzW19pXSA9IGFyZ3VtZW50c1tfaV07CiAgICB9CiAgICB2YXIgcmVzb2x2ZWRQYXJ0cyA9IHBhdGhzLnNoaWZ0KCkuc3BsaXQoL1tcL1xcXS8pOwogICAgcGF0aHMuZm9yRWFjaChmdW5jdGlvbiAocGF0aCkgewogICAgICAgIGlmIChpc0Fic29sdXRlKHBhdGgpKSB7CiAgICAgICAgICAgIHJlc29sdmVkUGFydHMgPSBwYXRoLnNwbGl0KC9bXC9cXF0vKTsKICAgICAgICB9CiAgICAgICAgZWxzZSB7CiAgICAgICAgICAgIHZhciBwYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOwogICAgICAgICAgICB3aGlsZSAocGFydHNbMF0gPT09ICIuIiB8fCBwYXJ0c1swXSA9PT0gIi4uIikgewogICAgICAgICAgICAgICAgdmFyIHBhcnQgPSBwYXJ0cy5zaGlmdCgpOwogICAgICAgICAgICAgICAgaWYgKHBhcnQgPT09ICIuLiIpIHsKICAgICAgICAgICAgICAgICAgICByZXNvbHZlZFBhcnRzLnBvcCgpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIHJlc29sdmVkUGFydHMucHVzaC5hcHBseShyZXNvbHZlZFBhcnRzLCBwYXJ0cyk7CiAgICAgICAgfQogICAgfSk7CiAgICByZXR1cm4gbm9ybWFsaXplKHJlc29sdmVkUGFydHMuam9pbigiLyIpKTsKfQpmdW5jdGlvbiBub3JtYWxpemUocGF0aCkgewogICAgcmV0dXJuIHBhdGgucmVwbGFjZSgvXC9cLy9naSwgIi8iKTsKfQoKdmFyIFRSQU5TUElMRV9TVEFUVVMgPSB7CiAgICBQUkVQQVJFX0ZJTEVTOiAiVFJBTlNQSUxFUjpGSUxFOlBSRVBBUkUiLAogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLAogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLAogICAgVFJBTlNQSUxFX0NPTVBMRVRFOiAiVFJBTlNQSUxFUjpUUkFOU1BJTEU6Q09NUExFVEUiLAogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIgp9OwoKLy8gQHRzLWlnbm9yZQpzZWxmLndpbmRvdyA9IHNlbGY7Ci8vIEB0cy1pZ25vcmUKc2VsZi53aW5kb3cuZG9jdW1lbnQgPSB7CiAgICBjdXJyZW50U2NyaXB0OiB7IGFzeW5jOiB0cnVlIH0sCiAgICBjcmVhdGVFbGVtZW50OiBmdW5jdGlvbiAoKSB7IHJldHVybiAoeyBhcHBlbmRDaGlsZDogZnVuY3Rpb24gKCkgeyB9IH0pOyB9LAogICAgY3JlYXRlVGV4dE5vZGU6IGZ1bmN0aW9uICgpIHsgcmV0dXJuICh7fSk7IH0sCiAgICBnZXRFbGVtZW50c0J5VGFnTmFtZTogZnVuY3Rpb24gKCkgeyByZXR1cm4gW107IH0sCiAgICBoZWFkOiB7IGFwcGVuZENoaWxkOiBmdW5jdGlvbiAoKSB7IH0sIHJlbW92ZUNoaWxkOiBmdW5jdGlvbiAoKSB7IH0gfQp9OwpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVzcyIpOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCBmdW5jdGlvbiAoX2EpIHsKICAgIHZhciBkYXRhID0gX2EuZGF0YTsKICAgIHJldHVybiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBmaWxlLCB0eXBlLCBjb250ZXh0LCBvcHRpb25zLCB0cmFuc3BpbGVkRmlsZSwgZXJyb3JfMTsKICAgICAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9iKSB7CiAgICAgICAgICAgIHN3aXRjaCAoX2IubGFiZWwpIHsKICAgICAgICAgICAgICAgIGNhc2UgMDoKICAgICAgICAgICAgICAgICAgICBmaWxlID0gZGF0YS5maWxlLCB0eXBlID0gZGF0YS50eXBlLCBjb250ZXh0ID0gZGF0YS5jb250ZXh0OwogICAgICAgICAgICAgICAgICAgIGlmICghKHR5cGUgPT09IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9GSUxFUykpIHJldHVybiBbMyAvKmJyZWFrKi8sIDRdOwogICAgICAgICAgICAgICAgICAgIF9iLmxhYmVsID0gMTsKICAgICAgICAgICAgICAgIGNhc2UgMToKICAgICAgICAgICAgICAgICAgICBfYi50cnlzLnB1c2goWzEsIDMsICwgNF0pOwogICAgICAgICAgICAgICAgICAgIG9wdGlvbnMgPSB7CiAgICAgICAgICAgICAgICAgICAgICAgIHBsdWdpbnM6IFttYW5hZ2VyKGNvbnRleHQsIGZpbGUucGF0aCldLAogICAgICAgICAgICAgICAgICAgICAgICByZWxhdGl2ZVVybHM6IHRydWUsCiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGVuYW1lOiBmaWxlLnBhdGgKICAgICAgICAgICAgICAgICAgICB9OwogICAgICAgICAgICAgICAgICAgIHJldHVybiBbNCAvKnlpZWxkKi8sIHRyYW5zcGlsZUZpbGUoZmlsZSwgb3B0aW9ucyldOwogICAgICAgICAgICAgICAgY2FzZSAyOgogICAgICAgICAgICAgICAgICAgIHRyYW5zcGlsZWRGaWxlID0gX2Iuc2VudCgpOwogICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUKICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlCiAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICBjYXNlIDM6CiAgICAgICAgICAgICAgICAgICAgZXJyb3JfMSA9IF9iLnNlbnQoKTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwKICAgICAgICAgICAgICAgICAgICAgICAgZXJyb3I6IGVycm9yXzEKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzMgLypicmVhayovLCA0XTsKICAgICAgICAgICAgICAgIGNhc2UgNDogcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfSk7CnZhciB0cmFuc3BpbGVGaWxlID0gZnVuY3Rpb24gKGZpbGUsIG9wdGlvbnMpIHsKICAgIHJldHVybiBuZXcgUHJvbWlzZShmdW5jdGlvbiAocmVzb2x2ZSwgcmVqZWN0KSB7CiAgICAgICAgbGVzcy5yZW5kZXIoZmlsZS5jb2RlLCBvcHRpb25zLCBmdW5jdGlvbiAoZXJyLCBkYXRhKSB7CiAgICAgICAgICAgIGlmIChlcnIpIHsKICAgICAgICAgICAgICAgIHJlamVjdChlcnIpOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsc2UgewogICAgICAgICAgICAgICAgcmVzb2x2ZShfX2Fzc2lnbihfX2Fzc2lnbih7fSwgZmlsZSksIHsgY29kZTogZGF0YS5jc3MgfSkpOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfTsKdmFyIG1hbmFnZXIgPSBmdW5jdGlvbiAoY29udGV4dCwgcGFyZW50UGF0aCkgewogICAgdmFyIGxlc3NNYW5hZ2VyID0gbmV3IGxlc3MuRmlsZU1hbmFnZXIoKTsKICAgIGxlc3NNYW5hZ2VyLmxvYWRGaWxlID0gZnVuY3Rpb24gKGZpbGVuYW1lLCBjdXJyZW50RGlyZWN0b3J5KSB7CiAgICAgICAgcmV0dXJuIG5ldyBQcm9taXNlKGZ1bmN0aW9uIChyZXNvbHZlJDEsIHJlamVjdCkgewogICAgICAgICAgICB0cnkgewogICAgICAgICAgICAgICAgdmFyIHJlbGF0aXZlUGF0aF8xID0gcmVzb2x2ZShjdXJyZW50RGlyZWN0b3J5LCBmaWxlbmFtZSk7CiAgICAgICAgICAgICAgICB2YXIgZm91bmRGaWxlID0gY29udGV4dC5maWxlcy5maW5kKGZ1bmN0aW9uIChmaWxlKSB7IHJldHVybiBmaWxlLnBhdGggPT09IHJlbGF0aXZlUGF0aF8xOyB9KTsKICAgICAgICAgICAgICAgIGlmIChmb3VuZEZpbGUpIHsKICAgICAgICAgICAgICAgICAgICByZXNvbHZlJDEoeyBjb250ZW50czogZm91bmRGaWxlLmNvZGUsIGZpbGVuYW1lOiBmaWxlbmFtZSB9KTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGVsc2UgewogICAgICAgICAgICAgICAgICAgIHZhciByZXRyaWVkRmlsZSA9IHJldHJ5RmlsZXMocmVsYXRpdmVQYXRoXzEsIGNvbnRleHQpOwogICAgICAgICAgICAgICAgICAgIGlmIChyZXRyaWVkRmlsZSkgewogICAgICAgICAgICAgICAgICAgICAgICByZXNvbHZlJDEoeyBjb250ZW50czogcmV0cmllZEZpbGUuY29kZSwgZmlsZW5hbWU6IGZpbGVuYW1lIH0pOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBlbHNlIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKCJDb3VsZCBub3QgbG9hZCAiICsgZmlsZW5hbWUgKyAiIGZyb20gIiArIHBhcmVudFBhdGgpOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICBjYXRjaCAoZSkgewogICAgICAgICAgICAgICAgcmVqZWN0KGUpOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9OwogICAgcmV0dXJuIHsKICAgICAgICBpbnN0YWxsOiBmdW5jdGlvbiAoaW5zdGFuY2UsIHBsdWdpbk1hbmFnZXIpIHsKICAgICAgICAgICAgcGx1Z2luTWFuYWdlci5hZGRGaWxlTWFuYWdlcihsZXNzTWFuYWdlcik7CiAgICAgICAgfQogICAgfTsKfTsKdmFyIHJldHJ5RmlsZXMgPSBmdW5jdGlvbiAocGF0aCwgY29udGV4dCkgewogICAgcmV0dXJuIGNvbnRleHQuZmlsZXMuZmluZChmdW5jdGlvbiAoZmlsZSkgewogICAgICAgIHJldHVybiBmaWxlLnBhdGggPT09IHBhdGggfHwKICAgICAgICAgICAgZmlsZS5wYXRoID09PSBwYXRoICsgIi5sZXNzIiB8fAogICAgICAgICAgICBmaWxlLnBhdGggPT09IHBhdGggKyAiLmNzcyI7CiAgICB9KTsKfTsKCg==', null, false);
-/* eslint-enable */var LessTranspiler = /** @class */ (function (_super) {
-    __extends(LessTranspiler, _super);
-    function LessTranspiler(context) {
-        var _this = _super.call(this, "less-transpiler", new WorkerFactory$2(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+}/* eslint-disable */
+const WorkerFactory$2 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IGFic29sdXRlUGF0aCA9IC9eKD86XC98KD86W0EtWmEtel06KT9bXFx8XC9dKS87DQpmdW5jdGlvbiBpc0Fic29sdXRlKHBhdGgpIHsNCiAgICByZXR1cm4gYWJzb2x1dGVQYXRoLnRlc3QocGF0aCk7DQp9DQpmdW5jdGlvbiByZXNvbHZlKC4uLnBhdGhzKSB7DQogICAgbGV0IHJlc29sdmVkUGFydHMgPSBwYXRocy5zaGlmdCgpLnNwbGl0KC9bXC9cXF0vKTsNCiAgICBwYXRocy5mb3JFYWNoKHBhdGggPT4gew0KICAgICAgICBpZiAoaXNBYnNvbHV0ZShwYXRoKSkgew0KICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOw0KICAgICAgICB9DQogICAgICAgIGVsc2Ugew0KICAgICAgICAgICAgY29uc3QgcGFydHMgPSBwYXRoLnNwbGl0KC9bXC9cXF0vKTsNCiAgICAgICAgICAgIHdoaWxlIChwYXJ0c1swXSA9PT0gIi4iIHx8IHBhcnRzWzBdID09PSAiLi4iKSB7DQogICAgICAgICAgICAgICAgY29uc3QgcGFydCA9IHBhcnRzLnNoaWZ0KCk7DQogICAgICAgICAgICAgICAgaWYgKHBhcnQgPT09ICIuLiIpIHsNCiAgICAgICAgICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cy5wb3AoKTsNCiAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICB9DQogICAgICAgICAgICByZXNvbHZlZFBhcnRzLnB1c2guYXBwbHkocmVzb2x2ZWRQYXJ0cywgcGFydHMpOw0KICAgICAgICB9DQogICAgfSk7DQogICAgcmV0dXJuIG5vcm1hbGl6ZShyZXNvbHZlZFBhcnRzLmpvaW4oIi8iKSk7DQp9DQpmdW5jdGlvbiBub3JtYWxpemUocGF0aCkgew0KICAgIHJldHVybiBwYXRoLnJlcGxhY2UoL1wvXC8vZ2ksICIvIik7DQp9Cgpjb25zdCBUUkFOU1BJTEVfU1RBVFVTID0gew0KICAgIFBSRVBBUkVfRklMRVM6ICJUUkFOU1BJTEVSOkZJTEU6UFJFUEFSRSIsDQogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLA0KICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwNCiAgICBUUkFOU1BJTEVfQ09NUExFVEU6ICJUUkFOU1BJTEVSOlRSQU5TUElMRTpDT01QTEVURSIsDQogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsDQogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCINCn07CgovLyBAdHMtaWdub3JlDQpzZWxmLndpbmRvdyA9IHNlbGY7DQovLyBAdHMtaWdub3JlDQpzZWxmLndpbmRvdy5kb2N1bWVudCA9IHsNCiAgICBjdXJyZW50U2NyaXB0OiB7IGFzeW5jOiB0cnVlIH0sDQogICAgY3JlYXRlRWxlbWVudDogKCkgPT4gKHsgYXBwZW5kQ2hpbGQ6ICgpID0+IHsgfSB9KSwNCiAgICBjcmVhdGVUZXh0Tm9kZTogKCkgPT4gKHt9KSwNCiAgICBnZXRFbGVtZW50c0J5VGFnTmFtZTogKCkgPT4gW10sDQogICAgaGVhZDogeyBhcHBlbmRDaGlsZDogKCkgPT4geyB9LCByZW1vdmVDaGlsZDogKCkgPT4geyB9IH0NCn07DQpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVzcyIpOw0Kc2VsZi5hZGRFdmVudExpc3RlbmVyKCJtZXNzYWdlIiwgKHsgZGF0YSB9KSA9PiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24qICgpIHsNCiAgICBjb25zdCB7IGZpbGUsIHR5cGUsIGNvbnRleHQgfSA9IGRhdGE7DQogICAgaWYgKHR5cGUgPT09IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9GSUxFUykgew0KICAgICAgICB0cnkgew0KICAgICAgICAgICAgY29uc3Qgb3B0aW9ucyA9IHsNCiAgICAgICAgICAgICAgICBwbHVnaW5zOiBbbWFuYWdlcihjb250ZXh0LCBmaWxlLnBhdGgpXSwNCiAgICAgICAgICAgICAgICByZWxhdGl2ZVVybHM6IHRydWUsDQogICAgICAgICAgICAgICAgZmlsZW5hbWU6IGZpbGUucGF0aA0KICAgICAgICAgICAgfTsNCiAgICAgICAgICAgIGNvbnN0IHRyYW5zcGlsZWRGaWxlID0geWllbGQgdHJhbnNwaWxlRmlsZShmaWxlLCBvcHRpb25zKTsNCiAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUNCiAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2Uoew0KICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLA0KICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgICAgICBjYXRjaCAoZXJyb3IpIHsNCiAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2Uoew0KICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwNCiAgICAgICAgICAgICAgICBlcnJvcg0KICAgICAgICAgICAgfSk7DQogICAgICAgIH0NCiAgICB9DQp9KSk7DQpjb25zdCB0cmFuc3BpbGVGaWxlID0gKGZpbGUsIG9wdGlvbnMpID0+IG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IHsNCiAgICBsZXNzLnJlbmRlcihmaWxlLmNvZGUsIG9wdGlvbnMsIChlcnIsIGRhdGEpID0+IHsNCiAgICAgICAgaWYgKGVycikgew0KICAgICAgICAgICAgcmVqZWN0KGVycik7DQogICAgICAgIH0NCiAgICAgICAgZWxzZSB7DQogICAgICAgICAgICByZXNvbHZlKE9iamVjdC5hc3NpZ24oT2JqZWN0LmFzc2lnbih7fSwgZmlsZSksIHsgY29kZTogZGF0YS5jc3MgfSkpOw0KICAgICAgICB9DQogICAgfSk7DQp9KTsNCmNvbnN0IG1hbmFnZXIgPSAoY29udGV4dCwgcGFyZW50UGF0aCkgPT4gew0KICAgIGNvbnN0IGxlc3NNYW5hZ2VyID0gbmV3IGxlc3MuRmlsZU1hbmFnZXIoKTsNCiAgICBsZXNzTWFuYWdlci5sb2FkRmlsZSA9IChmaWxlbmFtZSwgY3VycmVudERpcmVjdG9yeSkgPT4gew0KICAgICAgICByZXR1cm4gbmV3IFByb21pc2UoKHJlc29sdmUkMSwgcmVqZWN0KSA9PiB7DQogICAgICAgICAgICB0cnkgew0KICAgICAgICAgICAgICAgIGNvbnN0IHJlbGF0aXZlUGF0aCA9IHJlc29sdmUoY3VycmVudERpcmVjdG9yeSwgZmlsZW5hbWUpOw0KICAgICAgICAgICAgICAgIGNvbnN0IGZvdW5kRmlsZSA9IGNvbnRleHQuZmlsZXMuZmluZChmaWxlID0+IGZpbGUucGF0aCA9PT0gcmVsYXRpdmVQYXRoKTsNCiAgICAgICAgICAgICAgICBpZiAoZm91bmRGaWxlKSB7DQogICAgICAgICAgICAgICAgICAgIHJlc29sdmUkMSh7IGNvbnRlbnRzOiBmb3VuZEZpbGUuY29kZSwgZmlsZW5hbWUgfSk7DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgIGVsc2Ugew0KICAgICAgICAgICAgICAgICAgICBjb25zdCByZXRyaWVkRmlsZSA9IHJldHJ5RmlsZXMocmVsYXRpdmVQYXRoLCBjb250ZXh0KTsNCiAgICAgICAgICAgICAgICAgICAgaWYgKHJldHJpZWRGaWxlKSB7DQogICAgICAgICAgICAgICAgICAgICAgICByZXNvbHZlJDEoeyBjb250ZW50czogcmV0cmllZEZpbGUuY29kZSwgZmlsZW5hbWUgfSk7DQogICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgZWxzZSB7DQogICAgICAgICAgICAgICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENvdWxkIG5vdCBsb2FkICR7ZmlsZW5hbWV9IGZyb20gJHtwYXJlbnRQYXRofWApOw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgY2F0Y2ggKGUpIHsNCiAgICAgICAgICAgICAgICByZWplY3QoZSk7DQogICAgICAgICAgICB9DQogICAgICAgIH0pOw0KICAgIH07DQogICAgcmV0dXJuIHsNCiAgICAgICAgaW5zdGFsbChpbnN0YW5jZSwgcGx1Z2luTWFuYWdlcikgew0KICAgICAgICAgICAgcGx1Z2luTWFuYWdlci5hZGRGaWxlTWFuYWdlcihsZXNzTWFuYWdlcik7DQogICAgICAgIH0NCiAgICB9Ow0KfTsNCmNvbnN0IHJldHJ5RmlsZXMgPSAocGF0aCwgY29udGV4dCkgPT4gY29udGV4dC5maWxlcy5maW5kKGZpbGUgPT4gZmlsZS5wYXRoID09PSBwYXRoIHx8DQogICAgZmlsZS5wYXRoID09PSBgJHtwYXRofS5sZXNzYCB8fA0KICAgIGZpbGUucGF0aCA9PT0gYCR7cGF0aH0uY3NzYCk7Cgo=', null, false);
+/* eslint-enable */class LessTranspiler extends Transpiler {
+    constructor(context) {
+        super("less-transpiler", new WorkerFactory$2(), context);
+        this.additionalTranspilers = {};
     }
-    LessTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return LessTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function lessTransformer(context) {
-    var transformerName = "packager::transformer::less-transformer";
-    var isLess = verifyExtensions([".less"]);
-    var transpiler;
+    }
+}function lessTransformer(context) {
+    const transformerName = "packager::transformer::less-transformer";
+    const isLess = verifyExtensions([".less"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isLess(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("less-transpiler");
-                            if (!transpiler) {
-                                transpiler = new LessTranspiler(context);
-                                context.cache.transpilers.set("less-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Less-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: generateExport(completed),
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isLess(modulePath)) {
+                    transpiler = context.cache.transpilers.get("less-transpiler");
+                    if (!transpiler) {
+                        transpiler = new LessTranspiler(context);
+                        context.cache.transpilers.set("less-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Less-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: generateExport(completed),
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$3 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0NCg0KZnVuY3Rpb24gX192YWx1ZXMobykgew0KICAgIHZhciBtID0gdHlwZW9mIFN5bWJvbCA9PT0gImZ1bmN0aW9uIiAmJiBvW1N5bWJvbC5pdGVyYXRvcl0sIGkgPSAwOw0KICAgIGlmIChtKSByZXR1cm4gbS5jYWxsKG8pOw0KICAgIHJldHVybiB7DQogICAgICAgIG5leHQ6IGZ1bmN0aW9uICgpIHsNCiAgICAgICAgICAgIGlmIChvICYmIGkgPj0gby5sZW5ndGgpIG8gPSB2b2lkIDA7DQogICAgICAgICAgICByZXR1cm4geyB2YWx1ZTogbyAmJiBvW2krK10sIGRvbmU6ICFvIH07DQogICAgICAgIH0NCiAgICB9Ow0KfQoKdmFyIGdlbmVyYXRlRXhwb3J0ID0gZnVuY3Rpb24gKGZpbGUsIHByZXBlbmRFeHBvcnREZWZhdWx0KSB7CiAgICBpZiAocHJlcGVuZEV4cG9ydERlZmF1bHQgPT09IHZvaWQgMCkgeyBwcmVwZW5kRXhwb3J0RGVmYXVsdCA9IHRydWU7IH0KICAgIHJldHVybiAoKHByZXBlbmRFeHBvcnREZWZhdWx0ID8gImV4cG9ydCBkZWZhdWx0ICIgOiAiIikgKyAiZnVuY3Rpb24gYWRkU3R5bGVzICgpIHsiICsKICAgICAgICAiY29uc3QgdGFnID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc3R5bGUnKTsiICsKICAgICAgICAidGFnLnR5cGUgPSAndGV4dC9jc3MnOyIgKwogICAgICAgICgidGFnLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKGAiICsgZmlsZS5jb2RlICsgImApKTsiKSArCiAgICAgICAgKCJ0YWcuc2V0QXR0cmlidXRlKCdkYXRhLXNyYycsICciICsgZmlsZS5wYXRoICsgIicpOyIpICsKICAgICAgICAiZG9jdW1lbnQuaGVhZC5hcHBlbmRDaGlsZCh0YWcpOyIgKwogICAgICAgICJ9IGFkZFN0eWxlcygpOyIpOwp9Owp2YXIgZ2VuZXJhdGVFeHBvcnRzRm9yQWxsU3R5bGVzID0gZnVuY3Rpb24gKHN0eWxlcywgZmlsZVBhdGgpIHsgcmV0dXJuIGdlbmVyYXRlRXhwb3J0KHsgcGF0aDogZmlsZVBhdGgsIGNvZGU6IHN0eWxlcy5qb2luKCJcblxuIikgfSwgZmFsc2UpOyB9OwoKdmFyIFRSQU5TUElMRV9TVEFUVVMgPSB7CiAgICBQUkVQQVJFX0ZJTEVTOiAiVFJBTlNQSUxFUjpGSUxFOlBSRVBBUkUiLAogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLAogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLAogICAgVFJBTlNQSUxFX0NPTVBMRVRFOiAiVFJBTlNQSUxFUjpUUkFOU1BJTEU6Q09NUExFVEUiLAogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIgp9OwoKLyoqCiAqIEB0b2RvIEZpeCBzb3VyY2VtYXBzIGJlY2F1c2UgdGhleSdyZSBpbmFjY3VyYXRlLgogKi8Kc2VsZi5pbXBvcnRTY3JpcHRzKCJodHRwczovL3VucGtnLmNvbS9zb3VyY2UtbWFwL2Rpc3Qvc291cmNlLW1hcC5qcyIpOwp2YXIgZ2VuZXJhdGVTb3VyY2VNYXAkMSA9IGZ1bmN0aW9uIChmaWxlUGF0aCwgb3JpZ2luYWxDb2RlLCBnZW5lcmF0ZWRDb2RlKSB7CiAgICAvLyBAdHMtaWdub3JlCiAgICB2YXIgbWFwID0gbmV3IHNlbGYuc291cmNlTWFwLlNvdXJjZU1hcEdlbmVyYXRvcih7IGZpbGU6IGZpbGVQYXRoIH0pOwogICAgbWFwLnNldFNvdXJjZUNvbnRlbnQoZmlsZVBhdGgsIG9yaWdpbmFsQ29kZSk7CiAgICBnZW5lcmF0ZWRDb2RlLnNwbGl0KC9ccj9cbi9nKS5mb3JFYWNoKGZ1bmN0aW9uIChsaW5lLCBpbmRleCkgewogICAgICAgIGlmIChsaW5lKSB7CiAgICAgICAgICAgIG1hcC5hZGRNYXBwaW5nKHsKICAgICAgICAgICAgICAgIHNvdXJjZTogZmlsZVBhdGgsCiAgICAgICAgICAgICAgICBvcmlnaW5hbDogeyBsaW5lOiBpbmRleCArIDEsIGNvbHVtbjogMCB9LAogICAgICAgICAgICAgICAgZ2VuZXJhdGVkOiB7IGxpbmU6IGluZGV4ICsgMSwgY29sdW1uOiAwIH0KICAgICAgICAgICAgfSk7CiAgICAgICAgfQogICAgfSk7CiAgICByZXR1cm4gbWFwLnRvSlNPTigpOwp9OwovLyBAdHMtaWdub3JlCnNlbGYuZ2VuZXJhdGVTb3VyY2VNYXAgPSBnZW5lcmF0ZVNvdXJjZU1hcCQxOwoKc2VsZi5pbXBvcnRTY3JpcHRzKCJodHRwczovL3VucGtnLmNvbS92dWUtdGVtcGxhdGUtY29tcGlsZXIvYnJvd3Nlci5qcyIsICJodHRwczovL3VucGtnLmNvbS9oYXNoLXN1bS1icm93c2VyL2Rpc3QvaW5kZXgubWluLmpzIiwgImh0dHBzOi8vdW5wa2cuY29tL0BibG94eS9paWZlLWxpYnNAbGF0ZXN0L2xpYnMvYnVibGUuanMiLCAiaHR0cHM6Ly91bnBrZy5jb20vQGJsb3h5L2lpZmUtbGlic0BsYXRlc3QvbGlicy9jc3MuanMiLCAiaHR0cHM6Ly91bnBrZy5jb20vQGJsb3h5L2lpZmUtbGlic0BsYXRlc3QvbGlicy9wb3N0Y3NzLXNlbGVjdG9yLXBhcnNlci5qcyIpOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCBmdW5jdGlvbiAoX2EpIHsKICAgIHZhciBkYXRhID0gX2EuZGF0YTsKICAgIHJldHVybiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBmaWxlLCB0eXBlLCBhZGRpdGlvbmFsLCBfYiwgc3R5bGVzLCBzY3JpcHQsIGh0bWwsIGFkZGl0aW9uYWxfMSwgY29kZTsKICAgICAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9jKSB7CiAgICAgICAgICAgIGZpbGUgPSBkYXRhLmZpbGUsIHR5cGUgPSBkYXRhLnR5cGUsIGFkZGl0aW9uYWwgPSBkYXRhLmFkZGl0aW9uYWw7CiAgICAgICAgICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLlBSRVBBUkVfRklMRVMpIHsKICAgICAgICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgICAgICAgICAgaWYgKCFmaWxlIHx8ICFmaWxlLnBhdGgpCiAgICAgICAgICAgICAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcigiRmlsZSBpc24ndCBzdXBwbGllZCBvciBpdCBoYXMgYW4gaW5jb3JyZWN0IGZvcm1hdC4iKTsKICAgICAgICAgICAgICAgICAgICBfYiA9IHByZXBhcmVGaWxlQW5kQ29tcGlsZVRlbXBsYXRlKGZpbGUpLCBzdHlsZXMgPSBfYi5zdHlsZXMsIHNjcmlwdCA9IF9iLnNjcmlwdCwgaHRtbCA9IF9iLmh0bWw7CiAgICAgICAgICAgICAgICAgICAgaWYgKChzdHlsZXMgfHwgaHRtbCkgJiYgKHN0eWxlcy5sZW5ndGggfHwgaHRtbC5sZW5ndGgpKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIGFkZGl0aW9uYWxfMSA9IHsgc3R5bGVzOiBzdHlsZXMsIGh0bWw6IGh0bWwgfTsKICAgICAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQogICAgICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9BRERJVElPTkFMLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsZTogX19hc3NpZ24oX19hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IHNjcmlwdCB9KSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFkZGl0aW9uYWw6IGFkZGl0aW9uYWxfMQogICAgICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgZWxzZSB7CiAgICAgICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUKICAgICAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLlRSQU5TUElMRV9DT01QTEVURSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGU6IF9fYXNzaWduKF9fYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiBzY3JpcHQsIG1hcDogZ2VuZXJhdGVTb3VyY2VNYXAoZmlsZS5wYXRoLCBmaWxlLmNvZGUsIHNjcmlwdCkgfSkKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQogICAgICAgICAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2UoewogICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0NPTVBJTEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGVycm9yOiBlcnJvcgogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLkFERElUSU9OQUxfVFJBTlNQSUxFRCkgewogICAgICAgICAgICAgICAgY29kZSA9IGZpbGUuY29kZTsKICAgICAgICAgICAgICAgIGlmIChhZGRpdGlvbmFsKSB7CiAgICAgICAgICAgICAgICAgICAgdHJ5IHsKICAgICAgICAgICAgICAgICAgICAgICAgLy8gYXBwZW5kIHRoZSBzdHlsZSBpbmplY3RvciBoZXJlCiAgICAgICAgICAgICAgICAgICAgICAgIC8vIGRvIHNvbWV0aGluZyB3aXRoIGh0bWwgc3R1ZmYgaGVyZSBsaWtlIHZ1ZSBwdWcuIGJ1dCBsYXRlci4KICAgICAgICAgICAgICAgICAgICAgICAgLy8gY29kZSArIHN0eWxlcwogICAgICAgICAgICAgICAgICAgICAgICBjb2RlICs9IGFwcGVuZFN0eWxlcyhhZGRpdGlvbmFsLnN0eWxlcywgZmlsZS5wYXRoKTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUKICAgICAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0FERElUSU9OQUwsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBlcnJvcjogZXJyb3IKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBbMiAvKnJldHVybiovXTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLlRSQU5TUElMRV9DT01QTEVURSwKICAgICAgICAgICAgICAgICAgICBmaWxlOiBfX2Fzc2lnbihfX2Fzc2lnbih7fSwgZmlsZSksIHsgY29kZTogY29kZSwgbWFwOiBnZW5lcmF0ZVNvdXJjZU1hcChmaWxlLnBhdGgsIGZpbGUuY29kZSwgY29kZSkgfSkKICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgICAgIHJldHVybiBbMiAvKnJldHVybiovXTsKICAgICAgICB9KTsKICAgIH0pOwp9KTsKdmFyIHByZXBhcmVGaWxlQW5kQ29tcGlsZVRlbXBsYXRlID0gZnVuY3Rpb24gKGZpbGUpIHsKICAgIHZhciBfYSA9IFZ1ZVRlbXBsYXRlQ29tcGlsZXIucGFyc2VDb21wb25lbnQoZmlsZS5jb2RlLCB7IHBhZDogImxpbmUiIH0pLCB0ZW1wbGF0ZSA9IF9hLnRlbXBsYXRlLCBzY3JpcHQgPSBfYS5zY3JpcHQsIHN0eWxlcyA9IF9hLnN0eWxlczsKICAgIHZhciBzY29wZUlkID0gImRhdGEtdi0iICsgaGFzaFN1bShmaWxlLnBhdGgpOwogICAgdmFyIHNjb3BlZCA9IHN0eWxlcy5zb21lKGZ1bmN0aW9uIChzdHlsZSkgeyByZXR1cm4gc3R5bGUuc2NvcGVkID09PSB0cnVlOyB9KTsKICAgIHJldHVybiB7CiAgICAgICAgc3R5bGVzOiBwcmVwYXJlU3R5bGVzKHN0eWxlcywgc2NvcGVkID8gc2NvcGVJZCA6IG51bGwsIGZpbGUpLAogICAgICAgIGh0bWw6IFtdLAogICAgICAgIHNjcmlwdDogY29tcGlsZVRlbXBsYXRlKHNjcmlwdC5jb250ZW50LCB0ZW1wbGF0ZSwgc2NvcGVJZCwgc2NvcGVkKQogICAgfTsKfTsKdmFyIHByZXBhcmVTdHlsZXMgPSBmdW5jdGlvbiAoc3R5bGVzLCBzY29wZUlkLCBmaWxlKSB7CiAgICBpZiAoc3R5bGVzID09PSB2b2lkIDApIHsgc3R5bGVzID0gW107IH0KICAgIHJldHVybiBzdHlsZXMubWFwKGZ1bmN0aW9uIChzdHlsZSkgeyByZXR1cm4gKHsKICAgICAgICBjb2RlOiBzdHlsZS5jb250ZW50LAogICAgICAgIGxhbmc6IHN0eWxlLmxhbmcgfHwgImNzcyIsCiAgICAgICAgc2NvcGVJZDogc3R5bGUuc2NvcGVkID8gc2NvcGVJZCA6IG51bGwsCiAgICAgICAgcGF0aDogZmlsZS5wYXRoCiAgICB9KTsgfSk7Cn07CnZhciBhcHBlbmRTdHlsZXMgPSBmdW5jdGlvbiAoc3R5bGVzLCBmaWxlUGF0aCkgewogICAgdmFyIGVfMSwgX2E7CiAgICB2YXIgcGFyc2VkU3R5bGVzID0gW107CiAgICB0cnkgewogICAgICAgIGZvciAodmFyIHN0eWxlc18xID0gX192YWx1ZXMoc3R5bGVzKSwgc3R5bGVzXzFfMSA9IHN0eWxlc18xLm5leHQoKTsgIXN0eWxlc18xXzEuZG9uZTsgc3R5bGVzXzFfMSA9IHN0eWxlc18xLm5leHQoKSkgewogICAgICAgICAgICB2YXIgc3R5bGUgPSBzdHlsZXNfMV8xLnZhbHVlOwogICAgICAgICAgICBwYXJzZWRTdHlsZXMucHVzaChwYXJzZUNzc1N0eWxlKHN0eWxlLmNvZGUsIHN0eWxlLnNjb3BlSWQpKTsKICAgICAgICB9CiAgICB9CiAgICBjYXRjaCAoZV8xXzEpIHsgZV8xID0geyBlcnJvcjogZV8xXzEgfTsgfQogICAgZmluYWxseSB7CiAgICAgICAgdHJ5IHsKICAgICAgICAgICAgaWYgKHN0eWxlc18xXzEgJiYgIXN0eWxlc18xXzEuZG9uZSAmJiAoX2EgPSBzdHlsZXNfMS5yZXR1cm4pKSBfYS5jYWxsKHN0eWxlc18xKTsKICAgICAgICB9CiAgICAgICAgZmluYWxseSB7IGlmIChlXzEpIHRocm93IGVfMS5lcnJvcjsgfQogICAgfQogICAgcmV0dXJuIGdlbmVyYXRlRXhwb3J0c0ZvckFsbFN0eWxlcyhwYXJzZWRTdHlsZXMsIGZpbGVQYXRoKTsKfTsKdmFyIHBhcnNlQ3NzU3R5bGUgPSBmdW5jdGlvbiAoY29kZSwgc2NvcGVJZCkgewogICAgaWYgKHNjb3BlSWQgPT09IHZvaWQgMCkgeyBzY29wZUlkID0gIiI7IH0KICAgIHZhciBwYXJzZWQgPSBjc3MucGFyc2UoY29kZSk7CiAgICByZXR1cm4gY3NzLnN0cmluZ2lmeShfX2Fzc2lnbihfX2Fzc2lnbih7fSwgcGFyc2VkKSwgeyBzdHlsZXNoZWV0OiBhcHBseUF0dHJpYnV0ZVRvU2VsZWN0b3IocGFyc2VkLnN0eWxlc2hlZXQsIHNjb3BlSWQpIH0pKTsKfTsKdmFyIGFwcGx5QXR0cmlidXRlVG9TZWxlY3RvciA9IGZ1bmN0aW9uICh0cmVlLCBzY29wZUlkKSB7CiAgICBpZiAoInNlbGVjdG9ycyIgaW4gdHJlZSkgewogICAgICAgIGZvciAodmFyIGkgaW4gdHJlZS5zZWxlY3RvcnMpIHsKICAgICAgICAgICAgdmFyIHNlbGVjdG9yID0gdHJlZS5zZWxlY3RvcnNbaV07CiAgICAgICAgICAgIHRyZWUuc2VsZWN0b3JzW2ldID0gcG9zdGNzc1NlbGVjdG9yUGFyc2VyKGZ1bmN0aW9uIChzZWxlY3RvcnMpIHsKICAgICAgICAgICAgICAgIHNlbGVjdG9ycy5lYWNoKGZ1bmN0aW9uIChzZWxlY3RvcikgewogICAgICAgICAgICAgICAgICAgIHZhciBub2RlID0gbnVsbDsKICAgICAgICAgICAgICAgICAgICBzZWxlY3Rvci5lYWNoKGZ1bmN0aW9uIChuKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChuLnR5cGUgIT09ICJwc2V1ZG8iKQogICAgICAgICAgICAgICAgICAgICAgICAgICAgbm9kZSA9IG47CiAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgaWYgKHNjb3BlSWQgJiYgc2NvcGVJZCAhPSAiIikgewogICAgICAgICAgICAgICAgICAgICAgICBzZWxlY3Rvci5pbnNlcnRBZnRlcihub2RlLCBwb3N0Y3NzU2VsZWN0b3JQYXJzZXIuYXR0cmlidXRlKHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGF0dHJpYnV0ZTogc2NvcGVJZAogICAgICAgICAgICAgICAgICAgICAgICB9KSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgIH0pLnByb2Nlc3NTeW5jKHNlbGVjdG9yKTsKICAgICAgICB9CiAgICB9CiAgICBpZiAoInJ1bGVzIiBpbiB0cmVlKSB7CiAgICAgICAgZm9yICh2YXIgaSBpbiB0cmVlLnJ1bGVzKSB7CiAgICAgICAgICAgIHZhciBydWxlID0gdHJlZS5ydWxlc1tpXTsKICAgICAgICAgICAgdHJlZS5ydWxlc1tpXSA9IGFwcGx5QXR0cmlidXRlVG9TZWxlY3RvcihydWxlLCBzY29wZUlkKTsKICAgICAgICB9CiAgICB9CiAgICByZXR1cm4gdHJlZTsKfTsKLyoqCiAqIENvbXBpbGVkIHRoZSB0ZW1wbGF0ZSB1c2luZyB2dWUtdGVtcGxhdGUtY29tcGlsZXIKICogYW5kIGNyZWF0ZXMgYW4gb2JqZWN0IGxhdGVyIHRvIGJlIHVzZWQgYnkgU3lzdGVtSlMgdG8gcmVuZGVyCiAqIHRoZSB0ZW1wbGF0ZS4KICovCnZhciBjb21waWxlVGVtcGxhdGUgPSBmdW5jdGlvbiAoY29udGVudCwgdGVtcGxhdGUsIHNjb3BlSWQsIHNjb3BlZCkgewogICAgdmFyIF9hID0gVnVlVGVtcGxhdGVDb21waWxlci5jb21waWxlVG9GdW5jdGlvbnModGVtcGxhdGUuY29udGVudCksIHJlbmRlciA9IF9hLnJlbmRlciwgc3RhdGljUmVuZGVyRm5zID0gX2Euc3RhdGljUmVuZGVyRm5zOwogICAgY29udGVudCA9IGluc2VydFRlbXBsYXRlSW5FeHBvcnQoY29udGVudCwgdGVtcGxhdGUuY29udGVudCwgc2NvcGVJZCwgc2NvcGVkKTsKICAgIHJldHVybiAidmFyIF9fcmVuZGVyRm5zX18gPSB7IFxuICAgICAgICByZW5kZXI6ICIgKyB0b0ZuKHJlbmRlcikgKyAiLFxuICAgICAgICBzdGF0aWNSZW5kZXJGbnM6IFtcbiAgICAgICAgICAgICIgKyBzdGF0aWNSZW5kZXJGbnMubWFwKHRvRm4pLmpvaW4oIiwiKSArICJcbiAgICAgICAgXSBcbiAgICB9OyAiICsgY29udGVudDsKfTsKLyoqCiAqIFRyYW5zZm9ybSB0aGUgZ2l2ZW4gY29kZSB3aXRoIGJ1YmxlCiAqIGFuZCBwdXQgaXQgaW50byBhIHJlbmRlciBmdW5jdGlvbiBmb3IgbGF0ZXIgdXNlLgogKgogKiBTb21lIHdlaXJkIHN0dWZmIGF0IHRoZSBlbmQgb2YgdGhpcyBmdW5jdGlvbiBidXQKICogdGhhdCdzIGJlY2F1c2UgdGhlIGJ1YmxlLnRyYW5zZm9ybSByZXR1cm5zIGFuCiAqIGFub255bW91cyBmdW5jdGlvbiB3aGljaCBtZXNzZXMgdXAgdGhlIHJlbmRlci4KICogU28gd2UgYXJlIGVzc2VudGlhbGx5IHJlbW92aW5nIHRoYXQgZnVuY3Rpb24gOikKICogQHRvZG8gZmluZCBhIGJldHRlciB3YXkgZm9yIHRoaXMuIHRoaXMgaXMgaG9ycmlibGUuCiAqLwp2YXIgdG9GbiA9IGZ1bmN0aW9uIChjb2RlKSB7CiAgICByZXR1cm4gYnVibGUKICAgICAgICAudHJhbnNmb3JtKCJmdW5jdGlvbiByZW5kZXIgKCkgeyAiICsgY29kZSArICIgfSIsIHsKICAgICAgICBvYmplY3RBc3NpZ246ICJPYmplY3QuYXNzaWduIiwKICAgICAgICB0cmFuc2Zvcm1zOiB7CiAgICAgICAgICAgIHN0cmlwV2l0aDogdHJ1ZSwKICAgICAgICAgICAgc3RyaXBXaXRoRnVuY3Rpb25hbDogZmFsc2UKICAgICAgICB9CiAgICB9KQogICAgICAgIC5jb2RlLnJlcGxhY2UoImZ1bmN0aW9uIGFub255bW91cyhcbikgeyIsICIiKQogICAgICAgIC5zbGljZSgwLCAtMSk7Cn07Ci8qKgogKiBGaW5kIHdoZXJlIHRoZSBleHBvcnQgZGVmYXVsdCBpcyBpbiB0aGUgY29kZQogKiBhbmQgaW5zZXJ0IHRoZSB0ZW1wbGF0ZSBwcm9wZXJ0eSB3aXRoIGNvbnRlbnQuCiAqLwp2YXIgaW5zZXJ0VGVtcGxhdGVJbkV4cG9ydCA9IGZ1bmN0aW9uIChjb250ZW50LCB0ZW1wbGF0ZSwgc2NvcGVJZCwgc2NvcGVkKSB7CiAgICBpZiAoc2NvcGVkID09PSB2b2lkIDApIHsgc2NvcGVkID0gZmFsc2U7IH0KICAgIHZhciBleHBvcnRSZWdleCA9IC9eZXhwb3J0IGRlZmF1bHQuKi9nbTsKICAgIGlmIChleHBvcnRSZWdleC50ZXN0KGNvbnRlbnQpKSB7CiAgICAgICAgdmFyIGluc2lkZUV4cG9ydCA9IC9ceyguKilcfS9nbXMuZXhlYyhjb250ZW50KTsKICAgICAgICB2YXIgX3RlbXBsYXRlID0gImAiICsgdGVtcGxhdGUgKyAiYCI7CiAgICAgICAgY29udGVudCA9ICJleHBvcnQgZGVmYXVsdCB7XG4gICAgICAgICAgICB0ZW1wbGF0ZTogIiArIF90ZW1wbGF0ZSArICIsXG4gICAgICAgICAgICByZW5kZXI6IF9fcmVuZGVyRm5zX18ucmVuZGVyLFxuICAgICAgICAgICAgc3RhdGljUmVuZGVyRm5zOiBfX3JlbmRlckZuc19fLnN0YXRpY1JlbmRlckZucywgXG4gICAgICAgICAgICAiICsgKHNjb3BlZCA/ICJfc2NvcGVJZDpcIiIgKyBzY29wZUlkICsgIlwiLCIgOiAiIikgKyAiXG4gICAgICAgICAgICAiICsgKGluc2lkZUV4cG9ydCAmJiBpbnNpZGVFeHBvcnQubGVuZ3RoID8gaW5zaWRlRXhwb3J0WzFdIDogIiIpICsgIiB9OyAiOwogICAgfQogICAgcmV0dXJuIGNvbnRlbnQ7Cn07Cgo=', null, false);
+}/* eslint-disable */
+const WorkerFactory$3 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IGdlbmVyYXRlRXhwb3J0ID0gKGZpbGUsIHByZXBlbmRFeHBvcnREZWZhdWx0ID0gdHJ1ZSkgPT4gew0KICAgIHJldHVybiAoYCR7cHJlcGVuZEV4cG9ydERlZmF1bHQgPyAiZXhwb3J0IGRlZmF1bHQgIiA6ICIifWZ1bmN0aW9uIGFkZFN0eWxlcyAoKSB7YCArDQogICAgICAgIGBjb25zdCB0YWcgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdzdHlsZScpO2AgKw0KICAgICAgICBgdGFnLnR5cGUgPSAndGV4dC9jc3MnO2AgKw0KICAgICAgICBgdGFnLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKFxgJHtmaWxlLmNvZGV9XGApKTtgICsNCiAgICAgICAgYHRhZy5zZXRBdHRyaWJ1dGUoJ2RhdGEtc3JjJywgJyR7ZmlsZS5wYXRofScpO2AgKw0KICAgICAgICBgZG9jdW1lbnQuaGVhZC5hcHBlbmRDaGlsZCh0YWcpO2AgKw0KICAgICAgICBgfSBhZGRTdHlsZXMoKTtgKTsNCn07DQpjb25zdCBnZW5lcmF0ZUV4cG9ydHNGb3JBbGxTdHlsZXMgPSAoc3R5bGVzLCBmaWxlUGF0aCkgPT4gZ2VuZXJhdGVFeHBvcnQoeyBwYXRoOiBmaWxlUGF0aCwgY29kZTogc3R5bGVzLmpvaW4oIlxuXG4iKSB9LCBmYWxzZSk7Cgpjb25zdCBUUkFOU1BJTEVfU1RBVFVTID0gew0KICAgIFBSRVBBUkVfRklMRVM6ICJUUkFOU1BJTEVSOkZJTEU6UFJFUEFSRSIsDQogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLA0KICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwNCiAgICBUUkFOU1BJTEVfQ09NUExFVEU6ICJUUkFOU1BJTEVSOlRSQU5TUElMRTpDT01QTEVURSIsDQogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsDQogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCINCn07CgovKioNCiAqIEB0b2RvIEZpeCBzb3VyY2VtYXBzIGJlY2F1c2UgdGhleSdyZSBpbmFjY3VyYXRlLg0KICovDQpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL3NvdXJjZS1tYXAvZGlzdC9zb3VyY2UtbWFwLmpzIik7DQpjb25zdCBnZW5lcmF0ZVNvdXJjZU1hcCQxID0gKGZpbGVQYXRoLCBvcmlnaW5hbENvZGUsIGdlbmVyYXRlZENvZGUpID0+IHsNCiAgICAvLyBAdHMtaWdub3JlDQogICAgY29uc3QgbWFwID0gbmV3IHNlbGYuc291cmNlTWFwLlNvdXJjZU1hcEdlbmVyYXRvcih7IGZpbGU6IGZpbGVQYXRoIH0pOw0KICAgIG1hcC5zZXRTb3VyY2VDb250ZW50KGZpbGVQYXRoLCBvcmlnaW5hbENvZGUpOw0KICAgIGdlbmVyYXRlZENvZGUuc3BsaXQoL1xyP1xuL2cpLmZvckVhY2goKGxpbmUsIGluZGV4KSA9PiB7DQogICAgICAgIGlmIChsaW5lKSB7DQogICAgICAgICAgICBtYXAuYWRkTWFwcGluZyh7DQogICAgICAgICAgICAgICAgc291cmNlOiBmaWxlUGF0aCwNCiAgICAgICAgICAgICAgICBvcmlnaW5hbDogeyBsaW5lOiBpbmRleCArIDEsIGNvbHVtbjogMCB9LA0KICAgICAgICAgICAgICAgIGdlbmVyYXRlZDogeyBsaW5lOiBpbmRleCArIDEsIGNvbHVtbjogMCB9DQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgIH0pOw0KICAgIHJldHVybiBtYXAudG9KU09OKCk7DQp9Ow0KLy8gQHRzLWlnbm9yZQ0Kc2VsZi5nZW5lcmF0ZVNvdXJjZU1hcCA9IGdlbmVyYXRlU291cmNlTWFwJDE7CgpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL3Z1ZS10ZW1wbGF0ZS1jb21waWxlci9icm93c2VyLmpzIiwgImh0dHBzOi8vdW5wa2cuY29tL2hhc2gtc3VtLWJyb3dzZXIvZGlzdC9pbmRleC5taW4uanMiLCAiaHR0cHM6Ly91bnBrZy5jb20vQGJsb3h5L2lpZmUtbGlic0BsYXRlc3QvbGlicy9idWJsZS5qcyIsICJodHRwczovL3VucGtnLmNvbS9AYmxveHkvaWlmZS1saWJzQGxhdGVzdC9saWJzL2Nzcy5qcyIsICJodHRwczovL3VucGtnLmNvbS9AYmxveHkvaWlmZS1saWJzQGxhdGVzdC9saWJzL3Bvc3Rjc3Mtc2VsZWN0b3ItcGFyc2VyLmpzIik7DQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCAoeyBkYXRhIH0pID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIGNvbnN0IHsgZmlsZSwgdHlwZSwgYWRkaXRpb25hbCB9ID0gZGF0YTsNCiAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSB7DQogICAgICAgIHRyeSB7DQogICAgICAgICAgICBpZiAoIWZpbGUgfHwgIWZpbGUucGF0aCkNCiAgICAgICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoIkZpbGUgaXNuJ3Qgc3VwcGxpZWQgb3IgaXQgaGFzIGFuIGluY29ycmVjdCBmb3JtYXQuIik7DQogICAgICAgICAgICBjb25zdCB7IHN0eWxlcywgc2NyaXB0LCBodG1sIH0gPSBwcmVwYXJlRmlsZUFuZENvbXBpbGVUZW1wbGF0ZShmaWxlKTsNCiAgICAgICAgICAgIGlmICgoc3R5bGVzIHx8IGh0bWwpICYmIChzdHlsZXMubGVuZ3RoIHx8IGh0bWwubGVuZ3RoKSkgew0KICAgICAgICAgICAgICAgIGNvbnN0IGFkZGl0aW9uYWwgPSB7IHN0eWxlcywgaHRtbCB9Ow0KICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0FERElUSU9OQUwsDQogICAgICAgICAgICAgICAgICAgIGZpbGU6IE9iamVjdC5hc3NpZ24oT2JqZWN0LmFzc2lnbih7fSwgZmlsZSksIHsgY29kZTogc2NyaXB0IH0pLA0KICAgICAgICAgICAgICAgICAgICBhZGRpdGlvbmFsDQogICAgICAgICAgICAgICAgfSk7DQogICAgICAgICAgICB9DQogICAgICAgICAgICBlbHNlIHsNCiAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlDQogICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLA0KICAgICAgICAgICAgICAgICAgICBmaWxlOiBPYmplY3QuYXNzaWduKE9iamVjdC5hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IHNjcmlwdCwgbWFwOiBnZW5lcmF0ZVNvdXJjZU1hcChmaWxlLnBhdGgsIGZpbGUuY29kZSwgc2NyaXB0KSB9KQ0KICAgICAgICAgICAgICAgIH0pOw0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQogICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9DT01QSUxFLA0KICAgICAgICAgICAgICAgIGVycm9yDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgICAgICByZXR1cm47DQogICAgfQ0KICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLkFERElUSU9OQUxfVFJBTlNQSUxFRCkgew0KICAgICAgICBsZXQgY29kZSA9IGZpbGUuY29kZTsNCiAgICAgICAgaWYgKGFkZGl0aW9uYWwpIHsNCiAgICAgICAgICAgIHRyeSB7DQogICAgICAgICAgICAgICAgLy8gYXBwZW5kIHRoZSBzdHlsZSBpbmplY3RvciBoZXJlDQogICAgICAgICAgICAgICAgLy8gZG8gc29tZXRoaW5nIHdpdGggaHRtbCBzdHVmZiBoZXJlIGxpa2UgdnVlIHB1Zy4gYnV0IGxhdGVyLg0KICAgICAgICAgICAgICAgIC8vIGNvZGUgKyBzdHlsZXMNCiAgICAgICAgICAgICAgICBjb2RlICs9IGFwcGVuZFN0eWxlcyhhZGRpdGlvbmFsLnN0eWxlcywgZmlsZS5wYXRoKTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9BRERJVElPTkFMLA0KICAgICAgICAgICAgICAgICAgICBlcnJvcg0KICAgICAgICAgICAgICAgIH0pOw0KICAgICAgICAgICAgICAgIHJldHVybjsNCiAgICAgICAgICAgIH0NCiAgICAgICAgfQ0KICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlDQogICAgICAgIHNlbGYucG9zdE1lc3NhZ2Uoew0KICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsDQogICAgICAgICAgICBmaWxlOiBPYmplY3QuYXNzaWduKE9iamVjdC5hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGUsIG1hcDogZ2VuZXJhdGVTb3VyY2VNYXAoZmlsZS5wYXRoLCBmaWxlLmNvZGUsIGNvZGUpIH0pDQogICAgICAgIH0pOw0KICAgICAgICByZXR1cm47DQogICAgfQ0KfSkpOw0KY29uc3QgcHJlcGFyZUZpbGVBbmRDb21waWxlVGVtcGxhdGUgPSAoZmlsZSkgPT4gew0KICAgIGNvbnN0IHsgdGVtcGxhdGUsIHNjcmlwdCwgc3R5bGVzIH0gPSBWdWVUZW1wbGF0ZUNvbXBpbGVyLnBhcnNlQ29tcG9uZW50KGZpbGUuY29kZSwgeyBwYWQ6ICJsaW5lIiB9KTsNCiAgICBjb25zdCBzY29wZUlkID0gYGRhdGEtdi0ke2hhc2hTdW0oZmlsZS5wYXRoKX1gOw0KICAgIGNvbnN0IHNjb3BlZCA9IHN0eWxlcy5zb21lKChzdHlsZSkgPT4gc3R5bGUuc2NvcGVkID09PSB0cnVlKTsNCiAgICByZXR1cm4gew0KICAgICAgICBzdHlsZXM6IHByZXBhcmVTdHlsZXMoc3R5bGVzLCBzY29wZWQgPyBzY29wZUlkIDogbnVsbCwgZmlsZSksDQogICAgICAgIGh0bWw6IFtdLA0KICAgICAgICBzY3JpcHQ6IGNvbXBpbGVUZW1wbGF0ZShzY3JpcHQuY29udGVudCwgdGVtcGxhdGUsIHNjb3BlSWQsIHNjb3BlZCkNCiAgICB9Ow0KfTsNCmNvbnN0IHByZXBhcmVTdHlsZXMgPSAoc3R5bGVzID0gW10sIHNjb3BlSWQsIGZpbGUpID0+IHN0eWxlcy5tYXAoc3R5bGUgPT4gKHsNCiAgICBjb2RlOiBzdHlsZS5jb250ZW50LA0KICAgIGxhbmc6IHN0eWxlLmxhbmcgfHwgImNzcyIsDQogICAgc2NvcGVJZDogc3R5bGUuc2NvcGVkID8gc2NvcGVJZCA6IG51bGwsDQogICAgcGF0aDogZmlsZS5wYXRoDQp9KSk7DQpjb25zdCBhcHBlbmRTdHlsZXMgPSAoc3R5bGVzLCBmaWxlUGF0aCkgPT4gew0KICAgIGNvbnN0IHBhcnNlZFN0eWxlcyA9IFtdOw0KICAgIGZvciAoY29uc3Qgc3R5bGUgb2Ygc3R5bGVzKSB7DQogICAgICAgIHBhcnNlZFN0eWxlcy5wdXNoKHBhcnNlQ3NzU3R5bGUoc3R5bGUuY29kZSwgc3R5bGUuc2NvcGVJZCkpOw0KICAgIH0NCiAgICByZXR1cm4gZ2VuZXJhdGVFeHBvcnRzRm9yQWxsU3R5bGVzKHBhcnNlZFN0eWxlcywgZmlsZVBhdGgpOw0KfTsNCmNvbnN0IHBhcnNlQ3NzU3R5bGUgPSAoY29kZSwgc2NvcGVJZCA9ICIiKSA9PiB7DQogICAgY29uc3QgcGFyc2VkID0gY3NzLnBhcnNlKGNvZGUpOw0KICAgIHJldHVybiBjc3Muc3RyaW5naWZ5KE9iamVjdC5hc3NpZ24oT2JqZWN0LmFzc2lnbih7fSwgcGFyc2VkKSwgeyBzdHlsZXNoZWV0OiBhcHBseUF0dHJpYnV0ZVRvU2VsZWN0b3IocGFyc2VkLnN0eWxlc2hlZXQsIHNjb3BlSWQpIH0pKTsNCn07DQpjb25zdCBhcHBseUF0dHJpYnV0ZVRvU2VsZWN0b3IgPSAodHJlZSwgc2NvcGVJZCkgPT4gew0KICAgIGlmICgic2VsZWN0b3JzIiBpbiB0cmVlKSB7DQogICAgICAgIGZvciAoY29uc3QgaSBpbiB0cmVlLnNlbGVjdG9ycykgew0KICAgICAgICAgICAgY29uc3Qgc2VsZWN0b3IgPSB0cmVlLnNlbGVjdG9yc1tpXTsNCiAgICAgICAgICAgIHRyZWUuc2VsZWN0b3JzW2ldID0gcG9zdGNzc1NlbGVjdG9yUGFyc2VyKChzZWxlY3RvcnMpID0+IHsNCiAgICAgICAgICAgICAgICBzZWxlY3RvcnMuZWFjaCgoc2VsZWN0b3IpID0+IHsNCiAgICAgICAgICAgICAgICAgICAgbGV0IG5vZGUgPSBudWxsOw0KICAgICAgICAgICAgICAgICAgICBzZWxlY3Rvci5lYWNoKChuKSA9PiB7DQogICAgICAgICAgICAgICAgICAgICAgICBpZiAobi50eXBlICE9PSAicHNldWRvIikNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBub2RlID0gbjsNCiAgICAgICAgICAgICAgICAgICAgfSk7DQogICAgICAgICAgICAgICAgICAgIGlmIChzY29wZUlkICYmIHNjb3BlSWQgIT0gIiIpIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdG9yLmluc2VydEFmdGVyKG5vZGUsIHBvc3Rjc3NTZWxlY3RvclBhcnNlci5hdHRyaWJ1dGUoew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIGF0dHJpYnV0ZTogc2NvcGVJZA0KICAgICAgICAgICAgICAgICAgICAgICAgfSkpOw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgfSk7DQogICAgICAgICAgICB9KS5wcm9jZXNzU3luYyhzZWxlY3Rvcik7DQogICAgICAgIH0NCiAgICB9DQogICAgaWYgKCJydWxlcyIgaW4gdHJlZSkgew0KICAgICAgICBmb3IgKGNvbnN0IGkgaW4gdHJlZS5ydWxlcykgew0KICAgICAgICAgICAgY29uc3QgcnVsZSA9IHRyZWUucnVsZXNbaV07DQogICAgICAgICAgICB0cmVlLnJ1bGVzW2ldID0gYXBwbHlBdHRyaWJ1dGVUb1NlbGVjdG9yKHJ1bGUsIHNjb3BlSWQpOw0KICAgICAgICB9DQogICAgfQ0KICAgIHJldHVybiB0cmVlOw0KfTsNCi8qKg0KICogQ29tcGlsZWQgdGhlIHRlbXBsYXRlIHVzaW5nIHZ1ZS10ZW1wbGF0ZS1jb21waWxlcg0KICogYW5kIGNyZWF0ZXMgYW4gb2JqZWN0IGxhdGVyIHRvIGJlIHVzZWQgYnkgU3lzdGVtSlMgdG8gcmVuZGVyDQogKiB0aGUgdGVtcGxhdGUuDQogKi8NCmNvbnN0IGNvbXBpbGVUZW1wbGF0ZSA9IChjb250ZW50LCB0ZW1wbGF0ZSwgc2NvcGVJZCwgc2NvcGVkKSA9PiB7DQogICAgY29uc3QgeyByZW5kZXIsIHN0YXRpY1JlbmRlckZucyB9ID0gVnVlVGVtcGxhdGVDb21waWxlci5jb21waWxlVG9GdW5jdGlvbnModGVtcGxhdGUuY29udGVudCk7DQogICAgY29udGVudCA9IGluc2VydFRlbXBsYXRlSW5FeHBvcnQoY29udGVudCwgdGVtcGxhdGUuY29udGVudCwgc2NvcGVJZCwgc2NvcGVkKTsNCiAgICByZXR1cm4gYHZhciBfX3JlbmRlckZuc19fID0geyAKICAgICAgICByZW5kZXI6ICR7dG9GbihyZW5kZXIpfSwKICAgICAgICBzdGF0aWNSZW5kZXJGbnM6IFsKICAgICAgICAgICAgJHtzdGF0aWNSZW5kZXJGbnMubWFwKHRvRm4pLmpvaW4oIiwiKX0KICAgICAgICBdIAogICAgfTsgJHtjb250ZW50fWA7DQp9Ow0KLyoqDQogKiBUcmFuc2Zvcm0gdGhlIGdpdmVuIGNvZGUgd2l0aCBidWJsZQ0KICogYW5kIHB1dCBpdCBpbnRvIGEgcmVuZGVyIGZ1bmN0aW9uIGZvciBsYXRlciB1c2UuDQogKg0KICogU29tZSB3ZWlyZCBzdHVmZiBhdCB0aGUgZW5kIG9mIHRoaXMgZnVuY3Rpb24gYnV0DQogKiB0aGF0J3MgYmVjYXVzZSB0aGUgYnVibGUudHJhbnNmb3JtIHJldHVybnMgYW4NCiAqIGFub255bW91cyBmdW5jdGlvbiB3aGljaCBtZXNzZXMgdXAgdGhlIHJlbmRlci4NCiAqIFNvIHdlIGFyZSBlc3NlbnRpYWxseSByZW1vdmluZyB0aGF0IGZ1bmN0aW9uIDopDQogKiBAdG9kbyBmaW5kIGEgYmV0dGVyIHdheSBmb3IgdGhpcy4gdGhpcyBpcyBob3JyaWJsZS4NCiAqLw0KY29uc3QgdG9GbiA9IChjb2RlKSA9PiBidWJsZQ0KICAgIC50cmFuc2Zvcm0oYGZ1bmN0aW9uIHJlbmRlciAoKSB7ICR7Y29kZX0gfWAsIHsNCiAgICBvYmplY3RBc3NpZ246ICJPYmplY3QuYXNzaWduIiwNCiAgICB0cmFuc2Zvcm1zOiB7DQogICAgICAgIHN0cmlwV2l0aDogdHJ1ZSwNCiAgICAgICAgc3RyaXBXaXRoRnVuY3Rpb25hbDogZmFsc2UNCiAgICB9DQp9KQ0KICAgIC5jb2RlLnJlcGxhY2UoYGZ1bmN0aW9uIGFub255bW91cygKKSB7YCwgIiIpDQogICAgLnNsaWNlKDAsIC0xKTsNCi8qKg0KICogRmluZCB3aGVyZSB0aGUgZXhwb3J0IGRlZmF1bHQgaXMgaW4gdGhlIGNvZGUNCiAqIGFuZCBpbnNlcnQgdGhlIHRlbXBsYXRlIHByb3BlcnR5IHdpdGggY29udGVudC4NCiAqLw0KY29uc3QgaW5zZXJ0VGVtcGxhdGVJbkV4cG9ydCA9IChjb250ZW50LCB0ZW1wbGF0ZSwgc2NvcGVJZCwgc2NvcGVkID0gZmFsc2UpID0+IHsNCiAgICBjb25zdCBleHBvcnRSZWdleCA9IC9eZXhwb3J0IGRlZmF1bHQuKi9nbTsNCiAgICBpZiAoZXhwb3J0UmVnZXgudGVzdChjb250ZW50KSkgew0KICAgICAgICBjb25zdCBpbnNpZGVFeHBvcnQgPSAvXHsoLiopXH0vZ21zLmV4ZWMoY29udGVudCk7DQogICAgICAgIGNvbnN0IF90ZW1wbGF0ZSA9ICJgIiArIHRlbXBsYXRlICsgImAiOw0KICAgICAgICBjb250ZW50ID0gYGV4cG9ydCBkZWZhdWx0IHsKICAgICAgICAgICAgdGVtcGxhdGU6ICR7X3RlbXBsYXRlfSwKICAgICAgICAgICAgcmVuZGVyOiBfX3JlbmRlckZuc19fLnJlbmRlciwKICAgICAgICAgICAgc3RhdGljUmVuZGVyRm5zOiBfX3JlbmRlckZuc19fLnN0YXRpY1JlbmRlckZucywgCiAgICAgICAgICAgICR7c2NvcGVkID8gYF9zY29wZUlkOiJgICsgc2NvcGVJZCArIGAiLGAgOiAiIn0KICAgICAgICAgICAgJHtpbnNpZGVFeHBvcnQgJiYgaW5zaWRlRXhwb3J0Lmxlbmd0aCA/IGluc2lkZUV4cG9ydFsxXSA6ICIifSB9OyBgOw0KICAgIH0NCiAgICByZXR1cm4gY29udGVudDsNCn07Cgo=', null, false);
 /* eslint-enable *//* eslint-disable */
-const WorkerFactory$4 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0NCg0KZnVuY3Rpb24gX192YWx1ZXMobykgew0KICAgIHZhciBtID0gdHlwZW9mIFN5bWJvbCA9PT0gImZ1bmN0aW9uIiAmJiBvW1N5bWJvbC5pdGVyYXRvcl0sIGkgPSAwOw0KICAgIGlmIChtKSByZXR1cm4gbS5jYWxsKG8pOw0KICAgIHJldHVybiB7DQogICAgICAgIG5leHQ6IGZ1bmN0aW9uICgpIHsNCiAgICAgICAgICAgIGlmIChvICYmIGkgPj0gby5sZW5ndGgpIG8gPSB2b2lkIDA7DQogICAgICAgICAgICByZXR1cm4geyB2YWx1ZTogbyAmJiBvW2krK10sIGRvbmU6ICFvIH07DQogICAgICAgIH0NCiAgICB9Ow0KfQoKdmFyIFRSQU5TUElMRV9TVEFUVVMgPSB7CiAgICBQUkVQQVJFX0ZJTEVTOiAiVFJBTlNQSUxFUjpGSUxFOlBSRVBBUkUiLAogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLAogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLAogICAgVFJBTlNQSUxFX0NPTVBMRVRFOiAiVFJBTlNQSUxFUjpUUkFOU1BJTEU6Q09NUExFVEUiLAogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIgp9OwoKdmFyIGFic29sdXRlUGF0aCA9IC9eKD86XC98KD86W0EtWmEtel06KT9bXFx8XC9dKS87CmZ1bmN0aW9uIGlzQWJzb2x1dGUocGF0aCkgewogICAgcmV0dXJuIGFic29sdXRlUGF0aC50ZXN0KHBhdGgpOwp9CmZ1bmN0aW9uIGRpcm5hbWUocGF0aCkgewogICAgdmFyIG1hdGNoID0gLyhcL3xcXClbXlwvXFxdKiQvLmV4ZWMocGF0aCk7CiAgICBpZiAoIW1hdGNoKQogICAgICAgIHJldHVybiAiLiI7CiAgICB2YXIgZGlyID0gcGF0aC5zbGljZSgwLCAtbWF0Y2hbMF0ubGVuZ3RoKTsKICAgIC8vIElmIGBkaXJgIGlzIHRoZSBlbXB0eSBzdHJpbmcsIHdlJ3JlIGF0IHJvb3QuCiAgICByZXR1cm4gZGlyID8gZGlyIDogIi8iOwp9CmZ1bmN0aW9uIHJlc29sdmUoKSB7CiAgICB2YXIgcGF0aHMgPSBbXTsKICAgIGZvciAodmFyIF9pID0gMDsgX2kgPCBhcmd1bWVudHMubGVuZ3RoOyBfaSsrKSB7CiAgICAgICAgcGF0aHNbX2ldID0gYXJndW1lbnRzW19pXTsKICAgIH0KICAgIHZhciByZXNvbHZlZFBhcnRzID0gcGF0aHMuc2hpZnQoKS5zcGxpdCgvW1wvXFxdLyk7CiAgICBwYXRocy5mb3JFYWNoKGZ1bmN0aW9uIChwYXRoKSB7CiAgICAgICAgaWYgKGlzQWJzb2x1dGUocGF0aCkpIHsKICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOwogICAgICAgIH0KICAgICAgICBlbHNlIHsKICAgICAgICAgICAgdmFyIHBhcnRzID0gcGF0aC5zcGxpdCgvW1wvXFxdLyk7CiAgICAgICAgICAgIHdoaWxlIChwYXJ0c1swXSA9PT0gIi4iIHx8IHBhcnRzWzBdID09PSAiLi4iKSB7CiAgICAgICAgICAgICAgICB2YXIgcGFydCA9IHBhcnRzLnNoaWZ0KCk7CiAgICAgICAgICAgICAgICBpZiAocGFydCA9PT0gIi4uIikgewogICAgICAgICAgICAgICAgICAgIHJlc29sdmVkUGFydHMucG9wKCk7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cy5wdXNoLmFwcGx5KHJlc29sdmVkUGFydHMsIHBhcnRzKTsKICAgICAgICB9CiAgICB9KTsKICAgIHJldHVybiBub3JtYWxpemUocmVzb2x2ZWRQYXJ0cy5qb2luKCIvIikpOwp9CmZ1bmN0aW9uIG5vcm1hbGl6ZShwYXRoKSB7CiAgICByZXR1cm4gcGF0aC5yZXBsYWNlKC9cL1wvL2dpLCAiLyIpOwp9Cgp2YXIgcmVzb2x2ZVJlbGF0aXZlID0gZnVuY3Rpb24gKGNoaWxkUGF0aCwgcGFyZW50UGF0aCwgY29udGV4dCwgcGF0aE9ubHkpIHsKICAgIGlmIChwYXRoT25seSA9PT0gdm9pZCAwKSB7IHBhdGhPbmx5ID0gdHJ1ZTsgfQogICAgdmFyIHJldHJ5RmlsZUZpbmQgPSBmdW5jdGlvbiAocGF0aCkgewogICAgICAgIHJldHVybiBjb250ZXh0LmZpbGVzLmZpbmQoZnVuY3Rpb24gKGYpIHsKICAgICAgICAgICAgcmV0dXJuIGYucGF0aCA9PT0gcGF0aCArICIvaW5kZXguanMiIHx8CiAgICAgICAgICAgICAgICBmLnBhdGggPT09IHBhdGggKyAiL2luZGV4LnRzIiB8fAogICAgICAgICAgICAgICAgZi5wYXRoID09PSBwYXRoICsgIi9pbmRleC5qc3giIHx8CiAgICAgICAgICAgICAgICBmLnBhdGggPT09IHBhdGggKyAiL2luZGV4LnRzeCIgfHwKICAgICAgICAgICAgICAgIGYucGF0aCA9PT0gcGF0aCArICIuanMiIHx8CiAgICAgICAgICAgICAgICBmLnBhdGggPT09IHBhdGggKyAiLnRzIiB8fAogICAgICAgICAgICAgICAgZi5wYXRoID09PSBwYXRoICsgIi5qc3giIHx8CiAgICAgICAgICAgICAgICBmLnBhdGggPT09IHBhdGggKyAiLnRzeCI7CiAgICAgICAgfSkgfHwgbnVsbDsKICAgIH07CiAgICB2YXIgcmVzb2x2ZWQgPSByZXNvbHZlKGRpcm5hbWUocGFyZW50UGF0aCksIGNoaWxkUGF0aCkucmVwbGFjZSgvXlwuXC8vLCAiIik7CiAgICB2YXIgZm91bmRGaWxlID0gY29udGV4dC5maWxlcy5maW5kKGZ1bmN0aW9uIChmKSB7IHJldHVybiBmLnBhdGggPT09IHJlc29sdmVkOyB9KTsKICAgIGlmIChmb3VuZEZpbGUpCiAgICAgICAgcmV0dXJuIHBhdGhPbmx5ID8gZm91bmRGaWxlLnBhdGggOiBmb3VuZEZpbGU7CiAgICB2YXIgYWJzb2x1dGUgPSByZXNvbHZlKGRpcm5hbWUocGFyZW50UGF0aCksIGNoaWxkUGF0aCk7CiAgICB2YXIgcmV0cmllZEZpbGUgPSByZXRyeUZpbGVGaW5kKGFic29sdXRlKTsKICAgIGlmICghcmV0cmllZEZpbGUpCiAgICAgICAgcmV0dXJuIG51bGw7CiAgICByZXR1cm4gcGF0aE9ubHkgPyByZXRyaWVkRmlsZS5wYXRoIHx8IG51bGwgOiByZXRyaWVkRmlsZSB8fCBudWxsOwp9OwoKLyoqCiAqIFNsaWdodGx5IG1vZGlmaWVkIHZlcnNpb24gb2Y6CiAqICAgICAgaHR0cHM6Ly9naXRodWIuY29tL2tldnZhL3BhcnNlLWltcG9ydC9ibG9iL21hc3Rlci9pbmRleC5qcwogKiBieSBodHRwczovL2dpdGh1Yi5jb20va2V2dmEKICovCnZhciBnZXRQYXRoID0gZnVuY3Rpb24gKHN0cikgewogICAgcmV0dXJuIC8oPzp1cmxcKCkoPzouKj8pKD86XCkpfChbIiddKSg/OlteIicpXSspXDEvZ2kKICAgICAgICAuZXhlYyhzdHIpWzBdCiAgICAgICAgLnJlcGxhY2UoLyg/OnVybFwoKS9naSwgIiIpCiAgICAgICAgLnJlcGxhY2UoLyg/OlwpKS9nLCAiIikKICAgICAgICAucmVwbGFjZSgvKD86WyInXSkvZywgIiIpCiAgICAgICAgLnRyaW0oKTsKfTsKdmFyIGdldENvbmRpdGlvbiA9IGZ1bmN0aW9uIChzdHIpIHsKICAgIHJldHVybiBzdHIKICAgICAgICAucmVwbGFjZSgvKD86dXJsXCgpKD86Lio/KSg/OlwpKXwoWyInXSkoPzpbXiInKV0rKVwxL2dpLCAiIikKICAgICAgICAucmVwbGFjZSgvKD86QGltcG9ydCkoPzpccykqL2csICIiKQogICAgICAgIC50cmltKCk7Cn07CnZhciBwYXJzZUNzc0ltcG9ydCA9IChmdW5jdGlvbiAoY3NzSW1wb3J0KSB7CiAgICBjc3NJbXBvcnQgPSBjc3NJbXBvcnQucmVwbGFjZSgvKD86OykkL2csICIiKTsKICAgIHJldHVybiB7CiAgICAgICAgcGF0aDogZ2V0UGF0aChjc3NJbXBvcnQpLAogICAgICAgIGNvbmRpdGlvbjogZ2V0Q29uZGl0aW9uKGNzc0ltcG9ydCkgfHwgbnVsbCwKICAgICAgICBydWxlOiBjc3NJbXBvcnQKICAgIH07Cn0pOwoKc2VsZi5pbXBvcnRTY3JpcHRzKCJodHRwczovL3VucGtnLmNvbS9AYmxveHkvaWlmZS1saWJzQGxhdGVzdC9saWJzL2Nzcy5qcyIpOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCBmdW5jdGlvbiAoX2EpIHsKICAgIHZhciBkYXRhID0gX2EuZGF0YTsKICAgIHJldHVybiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBmaWxlLCB0eXBlLCBjb250ZXh0LCB0cmFuc3BpbGVkRmlsZTsKICAgICAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9iKSB7CiAgICAgICAgICAgIGZpbGUgPSBkYXRhLmZpbGUsIHR5cGUgPSBkYXRhLnR5cGUsIGNvbnRleHQgPSBkYXRhLmNvbnRleHQ7CiAgICAgICAgICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLlBSRVBBUkVfRklMRVMpIHsKICAgICAgICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgICAgICAgICAgdHJhbnNwaWxlZEZpbGUgPSBwcmVwYXJlQW5kVHJhbnNwaWxlRmlsZShmaWxlLCBjb250ZXh0KTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLAogICAgICAgICAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQogICAgICAgICAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2UoewogICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0NPTVBJTEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGVycm9yOiBlcnJvcgogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIHJldHVybiBbMiAvKnJldHVybiovXTsKICAgICAgICB9KTsKICAgIH0pOwp9KTsKdmFyIHByZXBhcmVBbmRUcmFuc3BpbGVGaWxlID0gZnVuY3Rpb24gKGZpbGUsIGNvbnRleHQpIHsKICAgIHZhciBvcmlnaW5hbEFzdCA9IGdldEFzdEZyb21GaWxlKGZpbGUpOwogICAgdmFyIHJ1bGVzID0gYXBwZW5kSW1wb3J0ZWRGaWxlc1dpdGhBc3QoZmlsZS5wYXRoLCBvcmlnaW5hbEFzdCwgY29udGV4dCk7CiAgICBvcmlnaW5hbEFzdC5zdHlsZXNoZWV0LnJ1bGVzID0gcnVsZXM7CiAgICB2YXIgY29tcGlsZWRDb2RlID0gY3NzLnN0cmluZ2lmeShvcmlnaW5hbEFzdCk7CiAgICByZXR1cm4gX19hc3NpZ24oX19hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IGNvbXBpbGVkQ29kZSB9KTsKfTsKdmFyIGdldEFzdEZyb21GaWxlID0gZnVuY3Rpb24gKGZpbGUpIHsKICAgIHJldHVybiBjc3MucGFyc2UoZmlsZS5jb2RlLCB7IHNvdXJjZTogZmlsZS5wYXRoIH0pOwp9Owp2YXIgYXBwZW5kSW1wb3J0ZWRGaWxlc1dpdGhBc3QgPSBmdW5jdGlvbiAoY3VycmVudFBhdGgsIGN1cnJlbnRBc3QsIGNvbnRleHQsIGxvb3BlZFJ1bGVzKSB7CiAgICB2YXIgZV8xLCBfYTsKICAgIGlmIChsb29wZWRSdWxlcyA9PT0gdm9pZCAwKSB7IGxvb3BlZFJ1bGVzID0gW107IH0KICAgIHZhciBjdXJyZW5ldExvb3AgPSBbXTsKICAgIHZhciBydWxlcyA9IGN1cnJlbnRBc3Quc3R5bGVzaGVldC5ydWxlcyB8fCBbXTsKICAgIHRyeSB7CiAgICAgICAgZm9yICh2YXIgcnVsZXNfMSA9IF9fdmFsdWVzKHJ1bGVzKSwgcnVsZXNfMV8xID0gcnVsZXNfMS5uZXh0KCk7ICFydWxlc18xXzEuZG9uZTsgcnVsZXNfMV8xID0gcnVsZXNfMS5uZXh0KCkpIHsKICAgICAgICAgICAgdmFyIHJ1bGUgPSBydWxlc18xXzEudmFsdWU7CiAgICAgICAgICAgIGlmIChydWxlLnR5cGUgIT0gImltcG9ydCIpIHsKICAgICAgICAgICAgICAgIGN1cnJlbmV0TG9vcC5wdXNoKHJ1bGUpOwogICAgICAgICAgICAgICAgbG9vcGVkUnVsZXMucHVzaChydWxlKTsKICAgICAgICAgICAgfQogICAgICAgICAgICBpZiAocnVsZS5pbXBvcnQpIHsKICAgICAgICAgICAgICAgIHZhciBpbXBvcnRSdWxlID0gIkBpbXBvcnQgIiArIHJ1bGUuaW1wb3J0ICsgIjsiOwogICAgICAgICAgICAgICAgdmFyIHBhcnNlZEltcG9ydCA9IHBhcnNlQ3NzSW1wb3J0KGltcG9ydFJ1bGUpOwogICAgICAgICAgICAgICAgaWYgKHBhcnNlZEltcG9ydC5wYXRoKSB7CiAgICAgICAgICAgICAgICAgICAgdmFyIGZvdW5kRmlsZSA9IChyZXNvbHZlUmVsYXRpdmUocGFyc2VkSW1wb3J0LnBhdGgsIGN1cnJlbnRQYXRoLCBjb250ZXh0LCBmYWxzZSkpOwogICAgICAgICAgICAgICAgICAgIGlmIChmb3VuZEZpbGUpIHsKICAgICAgICAgICAgICAgICAgICAgICAgaWYgKCFmb3VuZEZpbGUucGF0aC5lbmRzV2l0aCgiLmNzcyIpKSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoIllvdSBjYW4ndCBpbXBvcnQgIiArIGZvdW5kRmlsZS5wYXRoICsgIiBpbiAiICsgY3VycmVudFBhdGggKyAiIGJlY2F1c2UgaXQncyBub3QgYSBDU1MgZmlsZS4iKTsKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgICAgICB2YXIgcGFyc2VkQWRkaXRpb25hbEZpbGUgPSBjc3MucGFyc2UoZm91bmRGaWxlLmNvZGUsIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNvdXJjZTogZm91bmRGaWxlLnBhdGgKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgICAgIGlmICghcGFyc2VkSW1wb3J0LmNvbmRpdGlvbiB8fAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIXBhcnNlZEltcG9ydC5jb25kaXRpb24ubGVuZ3RoKSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcHBlbmRJbXBvcnRlZEZpbGVzV2l0aEFzdChmb3VuZEZpbGUucGF0aCwgcGFyc2VkQWRkaXRpb25hbEZpbGUsIGNvbnRleHQsIGxvb3BlZFJ1bGVzKTsKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgICAgICBlbHNlIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhciBpbXBvcnRSdWxlcyA9IHBhcnNlZEFkZGl0aW9uYWxGaWxlLnN0eWxlc2hlZXQucnVsZXMuZmlsdGVyKGZ1bmN0aW9uIChyKSB7IHJldHVybiByLnR5cGUgPT09ICJpbXBvcnQiOyB9KTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxvb3BlZFJ1bGVzLnB1c2goewogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1lZGlhOiBwYXJzZWRJbXBvcnQuY29uZGl0aW9uLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJ1bGVzOiBwYXJzZWRBZGRpdGlvbmFsRmlsZS5zdHlsZXNoZWV0LnJ1bGVzLmZpbHRlcihmdW5jdGlvbiAocikgeyByZXR1cm4gci50eXBlICE9PSAiaW1wb3J0IjsgfSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogIm1lZGlhIgogICAgICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoaW1wb3J0UnVsZXMubGVuZ3RoKSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyIGFwcGVuZEFkZGl0aW9uYWxJbXBvcnRzID0gX19hc3NpZ24oe30sIHBhcnNlZEFkZGl0aW9uYWxGaWxlKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcHBlbmRBZGRpdGlvbmFsSW1wb3J0cy5zdHlsZXNoZWV0LnJ1bGVzID0gaW1wb3J0UnVsZXM7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXBwZW5kSW1wb3J0ZWRGaWxlc1dpdGhBc3QoZm91bmRGaWxlLnBhdGgsIGFwcGVuZEFkZGl0aW9uYWxJbXBvcnRzLCBjb250ZXh0LCBsb29wZWRSdWxlcyk7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CiAgICBjYXRjaCAoZV8xXzEpIHsgZV8xID0geyBlcnJvcjogZV8xXzEgfTsgfQogICAgZmluYWxseSB7CiAgICAgICAgdHJ5IHsKICAgICAgICAgICAgaWYgKHJ1bGVzXzFfMSAmJiAhcnVsZXNfMV8xLmRvbmUgJiYgKF9hID0gcnVsZXNfMS5yZXR1cm4pKSBfYS5jYWxsKHJ1bGVzXzEpOwogICAgICAgIH0KICAgICAgICBmaW5hbGx5IHsgaWYgKGVfMSkgdGhyb3cgZV8xLmVycm9yOyB9CiAgICB9CiAgICByZXR1cm4gbG9vcGVkUnVsZXM7Cn07Cgo=', null, false);
-/* eslint-enable */var CssTranspiler = /** @class */ (function (_super) {
-    __extends(CssTranspiler, _super);
-    function CssTranspiler(context) {
-        var _this = _super.call(this, "css-transpiler", new WorkerFactory$4(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+const WorkerFactory$4 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IFRSQU5TUElMRV9TVEFUVVMgPSB7DQogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwNCiAgICBQUkVQQVJFX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6UFJFUEFSRSIsDQogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLA0KICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwNCiAgICBFUlJPUl9DT01QSUxFOiAiVFJBTlNQSUxFUjpFUlJPUjpDT01QSUxFIiwNCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIg0KfTsKCmNvbnN0IGFic29sdXRlUGF0aCA9IC9eKD86XC98KD86W0EtWmEtel06KT9bXFx8XC9dKS87DQpmdW5jdGlvbiBpc0Fic29sdXRlKHBhdGgpIHsNCiAgICByZXR1cm4gYWJzb2x1dGVQYXRoLnRlc3QocGF0aCk7DQp9DQpmdW5jdGlvbiBkaXJuYW1lKHBhdGgpIHsNCiAgICBjb25zdCBtYXRjaCA9IC8oXC98XFwpW15cL1xcXSokLy5leGVjKHBhdGgpOw0KICAgIGlmICghbWF0Y2gpDQogICAgICAgIHJldHVybiAiLiI7DQogICAgY29uc3QgZGlyID0gcGF0aC5zbGljZSgwLCAtbWF0Y2hbMF0ubGVuZ3RoKTsNCiAgICAvLyBJZiBgZGlyYCBpcyB0aGUgZW1wdHkgc3RyaW5nLCB3ZSdyZSBhdCByb290Lg0KICAgIHJldHVybiBkaXIgPyBkaXIgOiAiLyI7DQp9DQpmdW5jdGlvbiByZXNvbHZlKC4uLnBhdGhzKSB7DQogICAgbGV0IHJlc29sdmVkUGFydHMgPSBwYXRocy5zaGlmdCgpLnNwbGl0KC9bXC9cXF0vKTsNCiAgICBwYXRocy5mb3JFYWNoKHBhdGggPT4gew0KICAgICAgICBpZiAoaXNBYnNvbHV0ZShwYXRoKSkgew0KICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cyA9IHBhdGguc3BsaXQoL1tcL1xcXS8pOw0KICAgICAgICB9DQogICAgICAgIGVsc2Ugew0KICAgICAgICAgICAgY29uc3QgcGFydHMgPSBwYXRoLnNwbGl0KC9bXC9cXF0vKTsNCiAgICAgICAgICAgIHdoaWxlIChwYXJ0c1swXSA9PT0gIi4iIHx8IHBhcnRzWzBdID09PSAiLi4iKSB7DQogICAgICAgICAgICAgICAgY29uc3QgcGFydCA9IHBhcnRzLnNoaWZ0KCk7DQogICAgICAgICAgICAgICAgaWYgKHBhcnQgPT09ICIuLiIpIHsNCiAgICAgICAgICAgICAgICAgICAgcmVzb2x2ZWRQYXJ0cy5wb3AoKTsNCiAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICB9DQogICAgICAgICAgICByZXNvbHZlZFBhcnRzLnB1c2guYXBwbHkocmVzb2x2ZWRQYXJ0cywgcGFydHMpOw0KICAgICAgICB9DQogICAgfSk7DQogICAgcmV0dXJuIG5vcm1hbGl6ZShyZXNvbHZlZFBhcnRzLmpvaW4oIi8iKSk7DQp9DQpmdW5jdGlvbiBub3JtYWxpemUocGF0aCkgew0KICAgIHJldHVybiBwYXRoLnJlcGxhY2UoL1wvXC8vZ2ksICIvIik7DQp9Cgpjb25zdCByZXNvbHZlUmVsYXRpdmUgPSAoY2hpbGRQYXRoLCBwYXJlbnRQYXRoLCBjb250ZXh0LCBwYXRoT25seSA9IHRydWUpID0+IHsNCiAgICBjb25zdCByZXRyeUZpbGVGaW5kID0gKHBhdGgpID0+IGNvbnRleHQuZmlsZXMuZmluZChmID0+IGYucGF0aCA9PT0gYCR7cGF0aH0vaW5kZXguanNgIHx8DQogICAgICAgIGYucGF0aCA9PT0gYCR7cGF0aH0vaW5kZXgudHNgIHx8DQogICAgICAgIGYucGF0aCA9PT0gYCR7cGF0aH0vaW5kZXguanN4YCB8fA0KICAgICAgICBmLnBhdGggPT09IGAke3BhdGh9L2luZGV4LnRzeGAgfHwNCiAgICAgICAgZi5wYXRoID09PSBgJHtwYXRofS5qc2AgfHwNCiAgICAgICAgZi5wYXRoID09PSBgJHtwYXRofS50c2AgfHwNCiAgICAgICAgZi5wYXRoID09PSBgJHtwYXRofS5qc3hgIHx8DQogICAgICAgIGYucGF0aCA9PT0gYCR7cGF0aH0udHN4YCkgfHwgbnVsbDsNCiAgICBjb25zdCByZXNvbHZlZCA9IHJlc29sdmUoZGlybmFtZShwYXJlbnRQYXRoKSwgY2hpbGRQYXRoKS5yZXBsYWNlKC9eXC5cLy8sICIiKTsNCiAgICBjb25zdCBmb3VuZEZpbGUgPSBjb250ZXh0LmZpbGVzLmZpbmQoZiA9PiBmLnBhdGggPT09IHJlc29sdmVkKTsNCiAgICBpZiAoZm91bmRGaWxlKQ0KICAgICAgICByZXR1cm4gcGF0aE9ubHkgPyBmb3VuZEZpbGUucGF0aCA6IGZvdW5kRmlsZTsNCiAgICBjb25zdCBhYnNvbHV0ZSA9IHJlc29sdmUoZGlybmFtZShwYXJlbnRQYXRoKSwgY2hpbGRQYXRoKTsNCiAgICBjb25zdCByZXRyaWVkRmlsZSA9IHJldHJ5RmlsZUZpbmQoYWJzb2x1dGUpOw0KICAgIGlmICghcmV0cmllZEZpbGUpDQogICAgICAgIHJldHVybiBudWxsOw0KICAgIHJldHVybiBwYXRoT25seSA/IHJldHJpZWRGaWxlLnBhdGggfHwgbnVsbCA6IHJldHJpZWRGaWxlIHx8IG51bGw7DQp9OwoKLyoqDQogKiBTbGlnaHRseSBtb2RpZmllZCB2ZXJzaW9uIG9mOg0KICogICAgICBodHRwczovL2dpdGh1Yi5jb20va2V2dmEvcGFyc2UtaW1wb3J0L2Jsb2IvbWFzdGVyL2luZGV4LmpzDQogKiBieSBodHRwczovL2dpdGh1Yi5jb20va2V2dmENCiAqLw0KY29uc3QgZ2V0UGF0aCA9IChzdHIpID0+IC8oPzp1cmxcKCkoPzouKj8pKD86XCkpfChbIiddKSg/OlteIicpXSspXDEvZ2kNCiAgICAuZXhlYyhzdHIpWzBdDQogICAgLnJlcGxhY2UoLyg/OnVybFwoKS9naSwgIiIpDQogICAgLnJlcGxhY2UoLyg/OlwpKS9nLCAiIikNCiAgICAucmVwbGFjZSgvKD86WyInXSkvZywgIiIpDQogICAgLnRyaW0oKTsNCmNvbnN0IGdldENvbmRpdGlvbiA9IChzdHIpID0+IHN0cg0KICAgIC5yZXBsYWNlKC8oPzp1cmxcKCkoPzouKj8pKD86XCkpfChbIiddKSg/OlteIicpXSspXDEvZ2ksICIiKQ0KICAgIC5yZXBsYWNlKC8oPzpAaW1wb3J0KSg/OlxzKSovZywgIiIpDQogICAgLnRyaW0oKTsNCnZhciBwYXJzZUNzc0ltcG9ydCA9IChjc3NJbXBvcnQpID0+IHsNCiAgICBjc3NJbXBvcnQgPSBjc3NJbXBvcnQucmVwbGFjZSgvKD86OykkL2csICIiKTsNCiAgICByZXR1cm4gew0KICAgICAgICBwYXRoOiBnZXRQYXRoKGNzc0ltcG9ydCksDQogICAgICAgIGNvbmRpdGlvbjogZ2V0Q29uZGl0aW9uKGNzc0ltcG9ydCkgfHwgbnVsbCwNCiAgICAgICAgcnVsZTogY3NzSW1wb3J0DQogICAgfTsNCn07CgpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL0BibG94eS9paWZlLWxpYnNAbGF0ZXN0L2xpYnMvY3NzLmpzIik7DQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCAoeyBkYXRhIH0pID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIGNvbnN0IHsgZmlsZSwgdHlwZSwgY29udGV4dCB9ID0gZGF0YTsNCiAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSB7DQogICAgICAgIHRyeSB7DQogICAgICAgICAgICBjb25zdCB0cmFuc3BpbGVkRmlsZSA9IHByZXBhcmVBbmRUcmFuc3BpbGVGaWxlKGZpbGUsIGNvbnRleHQpOw0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsDQogICAgICAgICAgICAgICAgZmlsZTogdHJhbnNwaWxlZEZpbGUNCiAgICAgICAgICAgIH0pOw0KICAgICAgICB9DQogICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9DT01QSUxFLA0KICAgICAgICAgICAgICAgIGVycm9yDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgIH0NCn0pKTsNCmNvbnN0IHByZXBhcmVBbmRUcmFuc3BpbGVGaWxlID0gKGZpbGUsIGNvbnRleHQpID0+IHsNCiAgICBjb25zdCBvcmlnaW5hbEFzdCA9IGdldEFzdEZyb21GaWxlKGZpbGUpOw0KICAgIGNvbnN0IHJ1bGVzID0gYXBwZW5kSW1wb3J0ZWRGaWxlc1dpdGhBc3QoZmlsZS5wYXRoLCBvcmlnaW5hbEFzdCwgY29udGV4dCk7DQogICAgb3JpZ2luYWxBc3Quc3R5bGVzaGVldC5ydWxlcyA9IHJ1bGVzOw0KICAgIGNvbnN0IGNvbXBpbGVkQ29kZSA9IGNzcy5zdHJpbmdpZnkob3JpZ2luYWxBc3QpOw0KICAgIHJldHVybiBPYmplY3QuYXNzaWduKE9iamVjdC5hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IGNvbXBpbGVkQ29kZSB9KTsNCn07DQpjb25zdCBnZXRBc3RGcm9tRmlsZSA9IChmaWxlKSA9PiBjc3MucGFyc2UoZmlsZS5jb2RlLCB7IHNvdXJjZTogZmlsZS5wYXRoIH0pOw0KY29uc3QgYXBwZW5kSW1wb3J0ZWRGaWxlc1dpdGhBc3QgPSAoY3VycmVudFBhdGgsIGN1cnJlbnRBc3QsIGNvbnRleHQsIGxvb3BlZFJ1bGVzID0gW10pID0+IHsNCiAgICBjb25zdCBydWxlcyA9IGN1cnJlbnRBc3Quc3R5bGVzaGVldC5ydWxlcyB8fCBbXTsNCiAgICBmb3IgKGxldCBydWxlIG9mIHJ1bGVzKSB7DQogICAgICAgIGlmIChydWxlLnR5cGUgIT0gImltcG9ydCIpIHsNCiAgICAgICAgICAgIGxvb3BlZFJ1bGVzLnB1c2gocnVsZSk7DQogICAgICAgIH0NCiAgICAgICAgaWYgKHJ1bGUuaW1wb3J0KSB7DQogICAgICAgICAgICBjb25zdCBpbXBvcnRSdWxlID0gYEBpbXBvcnQgJHtydWxlLmltcG9ydH07YDsNCiAgICAgICAgICAgIGNvbnN0IHBhcnNlZEltcG9ydCA9IHBhcnNlQ3NzSW1wb3J0KGltcG9ydFJ1bGUpOw0KICAgICAgICAgICAgaWYgKHBhcnNlZEltcG9ydC5wYXRoKSB7DQogICAgICAgICAgICAgICAgY29uc3QgZm91bmRGaWxlID0gKHJlc29sdmVSZWxhdGl2ZShwYXJzZWRJbXBvcnQucGF0aCwgY3VycmVudFBhdGgsIGNvbnRleHQsIGZhbHNlKSk7DQogICAgICAgICAgICAgICAgaWYgKGZvdW5kRmlsZSkgew0KICAgICAgICAgICAgICAgICAgICBpZiAoIWZvdW5kRmlsZS5wYXRoLmVuZHNXaXRoKCIuY3NzIikpIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgWW91IGNhbid0IGltcG9ydCAke2ZvdW5kRmlsZS5wYXRofSBpbiAke2N1cnJlbnRQYXRofSBiZWNhdXNlIGl0J3Mgbm90IGEgQ1NTIGZpbGUuYCk7DQogICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgY29uc3QgcGFyc2VkQWRkaXRpb25hbEZpbGUgPSBjc3MucGFyc2UoZm91bmRGaWxlLmNvZGUsIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIHNvdXJjZTogZm91bmRGaWxlLnBhdGgNCiAgICAgICAgICAgICAgICAgICAgfSk7DQogICAgICAgICAgICAgICAgICAgIGlmICghcGFyc2VkSW1wb3J0LmNvbmRpdGlvbiB8fA0KICAgICAgICAgICAgICAgICAgICAgICAgIXBhcnNlZEltcG9ydC5jb25kaXRpb24ubGVuZ3RoKSB7DQogICAgICAgICAgICAgICAgICAgICAgICBhcHBlbmRJbXBvcnRlZEZpbGVzV2l0aEFzdChmb3VuZEZpbGUucGF0aCwgcGFyc2VkQWRkaXRpb25hbEZpbGUsIGNvbnRleHQsIGxvb3BlZFJ1bGVzKTsNCiAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICBlbHNlIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGltcG9ydFJ1bGVzID0gcGFyc2VkQWRkaXRpb25hbEZpbGUuc3R5bGVzaGVldC5ydWxlcy5maWx0ZXIoKHIpID0+IHIudHlwZSA9PT0gImltcG9ydCIpOw0KICAgICAgICAgICAgICAgICAgICAgICAgbG9vcGVkUnVsZXMucHVzaCh7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgbWVkaWE6IHBhcnNlZEltcG9ydC5jb25kaXRpb24sDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgcnVsZXM6IHBhcnNlZEFkZGl0aW9uYWxGaWxlLnN0eWxlc2hlZXQucnVsZXMuZmlsdGVyKChyKSA9PiByLnR5cGUgIT09ICJpbXBvcnQiKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiAibWVkaWEiDQogICAgICAgICAgICAgICAgICAgICAgICB9KTsNCiAgICAgICAgICAgICAgICAgICAgICAgIGlmIChpbXBvcnRSdWxlcy5sZW5ndGgpIHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXQgYXBwZW5kQWRkaXRpb25hbEltcG9ydHMgPSBPYmplY3QuYXNzaWduKHt9LCBwYXJzZWRBZGRpdGlvbmFsRmlsZSk7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgYXBwZW5kQWRkaXRpb25hbEltcG9ydHMuc3R5bGVzaGVldC5ydWxlcyA9IGltcG9ydFJ1bGVzOw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFwcGVuZEltcG9ydGVkRmlsZXNXaXRoQXN0KGZvdW5kRmlsZS5wYXRoLCBhcHBlbmRBZGRpdGlvbmFsSW1wb3J0cywgY29udGV4dCwgbG9vcGVkUnVsZXMpOw0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQogICAgfQ0KICAgIHJldHVybiBsb29wZWRSdWxlczsNCn07Cgo=', null, false);
+/* eslint-enable */class CssTranspiler extends Transpiler {
+    constructor(context) {
+        super("css-transpiler", new WorkerFactory$4(), context);
+        this.additionalTranspilers = {};
     }
-    CssTranspiler.prototype.transpile = function (file) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.doTranspile(file)];
-            });
+    transpile(file) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.doTranspile(file);
         });
-    };
-    return CssTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-var VueTranspiler = /** @class */ (function (_super) {
-    __extends(VueTranspiler, _super);
-    function VueTranspiler(context) {
-        var _this = _super.call(this, "vue-transpiler", new WorkerFactory$3(), context) || this;
-        _this.additionalTranspilers = {
+    }
+}class VueTranspiler extends Transpiler {
+    constructor(context) {
+        super("vue-transpiler", new WorkerFactory$3(), context);
+        this.additionalTranspilers = {
             sass: SassTranspiler,
             scss: SassTranspiler,
             styl: StylusTranspiler,
             less: LessTranspiler,
             css: CssTranspiler
         };
-        return _this;
     }
-    VueTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return VueTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function vueTransformer(context) {
-    var transformerName = "packager::transformer::vue-transformer";
-    var isVue = verifyExtensions([".vue"]);
-    var transpiler;
+    }
+}function vueTransformer(context) {
+    const transformerName = "packager::transformer::vue-transformer";
+    const isVue = verifyExtensions([".vue"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isVue(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("vue-transpiler");
-                            if (!transpiler) {
-                                transpiler = new VueTranspiler(context);
-                                context.cache.transpilers.set("vue-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Vue-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: completed.code,
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isVue(modulePath)) {
+                    transpiler = context.cache.transpilers.get("vue-transpiler");
+                    if (!transpiler) {
+                        transpiler = new VueTranspiler(context);
+                        context.cache.transpilers.set("vue-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Vue-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: completed.code,
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$5 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0KCnZhciBUUkFOU1BJTEVfU1RBVFVTID0gewogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwKICAgIFBSRVBBUkVfQURESVRJT05BTDogIlRSQU5TUElMRVI6QURESVRJT05BTDpQUkVQQVJFIiwKICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwKICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwKICAgIEVSUk9SX0NPTVBJTEU6ICJUUkFOU1BJTEVSOkVSUk9SOkNPTVBJTEUiLAogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCIKfTsKCi8vIHNlbGYuaW1wb3J0U2NyaXB0cygKLy8gICAgICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL3R5cGVzY3JpcHRAbGF0ZXN0L2xpYi90eXBlc2NyaXB0LmpzIgovLyApOwpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL0BibG94eS9paWZlLWxpYnNAbGF0ZXN0L2xpYnMvc3VjcmFzZS5qcyIpOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCBmdW5jdGlvbiAoX2EpIHsKICAgIHZhciBkYXRhID0gX2EuZGF0YTsKICAgIHJldHVybiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBmaWxlLCB0eXBlLCBjb250ZXh0LCB0cmFuc3BpbGVkRmlsZSwgZXJyb3JfMTsKICAgICAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9iKSB7CiAgICAgICAgICAgIHN3aXRjaCAoX2IubGFiZWwpIHsKICAgICAgICAgICAgICAgIGNhc2UgMDoKICAgICAgICAgICAgICAgICAgICBmaWxlID0gZGF0YS5maWxlLCB0eXBlID0gZGF0YS50eXBlLCBjb250ZXh0ID0gZGF0YS5jb250ZXh0OwogICAgICAgICAgICAgICAgICAgIGlmICghKHR5cGUgPT09IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9GSUxFUykpIHJldHVybiBbMyAvKmJyZWFrKi8sIDRdOwogICAgICAgICAgICAgICAgICAgIF9iLmxhYmVsID0gMTsKICAgICAgICAgICAgICAgIGNhc2UgMToKICAgICAgICAgICAgICAgICAgICBfYi50cnlzLnB1c2goWzEsIDMsICwgNF0pOwogICAgICAgICAgICAgICAgICAgIHJldHVybiBbNCAvKnlpZWxkKi8sIHRyYW5zcGlsZUZpbGUoZmlsZSldOwogICAgICAgICAgICAgICAgY2FzZSAyOgogICAgICAgICAgICAgICAgICAgIHRyYW5zcGlsZWRGaWxlID0gX2Iuc2VudCgpOwogICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUKICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsCiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlCiAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICBjYXNlIDM6CiAgICAgICAgICAgICAgICAgICAgZXJyb3JfMSA9IF9iLnNlbnQoKTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwKICAgICAgICAgICAgICAgICAgICAgICAgZXJyb3I6IGVycm9yXzEKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzMgLypicmVhayovLCA0XTsKICAgICAgICAgICAgICAgIGNhc2UgNDogcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfSk7CnZhciB0cmFuc3BpbGVGaWxlID0gZnVuY3Rpb24gKGZpbGUpIHsKICAgIHJldHVybiBuZXcgUHJvbWlzZShmdW5jdGlvbiAocmVzb2x2ZSwgcmVqZWN0KSB7CiAgICAgICAgdmFyIHRyYW5zcGlsZWQgPSBzdWNyYXNlLnRyYW5zZm9ybShmaWxlLmNvZGUsIHsKICAgICAgICAgICAgdHJhbnNmb3JtczogWyJ0eXBlc2NyaXB0IiwgImpzeCJdLAogICAgICAgICAgICBmaWxlUGF0aDogZmlsZS5wYXRoLAogICAgICAgICAgICBlbmFibGVMZWdhY3lUeXBlU2NyaXB0TW9kdWxlSW50ZXJvcDogdHJ1ZSwKICAgICAgICAgICAgc291cmNlTWFwT3B0aW9uczogewogICAgICAgICAgICAgICAgY29tcGlsZWRGaWxlbmFtZTogZmlsZS5wYXRoCiAgICAgICAgICAgIH0KICAgICAgICB9KTsKICAgICAgICAvLyBjb25zdCB0cmFuc3BpbGVkID0gdHMudHJhbnNwaWxlTW9kdWxlKGZpbGUuY29kZSwgewogICAgICAgIC8vICAgICBmaWxlTmFtZTogZmlsZS5uYW1lLAogICAgICAgIC8vICAgICBjb21waWxlck9wdGlvbnM6IHsKICAgICAgICAvLyAgICAgICAgIGFsbG93U3ludGhldGljRGVmYXVsdEltcG9ydHM6IHRydWUsCiAgICAgICAgLy8gICAgICAgICB0YXJnZXQ6IHRzLlNjcmlwdFRhcmdldC5FUzUsCiAgICAgICAgLy8gICAgICAgICBtb2R1bGU6IHRzLk1vZHVsZUtpbmQuRVNOZXh0LAogICAgICAgIC8vICAgICAgICAgaW1wb3J0SGVscGVyczogdHJ1ZSwKICAgICAgICAvLyAgICAgICAgIG5vRW1pdEhlbHBlcnM6IGZhbHNlLAogICAgICAgIC8vICAgICAgICAgbW9kdWxlUmVzb2x1dGlvbjogdHMuTW9kdWxlUmVzb2x1dGlvbktpbmQuTm9kZUpzLAogICAgICAgIC8vICAgICAgICAganN4OiB0cy5Kc3hFbWl0LlJlYWN0LAogICAgICAgIC8vICAgICAgICAgc291cmNlTWFwOiB0cnVlCiAgICAgICAgLy8gICAgIH0KICAgICAgICAvLyB9KTsKICAgICAgICBpZiAodHJhbnNwaWxlZCAmJiB0cmFuc3BpbGVkLmNvZGUpIHsKICAgICAgICAgICAgcmVzb2x2ZShfX2Fzc2lnbihfX2Fzc2lnbih7fSwgZmlsZSksIHsgY29kZTogdHJhbnNwaWxlZC5jb2RlLCBtYXA6IHRyYW5zcGlsZWQuc291cmNlTWFwIHx8IHt9IH0pKTsKICAgICAgICB9CiAgICAgICAgZWxzZSB7CiAgICAgICAgICAgIHJlamVjdCgiRmFpbGVkIHRvIHRyYW5zcGlsZSAiICsgZmlsZS5wYXRoKTsKICAgICAgICB9CiAgICAgICAgLy8gaWYgKHRyYW5zcGlsZWQub3V0cHV0VGV4dCkgewogICAgICAgIC8vICAgICByZXNvbHZlKHsKICAgICAgICAvLyAgICAgICAgIC4uLmZpbGUsCiAgICAgICAgLy8gICAgICAgICBjb2RlOiB0cmFuc3BpbGVkLm91dHB1dFRleHQsCiAgICAgICAgLy8gICAgICAgICBtYXA6IEpTT04ucGFyc2UodHJhbnNwaWxlZC5zb3VyY2VNYXBUZXh0IHx8ICJ7fSIpCiAgICAgICAgLy8gICAgIH0pOwogICAgICAgIC8vIH0gZWxzZSB7CiAgICAgICAgLy8gICAgIHJlamVjdChgRmFpbGVkIHRvIHRyYW5zcGlsZSAke2ZpbGUucGF0aH1gKTsKICAgICAgICAvLyB9CiAgICB9KTsKfTsKCg==', null, false);
-/* eslint-enable */var TypescriptTranspiler = /** @class */ (function (_super) {
-    __extends(TypescriptTranspiler, _super);
-    function TypescriptTranspiler(context) {
-        var _this = _super.call(this, "typescript-transpiler", new WorkerFactory$5(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+}/* eslint-disable */
+const WorkerFactory$5 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IFRSQU5TUElMRV9TVEFUVVMgPSB7DQogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwNCiAgICBQUkVQQVJFX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6UFJFUEFSRSIsDQogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLA0KICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwNCiAgICBFUlJPUl9DT01QSUxFOiAiVFJBTlNQSUxFUjpFUlJPUjpDT01QSUxFIiwNCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIg0KfTsKCi8vIHNlbGYuaW1wb3J0U2NyaXB0cygNCi8vICAgICAiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS90eXBlc2NyaXB0QGxhdGVzdC9saWIvdHlwZXNjcmlwdC5qcyINCi8vICk7DQpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vdW5wa2cuY29tL0BibG94eS9paWZlLWxpYnNAbGF0ZXN0L2xpYnMvc3VjcmFzZS5qcyIpOw0Kc2VsZi5hZGRFdmVudExpc3RlbmVyKCJtZXNzYWdlIiwgKHsgZGF0YSB9KSA9PiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24qICgpIHsNCiAgICBjb25zdCB7IGZpbGUsIHR5cGUsIGNvbnRleHQgfSA9IGRhdGE7DQogICAgaWYgKHR5cGUgPT09IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9GSUxFUykgew0KICAgICAgICB0cnkgew0KICAgICAgICAgICAgY29uc3QgdHJhbnNwaWxlZEZpbGUgPSB5aWVsZCB0cmFuc3BpbGVGaWxlKGZpbGUpOw0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsDQogICAgICAgICAgICAgICAgZmlsZTogdHJhbnNwaWxlZEZpbGUNCiAgICAgICAgICAgIH0pOw0KICAgICAgICB9DQogICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9DT01QSUxFLA0KICAgICAgICAgICAgICAgIGVycm9yDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgIH0NCn0pKTsNCmNvbnN0IHRyYW5zcGlsZUZpbGUgPSAoZmlsZSkgPT4gbmV3IFByb21pc2UoKHJlc29sdmUsIHJlamVjdCkgPT4gew0KICAgIGNvbnN0IHRyYW5zcGlsZWQgPSBzdWNyYXNlLnRyYW5zZm9ybShmaWxlLmNvZGUsIHsNCiAgICAgICAgdHJhbnNmb3JtczogWyJ0eXBlc2NyaXB0IiwgImpzeCJdLA0KICAgICAgICBmaWxlUGF0aDogZmlsZS5wYXRoLA0KICAgICAgICBlbmFibGVMZWdhY3lUeXBlU2NyaXB0TW9kdWxlSW50ZXJvcDogdHJ1ZSwNCiAgICAgICAgc291cmNlTWFwT3B0aW9uczogew0KICAgICAgICAgICAgY29tcGlsZWRGaWxlbmFtZTogZmlsZS5wYXRoDQogICAgICAgIH0NCiAgICB9KTsNCiAgICAvLyBjb25zdCB0cmFuc3BpbGVkID0gdHMudHJhbnNwaWxlTW9kdWxlKGZpbGUuY29kZSwgew0KICAgIC8vICAgICBmaWxlTmFtZTogZmlsZS5uYW1lLA0KICAgIC8vICAgICBjb21waWxlck9wdGlvbnM6IHsNCiAgICAvLyAgICAgICAgIGFsbG93U3ludGhldGljRGVmYXVsdEltcG9ydHM6IHRydWUsDQogICAgLy8gICAgICAgICB0YXJnZXQ6IHRzLlNjcmlwdFRhcmdldC5FUzUsDQogICAgLy8gICAgICAgICBtb2R1bGU6IHRzLk1vZHVsZUtpbmQuRVNOZXh0LA0KICAgIC8vICAgICAgICAgaW1wb3J0SGVscGVyczogdHJ1ZSwNCiAgICAvLyAgICAgICAgIG5vRW1pdEhlbHBlcnM6IGZhbHNlLA0KICAgIC8vICAgICAgICAgbW9kdWxlUmVzb2x1dGlvbjogdHMuTW9kdWxlUmVzb2x1dGlvbktpbmQuTm9kZUpzLA0KICAgIC8vICAgICAgICAganN4OiB0cy5Kc3hFbWl0LlJlYWN0LA0KICAgIC8vICAgICAgICAgc291cmNlTWFwOiB0cnVlDQogICAgLy8gICAgIH0NCiAgICAvLyB9KTsNCiAgICBpZiAodHJhbnNwaWxlZCAmJiB0cmFuc3BpbGVkLmNvZGUpIHsNCiAgICAgICAgcmVzb2x2ZShPYmplY3QuYXNzaWduKE9iamVjdC5hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGU6IHRyYW5zcGlsZWQuY29kZSwgbWFwOiB0cmFuc3BpbGVkLnNvdXJjZU1hcCB8fCB7fSB9KSk7DQogICAgfQ0KICAgIGVsc2Ugew0KICAgICAgICByZWplY3QoYEZhaWxlZCB0byB0cmFuc3BpbGUgJHtmaWxlLnBhdGh9YCk7DQogICAgfQ0KICAgIC8vIGlmICh0cmFuc3BpbGVkLm91dHB1dFRleHQpIHsNCiAgICAvLyAgICAgcmVzb2x2ZSh7DQogICAgLy8gICAgICAgICAuLi5maWxlLA0KICAgIC8vICAgICAgICAgY29kZTogdHJhbnNwaWxlZC5vdXRwdXRUZXh0LA0KICAgIC8vICAgICAgICAgbWFwOiBKU09OLnBhcnNlKHRyYW5zcGlsZWQuc291cmNlTWFwVGV4dCB8fCAie30iKQ0KICAgIC8vICAgICB9KTsNCiAgICAvLyB9IGVsc2Ugew0KICAgIC8vICAgICByZWplY3QoYEZhaWxlZCB0byB0cmFuc3BpbGUgJHtmaWxlLnBhdGh9YCk7DQogICAgLy8gfQ0KfSk7Cgo=', null, false);
+/* eslint-enable */class TypescriptTranspiler extends Transpiler {
+    constructor(context) {
+        super("typescript-transpiler", new WorkerFactory$5(), context);
+        this.additionalTranspilers = {};
     }
-    TypescriptTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return TypescriptTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function typescriptTransformer(context) {
-    var transformerName = "packager::transformer::typescript-transformer";
-    var isTypescriptOrJavascript = verifyExtensions([
+    }
+}function typescriptTransformer(context) {
+    const transformerName = "packager::transformer::typescript-transformer";
+    const isTypescriptOrJavascript = verifyExtensions([
         ".js",
         ".jsx",
         ".ts",
         ".tsx"
     ]);
-    var transpiler;
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isTypescriptOrJavascript(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("typescript-transpiler");
-                            if (!transpiler) {
-                                transpiler = new TypescriptTranspiler(context);
-                                context.cache.transpilers.set("typescript-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Typescript-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: completed.code,
-                                        map: completed.map || { mappings: "" },
-                                        syntheticNamedExports: true
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isTypescriptOrJavascript(modulePath)) {
+                    transpiler = context.cache.transpilers.get("typescript-transpiler");
+                    if (!transpiler) {
+                        transpiler = new TypescriptTranspiler(context);
+                        context.cache.transpilers.set("typescript-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Typescript-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: completed.code,
+                            map: completed.map || { mappings: "" },
+                            syntheticNamedExports: true
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$6 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0KCnZhciBnZW5lcmF0ZUV4cG9ydCA9IGZ1bmN0aW9uIChmaWxlLCBwcmVwZW5kRXhwb3J0RGVmYXVsdCkgewogICAgaWYgKHByZXBlbmRFeHBvcnREZWZhdWx0ID09PSB2b2lkIDApIHsgcHJlcGVuZEV4cG9ydERlZmF1bHQgPSB0cnVlOyB9CiAgICByZXR1cm4gKChwcmVwZW5kRXhwb3J0RGVmYXVsdCA/ICJleHBvcnQgZGVmYXVsdCAiIDogIiIpICsgImZ1bmN0aW9uIGFkZFN0eWxlcyAoKSB7IiArCiAgICAgICAgImNvbnN0IHRhZyA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3N0eWxlJyk7IiArCiAgICAgICAgInRhZy50eXBlID0gJ3RleHQvY3NzJzsiICsKICAgICAgICAoInRhZy5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVUZXh0Tm9kZShgIiArIGZpbGUuY29kZSArICJgKSk7IikgKwogICAgICAgICgidGFnLnNldEF0dHJpYnV0ZSgnZGF0YS1zcmMnLCAnIiArIGZpbGUucGF0aCArICInKTsiKSArCiAgICAgICAgImRvY3VtZW50LmhlYWQuYXBwZW5kQ2hpbGQodGFnKTsiICsKICAgICAgICAifSBhZGRTdHlsZXMoKTsiKTsKfTsKdmFyIGdlbmVyYXRlRXhwb3J0c0ZvckFsbFN0eWxlcyA9IGZ1bmN0aW9uIChzdHlsZXMsIGZpbGVQYXRoKSB7IHJldHVybiBnZW5lcmF0ZUV4cG9ydCh7IHBhdGg6IGZpbGVQYXRoLCBjb2RlOiBzdHlsZXMuam9pbigiXG5cbiIpIH0sIGZhbHNlKTsgfTsKCnZhciBUUkFOU1BJTEVfU1RBVFVTID0gewogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwKICAgIFBSRVBBUkVfQURESVRJT05BTDogIlRSQU5TUElMRVI6QURESVRJT05BTDpQUkVQQVJFIiwKICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwKICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwKICAgIEVSUk9SX0NPTVBJTEU6ICJUUkFOU1BJTEVSOkVSUk9SOkNPTVBJTEUiLAogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCIKfTsKCnNlbGYuaW1wb3J0U2NyaXB0cygiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9zdmVsdGVAbGF0ZXN0L2NvbXBpbGVyLm1pbi5qcyIpOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCBmdW5jdGlvbiAoX2EpIHsKICAgIHZhciBkYXRhID0gX2EuZGF0YTsKICAgIHJldHVybiBfX2F3YWl0ZXIodm9pZCAwLCB2b2lkIDAsIHZvaWQgMCwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBmaWxlLCB0eXBlLCBhZGRpdGlvbmFsLCBfYiwgc3R5bGVzLCByZXN0LCB0cmFuc3BpbGVkRmlsZSwgYWRkaXRpb25hbF8xLCBlcnJvcl8xLCBjb2RlOwogICAgICAgIHJldHVybiBfX2dlbmVyYXRvcih0aGlzLCBmdW5jdGlvbiAoX2MpIHsKICAgICAgICAgICAgc3dpdGNoIChfYy5sYWJlbCkgewogICAgICAgICAgICAgICAgY2FzZSAwOgogICAgICAgICAgICAgICAgICAgIGZpbGUgPSBkYXRhLmZpbGUsIHR5cGUgPSBkYXRhLnR5cGUsIGFkZGl0aW9uYWwgPSBkYXRhLmFkZGl0aW9uYWw7CiAgICAgICAgICAgICAgICAgICAgaWYgKCEodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSkgcmV0dXJuIFszIC8qYnJlYWsqLywgNV07CiAgICAgICAgICAgICAgICAgICAgX2MubGFiZWwgPSAxOwogICAgICAgICAgICAgICAgY2FzZSAxOgogICAgICAgICAgICAgICAgICAgIF9jLnRyeXMucHVzaChbMSwgNCwgLCA1XSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFs0IC8qeWllbGQqLywgZXh0cmFjdEZyb21GaWxlKGZpbGUpXTsKICAgICAgICAgICAgICAgIGNhc2UgMjoKICAgICAgICAgICAgICAgICAgICBfYiA9IF9jLnNlbnQoKSwgc3R5bGVzID0gX2Iuc3R5bGVzLCByZXN0ID0gX2IucmVzdDsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzQgLyp5aWVsZCovLCB0cmFuc3BpbGVGaWxlKF9fYXNzaWduKF9fYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiByZXN0IH0pKV07CiAgICAgICAgICAgICAgICBjYXNlIDM6CiAgICAgICAgICAgICAgICAgICAgdHJhbnNwaWxlZEZpbGUgPSBfYy5zZW50KCk7CiAgICAgICAgICAgICAgICAgICAgaWYgKHN0eWxlcyAmJiBzdHlsZXMubGVuZ3RoKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIGFkZGl0aW9uYWxfMSA9IHsgc3R5bGVzOiBzdHlsZXMgfTsKICAgICAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQogICAgICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuUFJFUEFSRV9BRERJVElPTkFMLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsZTogdHJhbnNwaWxlZEZpbGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhZGRpdGlvbmFsOiBhZGRpdGlvbmFsXzEKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIGVsc2UgewogICAgICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlCiAgICAgICAgICAgICAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2UoewogICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQogICAgICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFszIC8qYnJlYWsqLywgNV07CiAgICAgICAgICAgICAgICBjYXNlIDQ6CiAgICAgICAgICAgICAgICAgICAgZXJyb3JfMSA9IF9jLnNlbnQoKTsKICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQ09NUElMRSwKICAgICAgICAgICAgICAgICAgICAgICAgZXJyb3I6IGVycm9yXzEKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzMgLypicmVhayovLCA1XTsKICAgICAgICAgICAgICAgIGNhc2UgNToKICAgICAgICAgICAgICAgICAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5BRERJVElPTkFMX1RSQU5TUElMRUQpIHsKICAgICAgICAgICAgICAgICAgICAgICAgY29kZSA9IGZpbGUuY29kZTsKICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGFkZGl0aW9uYWwpIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29kZSArPSBnZW5lcmF0ZUV4cG9ydHNGb3JBbGxTdHlsZXMoYWRkaXRpb25hbC5zdHlsZXMubWFwKGZ1bmN0aW9uIChzKSB7IHJldHVybiBzLmNvZGU7IH0pLCBmaWxlLnBhdGgpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5UUkFOU1BJTEVfQ09NUExFVEUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGU6IF9fYXNzaWduKF9fYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiBjb2RlIH0pCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjYXRjaCAoZXJyb3IpIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuRVJST1JfQURESVRJT05BTCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXJyb3I6IGVycm9yCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFsyIC8qcmV0dXJuKi9dOwogICAgICAgICAgICB9CiAgICAgICAgfSk7CiAgICB9KTsKfSk7CnZhciBleHRyYWN0RnJvbUZpbGUgPSBmdW5jdGlvbiAoZmlsZSkgeyByZXR1cm4gX19hd2FpdGVyKHZvaWQgMCwgdm9pZCAwLCB2b2lkIDAsIGZ1bmN0aW9uICgpIHsKICAgIHZhciBleHRyYWN0ZWQsIGNvZGU7CiAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9hKSB7CiAgICAgICAgc3dpdGNoIChfYS5sYWJlbCkgewogICAgICAgICAgICBjYXNlIDA6CiAgICAgICAgICAgICAgICBleHRyYWN0ZWQgPSB7CiAgICAgICAgICAgICAgICAgICAgc3R5bGVzOiBbXQogICAgICAgICAgICAgICAgfTsKICAgICAgICAgICAgICAgIHJldHVybiBbNCAvKnlpZWxkKi8sIHN2ZWx0ZS5wcmVwcm9jZXNzKGZpbGUuY29kZSwgewogICAgICAgICAgICAgICAgICAgICAgICBzdHlsZTogZnVuY3Rpb24gKF9hKSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIgY29kZSA9IF9hLmNvbnRlbnQsIGF0dHJpYnV0ZXMgPSBfYS5hdHRyaWJ1dGVzOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgZXh0cmFjdGVkLnN0eWxlcy5wdXNoKHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2RlOiBjb2RlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhbmc6IGF0dHJpYnV0ZXMubGFuZyB8fCAiY3NzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYXRoOiBmaWxlLnBhdGgKICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHsgY29kZTogIiIgfTsKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0sIHsgZmlsZW5hbWU6IGZpbGUucGF0aCB9KV07CiAgICAgICAgICAgIGNhc2UgMToKICAgICAgICAgICAgICAgIGNvZGUgPSAoX2Euc2VudCgpKS5jb2RlOwogICAgICAgICAgICAgICAgcmV0dXJuIFsyIC8qcmV0dXJuKi8sIHsKICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGVzOiBleHRyYWN0ZWQuc3R5bGVzLAogICAgICAgICAgICAgICAgICAgICAgICByZXN0OiBjb2RlCiAgICAgICAgICAgICAgICAgICAgfV07CiAgICAgICAgfQogICAgfSk7Cn0pOyB9Owp2YXIgdHJhbnNwaWxlRmlsZSA9IGZ1bmN0aW9uIChmaWxlKSB7CiAgICByZXR1cm4gbmV3IFByb21pc2UoZnVuY3Rpb24gKHJlc29sdmUsIHJlamVjdCkgeyByZXR1cm4gX19hd2FpdGVyKHZvaWQgMCwgdm9pZCAwLCB2b2lkIDAsIGZ1bmN0aW9uICgpIHsKICAgICAgICB2YXIgdHJhbnNwaWxlZDsKICAgICAgICByZXR1cm4gX19nZW5lcmF0b3IodGhpcywgZnVuY3Rpb24gKF9hKSB7CiAgICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgICAgICB0cmFuc3BpbGVkID0gc3ZlbHRlLmNvbXBpbGUoZmlsZS5jb2RlLCB7CiAgICAgICAgICAgICAgICAgICAgZmlsZW5hbWU6IGZpbGUucGF0aAogICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICByZXNvbHZlKF9fYXNzaWduKF9fYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiB0cmFuc3BpbGVkLmpzLmNvZGUgfSkpOwogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhdGNoIChlcnJvcikgewogICAgICAgICAgICAgICAgcmVqZWN0KGVycm9yKTsKICAgICAgICAgICAgfQogICAgICAgICAgICByZXR1cm4gWzIgLypyZXR1cm4qL107CiAgICAgICAgfSk7CiAgICB9KTsgfSk7Cn07Cgo=', null, false);
-/* eslint-enable */var SvelteTranspiler = /** @class */ (function (_super) {
-    __extends(SvelteTranspiler, _super);
-    function SvelteTranspiler(context) {
-        var _this = _super.call(this, "svelte-transpiler", new WorkerFactory$6(), context) || this;
-        _this.additionalTranspilers = {
+}/* eslint-disable */
+const WorkerFactory$6 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IGdlbmVyYXRlRXhwb3J0ID0gKGZpbGUsIHByZXBlbmRFeHBvcnREZWZhdWx0ID0gdHJ1ZSkgPT4gew0KICAgIHJldHVybiAoYCR7cHJlcGVuZEV4cG9ydERlZmF1bHQgPyAiZXhwb3J0IGRlZmF1bHQgIiA6ICIifWZ1bmN0aW9uIGFkZFN0eWxlcyAoKSB7YCArDQogICAgICAgIGBjb25zdCB0YWcgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdzdHlsZScpO2AgKw0KICAgICAgICBgdGFnLnR5cGUgPSAndGV4dC9jc3MnO2AgKw0KICAgICAgICBgdGFnLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKFxgJHtmaWxlLmNvZGV9XGApKTtgICsNCiAgICAgICAgYHRhZy5zZXRBdHRyaWJ1dGUoJ2RhdGEtc3JjJywgJyR7ZmlsZS5wYXRofScpO2AgKw0KICAgICAgICBgZG9jdW1lbnQuaGVhZC5hcHBlbmRDaGlsZCh0YWcpO2AgKw0KICAgICAgICBgfSBhZGRTdHlsZXMoKTtgKTsNCn07DQpjb25zdCBnZW5lcmF0ZUV4cG9ydHNGb3JBbGxTdHlsZXMgPSAoc3R5bGVzLCBmaWxlUGF0aCkgPT4gZ2VuZXJhdGVFeHBvcnQoeyBwYXRoOiBmaWxlUGF0aCwgY29kZTogc3R5bGVzLmpvaW4oIlxuXG4iKSB9LCBmYWxzZSk7Cgpjb25zdCBUUkFOU1BJTEVfU1RBVFVTID0gew0KICAgIFBSRVBBUkVfRklMRVM6ICJUUkFOU1BJTEVSOkZJTEU6UFJFUEFSRSIsDQogICAgUFJFUEFSRV9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlBSRVBBUkUiLA0KICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwNCiAgICBUUkFOU1BJTEVfQ09NUExFVEU6ICJUUkFOU1BJTEVSOlRSQU5TUElMRTpDT01QTEVURSIsDQogICAgRVJST1JfQ09NUElMRTogIlRSQU5TUElMRVI6RVJST1I6Q09NUElMRSIsDQogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCINCn07CgpzZWxmLmltcG9ydFNjcmlwdHMoImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vc3ZlbHRlQGxhdGVzdC9jb21waWxlci5taW4uanMiKTsNCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcigibWVzc2FnZSIsICh7IGRhdGEgfSkgPT4gX19hd2FpdGVyKHZvaWQgMCwgdm9pZCAwLCB2b2lkIDAsIGZ1bmN0aW9uKiAoKSB7DQogICAgY29uc3QgeyBmaWxlLCB0eXBlLCBhZGRpdGlvbmFsIH0gPSBkYXRhOw0KICAgIGlmICh0eXBlID09PSBUUkFOU1BJTEVfU1RBVFVTLlBSRVBBUkVfRklMRVMpIHsNCiAgICAgICAgdHJ5IHsNCiAgICAgICAgICAgIGNvbnN0IHsgc3R5bGVzLCByZXN0IH0gPSB5aWVsZCBleHRyYWN0RnJvbUZpbGUoZmlsZSk7DQogICAgICAgICAgICBjb25zdCB0cmFuc3BpbGVkRmlsZSA9IHlpZWxkIHRyYW5zcGlsZUZpbGUoT2JqZWN0LmFzc2lnbihPYmplY3QuYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiByZXN0IH0pKTsNCiAgICAgICAgICAgIGlmIChzdHlsZXMgJiYgc3R5bGVzLmxlbmd0aCkgew0KICAgICAgICAgICAgICAgIGNvbnN0IGFkZGl0aW9uYWwgPSB7IHN0eWxlcyB9Ow0KICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0FERElUSU9OQUwsDQogICAgICAgICAgICAgICAgICAgIGZpbGU6IHRyYW5zcGlsZWRGaWxlLA0KICAgICAgICAgICAgICAgICAgICBhZGRpdGlvbmFsDQogICAgICAgICAgICAgICAgfSk7DQogICAgICAgICAgICB9DQogICAgICAgICAgICBlbHNlIHsNCiAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlDQogICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLA0KICAgICAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQ0KICAgICAgICAgICAgICAgIH0pOw0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQogICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgLy8gQHRzLWlnbm9yZSB3cm9uZyBzY29wZQ0KICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9DT01QSUxFLA0KICAgICAgICAgICAgICAgIGVycm9yDQogICAgICAgICAgICB9KTsNCiAgICAgICAgfQ0KICAgIH0NCiAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5BRERJVElPTkFMX1RSQU5TUElMRUQpIHsNCiAgICAgICAgbGV0IGNvZGUgPSBmaWxlLmNvZGU7DQogICAgICAgIGlmIChhZGRpdGlvbmFsKSB7DQogICAgICAgICAgICB0cnkgew0KICAgICAgICAgICAgICAgIGNvZGUgKz0gZ2VuZXJhdGVFeHBvcnRzRm9yQWxsU3R5bGVzKGFkZGl0aW9uYWwuc3R5bGVzLm1hcCgocykgPT4gcy5jb2RlKSwgZmlsZS5wYXRoKTsNCiAgICAgICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlDQogICAgICAgICAgICAgICAgc2VsZi5wb3N0TWVzc2FnZSh7DQogICAgICAgICAgICAgICAgICAgIHR5cGU6IFRSQU5TUElMRV9TVEFUVVMuVFJBTlNQSUxFX0NPTVBMRVRFLA0KICAgICAgICAgICAgICAgICAgICBmaWxlOiBPYmplY3QuYXNzaWduKE9iamVjdC5hc3NpZ24oe30sIGZpbGUpLCB7IGNvZGUgfSkNCiAgICAgICAgICAgICAgICB9KTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIGNhdGNoIChlcnJvcikgew0KICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUNCiAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9BRERJVElPTkFMLA0KICAgICAgICAgICAgICAgICAgICBlcnJvcg0KICAgICAgICAgICAgICAgIH0pOw0KICAgICAgICAgICAgfQ0KICAgICAgICB9DQogICAgfQ0KfSkpOw0KY29uc3QgZXh0cmFjdEZyb21GaWxlID0gKGZpbGUpID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIGNvbnN0IGV4dHJhY3RlZCA9IHsNCiAgICAgICAgc3R5bGVzOiBbXQ0KICAgIH07DQogICAgY29uc3QgeyBjb2RlIH0gPSB5aWVsZCBzdmVsdGUucHJlcHJvY2VzcyhmaWxlLmNvZGUsIHsNCiAgICAgICAgc3R5bGU6ICh7IGNvbnRlbnQ6IGNvZGUsIGF0dHJpYnV0ZXMgfSkgPT4gew0KICAgICAgICAgICAgZXh0cmFjdGVkLnN0eWxlcy5wdXNoKHsNCiAgICAgICAgICAgICAgICBjb2RlLA0KICAgICAgICAgICAgICAgIGxhbmc6IGF0dHJpYnV0ZXMubGFuZyB8fCAiY3NzIiwNCiAgICAgICAgICAgICAgICBwYXRoOiBmaWxlLnBhdGgNCiAgICAgICAgICAgIH0pOw0KICAgICAgICAgICAgcmV0dXJuIHsgY29kZTogIiIgfTsNCiAgICAgICAgfQ0KICAgIH0sIHsgZmlsZW5hbWU6IGZpbGUucGF0aCB9KTsNCiAgICByZXR1cm4gew0KICAgICAgICBzdHlsZXM6IGV4dHJhY3RlZC5zdHlsZXMsDQogICAgICAgIHJlc3Q6IGNvZGUNCiAgICB9Ow0KfSk7DQpjb25zdCB0cmFuc3BpbGVGaWxlID0gKGZpbGUpID0+IG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIHRyeSB7DQogICAgICAgIGNvbnN0IHRyYW5zcGlsZWQgPSBzdmVsdGUuY29tcGlsZShmaWxlLmNvZGUsIHsNCiAgICAgICAgICAgIGZpbGVuYW1lOiBmaWxlLnBhdGgNCiAgICAgICAgfSk7DQogICAgICAgIHJlc29sdmUoT2JqZWN0LmFzc2lnbihPYmplY3QuYXNzaWduKHt9LCBmaWxlKSwgeyBjb2RlOiB0cmFuc3BpbGVkLmpzLmNvZGUgfSkpOw0KICAgIH0NCiAgICBjYXRjaCAoZXJyb3IpIHsNCiAgICAgICAgcmVqZWN0KGVycm9yKTsNCiAgICB9DQp9KSk7Cgo=', null, false);
+/* eslint-enable */class SvelteTranspiler extends Transpiler {
+    constructor(context) {
+        super("svelte-transpiler", new WorkerFactory$6(), context);
+        this.additionalTranspilers = {
             sass: SassTranspiler,
             scss: SassTranspiler,
             styl: StylusTranspiler,
             less: LessTranspiler,
             css: CssTranspiler
         };
-        return _this;
     }
-    SvelteTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    SvelteTranspiler.forceExternal = true;
-    return SvelteTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function svelteTransformer(context) {
-    var transformerName = "packager::transformer::svelte-transformer";
-    var isSvelte = verifyExtensions([".svelte"]);
-    var transpiler;
+    }
+}
+SvelteTranspiler.forceExternal = true;function svelteTransformer(context) {
+    const transformerName = "packager::transformer::svelte-transformer";
+    const isSvelte = verifyExtensions([".svelte"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isSvelte(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("svelte-transpiler");
-                            if (!transpiler) {
-                                transpiler = new SvelteTranspiler(context);
-                                context.cache.transpilers.set("svelte-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Svelte-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: completed.code,
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isSvelte(modulePath)) {
+                    transpiler = context.cache.transpilers.get("svelte-transpiler");
+                    if (!transpiler) {
+                        transpiler = new SvelteTranspiler(context);
+                        context.cache.transpilers.set("svelte-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Svelte-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: completed.code,
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-var JsonTranspiler = /** @class */ (function (_super) {
-    __extends(JsonTranspiler, _super);
-    function JsonTranspiler(context) {
-        var _this = _super.call(this, "json-transpiler", null, context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+}class JsonTranspiler extends Transpiler {
+    constructor(context) {
+        super("json-transpiler", null, context);
+        this.additionalTranspilers = {};
     }
-    JsonTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return JsonTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function jsonTransformer(context) {
-    var transformerName = "packager::transformer::json-transformer";
-    var isJson = verifyExtensions([".json"]);
-    var transpiler;
-    return {
-        name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isJson(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("json-transpiler");
-                            if (!transpiler) {
-                                transpiler = new JsonTranspiler(context);
-                                context.cache.transpilers.set("json-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Json-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: "export default " + completed.code
-                                    }];
-                            }
-                            _a.label = 2;
-                        case 2: return [2 /*return*/];
-                    }
-                });
-            });
-        }
-    };
-}
-//# sourceMappingURL=index.js.map
-function cssTransformer(context) {
-    var transformerName = "packager::transformer::css-transformer";
-    var isCss = verifyExtensions([".css"]);
-    var transpiler;
-    return {
-        name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isCss(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("css-transpiler");
-                            if (!transpiler) {
-                                transpiler = new CssTranspiler(context);
-                                context.cache.transpilers.set("css-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Css-Transpiler", function () {
-                                    return transpiler.transpile(__assign(__assign({}, file_1), { code: code }));
-                                })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: generateExport(__assign(__assign({}, file_1), { code: completed.code }))
-                                    }];
-                            }
-                            _a.label = 2;
-                        case 2: return [2 /*return*/];
-                    }
-                });
-            });
-        }
-    };
-}
-//# sourceMappingURL=index.js.map
-/* eslint-disable */
-const WorkerFactory$7 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCnZhciBfX2Fzc2lnbiA9IGZ1bmN0aW9uKCkgew0KICAgIF9fYXNzaWduID0gT2JqZWN0LmFzc2lnbiB8fCBmdW5jdGlvbiBfX2Fzc2lnbih0KSB7DQogICAgICAgIGZvciAodmFyIHMsIGkgPSAxLCBuID0gYXJndW1lbnRzLmxlbmd0aDsgaSA8IG47IGkrKykgew0KICAgICAgICAgICAgcyA9IGFyZ3VtZW50c1tpXTsNCiAgICAgICAgICAgIGZvciAodmFyIHAgaW4gcykgaWYgKE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbChzLCBwKSkgdFtwXSA9IHNbcF07DQogICAgICAgIH0NCiAgICAgICAgcmV0dXJuIHQ7DQogICAgfTsNCiAgICByZXR1cm4gX19hc3NpZ24uYXBwbHkodGhpcywgYXJndW1lbnRzKTsNCn07DQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0NCg0KZnVuY3Rpb24gX19nZW5lcmF0b3IodGhpc0FyZywgYm9keSkgew0KICAgIHZhciBfID0geyBsYWJlbDogMCwgc2VudDogZnVuY3Rpb24oKSB7IGlmICh0WzBdICYgMSkgdGhyb3cgdFsxXTsgcmV0dXJuIHRbMV07IH0sIHRyeXM6IFtdLCBvcHM6IFtdIH0sIGYsIHksIHQsIGc7DQogICAgcmV0dXJuIGcgPSB7IG5leHQ6IHZlcmIoMCksICJ0aHJvdyI6IHZlcmIoMSksICJyZXR1cm4iOiB2ZXJiKDIpIH0sIHR5cGVvZiBTeW1ib2wgPT09ICJmdW5jdGlvbiIgJiYgKGdbU3ltYm9sLml0ZXJhdG9yXSA9IGZ1bmN0aW9uKCkgeyByZXR1cm4gdGhpczsgfSksIGc7DQogICAgZnVuY3Rpb24gdmVyYihuKSB7IHJldHVybiBmdW5jdGlvbiAodikgeyByZXR1cm4gc3RlcChbbiwgdl0pOyB9OyB9DQogICAgZnVuY3Rpb24gc3RlcChvcCkgew0KICAgICAgICBpZiAoZikgdGhyb3cgbmV3IFR5cGVFcnJvcigiR2VuZXJhdG9yIGlzIGFscmVhZHkgZXhlY3V0aW5nLiIpOw0KICAgICAgICB3aGlsZSAoXykgdHJ5IHsNCiAgICAgICAgICAgIGlmIChmID0gMSwgeSAmJiAodCA9IG9wWzBdICYgMiA/IHlbInJldHVybiJdIDogb3BbMF0gPyB5WyJ0aHJvdyJdIHx8ICgodCA9IHlbInJldHVybiJdKSAmJiB0LmNhbGwoeSksIDApIDogeS5uZXh0KSAmJiAhKHQgPSB0LmNhbGwoeSwgb3BbMV0pKS5kb25lKSByZXR1cm4gdDsNCiAgICAgICAgICAgIGlmICh5ID0gMCwgdCkgb3AgPSBbb3BbMF0gJiAyLCB0LnZhbHVlXTsNCiAgICAgICAgICAgIHN3aXRjaCAob3BbMF0pIHsNCiAgICAgICAgICAgICAgICBjYXNlIDA6IGNhc2UgMTogdCA9IG9wOyBicmVhazsNCiAgICAgICAgICAgICAgICBjYXNlIDQ6IF8ubGFiZWwrKzsgcmV0dXJuIHsgdmFsdWU6IG9wWzFdLCBkb25lOiBmYWxzZSB9Ow0KICAgICAgICAgICAgICAgIGNhc2UgNTogXy5sYWJlbCsrOyB5ID0gb3BbMV07IG9wID0gWzBdOyBjb250aW51ZTsNCiAgICAgICAgICAgICAgICBjYXNlIDc6IG9wID0gXy5vcHMucG9wKCk7IF8udHJ5cy5wb3AoKTsgY29udGludWU7DQogICAgICAgICAgICAgICAgZGVmYXVsdDoNCiAgICAgICAgICAgICAgICAgICAgaWYgKCEodCA9IF8udHJ5cywgdCA9IHQubGVuZ3RoID4gMCAmJiB0W3QubGVuZ3RoIC0gMV0pICYmIChvcFswXSA9PT0gNiB8fCBvcFswXSA9PT0gMikpIHsgXyA9IDA7IGNvbnRpbnVlOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gMyAmJiAoIXQgfHwgKG9wWzFdID4gdFswXSAmJiBvcFsxXSA8IHRbM10pKSkgeyBfLmxhYmVsID0gb3BbMV07IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmIChvcFswXSA9PT0gNiAmJiBfLmxhYmVsIDwgdFsxXSkgeyBfLmxhYmVsID0gdFsxXTsgdCA9IG9wOyBicmVhazsgfQ0KICAgICAgICAgICAgICAgICAgICBpZiAodCAmJiBfLmxhYmVsIDwgdFsyXSkgeyBfLmxhYmVsID0gdFsyXTsgXy5vcHMucHVzaChvcCk7IGJyZWFrOyB9DQogICAgICAgICAgICAgICAgICAgIGlmICh0WzJdKSBfLm9wcy5wb3AoKTsNCiAgICAgICAgICAgICAgICAgICAgXy50cnlzLnBvcCgpOyBjb250aW51ZTsNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgIG9wID0gYm9keS5jYWxsKHRoaXNBcmcsIF8pOw0KICAgICAgICB9IGNhdGNoIChlKSB7IG9wID0gWzYsIGVdOyB5ID0gMDsgfSBmaW5hbGx5IHsgZiA9IHQgPSAwOyB9DQogICAgICAgIGlmIChvcFswXSAmIDUpIHRocm93IG9wWzFdOyByZXR1cm4geyB2YWx1ZTogb3BbMF0gPyBvcFsxXSA6IHZvaWQgMCwgZG9uZTogdHJ1ZSB9Ow0KICAgIH0NCn0KCnZhciBUUkFOU1BJTEVfU1RBVFVTID0gewogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwKICAgIFBSRVBBUkVfQURESVRJT05BTDogIlRSQU5TUElMRVI6QURESVRJT05BTDpQUkVQQVJFIiwKICAgIEFERElUSU9OQUxfVFJBTlNQSUxFRDogIlRSQU5TUElMRVI6QURESVRJT05BTDpUUkFOU1BJTEVEIiwKICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwKICAgIEVSUk9SX0NPTVBJTEU6ICJUUkFOU1BJTEVSOkVSUk9SOkNPTVBJTEUiLAogICAgRVJST1JfQURESVRJT05BTDogIlRSQU5TUElMRVI6RVJST1I6QURESVRJT05BTCIKfTsKCnNlbGYuaW1wb3J0U2NyaXB0cygiaHR0cHM6Ly91bnBrZy5jb20vY29mZmVlc2NyaXB0L2xpYi9jb2ZmZWVzY3JpcHQtYnJvd3Nlci1jb21waWxlci1sZWdhY3kvY29mZmVlc2NyaXB0LmpzIik7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcigibWVzc2FnZSIsIGZ1bmN0aW9uIChfYSkgewogICAgdmFyIGRhdGEgPSBfYS5kYXRhOwogICAgcmV0dXJuIF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiAoKSB7CiAgICAgICAgdmFyIGZpbGUsIHR5cGUsIGNvbnRleHQsIHRyYW5zcGlsZWRGaWxlLCBlcnJvcl8xOwogICAgICAgIHJldHVybiBfX2dlbmVyYXRvcih0aGlzLCBmdW5jdGlvbiAoX2IpIHsKICAgICAgICAgICAgc3dpdGNoIChfYi5sYWJlbCkgewogICAgICAgICAgICAgICAgY2FzZSAwOgogICAgICAgICAgICAgICAgICAgIGZpbGUgPSBkYXRhLmZpbGUsIHR5cGUgPSBkYXRhLnR5cGUsIGNvbnRleHQgPSBkYXRhLmNvbnRleHQ7CiAgICAgICAgICAgICAgICAgICAgaWYgKCEodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSkgcmV0dXJuIFszIC8qYnJlYWsqLywgNF07CiAgICAgICAgICAgICAgICAgICAgX2IubGFiZWwgPSAxOwogICAgICAgICAgICAgICAgY2FzZSAxOgogICAgICAgICAgICAgICAgICAgIF9iLnRyeXMucHVzaChbMSwgMywgLCA0XSk7CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFs0IC8qeWllbGQqLywgdHJhbnNwaWxlRmlsZShmaWxlKV07CiAgICAgICAgICAgICAgICBjYXNlIDI6CiAgICAgICAgICAgICAgICAgICAgdHJhbnNwaWxlZEZpbGUgPSBfYi5zZW50KCk7CiAgICAgICAgICAgICAgICAgICAgLy8gQHRzLWlnbm9yZQogICAgICAgICAgICAgICAgICAgIHNlbGYucG9zdE1lc3NhZ2UoewogICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLlRSQU5TUElMRV9DT01QTEVURSwKICAgICAgICAgICAgICAgICAgICAgICAgZmlsZTogdHJhbnNwaWxlZEZpbGUKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICByZXR1cm4gWzMgLypicmVhayovLCA0XTsKICAgICAgICAgICAgICAgIGNhc2UgMzoKICAgICAgICAgICAgICAgICAgICBlcnJvcl8xID0gX2Iuc2VudCgpOwogICAgICAgICAgICAgICAgICAgIC8vIEB0cy1pZ25vcmUgd3Jvbmcgc2NvcGUKICAgICAgICAgICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsKICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogVFJBTlNQSUxFX1NUQVRVUy5FUlJPUl9DT01QSUxFLAogICAgICAgICAgICAgICAgICAgICAgICBlcnJvcjogZXJyb3JfMQogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgICAgIHJldHVybiBbMyAvKmJyZWFrKi8sIDRdOwogICAgICAgICAgICAgICAgY2FzZSA0OiByZXR1cm4gWzIgLypyZXR1cm4qL107CiAgICAgICAgICAgIH0KICAgICAgICB9KTsKICAgIH0pOwp9KTsKdmFyIHRyYW5zcGlsZUZpbGUgPSBmdW5jdGlvbiAoZmlsZSkgewogICAgcmV0dXJuIG5ldyBQcm9taXNlKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsKICAgICAgICB0cnkgewogICAgICAgICAgICB2YXIgdHJhbnNwaWxlZCA9IENvZmZlZVNjcmlwdC5jb21waWxlKGZpbGUuY29kZSwgewogICAgICAgICAgICAgICAgZmlsZW5hbWU6IGZpbGUucGF0aCwKICAgICAgICAgICAgICAgIHNvdXJjZU1hcDogdHJ1ZQogICAgICAgICAgICB9KTsKICAgICAgICAgICAgcmVzb2x2ZShfX2Fzc2lnbihfX2Fzc2lnbih7fSwgZmlsZSksIHsgY29kZTogdHJhbnNwaWxlZC5qcywgbWFwOiBKU09OLnBhcnNlKHRyYW5zcGlsZWQudjNTb3VyY2VNYXAgfHwgInt9IikgfSkpOwogICAgICAgIH0KICAgICAgICBjYXRjaCAoZSkgewogICAgICAgICAgICByZWplY3QoZSk7CiAgICAgICAgfQogICAgfSk7Cn07Cgo=', null, false);
-/* eslint-enable */var CoffeescriptTranspiler = /** @class */ (function (_super) {
-    __extends(CoffeescriptTranspiler, _super);
-    function CoffeescriptTranspiler(context) {
-        var _this = _super.call(this, "coffeescript-transpiler", new WorkerFactory$7(), context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
     }
-    CoffeescriptTranspiler.prototype.transpile = function (file) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.doTranspile(file)];
+}function jsonTransformer(context) {
+    const transformerName = "packager::transformer::json-transformer";
+    const isJson = verifyExtensions([".json"]);
+    let transpiler;
+    return {
+        name: transformerName,
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isJson(modulePath)) {
+                    transpiler = context.cache.transpilers.get("json-transpiler");
+                    if (!transpiler) {
+                        transpiler = new JsonTranspiler(context);
+                        context.cache.transpilers.set("json-transpiler", transpiler);
+                    }
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Json-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: `export default ${completed.code}`
+                        };
+                    }
+                }
             });
+        }
+    };
+}function cssTransformer(context) {
+    const transformerName = "packager::transformer::css-transformer";
+    const isCss = verifyExtensions([".css"]);
+    let transpiler;
+    return {
+        name: transformerName,
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isCss(modulePath)) {
+                    transpiler = context.cache.transpilers.get("css-transpiler");
+                    if (!transpiler) {
+                        transpiler = new CssTranspiler(context);
+                        context.cache.transpilers.set("css-transpiler", transpiler);
+                    }
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Css-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: generateExport(Object.assign(Object.assign({}, file), { code: completed.code }))
+                        };
+                    }
+                }
+            });
+        }
+    };
+}/* eslint-disable */
+const WorkerFactory$7 = createBase64WorkerFactory('Lyogcm9sbHVwLXBsdWdpbi13ZWItd29ya2VyLWxvYWRlciAqLwovKiEgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNCkNvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLg0KTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbnNlLCBWZXJzaW9uIDIuMCAodGhlICJMaWNlbnNlIik7IHlvdSBtYXkgbm90IHVzZQ0KdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUNCkxpY2Vuc2UgYXQgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wDQoNClRISVMgQ09ERSBJUyBQUk9WSURFRCBPTiBBTiAqQVMgSVMqIEJBU0lTLCBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkNCktJTkQsIEVJVEhFUiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBXSVRIT1VUIExJTUlUQVRJT04gQU5ZIElNUExJRUQNCldBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBUSVRMRSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UsDQpNRVJDSEFOVEFCTElUWSBPUiBOT04tSU5GUklOR0VNRU5ULg0KDQpTZWUgdGhlIEFwYWNoZSBWZXJzaW9uIDIuMCBMaWNlbnNlIGZvciBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMNCmFuZCBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4NCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqICovDQoNCmZ1bmN0aW9uIF9fYXdhaXRlcih0aGlzQXJnLCBfYXJndW1lbnRzLCBQLCBnZW5lcmF0b3IpIHsNCiAgICByZXR1cm4gbmV3IChQIHx8IChQID0gUHJvbWlzZSkpKGZ1bmN0aW9uIChyZXNvbHZlLCByZWplY3QpIHsNCiAgICAgICAgZnVuY3Rpb24gZnVsZmlsbGVkKHZhbHVlKSB7IHRyeSB7IHN0ZXAoZ2VuZXJhdG9yLm5leHQodmFsdWUpKTsgfSBjYXRjaCAoZSkgeyByZWplY3QoZSk7IH0gfQ0KICAgICAgICBmdW5jdGlvbiByZWplY3RlZCh2YWx1ZSkgeyB0cnkgeyBzdGVwKGdlbmVyYXRvclsidGhyb3ciXSh2YWx1ZSkpOyB9IGNhdGNoIChlKSB7IHJlamVjdChlKTsgfSB9DQogICAgICAgIGZ1bmN0aW9uIHN0ZXAocmVzdWx0KSB7IHJlc3VsdC5kb25lID8gcmVzb2x2ZShyZXN1bHQudmFsdWUpIDogbmV3IFAoZnVuY3Rpb24gKHJlc29sdmUpIHsgcmVzb2x2ZShyZXN1bHQudmFsdWUpOyB9KS50aGVuKGZ1bGZpbGxlZCwgcmVqZWN0ZWQpOyB9DQogICAgICAgIHN0ZXAoKGdlbmVyYXRvciA9IGdlbmVyYXRvci5hcHBseSh0aGlzQXJnLCBfYXJndW1lbnRzIHx8IFtdKSkubmV4dCgpKTsNCiAgICB9KTsNCn0KCmNvbnN0IFRSQU5TUElMRV9TVEFUVVMgPSB7DQogICAgUFJFUEFSRV9GSUxFUzogIlRSQU5TUElMRVI6RklMRTpQUkVQQVJFIiwNCiAgICBQUkVQQVJFX0FERElUSU9OQUw6ICJUUkFOU1BJTEVSOkFERElUSU9OQUw6UFJFUEFSRSIsDQogICAgQURESVRJT05BTF9UUkFOU1BJTEVEOiAiVFJBTlNQSUxFUjpBRERJVElPTkFMOlRSQU5TUElMRUQiLA0KICAgIFRSQU5TUElMRV9DT01QTEVURTogIlRSQU5TUElMRVI6VFJBTlNQSUxFOkNPTVBMRVRFIiwNCiAgICBFUlJPUl9DT01QSUxFOiAiVFJBTlNQSUxFUjpFUlJPUjpDT01QSUxFIiwNCiAgICBFUlJPUl9BRERJVElPTkFMOiAiVFJBTlNQSUxFUjpFUlJPUjpBRERJVElPTkFMIg0KfTsKCnNlbGYuaW1wb3J0U2NyaXB0cygiaHR0cHM6Ly91bnBrZy5jb20vY29mZmVlc2NyaXB0L2xpYi9jb2ZmZWVzY3JpcHQtYnJvd3Nlci1jb21waWxlci1sZWdhY3kvY29mZmVlc2NyaXB0LmpzIik7DQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoIm1lc3NhZ2UiLCAoeyBkYXRhIH0pID0+IF9fYXdhaXRlcih2b2lkIDAsIHZvaWQgMCwgdm9pZCAwLCBmdW5jdGlvbiogKCkgew0KICAgIGNvbnN0IHsgZmlsZSwgdHlwZSwgY29udGV4dCB9ID0gZGF0YTsNCiAgICBpZiAodHlwZSA9PT0gVFJBTlNQSUxFX1NUQVRVUy5QUkVQQVJFX0ZJTEVTKSB7DQogICAgICAgIHRyeSB7DQogICAgICAgICAgICBjb25zdCB0cmFuc3BpbGVkRmlsZSA9IHlpZWxkIHRyYW5zcGlsZUZpbGUoZmlsZSk7DQogICAgICAgICAgICAvLyBAdHMtaWdub3JlDQogICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLlRSQU5TUElMRV9DT01QTEVURSwNCiAgICAgICAgICAgICAgICBmaWxlOiB0cmFuc3BpbGVkRmlsZQ0KICAgICAgICAgICAgfSk7DQogICAgICAgIH0NCiAgICAgICAgY2F0Y2ggKGVycm9yKSB7DQogICAgICAgICAgICAvLyBAdHMtaWdub3JlIHdyb25nIHNjb3BlDQogICAgICAgICAgICBzZWxmLnBvc3RNZXNzYWdlKHsNCiAgICAgICAgICAgICAgICB0eXBlOiBUUkFOU1BJTEVfU1RBVFVTLkVSUk9SX0NPTVBJTEUsDQogICAgICAgICAgICAgICAgZXJyb3INCiAgICAgICAgICAgIH0pOw0KICAgICAgICB9DQogICAgfQ0KfSkpOw0KY29uc3QgdHJhbnNwaWxlRmlsZSA9IChmaWxlKSA9PiB7DQogICAgcmV0dXJuIG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IHsNCiAgICAgICAgdHJ5IHsNCiAgICAgICAgICAgIGNvbnN0IHRyYW5zcGlsZWQgPSBDb2ZmZWVTY3JpcHQuY29tcGlsZShmaWxlLmNvZGUsIHsNCiAgICAgICAgICAgICAgICBmaWxlbmFtZTogZmlsZS5wYXRoLA0KICAgICAgICAgICAgICAgIHNvdXJjZU1hcDogdHJ1ZQ0KICAgICAgICAgICAgfSk7DQogICAgICAgICAgICByZXNvbHZlKE9iamVjdC5hc3NpZ24oT2JqZWN0LmFzc2lnbih7fSwgZmlsZSksIHsgY29kZTogdHJhbnNwaWxlZC5qcywgbWFwOiBKU09OLnBhcnNlKHRyYW5zcGlsZWQudjNTb3VyY2VNYXAgfHwgInt9IikgfSkpOw0KICAgICAgICB9DQogICAgICAgIGNhdGNoIChlKSB7DQogICAgICAgICAgICByZWplY3QoZSk7DQogICAgICAgIH0NCiAgICB9KTsNCn07Cgo=', null, false);
+/* eslint-enable */class CoffeescriptTranspiler extends Transpiler {
+    constructor(context) {
+        super("coffeescript-transpiler", new WorkerFactory$7(), context);
+        this.additionalTranspilers = {};
+    }
+    transpile(file) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.doTranspile(file);
         });
-    };
-    return CoffeescriptTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-function coffeescriptTransformer(context) {
-    var transformerName = "packager::transformer::coffeescript-transformer";
-    var isCoffeescript = verifyExtensions([".coffee"]);
-    var transpiler;
+    }
+}function coffeescriptTransformer(context) {
+    const transformerName = "packager::transformer::coffeescript-transformer";
+    const isCoffeescript = verifyExtensions([".coffee"]);
+    let transpiler;
     return {
         name: transformerName,
-        transform: function (code, modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var file_1, completed;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!isCoffeescript(modulePath)) return [3 /*break*/, 2];
-                            transpiler = context.cache.transpilers.get("coffeescript-transpiler");
-                            if (!transpiler) {
-                                transpiler = new CoffeescriptTranspiler(context);
-                                context.cache.transpilers.set("coffeescript-transpiler", transpiler);
-                            }
-                            file_1 = context.files.find(function (f) { return f.path === modulePath; });
-                            return [4 /*yield*/, context.transpileQueue.push("Coffeescript-Transpiler", function () { return transpiler.transpile(__assign(__assign({}, file_1), { code: code })); })];
-                        case 1:
-                            _a.sent();
-                            completed = context.transpileQueue.completed.find(function (c) { return c.path === modulePath; });
-                            if (completed) {
-                                return [2 /*return*/, {
-                                        code: completed.code,
-                                        map: completed.map || { mappings: "" }
-                                    }];
-                            }
-                            throw new TransformationException(modulePath, transformerName);
-                        case 2: return [2 /*return*/];
+        transform(code, modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (isCoffeescript(modulePath)) {
+                    transpiler = context.cache.transpilers.get("coffeescript-transpiler");
+                    if (!transpiler) {
+                        transpiler = new CoffeescriptTranspiler(context);
+                        context.cache.transpilers.set("coffeescript-transpiler", transpiler);
                     }
-                });
+                    const file = context.files.find(f => f.path === modulePath);
+                    yield context.transpileQueue.push("Coffeescript-Transpiler", () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+                    const completed = context.transpileQueue.completed.find(c => c.path === modulePath);
+                    if (completed) {
+                        return {
+                            code: completed.code,
+                            map: completed.map || { mappings: "" }
+                        };
+                    }
+                    throw new TransformationException(modulePath, transformerName);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=index.js.map
-var transformers = (function (context) { return [
+}var transformers = (context) => [
     // General
     typescriptTransformer(context),
     commonjsTransformer(context),
@@ -2482,9 +2083,7 @@ var transformers = (function (context) { return [
     // Other
     jsonTransformer(context),
     coffeescriptTransformer(context)
-]; });
-//# sourceMappingURL=index.js.map
-var parsePackagePath = (function (name) {
+];var parsePackagePath = (name) => {
     var _a, _b, _c;
     if (!name || name == "") {
         return {
@@ -2493,21 +2092,21 @@ var parsePackagePath = (function (name) {
             path: null
         };
     }
-    var scopedRegex = /^(@[^/]+\/[^/@]+)(?:([\s\S]+))?/;
-    var regRegex = /^([^/@]+)(?:([\s\S]+))?/;
-    var extracted = name.startsWith("@")
+    const scopedRegex = /^(@[^/]+\/[^/@]+)(?:([\s\S]+))?/;
+    const regRegex = /^([^/@]+)(?:([\s\S]+))?/;
+    const extracted = name.startsWith("@")
         ? (_a = scopedRegex.exec(name)) === null || _a === void 0 ? void 0 : _a.slice(1) : (_b = regRegex.exec(name)) === null || _b === void 0 ? void 0 : _b.slice(1);
     if ((_c = extracted) === null || _c === void 0 ? void 0 : _c.length) {
-        var rest = extractRest(extracted[1] || null);
-        return __assign({ name: extracted[0] || null }, rest);
+        const rest = extractRest(extracted[1] || null);
+        return Object.assign({ name: extracted[0] || null }, rest);
     }
     return {
         name: null,
         version: null,
         path: null
     };
-});
-var extractRest = function (rest) {
+};
+const extractRest = (rest) => {
     if (!rest || rest == "") {
         return {
             version: null,
@@ -2515,11 +2114,11 @@ var extractRest = function (rest) {
         };
     }
     if (rest.startsWith("@")) {
-        var extractedVersion = /@(.*?)\/(.*)/.exec(rest);
+        const extractedVersion = /@(.*?)\/(.*)/.exec(rest);
         if (extractedVersion) {
-            var version = extractedVersion[1] || null;
-            var path = extractedVersion[2] || null;
-            return { version: version, path: path };
+            const version = extractedVersion[1] || null;
+            const path = extractedVersion[2] || null;
+            return { version, path };
         }
         return {
             version: rest.substring(1) || null,
@@ -2527,7 +2126,7 @@ var extractRest = function (rest) {
         };
     }
     else if (!!rest && !!~rest.indexOf("@")) {
-        var splitRest = rest.split("@");
+        const splitRest = rest.split("@");
         return {
             version: splitRest[1],
             path: splitRest[0].indexOf("/") === 0
@@ -2539,55 +2138,31 @@ var extractRest = function (rest) {
         version: null,
         path: rest && rest.startsWith("/") ? rest.slice(1) : null
     };
-};
-//# sourceMappingURL=parse-package-path.js.map
-var resolver = function (path, retries, maxRetries) {
-    if (retries === void 0) { retries = 1; }
-    if (maxRetries === void 0) { maxRetries = 3; }
-    return __awaiter(void 0, void 0, Promise, function () {
-        var data, _a, response;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, fetch(path).then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
-                            var _a;
-                            return __generator(this, function (_b) {
-                                switch (_b.label) {
-                                    case 0:
-                                        _a = {};
-                                        return [4 /*yield*/, res.text()];
-                                    case 1: return [2 /*return*/, (_a.code = _b.sent(),
-                                            _a.meta = {
-                                                url: res.url,
-                                                status: res.status
-                                            },
-                                            _a)];
-                                }
-                            });
-                        }); })];
-                case 1:
-                    data = _b.sent();
-                    return [2 /*return*/, data];
-                case 2:
-                    _a = _b.sent();
-                    response = _a.response;
-                    if (response.status === 404) {
-                        throw Error("Not found.");
-                    }
-                    if (retries < maxRetries) {
-                        return [2 /*return*/, resolver(path, retries + 1)];
-                    }
-                    else {
-                        throw Error("Error retrieving data.");
-                    }
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-};
-//# sourceMappingURL=external-resolver.js.map
-var services = {
+};const resolver = (path, retries = 1, maxRetries = 3) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield fetch(path).then((res) => __awaiter(void 0, void 0, void 0, function* () {
+            return ({
+                code: yield res.text(),
+                meta: {
+                    url: res.url,
+                    status: res.status
+                }
+            });
+        }));
+        return data;
+    }
+    catch ({ response }) {
+        if (response.status === 404) {
+            throw Error("Not found.");
+        }
+        if (retries < maxRetries) {
+            return resolver(path, retries + 1);
+        }
+        else {
+            throw Error("Error retrieving data.");
+        }
+    }
+});const services = {
     unpkg: {
         url: "https://unpkg.com"
     },
@@ -2595,159 +2170,122 @@ var services = {
         url: "https://cdn.jsdelivr.net"
     }
 };
-var getNextService = function (currentService) {
-    var serviceNames = Object.keys(services);
-    var currentIndex = serviceNames.indexOf(currentService);
+const getNextService = (currentService) => {
+    const serviceNames = Object.keys(services);
+    const currentIndex = serviceNames.indexOf(currentService);
     // If current service is last, return null
     if (currentIndex >= serviceNames.length - 1) {
         return null;
     }
     return serviceNames[currentIndex + 1];
 };
-function fetchNpmDependency(name, version, path, service) {
-    if (version === void 0) { version = "latest"; }
-    if (path === void 0) { path = ""; }
-    if (service === void 0) { service = "unpkg"; }
-    return __awaiter(this, void 0, Promise, function () {
-        var _service, fullPath, data, e_1, nextService;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    _service = services[service];
-                    fullPath = _service.url + "/" + name + "@" + version + (path != "" && !path.startsWith("/") ? "/" + path : path);
-                    return [4 /*yield*/, resolver(fullPath)];
-                case 1:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 2:
-                    e_1 = _a.sent();
-                    nextService = getNextService(service);
-                    if (nextService) {
-                        return [2 /*return*/, fetchNpmDependency(name, version, path, nextService)];
-                    }
-                    else {
-                        return [2 /*return*/, null];
-                    }
-                case 3: return [2 /*return*/];
+function fetchNpmDependency(name, version = "latest", path = "", service = "unpkg") {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const _service = services[service];
+            const fullPath = `${_service.url}/${name}@${version}${path != "" && !path.startsWith("/") ? `/${path}` : path}`;
+            const data = yield resolver(fullPath);
+            return data;
+        }
+        catch (e) {
+            const nextService = getNextService(service);
+            if (nextService) {
+                return fetchNpmDependency(name, version, path, nextService);
             }
-        });
+            else {
+                return null;
+            }
+        }
     });
-}
-//# sourceMappingURL=fetch-npm-dependency.js.map
-var cleanupExternalDependency = function (code) {
-    return code.replace(/process.env.NODE_ENV/g, "'development'");
-};
+}const cleanupExternalDependency = (code) => code.replace(/process.env.NODE_ENV/g, "'development'");
 function dependencyLoader(context) {
     return {
         name: "packager::loader::dependency-loader",
-        load: function (modulePath) {
+        load(modulePath) {
             var _a;
-            return __awaiter(this, void 0, Promise, function () {
-                var file, moduleMeta, moduleName, version, cachedNpmDependency, npmDependency, cleanUpCode;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0:
-                            file = context.files.find(function (f) { return f.path === modulePath; });
-                            if (!(modulePath && !file)) return [3 /*break*/, 3];
-                            moduleMeta = parsePackagePath(modulePath);
-                            moduleName = (_a = moduleMeta.name) === null || _a === void 0 ? void 0 : _a.split("__")[0];
-                            if (!moduleName)
-                                throw new Error("There was an issue with loading deps for " + modulePath);
-                            version = moduleMeta.version ||
-                                context.bundleOptions.dependencies[moduleName] ||
-                                "latest";
-                            cachedNpmDependency = context.cache.dependencies.get(modulePath);
-                            if (!!cachedNpmDependency) return [3 /*break*/, 2];
-                            return [4 /*yield*/, fetchNpmDependency(moduleName, version, moduleMeta.path || "")];
-                        case 1:
-                            npmDependency = (_b.sent()) || "";
-                            if (npmDependency) {
-                                cleanUpCode = cleanupExternalDependency(npmDependency.code);
-                                context.cache.dependencies.set(modulePath, __assign(__assign({}, npmDependency), { code: cleanUpCode, name: modulePath }));
-                                return [2 /*return*/, {
-                                        code: cleanUpCode,
-                                        syntheticNamedExports: true
-                                    }];
-                            }
-                            return [2 /*return*/, null];
-                        case 2: return [2 /*return*/, {
-                                code: ""
-                            }];
-                        case 3:
-                            if (modulePath && file) {
-                                return [2 /*return*/, {
-                                        code: file.code,
-                                        syntheticNamedExports: true
-                                    }];
-                            }
-                            _b.label = 4;
-                        case 4: return [2 /*return*/, null];
+            return __awaiter(this, void 0, void 0, function* () {
+                const file = context.files.find(f => f.path === modulePath);
+                if (modulePath && !file) {
+                    const moduleMeta = parsePackagePath(modulePath);
+                    const moduleName = (_a = moduleMeta.name) === null || _a === void 0 ? void 0 : _a.split("__")[0];
+                    if (!moduleName)
+                        throw new Error("There was an issue with loading deps for " + modulePath);
+                    const version = moduleMeta.version ||
+                        context.bundleOptions.dependencies[moduleName] ||
+                        "latest";
+                    const cachedNpmDependency = context.cache.dependencies.get(modulePath);
+                    if (!cachedNpmDependency) {
+                        const npmDependency = (yield fetchNpmDependency(moduleName, version, moduleMeta.path || "")) || "";
+                        if (npmDependency) {
+                            const cleanUpCode = cleanupExternalDependency(npmDependency.code);
+                            context.cache.dependencies.set(modulePath, Object.assign(Object.assign({}, npmDependency), { code: cleanUpCode, name: modulePath }));
+                            return {
+                                code: cleanUpCode,
+                                syntheticNamedExports: true
+                            };
+                        }
+                        return null;
                     }
-                });
+                    return {
+                        code: ""
+                    };
+                }
+                else if (modulePath && file) {
+                    return {
+                        code: file.code,
+                        syntheticNamedExports: true
+                    };
+                }
+                return null;
             });
         }
     };
-}
-//# sourceMappingURL=dependency-loader.js.map
-/**
+}/**
  * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
  */
 function commonjsLoader(context) {
     return {
         name: "packager::loader::commonjs-loader",
-        load: function (modulePath) {
-            return __awaiter(this, void 0, Promise, function () {
-                var actualId, name, actualId_1, name_1;
-                return __generator(this, function (_a) {
-                    if (modulePath === HELPERS_ID)
-                        return [2 /*return*/, HELPERS];
-                    // generate proxy modules
-                    if (modulePath.endsWith(EXTERNAL_SUFFIX)) {
-                        actualId = getIdFromExternalProxyId(modulePath);
-                        name = getName(actualId);
-                        return [2 /*return*/, "import " + name + " from " + JSON.stringify(actualId) + "; export default " + name + ";"];
-                    }
-                    if (modulePath.endsWith(PROXY_SUFFIX)) {
-                        actualId_1 = getIdFromProxyId(modulePath);
-                        name_1 = getName(actualId_1);
-                        return [2 /*return*/, getIsCjsPromise(actualId_1).then(function (isCjs) {
-                                if (isCjs)
-                                    return "import { __moduleExports } from " + JSON.stringify(actualId_1) + "; export default __moduleExports;";
-                                else if (context.cache.esModulesWithoutDefaultExport.has(actualId_1))
-                                    return "import * as " + name_1 + " from " + JSON.stringify(actualId_1) + "; export default " + name_1 + ";";
-                                else if (context.cache.esModulesWithDefaultExport.has(actualId_1)) {
-                                    return "export {default} from " + JSON.stringify(actualId_1) + ";";
-                                }
-                                return "import * as " + name_1 + " from " + JSON.stringify(actualId_1) + "; import {getCjsExportFromNamespace} from \"" + HELPERS_ID + "\"; export default getCjsExportFromNamespace(" + name_1 + ")";
-                            })];
-                    }
-                    return [2 /*return*/, null];
-                });
+        load(modulePath) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (modulePath === HELPERS_ID)
+                    return HELPERS;
+                // generate proxy modules
+                if (modulePath.endsWith(EXTERNAL_SUFFIX)) {
+                    const actualId = getIdFromExternalProxyId(modulePath);
+                    const name = getName(actualId);
+                    return `import ${name} from ${JSON.stringify(actualId)}; export default ${name};`;
+                }
+                if (modulePath.endsWith(PROXY_SUFFIX)) {
+                    const actualId = getIdFromProxyId(modulePath);
+                    const name = getName(actualId);
+                    return getIsCjsPromise(actualId).then((isCjs) => {
+                        if (isCjs)
+                            return `import { __moduleExports } from ${JSON.stringify(actualId)}; export default __moduleExports;`;
+                        else if (context.cache.esModulesWithoutDefaultExport.has(actualId))
+                            return `import * as ${name} from ${JSON.stringify(actualId)}; export default ${name};`;
+                        else if (context.cache.esModulesWithDefaultExport.has(actualId)) {
+                            return `export {default} from ${JSON.stringify(actualId)};`;
+                        }
+                        return `import * as ${name} from ${JSON.stringify(actualId)}; import {getCjsExportFromNamespace} from "${HELPERS_ID}"; export default getCjsExportFromNamespace(${name})`;
+                    });
+                }
+                return null;
             });
         }
     };
-}
-//# sourceMappingURL=commonjs-loader.js.map
-var loaders = (function (context) { return [
+}var loaders = (context) => [
     commonjsLoader(context),
     dependencyLoader(context)
-]; });
-//# sourceMappingURL=index.js.map
-var HtmlTranspiler = /** @class */ (function (_super) {
-    __extends(HtmlTranspiler, _super);
-    function HtmlTranspiler(context) {
-        var _this = _super.call(this, "html-transpiler", null, context) || this;
-        _this.additionalTranspilers = {};
-        return _this;
+];class HtmlTranspiler extends Transpiler {
+    constructor(context) {
+        super("html-transpiler", null, context);
+        this.additionalTranspilers = {};
     }
-    HtmlTranspiler.prototype.transpile = function (file) {
+    transpile(file) {
         return this.doTranspile(file);
-    };
-    return HtmlTranspiler;
-}(Transpiler));
-//# sourceMappingURL=index.js.map
-var transpilers = {
+    }
+}var transpilers = {
     ts: TypescriptTranspiler,
     tsx: TypescriptTranspiler,
     js: TypescriptTranspiler,
@@ -2763,22 +2301,18 @@ var transpilers = {
     coffee: CoffeescriptTranspiler,
     html: HtmlTranspiler,
     json: JsonTranspiler
-};
-//# sourceMappingURL=index.js.map
-function initialSetup(context) {
-    var getAllLangsFromFiles = function () {
-        return context.files.reduce(function (acc, curr) {
-            var extension = extname(curr.path).slice(1);
-            if (!acc.includes(extension)) {
-                acc.push(extension);
-                return acc;
-            }
+};function initialSetup(context) {
+    const getAllLangsFromFiles = () => context.files.reduce((acc, curr) => {
+        const extension = extname(curr.path).slice(1);
+        if (!acc.includes(extension)) {
+            acc.push(extension);
             return acc;
-        }, []);
-    };
-    var usingUnsupportedFiles = function () {
-        var givenLangs = getAllLangsFromFiles();
-        var unsupportedExtensions = givenLangs.reduce(function (acc, curr) {
+        }
+        return acc;
+    }, []);
+    const usingUnsupportedFiles = () => {
+        const givenLangs = getAllLangsFromFiles();
+        const unsupportedExtensions = givenLangs.reduce((acc, curr) => {
             if (!transpilers[curr]) {
                 acc.push(curr);
                 return acc;
@@ -2792,40 +2326,28 @@ function initialSetup(context) {
     };
     return {
         name: "packager::setup::build-start",
-        buildStart: function () {
-            return __awaiter(this, void 0, Promise, function () {
-                var _a, unsupportedFiles, extensions;
-                return __generator(this, function (_b) {
-                    _a = usingUnsupportedFiles(), unsupportedFiles = _a.unsupportedFiles, extensions = _a.extensions;
-                    if (unsupportedFiles) {
-                        throw Error("Files with the following extensions are not supported yet: " + extensions.join(", ") + ".");
-                    }
-                    return [2 /*return*/];
-                });
+        buildStart() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const { unsupportedFiles, extensions } = usingUnsupportedFiles();
+                if (unsupportedFiles) {
+                    throw Error(`Files with the following extensions are not supported yet: ${extensions.join(", ")}.`);
+                }
             });
         }
     };
-}
-//# sourceMappingURL=build-start.js.map
-var applyPreCode = function () {
-    return "window.__dependencies = { ...window.__dependencies || {} };";
-};
+}const applyPreCode = () => `window.__dependencies = { ...window.__dependencies || {} };`;
 function intro (context) {
     return {
         name: "packager::setup::intro",
-        intro: function () { return applyPreCode(); }
+        intro: () => applyPreCode()
     };
-}
-//# sourceMappingURL=intro.js.map
-var setup = (function (context) { return [
+}var setup = (context) => [
     initialSetup(context),
     intro()
-]; });
-//# sourceMappingURL=index.js.map
-var defaultBundleOptions = {
+];const defaultBundleOptions = {
     dependencies: {}
 };
-var cache = {
+const cache = {
     dependencies: cacheFactory(),
     transpilers: cacheFactory(),
     esModulesWithoutDefaultExport: new Set(),
@@ -2833,227 +2355,161 @@ var cache = {
 };
 function pluginFactory (
 // this: Packager,
-files, bundleOptions, pluginManager) {
-    if (bundleOptions === void 0) { bundleOptions = defaultBundleOptions; }
-    var context = {
-        cache: cache,
-        files: files,
+files, bundleOptions = defaultBundleOptions, pluginManager) {
+    const context = {
+        cache,
+        files,
         transpileQueue: new SequentialTaskQueue({ timeout: 30000 }),
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
     pluginManager.setContext(context);
-    var registeredPlugins = pluginManager.prepareAndGetPlugins();
-    return __spread(registeredPlugins, setup(context), resolvers(context), loaders(context), transformers(context));
-}
-//# sourceMappingURL=plugin-factory.js.map
-var loadRollup = function () {
-    return new Promise(function (resolve) {
-        var script = document.createElement("script");
-        script.src = "https://unpkg.com/rollup@latest/dist/rollup.browser.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-};
-var loadMagicString$1 = function () {
-    return new Promise(function (resolve) {
-        var script = document.createElement("script");
-        script.src =
-            "https://cdn.jsdelivr.net/npm/magic-string@latest/dist/magic-string.umd.min.js";
-        script.setAttribute("data-packager", "true");
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-};
-//# sourceMappingURL=script-loaders.js.map
-var findEntryFile = (function (files, forcePath) {
-    var pkgMain = files.find(function (f) { return f.path === forcePath; });
-    var foundFile = pkgMain || files.find(function (f) { return f.entry; });
+    const registeredPlugins = pluginManager.prepareAndGetPlugins();
+    return [
+        ...registeredPlugins,
+        ...setup(context),
+        ...resolvers(context),
+        ...loaders(context),
+        ...transformers(context)
+    ];
+}const loadRollup = () => new Promise(resolve => {
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/rollup@latest/dist/rollup.browser.js";
+    script.setAttribute("data-packager", "true");
+    script.onload = resolve;
+    document.head.appendChild(script);
+});
+const loadMagicString$1 = () => new Promise(resolve => {
+    const script = document.createElement("script");
+    script.src =
+        "https://cdn.jsdelivr.net/npm/magic-string@latest/dist/magic-string.umd.min.js";
+    script.setAttribute("data-packager", "true");
+    script.onload = resolve;
+    document.head.appendChild(script);
+});var findEntryFile = (files, forcePath) => {
+    const pkgMain = files.find(f => f.path === forcePath);
+    const foundFile = pkgMain || files.find(f => f.entry);
     if (!foundFile) {
         throw Error("You haven't specific an entry file. You can do so by adding 'entry: true' to one of your files or use the 'main' in a package.json file..");
     }
     return foundFile;
-});
-//# sourceMappingURL=find-entry-file.js.map
-var extractPackageJsonOptions = (function (packgeJson) {
+};var extractPackageJsonOptions = (packgeJson) => {
     return {
-        dependencies: __assign(__assign({}, packgeJson.dependencies), packgeJson.peerDependencies)
+        dependencies: Object.assign(Object.assign({}, packgeJson.dependencies), packgeJson.peerDependencies)
     };
-});
-//# sourceMappingURL=extract-package-json-options.js.map
-var handleBuildWarnings = (function (warning) {
+};var handleBuildWarnings = (warning) => {
     if (warning.code === "THIS_IS_UNDEFINED")
         return;
-});
-//# sourceMappingURL=handle-build-warnings.js.map
-var resolverProxyHook = (function (plugin, context) {
-    var canBeResolved = verifyExtensions(plugin.extensions);
-    var resolverFunction = function (moduleId, parentId) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            if (!canBeResolved(moduleId))
-                return [2 /*return*/, null];
-            return [2 /*return*/, moduleId];
-        });
-    }); };
+};var resolverProxyHook = (plugin, context) => {
+    const canBeResolved = verifyExtensions(plugin.extensions);
+    const resolverFunction = (moduleId, parentId) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!canBeResolved(moduleId))
+            return null;
+        return moduleId;
+    });
     return new Proxy(resolverFunction, {
-        apply: function (target, thisArg, argumentsList) {
-            return __awaiter(this, void 0, void 0, function () {
-                var handledResolverFunction;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
-                        case 1:
-                            handledResolverFunction = _a.sent();
-                            if (!handledResolverFunction) {
-                                return [2 /*return*/, Promise.resolve()];
-                            }
-                            return [4 /*yield*/, plugin.resolver.bind(context)(argumentsList[0], argumentsList[1])];
-                        case 2: return [2 /*return*/, ((_a.sent()) || null)];
-                    }
-                });
+        apply(target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const handledResolverFunction = yield Reflect.apply(target, context, argumentsList);
+                if (!handledResolverFunction) {
+                    return Promise.resolve();
+                }
+                return ((yield plugin.resolver.bind(context)(argumentsList[0], argumentsList[1])) || null);
             });
         }
     });
-});
-//# sourceMappingURL=resolver.js.map
-var loaderProxyHook = (function (plugin, context) {
-    var canBeLoaded = verifyExtensions(plugin.extensions);
-    var loaderFunction = function (moduleId) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            if (!canBeLoaded(moduleId))
-                return [2 /*return*/, null];
-            return [2 /*return*/, moduleId];
-        });
-    }); };
+};var loaderProxyHook = (plugin, context) => {
+    const canBeLoaded = verifyExtensions(plugin.extensions);
+    const loaderFunction = (moduleId) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!canBeLoaded(moduleId))
+            return null;
+        return moduleId;
+    });
     return new Proxy(loaderFunction, {
-        apply: function (target, thisArg, argumentsList) {
-            return __awaiter(this, void 0, void 0, function () {
-                var handledLoaderFunction;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
-                        case 1:
-                            handledLoaderFunction = _a.sent();
-                            if (!handledLoaderFunction) {
-                                return [2 /*return*/, Promise.resolve()];
-                            }
-                            return [4 /*yield*/, plugin.loader.bind(context)(argumentsList[0])];
-                        case 2: return [2 /*return*/, ((_a.sent()) || null)];
-                    }
-                });
+        apply(target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const handledLoaderFunction = yield Reflect.apply(target, context, argumentsList);
+                if (!handledLoaderFunction) {
+                    return Promise.resolve();
+                }
+                return ((yield plugin.loader.bind(context)(argumentsList[0])) || null);
             });
         }
     });
-});
-//# sourceMappingURL=loader.js.map
-var transformProxyHook = (function (plugin, context) {
-    var transpilerName = plugin.name + "-transpiler";
-    var canBeTransformed = verifyExtensions(plugin.extensions);
-    var transformFunction = function (code, moduleId) { return __awaiter(void 0, void 0, void 0, function () {
-        var transpiler, file, completed;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!canBeTransformed(moduleId))
-                        return [2 /*return*/, null];
-                    transpiler = context.cache.transpilers.get(transpilerName);
-                    if (!transpiler) {
-                        transpiler =
-                            typeof plugin.transpiler === "function"
-                                ? new plugin.transpiler(context)
-                                : plugin.transpiler;
-                        context.cache.transpilers.set(transpilerName, transpiler);
-                    }
-                    file = context.files.find(function (f) { return f.path === moduleId; });
-                    return [4 /*yield*/, context.transpileQueue.push(transpilerName, function () {
-                            return transpiler.transpile(__assign(__assign({}, file), { code: code }));
-                        })];
-                case 1:
-                    _a.sent();
-                    completed = context.transpileQueue.completed.find(function (c) { return c.path === moduleId; });
-                    if (completed) {
-                        return [2 /*return*/, {
-                                code: completed.code,
-                                map: completed.map || { mappings: "" }
-                            }];
-                    }
-                    throw new TransformationException(moduleId, transpilerName);
-            }
-        });
-    }); };
+};var transformProxyHook = (plugin, context) => {
+    const transpilerName = `${plugin.name}-transpiler`;
+    const canBeTransformed = verifyExtensions(plugin.extensions);
+    const transformFunction = (code, moduleId) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!canBeTransformed(moduleId))
+            return null;
+        let transpiler;
+        transpiler = context.cache.transpilers.get(transpilerName);
+        if (!transpiler) {
+            transpiler =
+                typeof plugin.transpiler === "function"
+                    ? new plugin.transpiler(context)
+                    : plugin.transpiler;
+            context.cache.transpilers.set(transpilerName, transpiler);
+        }
+        const file = context.files.find(f => f.path === moduleId);
+        yield context.transpileQueue.push(transpilerName, () => transpiler.transpile(Object.assign(Object.assign({}, file), { code })));
+        const completed = context.transpileQueue.completed.find(c => c.path === moduleId);
+        if (completed) {
+            return {
+                code: completed.code,
+                map: completed.map || { mappings: "" }
+            };
+        }
+        throw new TransformationException(moduleId, transpilerName);
+    });
     return new Proxy(transformFunction, {
-        apply: function (target, thisArg, argumentsList) {
-            return __awaiter(this, void 0, void 0, function () {
-                var handledTransformFunction, code, map;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
-                        case 1:
-                            handledTransformFunction = _a.sent();
-                            if (!handledTransformFunction) {
-                                return [2 /*return*/, Promise.resolve()];
-                            }
-                            if (!plugin.beforeBundle) {
-                                return [2 /*return*/, handledTransformFunction];
-                            }
-                            code = handledTransformFunction.code, map = handledTransformFunction.map;
-                            return [2 /*return*/, {
-                                    code: plugin.beforeBundle.bind(context)(code) || code,
-                                    map: map
-                                }];
-                    }
-                });
+        apply(target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const handledTransformFunction = yield Reflect.apply(target, context, argumentsList);
+                if (!handledTransformFunction) {
+                    return Promise.resolve();
+                }
+                if (!plugin.beforeBundle) {
+                    return handledTransformFunction;
+                }
+                const { code, map } = handledTransformFunction;
+                return {
+                    code: plugin.beforeBundle.bind(context)(code) || code,
+                    map
+                };
             });
         }
     });
-});
-//# sourceMappingURL=transform.js.map
-var beforeBundleProxyHook = (function (plugin, context) {
-    var canBeBeforeBundled = verifyExtensions(plugin.extensions);
-    var checkIfFileIsAlreadyTranspiler = function (path) {
-        return context.transpileQueue.completed.find(function (f) { return f.path === path; });
-    };
-    var beforeBundleFunction = function (code, moduleId) { return __awaiter(void 0, void 0, void 0, function () {
-        var file;
-        return __generator(this, function (_a) {
-            if (!canBeBeforeBundled(moduleId))
-                return [2 /*return*/, null];
-            file = checkIfFileIsAlreadyTranspiler(moduleId);
-            if (file) {
-                return [2 /*return*/, {
-                        code: file.code,
-                        map: file.map || { mappings: "" }
-                    }];
-            }
-            return [2 /*return*/, { code: code, map: { mappings: "" } }];
-        });
-    }); };
+};var beforeBundleProxyHook = (plugin, context) => {
+    const canBeBeforeBundled = verifyExtensions(plugin.extensions);
+    const checkIfFileIsAlreadyTranspiler = (path) => context.transpileQueue.completed.find(f => f.path === path);
+    const beforeBundleFunction = (code, moduleId) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!canBeBeforeBundled(moduleId))
+            return null;
+        const file = checkIfFileIsAlreadyTranspiler(moduleId);
+        if (file) {
+            return {
+                code: file.code,
+                map: file.map || { mappings: "" }
+            };
+        }
+        return { code, map: { mappings: "" } };
+    });
     return new Proxy(beforeBundleFunction, {
-        apply: function (target, thisArg, argumentsList) {
-            return __awaiter(this, void 0, void 0, function () {
-                var handledTransformFunction, code, map, _a;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0: return [4 /*yield*/, Reflect.apply(target, context, argumentsList)];
-                        case 1:
-                            handledTransformFunction = _b.sent();
-                            if (!handledTransformFunction) {
-                                return [2 /*return*/, Promise.resolve()];
-                            }
-                            code = handledTransformFunction.code, map = handledTransformFunction.map;
-                            _a = {};
-                            return [4 /*yield*/, plugin.beforeBundle.bind(context)(code)];
-                        case 2: return [2 /*return*/, (_a.code = (_b.sent()) || code,
-                                _a.map = map,
-                                _a)];
-                    }
-                });
+        apply(target, thisArg, argumentsList) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const handledTransformFunction = yield Reflect.apply(target, context, argumentsList);
+                if (!handledTransformFunction) {
+                    return Promise.resolve();
+                }
+                const { code, map } = handledTransformFunction;
+                return {
+                    code: (yield plugin.beforeBundle.bind(context)(code)) || code,
+                    map
+                };
             });
         }
     });
-});
-//# sourceMappingURL=beforeBundle.js.map
-var normalizePlugin = (function (plugin) { return ({
+};var normalizePlugin = (plugin) => ({
     // Meta
     name: plugin.name,
     extensions: plugin.extensions,
@@ -3062,80 +2518,56 @@ var normalizePlugin = (function (plugin) { return ({
     resolver: plugin.resolver,
     loader: plugin.loader,
     beforeBundle: plugin.beforeBundle
-}); });
-//# sourceMappingURL=normalize-plugin.js.map
-var MISSING_NAME_FIELD = "'name' is a required field on a plugin.";
-var MISSING_FIELD = function (pluginName, field) {
-    return pluginName + " is missing '" + field + "'.";
-};
-var validatePlugin = (function (plugin) {
+});const MISSING_NAME_FIELD = `'name' is a required field on a plugin.`;
+const MISSING_FIELD = (pluginName, field) => `${pluginName} is missing '${field}'.`;
+var validatePlugin = (plugin) => {
     if (!plugin.name) {
         throw new Error(MISSING_NAME_FIELD);
     }
     if (!plugin.extensions) {
         throw new Error(MISSING_FIELD(plugin.name, "extensions"));
     }
-});
-//# sourceMappingURL=validate-plugin.js.map
-var pluginRegistry = new Map();
-var transformPluginAsProxy = function (plugin, context) {
-    var propertiesAndHooks = {
+};const pluginRegistry = new Map();
+const transformPluginAsProxy = (plugin, context) => {
+    let propertiesAndHooks = {
         name: plugin.name
     };
     if (plugin.resolver) {
-        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { resolveId: resolverProxyHook(plugin, context) });
+        propertiesAndHooks = Object.assign(Object.assign({}, propertiesAndHooks), { resolveId: resolverProxyHook(plugin, context) });
     }
     if (plugin.loader) {
-        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { load: loaderProxyHook(plugin, context) });
+        propertiesAndHooks = Object.assign(Object.assign({}, propertiesAndHooks), { load: loaderProxyHook(plugin, context) });
     }
     if (plugin.transpiler) {
-        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { transform: transformProxyHook(plugin, context) });
+        propertiesAndHooks = Object.assign(Object.assign({}, propertiesAndHooks), { transform: transformProxyHook(plugin, context) });
     }
     if (!plugin.transpiler && plugin.beforeBundle) {
-        propertiesAndHooks = __assign(__assign({}, propertiesAndHooks), { transform: beforeBundleProxyHook(plugin, context) });
+        propertiesAndHooks = Object.assign(Object.assign({}, propertiesAndHooks), { transform: beforeBundleProxyHook(plugin, context) });
     }
     return propertiesAndHooks;
 };
-var createPluginManager = function () { return ({
+const createPluginManager = () => ({
     context: {},
-    setContext: function (context) {
+    setContext(context) {
         this.context = context;
     },
-    registerPlugin: function (plugin) {
+    registerPlugin(plugin) {
         validatePlugin(plugin);
-        pluginRegistry.set(plugin.name || null, __assign(__assign({}, normalizePlugin(plugin)), { transformed: false }));
+        pluginRegistry.set(plugin.name || null, Object.assign(Object.assign({}, normalizePlugin(plugin)), { transformed: false }));
     },
-    prepareAndGetPlugins: function () {
-        var e_1, _a;
-        try {
-            for (var _b = __values(this.getRegisteredPlugins(false)), _c = _b.next(); !_c.done; _c = _b.next()) {
-                var plugin = _c.value;
-                pluginRegistry.set(plugin.name, __assign(__assign({}, transformPluginAsProxy(plugin, this.context)), { transformed: true }));
-            }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-            }
-            finally { if (e_1) throw e_1.error; }
+    prepareAndGetPlugins() {
+        for (const plugin of this.getRegisteredPlugins(false)) {
+            pluginRegistry.set(plugin.name, Object.assign(Object.assign({}, transformPluginAsProxy(plugin, this.context)), { transformed: true }));
         }
         return this.getRegisteredPlugins(true);
     },
-    getRegisteredPlugins: function (onlyTransformed) {
-        if (onlyTransformed === void 0) { onlyTransformed = true; }
-        var plugins = Array.from(pluginRegistry.entries()).map(function (p) {
-            return (__assign({}, p[1]));
-        });
-        return onlyTransformed ? plugins.filter(function (p) { return p.transformed; }) : plugins;
+    getRegisteredPlugins(onlyTransformed = true) {
+        const plugins = Array.from(pluginRegistry.entries()).map((p) => (Object.assign({}, p[1])));
+        return onlyTransformed ? plugins.filter(p => p.transformed) : plugins;
     }
-}); };
-//# sourceMappingURL=plugin-manager.js.map
-var pluginManager = createPluginManager();
-var Packager = /** @class */ (function () {
-    function Packager(options, inputOptions, outputOptions) {
-        if (inputOptions === void 0) { inputOptions = {}; }
-        if (outputOptions === void 0) { outputOptions = {}; }
+});const pluginManager = createPluginManager();
+class Packager {
+    constructor(options, inputOptions = {}, outputOptions = {}) {
         this.files = [];
         this.packagerOptions = {
             cache: true,
@@ -3145,72 +2577,54 @@ var Packager = /** @class */ (function () {
             dependencies: {}
         };
         this.cachedBundle = { modules: [] };
-        this.packagerOptions = __assign(__assign({}, this.packagerOptions), options);
-        this.inputOptions = __assign(__assign({}, inputOptions), { inlineDynamicImports: true, cache: this.packagerOptions.cache && this.cachedBundle });
-        this.outputOptions = __assign(__assign({}, outputOptions), { format: "iife", sourcemap: this.packagerOptions.sourcemaps ? "inline" : false, freeze: false });
+        this.packagerOptions = Object.assign(Object.assign({}, this.packagerOptions), options);
+        this.inputOptions = Object.assign(Object.assign({}, inputOptions), { inlineDynamicImports: true, cache: this.packagerOptions.cache && this.cachedBundle });
+        this.outputOptions = Object.assign(Object.assign({}, outputOptions), { format: "iife", sourcemap: this.packagerOptions.sourcemaps ? "inline" : false, freeze: false });
     }
-    Packager.prototype.registerPlugin = function (plugin) {
+    registerPlugin(plugin) {
         pluginManager.registerPlugin(plugin);
-    };
-    Packager.prototype.bundle = function (files, bundleOptions) {
+    }
+    bundle(files, bundleOptions) {
         var _a;
-        return __awaiter(this, void 0, void 0, function () {
-            var entryFile, packageJson, parsed, pkgBundleOptions, bundle, output, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        this.files = files;
-                        this.bundleOptions = __assign(__assign({}, this.bundleOptions), bundleOptions);
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 7, , 8]);
-                        if (!(!this.rollup || !window.rollup)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, loadRollup()];
-                    case 2:
-                        _b.sent();
-                        return [4 /*yield*/, loadMagicString$1()];
-                    case 3:
-                        _b.sent();
-                        //@ts-ignore
-                        this.rollup = window.rollup;
-                        _b.label = 4;
-                    case 4:
-                        entryFile = void 0;
-                        packageJson = this.files.find(function (f) { return f.path === "/package.json"; });
-                        if (packageJson && packageJson.code != "") {
-                            parsed = typeof packageJson.code === "string"
-                                ? JSON.parse(packageJson.code)
-                                : packageJson.code;
-                            pkgBundleOptions = extractPackageJsonOptions(parsed);
-                            this.bundleOptions = cjs(pkgBundleOptions, this.bundleOptions || {});
-                            if (parsed.main) {
-                                entryFile = findEntryFile(this.files, parsed.main.startsWith("/")
-                                    ? parsed.main
-                                    : "/" + parsed.main);
-                            }
-                        }
-                        entryFile = entryFile || findEntryFile(this.files);
-                        this.inputOptions = __assign(__assign({}, this.inputOptions), { input: (_a = entryFile) === null || _a === void 0 ? void 0 : _a.path, onwarn: handleBuildWarnings, plugins: pluginFactory(this.files, bundleOptions, pluginManager) });
-                        return [4 /*yield*/, this.rollup.rollup(this.inputOptions)];
-                    case 5:
-                        bundle = _b.sent();
-                        this.cachedBundle = this.packagerOptions.cache && bundle.cache;
-                        return [4 /*yield*/, bundle.generate(this.outputOptions)];
-                    case 6:
-                        output = (_b.sent()).output;
-                        return [2 /*return*/, {
-                                code: output[0].code + " " + (this.outputOptions.sourcemap && output[0].map
-                                    ? " \n //# sourceMappingURL=" + output[0].map.toUrl()
-                                    : "")
-                            }];
-                    case 7:
-                        e_1 = _b.sent();
-                        console.error(e_1);
-                        return [3 /*break*/, 8];
-                    case 8: return [2 /*return*/];
+        return __awaiter(this, void 0, void 0, function* () {
+            this.files = files;
+            this.bundleOptions = Object.assign(Object.assign({}, this.bundleOptions), bundleOptions);
+            try {
+                // @ts-ignore
+                if (!this.rollup || !window.rollup) {
+                    yield loadRollup();
+                    yield loadMagicString$1();
+                    //@ts-ignore
+                    this.rollup = window.rollup;
                 }
-            });
+                let entryFile;
+                const packageJson = this.files.find(f => f.path === "/package.json");
+                if (packageJson && packageJson.code != "") {
+                    const parsed = typeof packageJson.code === "string"
+                        ? JSON.parse(packageJson.code)
+                        : packageJson.code;
+                    const pkgBundleOptions = extractPackageJsonOptions(parsed);
+                    this.bundleOptions = cjs(pkgBundleOptions, this.bundleOptions || {});
+                    if (parsed.main) {
+                        entryFile = findEntryFile(this.files, parsed.main.startsWith("/")
+                            ? parsed.main
+                            : `/${parsed.main}`);
+                    }
+                }
+                entryFile = entryFile || findEntryFile(this.files);
+                this.inputOptions = Object.assign(Object.assign({}, this.inputOptions), { input: (_a = entryFile) === null || _a === void 0 ? void 0 : _a.path, onwarn: handleBuildWarnings, plugins: pluginFactory(this.files, bundleOptions, pluginManager) });
+                const bundle = yield this.rollup.rollup(this.inputOptions);
+                this.cachedBundle = this.packagerOptions.cache && bundle.cache;
+                const { output } = yield bundle.generate(this.outputOptions);
+                return {
+                    code: `${output[0].code} ${this.outputOptions.sourcemap && output[0].map
+                        ? ` \n //# sourceMappingURL=${output[0].map.toUrl()}`
+                        : ""}`
+                };
+            }
+            catch (e) {
+                console.error(e);
+            }
         });
-    };
-    return Packager;
-}());return Packager;}());
+    }
+}return Packager;}());

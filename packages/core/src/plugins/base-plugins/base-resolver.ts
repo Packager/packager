@@ -1,8 +1,8 @@
-import { dirname, resolve } from "packager/shared/path";
-import isModuleExternal from "packager/shared/is-module-external";
+import { path, isModuleExternal } from "packager-shared";
 
 import { PackagerContext, File, Resolver, ResolveResult } from "packager/types";
 
+const { resolve, dirname } = path;
 export const resolveRelative = (
     childPath: string,
     parentPath: string,
@@ -66,9 +66,9 @@ const resolveRelativeExternal = (
     throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
 };
 
-export default function dependencyResolver(context: PackagerContext): Resolver {
+export default function baseResolver(context: PackagerContext): Resolver {
     return {
-        name: "packager::resolver::dependency-resolver",
+        name: "packager::resolver::base-resolver",
         resolveId(modulePath: string, parent?: string): ResolveResult {
             if (!parent) return modulePath;
 

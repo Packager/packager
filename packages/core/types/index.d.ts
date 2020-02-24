@@ -8,8 +8,74 @@ import {
     TransformHook as RollupTransformHook,
     TransformResult as RollupTransformResult
 } from "rollup";
-import QueueSystem from "packager/shared/queue-system";
-import { ApplicationCache } from "packager/shared/application-cache";
+
+export interface QueueSystem {
+    completed: any[];
+    push: (
+        name: string,
+        task: Function,
+        options?: QueueSystemTaskOptions
+    ) => Promise<any>;
+}
+
+export interface QueueSystemScheduler {
+    schedule(callback: Function): void;
+}
+
+export interface QueueSystemTaskOptions {
+    timeout?: number;
+    args?: any;
+}
+
+export interface QueueSystemCancellationToken {
+    cancelled?: boolean;
+    reason?: any;
+    cancel(reason?: any): void;
+}
+
+export interface QueueSystemSequentialTaskQueueOptions {
+    name?: string;
+    timeout?: number;
+    scheduler?: QueueSystemScheduler;
+}
+
+export interface QueueSystemCancellablePromiseLike<T> extends PromiseLike<T> {
+    cancel(reason?: any): void;
+}
+
+export interface QueueSystemTaskEntry {
+    name: string;
+    args: any[];
+    callback: Function;
+    timeout?: number;
+    timeoutHandle?: any;
+    cancellationToken: QueueSystemCancellationToken;
+    result?: any;
+    resolve?: (value: any | PromiseLike<any>) => void;
+    reject?: (reason?: any) => void;
+}
+
+export interface QueueSystemTaskEntry {
+    name: string;
+    args: any[];
+    callback: Function;
+    timeout?: number;
+    timeoutHandle?: any;
+    cancellationToken: QueueSystemCancellationToken;
+    result?: any;
+    resolve?: (value: any | PromiseLike<any>) => void;
+    reject?: (reason?: any) => void;
+}
+
+export type ApplicationCache = {
+    get: (name: string) => any | undefined;
+    getAll: () => { [name: string]: any };
+    set: (name: string, value: any) => boolean;
+    has: (name: string) => boolean;
+    update: (name: string, value: any) => boolean;
+    delete: (name: string) => boolean;
+    clear: () => void;
+};
 
 export type PackagerOptions = {
     cache: boolean;
@@ -115,7 +181,5 @@ export type PluginManager = {
     setContext: (context: PackagerContext) => void;
     registerPlugin: (plugin: PluginAPI) => void;
     prepareAndGetPlugins: () => PluginManagerPlugin[];
-    getRegisteredPlugins: (
-        asArray: boolean
-    ) => PluginAPI[] | { [key: string]: PluginAPI };
+    getRegisteredPlugins: (asArray: boolean) => PluginAPI[];
 };

@@ -1,7 +1,6 @@
 {
-    "name": "packager-monorepo",
+    "name": "packager",
     "version": "0.1.0",
-    "private": true,
     "description": "Browser-based trans-bundler.",
     "cdnjs": "dist/index.browser.js",
     "unpkg": "dist/index.browser.js",
@@ -10,10 +9,6 @@
     "types": "dist/index.d.ts",
     "author": "Adrian Barylski",
     "license": "MIT",
-    "workspaces": [
-        "packages/core",
-        "packages/shared"
-    ],
     "scripts": {
         "dev": "rollup -w -c",
         "build": "rollup -c",
@@ -25,6 +20,7 @@
     "dependencies": {
         "deepmerge": "^4.2.2",
         "estree-walker": "^1.0.1",
+        "packager-shared": "0.1.0",
         "rollup": "^1.31.1"
     },
     "devDependencies": {
