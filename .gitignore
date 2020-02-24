@@ -1,14 +1,14 @@
 # Main
 node_modules
-/yarn*
-/.yarn
-/.yarnrc.yml
+yarn*
+.yarn
+.yarnrc.yml
 /dist
-/coverage
-/.DS_Store
+coverage
+.DS_Store
 /demo
-/.vscode
-/.pnp.js
+.vscode
+.pnp.js
 .dist
 
 # Documentation website
