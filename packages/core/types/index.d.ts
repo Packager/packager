@@ -150,7 +150,9 @@ export type PluginLoaderHook = (
 
 export type PluginBeforeBundleHookResult = string | void;
 export type PluginBeforeBundleHook = (
-    code: string
+    this: PackagerContext,
+    code: string,
+    moduleId: string
 ) => Promise<PluginBeforeBundleHookResult> | PluginBeforeBundleHookResult;
 
 export type PluginHook =
@@ -161,6 +163,7 @@ export type PluginHook =
 export type PluginAPI = {
     name: string;
     extensions: string[];
+    allowExternal?: boolean;
     transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
@@ -183,3 +186,5 @@ export type PluginManager = {
     prepareAndGetPlugins: () => PluginManagerPlugin[];
     getRegisteredPlugins: (asArray: boolean) => PluginAPI[];
 };
+
+export const createPlugin: (options: PluginAPI) => PluginAPI;

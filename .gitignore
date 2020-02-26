@@ -1,6 +1,7 @@
 # Main
 node_modules
 yarn*
+yarn.lock
 .yarn
 .yarnrc.yml
 /dist

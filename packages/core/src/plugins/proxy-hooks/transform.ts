@@ -31,7 +31,8 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
         if (completed) {
             return {
                 code: completed.code,
-                map: completed.map || { mappings: "" }
+                map: completed.map || { mappings: "" },
+                moduleId
             };
         }
 
@@ -54,10 +55,10 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
                 return handledTransformFunction;
             }
 
-            const { code, map } = handledTransformFunction;
+            const { code, map, moduleId } = handledTransformFunction;
 
             return {
-                code: plugin.beforeBundle.bind(context)(code) || code,
+                code: plugin.beforeBundle.bind(context)(code, moduleId) || code,
                 map
             };
         }
