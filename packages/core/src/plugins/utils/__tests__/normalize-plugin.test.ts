@@ -4,7 +4,6 @@ describe("normalize plugin", () => {
     it("should remove unwanted fields", () => {
         const plugin = {
             name: "vue-plugin",
-            extensions: [".vue"],
             transpiler: {},
             resolver: () => ({}),
             loader: () => ({}),
@@ -19,7 +18,6 @@ describe("normalize plugin", () => {
         expect(JSON.stringify(normalizePlugin(plugin))).toEqual(
             JSON.stringify({
                 name: "vue-plugin",
-                extensions: [".vue"],
                 transpiler: {},
                 resolver: () => ({}),
                 loader: () => ({}),

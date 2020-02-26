@@ -9,14 +9,4 @@ describe("validate plugin", () => {
 
         expect(() => validatePlugin({})).toThrow(error);
     });
-
-    it("should throw if any other required field is empty", () => {
-        const plugin = {
-            name: "some-plugin"
-        };
-
-        const error = new Error(MISSING_FIELD(plugin.name, "extensions"));
-
-        expect(() => validatePlugin(plugin)).toThrow(error);
-    });
 });

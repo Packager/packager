@@ -1,12 +1,7 @@
 import { PluginAPI, PackagerContext } from "packager/types";
-import { verifyExtensions } from "packager-shared";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    const canBeResolved = verifyExtensions(plugin.extensions);
-
     const resolverFunction = async (moduleId: string, parentId?: string) => {
-        if (!canBeResolved(moduleId)) return null;
-
         return moduleId;
     };
 

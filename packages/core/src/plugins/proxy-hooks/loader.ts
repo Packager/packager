@@ -1,12 +1,7 @@
 import { PluginAPI, PackagerContext } from "packager/types";
-import { verifyExtensions } from "packager-shared";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    const canBeLoaded = verifyExtensions(plugin.extensions);
-
     const loaderFunction = async (moduleId: string) => {
-        if (!canBeLoaded(moduleId)) return null;
-
         return moduleId;
     };
 

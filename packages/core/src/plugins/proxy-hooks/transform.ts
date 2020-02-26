@@ -1,14 +1,9 @@
-import { verifyExtensions } from "packager-shared";
-
 import { TransformationException } from "../../exceptions";
 import { PluginAPI, PackagerContext } from "../../../types";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
     const transpilerName = `${plugin.name}-transpiler`;
-    const canBeTransformed = verifyExtensions(plugin.extensions);
     const transformFunction = async (code: string, moduleId: string) => {
-        if (!canBeTransformed(moduleId)) return null;
-
         let transpiler: any;
         transpiler = context.cache.transpilers.get(transpilerName);
         if (!transpiler) {

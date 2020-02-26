@@ -162,8 +162,6 @@ export type PluginHook =
 
 export type PluginAPI = {
     name: string;
-    extensions: string[];
-    allowExternal?: boolean;
     transpiler?: any;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;

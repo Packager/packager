@@ -8,8 +8,4 @@ export default (plugin: PluginAPI): void | never => {
     if (!plugin.name) {
         throw new Error(MISSING_NAME_FIELD);
     }
-
-    if (!plugin.extensions) {
-        throw new Error(MISSING_FIELD(plugin.name, "extensions"));
-    }
 };
