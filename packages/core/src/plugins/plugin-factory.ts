@@ -38,6 +38,6 @@ export function createPluginFactory(
 
     const registeredPlugins = pluginManager.prepareAndGetPlugins();
     const basePlugins = [baseResolver(context), baseLoader(context)];
-    console.log(registeredPlugins);
+
     return [...setup(context), ...registeredPlugins, ...basePlugins];
 }

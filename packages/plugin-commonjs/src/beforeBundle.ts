@@ -17,10 +17,11 @@ export default async function(
 ) {
     if (isNotTransformable(modulePath)) return null;
     const cachedDependency = this.cache.dependencies.get(modulePath);
+
     if (cachedDependency && cachedDependency.transformedCode) {
         code = `const __default = window.__dependencies['${modulePath}']; export default __default;`;
 
-        return { code, syntheticNamedExports: true };
+        return code;
     }
     const sourceMap = true;
     const { isEsModule, hasDefaultExport, ast } = checkEsModule(

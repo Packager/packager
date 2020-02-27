@@ -28,8 +28,6 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
                 argumentsList
             );
 
-            console.log({ handledTransformFunction });
-
             if (!handledTransformFunction) {
                 return Promise.resolve();
             }

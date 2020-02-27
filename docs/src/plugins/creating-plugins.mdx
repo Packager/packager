@@ -7,11 +7,6 @@ menu: Plugins
 import { ApiProps } from "~components/ApiProps";
 import { Note } from "~components/Note";
 
-<Note>
-    All references to extensions and allowExternal need to be removed because it
-    won't be featured in the plugin API.
-</Note>
-
 # Creating Plugins
 
 Packager supports adding custom plugins in a form of [hooks](#hooks) that get fired in a sequential order.
@@ -22,13 +17,12 @@ Creating a plugin is super simple. Let's take a look at the simplest plugin that
 
 ```ts
 const tinyPlugin = {
-    name: "tiny-plugin",
-    extensions: [".ts", ".tsx"]
+    name: "tiny-plugin"
 };
 ```
 
 That's it, seriously. It does absolutely nothing for us though so let's build something more complex and usable.
-But first, you may be wondering why we need `name` and `extensions` properties? Well, there are only 2 required properties when creating a plugin and they are (you guessed it) `name` and `extensions`. Trying to register a plugin without one of them, will throw an error.
+But first, you may be wondering why we need the `name` property? Well, there is only 1 required property when creating a plugin and that's (you guessed it) `name`. Trying to register a plugin without it will throw an error.
 
 There are of course other properties (or hooks) that you may add to your plugin to give it some super powers.
 
@@ -36,12 +30,11 @@ There are of course other properties (or hooks) that you may add to your plugin 
 
 Ok, let's build something more usable. How about a little CSS plugin that will inject CSS into the head tag of our application?
 
-We first need to give our plugin a name and the extensions it should be triggered on.
+We first need to give our plugin a name.
 
 ```ts
 const cssPlugin = {
-    name: "css-plugin",
-    extensions: [".css"]
+    name: "css-plugin"
 };
 ```
 
@@ -52,7 +45,6 @@ import { resolve, dirname } from "./path-utils";
 
 const cssPlugin = {
     name: "css-plugin",
-    extensions: [".css"],
     resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
@@ -60,14 +52,14 @@ const cssPlugin = {
         }
 
         const file = this.files.find(
-            f => f.path === resolve(dirname(parentId), moduleId)
+            f =>
+                f.path === resolve(dirname(parentId), moduleId) &&
+                f.path.endsWith(".css")
         );
 
-        if (!file) {
-            throw new Error("File could not be resolved.");
-        }
+        if (file) return file.path;
 
-        return file.path;
+        return null;
     }
 };
 ```
@@ -80,7 +72,6 @@ import { PluginLoaderResult } from "packager/types";
 
 const cssPlugin = {
     name: "css-plugin",
-    extensions: [".css"],
     resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
@@ -88,25 +79,29 @@ const cssPlugin = {
         }
 
         const file = this.files.find(
-            f => f.path === resolve(dirname(parentId), moduleId)
+            f =>
+                f.path === resolve(dirname(parentId), moduleId) &&
+                f.path.endsWith(".css")
         );
 
-        if (!file) {
-            throw new Error("File could not be resolved.");
+        if (file) {
+            return file.path;
         }
 
-        return file.path;
+        return null;
     },
     loader(moduleId: string): PluginLoaderResult | never {
-        const file = this.files.find(f => f.path === moduleId);
+        const file = this.files.find(
+            f => f.path === moduleId && f.path.endsWith(".css")
+        );
 
-        if (!file) {
-            throw new Error("File could not be loaded.");
+        if (file) {
+            return {
+                code: file.code
+            };
         }
 
-        return {
-            code: file.code
-        };
+        return null;
     }
 };
 ```
@@ -135,7 +130,6 @@ import { addCssExport } from "./utils";
 
 const cssPlugin = {
     name: "css-plugin",
-    extensions: [".css"],
     resolver(moduleId: string, parentId?: string): string | never {
         if (!parentId) {
             // This will be the entry file
@@ -143,25 +137,29 @@ const cssPlugin = {
         }
 
         const file = this.files.find(
-            f => f.path === resolve(dirname(parentId), moduleId)
+            f =>
+                f.path === resolve(dirname(parentId), moduleId) &&
+                f.path.endsWith(".css")
         );
 
-        if (!file) {
-            throw new Error("File could not be resolved.");
+        if (file) {
+            return file.path;
         }
 
-        return file.path;
+        return null;
     },
     loader(moduleId: string): PluginLoaderResult | never {
-        const file = this.files.find(f => f.path === moduleId);
+        const file = this.files.find(
+            f => f.path === moduleId && f.path.endsWith(".css")
+        );
 
-        if (!file) {
-            throw new Error("File could not be loaded.");
+        if (file) {
+            return {
+                code: file.code
+            };
         }
 
-        return {
-            code: file.code
-        };
+        return null;
     },
     beforeBundle(code: string): string {
         return addCssExport(code);
@@ -191,6 +189,8 @@ const myPlugin = {
 packager.registerPlugin(myPlugin);
 ```
 
+It's important to keep in my the order that we register plugins in. If you have created a plugin that is a "catch all" for all files in a resolver, it makes sense to register that plugin last because since we are catching all files, all other plugin resolves will never be called.
+
 Check out the API reference for some additional information about properties and hooks.
 
 ## API Reference
@@ -209,22 +209,6 @@ const amazingPlugin = {
     // ...
 };
 ```
-
-#### extensions
-
-Extensions property is required because Packager uses it to determine which types of files it should call the hooks on. Without it, it would call the hooks on every single file that passes through it and 99% of time, this is not what we want.
-
-<ApiProps type="string[]" required="true" />
-
-```ts usage=true
-const amazingPlugin = {
-    // ...
-    extensions: [".js", ".jsx", ".ts", ".tsx"]
-    // ...
-};
-```
-
-<Note>Note that extensions have dots in them.</Note>
 
 #### transpiler
 
@@ -246,11 +230,6 @@ const amazingPlugin = {
 ### Hooks
 
 There are 3 hooks that your plugin can use - `resolver`, `loader` and `beforeBundle`.
-
-<Note>
-    Hooks are fired only for files with extensions supplied in the extensions
-    property.
-</Note>
 
 #### resolver
 

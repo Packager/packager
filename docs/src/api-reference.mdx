@@ -41,3 +41,16 @@ packager.bundle(files, {
     }
 });
 ```
+
+#### registerPlugin
+
+<ApiProps type="PluginAPI" />
+
+```ts usage=true
+const packager = new Packager();
+const cssPlugin = {
+    // plugin
+};
+
+packager.registerPlugin(cssPlugin);
+```
