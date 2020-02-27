@@ -20,11 +20,15 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
 
     return new Proxy(beforeBundleFunction, {
         async apply(target, thisArg, argumentsList) {
+            context = { ...context, acornParser: thisArg.parse };
+
             const handledTransformFunction = await Reflect.apply(
                 target,
                 context,
                 argumentsList
             );
+
+            console.log({ handledTransformFunction });
 
             if (!handledTransformFunction) {
                 return Promise.resolve();

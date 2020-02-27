@@ -36,6 +36,8 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
 
     return new Proxy(transformFunction, {
         async apply(target, thisArg, argumentsList) {
+            context = { ...context, acornParser: thisArg.parse };
+
             const handledTransformFunction = await Reflect.apply(
                 target,
                 context,

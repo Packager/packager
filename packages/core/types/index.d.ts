@@ -9,6 +9,8 @@ import {
     TransformResult as RollupTransformResult
 } from "rollup";
 
+import { Node } from "acorn";
+
 export interface QueueSystem {
     completed: any[];
     push: (
@@ -90,6 +92,7 @@ export type File = {
 };
 
 export type PackagerContext = {
+    acornParser?: (code: string) => Node;
     cache: {
         dependencies: ApplicationCache;
         transpilers: ApplicationCache;
@@ -182,7 +185,7 @@ export type PluginManager = {
     setContext: (context: PackagerContext) => void;
     registerPlugin: (plugin: PluginAPI) => void;
     prepareAndGetPlugins: () => PluginManagerPlugin[];
-    getRegisteredPlugins: (asArray: boolean) => PluginAPI[];
+    getRegisteredPlugins: () => PluginManagerPlugin[];
 };
 
 export const createPlugin: (options: PluginAPI) => PluginAPI;

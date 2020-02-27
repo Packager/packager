@@ -7,8 +7,7 @@ export default function(
     moduleId: string,
     parentId?: string
 ): PluginResolverResult {
-    const isProxyModule = moduleId.endsWith(PROXY_SUFFIX);
-    if (isProxyModule) {
+    if (moduleId.endsWith(PROXY_SUFFIX)) {
         moduleId = getIdFromProxyId(moduleId);
     } else if (moduleId.startsWith("\0")) {
         if (moduleId === HELPERS_ID) {

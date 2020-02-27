@@ -12,7 +12,6 @@ import {
     makeLegalIdentifier,
     getName
 } from "./helpers";
-import { PackagerContext } from "packager";
 
 export const reserved = "process location abstract arguments boolean break byte case catch char class const continue debugger default delete do double else enum eval export extends false final finally float for from function goto if implements import in instanceof int interface let long native new null package private protected public return short static super switch synchronized this throw throws transient true try typeof var void volatile while with yield".split(
     " "
@@ -20,8 +19,7 @@ export const reserved = "process location abstract arguments boolean break byte 
 export const blacklist: any = { __esModule: true };
 
 export const exportsPattern = /^(?:module\.)?exports(?:\.([a-zA-Z_$][a-zA-Z_$0-9]*))?$/;
-export const firstpassGlobal = /\b(?:require|module|exports|global)\b/;
-export const firstpassNoGlobal = /\b(?:require|module|exports)\b/;
+export const firstpass = /\b(?:require|module|exports)\b/;
 export const importExportDeclaration = /^(?:Import|Export(?:Named|Default))Declaration/;
 export const functionType = /^(?:FunctionDeclaration|FunctionExpression|ArrowFunctionExpression)$/;
 
@@ -55,10 +53,7 @@ export const tryParse = (parse: any, code: string, id: string) => {
     }
 };
 
-export const hasCjsKeywords = (code: string, ignoreGlobal: boolean) => {
-    const firstpass = ignoreGlobal ? firstpassNoGlobal : firstpassGlobal;
-    return firstpass.test(code);
-};
+export const hasCjsKeywords = (code: string) => firstpass.test(code);
 
 export const checkEsModule = (parse: any, code: string, id: string) => {
     const ast = tryParse(parse, code, id);
@@ -95,11 +90,7 @@ export default async function(
     code: string,
     id: string,
     isEntry: boolean,
-    ignoreGlobal: boolean,
-    ignoreRequire: Function,
-    customNamedExports: any,
     sourceMap: any,
-    allowDynamicRequire: any,
     astCache: any
 ) {
     // @ts-ignore
@@ -151,7 +142,6 @@ export default async function(
     function isStaticRequireStatement(node: any) {
         if (!isRequireStatement(node)) return false;
         if (hasDynamicArguments(node)) return false;
-        if (ignoreRequire(node.arguments[0].value)) return false;
         return true;
     }
 
@@ -240,15 +230,6 @@ export default async function(
             // rewrite `this` as `commonjsHelpers.commonjsGlobal`
             if (node.type === "ThisExpression" && lexicalDepth === 0) {
                 uses.global = true;
-                if (!ignoreGlobal)
-                    magicString.overwrite(
-                        node.start,
-                        node.end,
-                        `${HELPERS_NAME}.commonjsGlobal`,
-                        {
-                            storeName: true
-                        }
-                    );
                 return;
             }
 
@@ -275,29 +256,9 @@ export default async function(
             if (node.type === "Identifier") {
                 if (isReference(node, parent) && !scope.contains(node.name)) {
                     if (node.name in uses) {
-                        if (node.name === "require") {
-                            if (allowDynamicRequire) return;
-                            magicString.overwrite(
-                                node.start,
-                                node.end,
-                                `${HELPERS_NAME}.commonjsRequire`,
-                                {
-                                    storeName: true
-                                }
-                            );
-                        }
+                        if (node.name === "require") return;
 
                         uses[node.name] = true;
-                        if (node.name === "global" && !ignoreGlobal) {
-                            magicString.overwrite(
-                                node.start,
-                                node.end,
-                                `${HELPERS_NAME}.commonjsGlobal`,
-                                {
-                                    storeName: true
-                                }
-                            );
-                        }
 
                         // if module or exports are used outside the context of an assignment
                         // expression, we need to wrap the module
@@ -434,7 +395,7 @@ export default async function(
         !uses.module &&
         !uses.exports &&
         !uses.require &&
-        (ignoreGlobal || !uses.global)
+        !uses.global
     ) {
         if (Object.keys(namedExports).length) {
             throw new Error(
@@ -495,8 +456,6 @@ export default async function(
             name: x
         });
     }
-
-    if (customNamedExports) customNamedExports.forEach(addExport);
 
     const defaultExportPropertyAssignments: any = [];
     let hasDefaultExport = false;

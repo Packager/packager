@@ -68,25 +68,27 @@ export const createPluginManager = (): PluginManager => ({
         });
     },
     prepareAndGetPlugins() {
-        for (const plugin of this.getRegisteredPlugins(false)) {
-            pluginRegistry.set(plugin.name, {
-                ...transformPluginAsProxy(plugin, this.context),
-                transformed: true
-            });
-        }
+        return this.getRegisteredPlugins().map(
+            (plugin: PluginManagerPlugin) => {
+                if (plugin.transformed) return plugin;
 
-        return this.getRegisteredPlugins(true) as PluginManagerPlugin[];
-    },
-    getRegisteredPlugins(
-        onlyTransformed: boolean = true
-    ): PluginManagerPlugin[] | PluginAPI[] {
-        const plugins = Array.from(pluginRegistry.entries()).map(
-            (p: any) =>
-                ({
-                    ...p[1]
-                } as PluginManagerPlugin)
+                const transformedPlugin = transformPluginAsProxy(
+                    plugin,
+                    this.context
+                );
+
+                pluginRegistry.set(plugin.name, {
+                    ...transformedPlugin,
+                    transformed: true
+                });
+
+                return { ...transformedPlugin, transformed: true };
+            }
         );
-
-        return onlyTransformed ? plugins.filter(p => p.transformed) : plugins;
+    },
+    getRegisteredPlugins(): PluginManagerPlugin[] {
+        return Array.from(pluginRegistry.entries()).map((p: any) => ({
+            ...p[1]
+        }));
     }
 });
