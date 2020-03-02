@@ -22,6 +22,8 @@ const cache = {
     esModulesWithDefaultExport: new Set()
 };
 
+const transpileQueue = new Queue({ timeout: 30000 });
+
 export function createPluginFactory(
     files: File[],
     bundleOptions: BundleOptions = defaultBundleOptions,
@@ -30,7 +32,7 @@ export function createPluginFactory(
     const context: PackagerContext = {
         cache,
         files,
-        transpileQueue: new Queue({ timeout: 30000 }),
+        transpileQueue,
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 

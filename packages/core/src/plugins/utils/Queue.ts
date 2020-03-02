@@ -22,11 +22,19 @@ export let sequentialTaskQueueEvents = {
     timeout: "timeout"
 };
 
-export default class Queue {
-    static defaultScheduler: QueueSystemScheduler = {
-        schedule: callback => setTimeout(<(...args: any[]) => void>callback, 0)
+if (typeof window.queueMicrotask !== "function") {
+    window.queueMicrotask = (callback: any) => {
+        Promise.resolve()
+            .then(callback)
+            .catch(e =>
+                setTimeout(() => {
+                    throw e;
+                })
+            );
     };
+}
 
+export default class SequentialTaskQueue {
     public completed: any[] = [];
     public failed: QueueSystemTaskEntry[] = [];
     private queue: QueueSystemTaskEntry[] = [];
@@ -47,7 +55,16 @@ export default class Queue {
         if (!options) options = {};
         this.defaultTimeout = options.timeout || this.defaultTimeout;
         this.name = "queue-system";
-        this.scheduler = Queue.defaultScheduler;
+        this.scheduler = {
+            schedule: callback => window.queueMicrotask(callback)
+        };
+        // this.scheduler = {
+        //     schedule: callback => Promise.resolve().then(() => callback())
+        // };
+        // this.scheduler = {
+        //     schedule: callback =>
+        //         setTimeout(<(...args: any[]) => void>callback, 0)
+        // };
     }
 
     push(
@@ -55,6 +72,7 @@ export default class Queue {
         task: Function,
         options?: QueueSystemTaskOptions
     ): Promise<any> {
+        console.log("added task " + name, task);
         if (this._isClosed)
             throw new Error(`${this.name} has been previously closed`);
         let taskEntry: QueueSystemTaskEntry = {
@@ -78,6 +96,7 @@ export default class Queue {
         };
         taskEntry.args.push(taskEntry.cancellationToken);
         this.queue.push(taskEntry);
+        console.log("before next!");
         this.scheduler.schedule(() => this.next());
         let result = (new Promise((resolve, reject) => {
             taskEntry.resolve = resolve;
@@ -162,8 +181,10 @@ export default class Queue {
     }
 
     protected next() {
+        console.log("in next...");
         if (!this.currentTask) {
             let task = this.queue.shift();
+            console.log("processing task...", task);
             while (task && task.cancellationToken.cancelled)
                 task = this.queue.shift();
             if (task) {
@@ -210,6 +231,7 @@ export default class Queue {
     }
 
     private doneTask(task: QueueSystemTaskEntry, error?: any) {
+        console.log("done task...", task);
         if (task.timeoutHandle) clearTimeout(task.timeoutHandle);
         task.cancellationToken.cancel = noop;
         if (error) {

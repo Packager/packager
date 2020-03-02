@@ -171,6 +171,23 @@ export type PluginAPI = {
     beforeBundle?: PluginBeforeBundleHook;
 };
 
+export type TranspilerAPI = {
+    worker: () => Worker;
+    extensions: string[];
+};
+
+export type TranspilerFactoryResult = {
+    context: PackagerContext;
+    worker: Worker;
+    extensions: string[];
+    transpile: (file: File) => Promise<any>;
+};
+
+export type TranspilerFactory = (
+    this: TranspilerFactoryResult,
+    context: PackagerContext
+) => TranspilerFactoryResult;
+
 export type PluginAPIasRollupPlugin = {
     name: string;
     resolveId?: RollupResolveIdHook;
@@ -189,3 +206,13 @@ export type PluginManager = {
 };
 
 export const createPlugin: (options: PluginAPI) => PluginAPI;
+export const createTranspiler: (options: TranspilerAPI) => TranspilerFactory;
+
+export enum TRANSPILE_STATUS {
+    PREPARE_FILES = "TRANSPILER:FILE:PREPARE",
+    PREPARE_ADDITIONAL = "TRANSPILER:ADDITIONAL:PREPARE",
+    ADDITIONAL_TRANSPILED = "TRANSPILER:ADDITIONAL:TRANSPILED",
+    TRANSPILE_COMPLETE = "TRANSPILER:TRANSPILE:COMPLETE",
+    ERROR_COMPILE = "TRANSPILER:ERROR:COMPILE",
+    ERROR_ADDITIONAL = "TRANSPILER:ERROR:ADDITIONAL"
+}

@@ -1,24 +1,34 @@
+import { verifyExtensions } from "packager-shared";
 import { TransformationException } from "../../exceptions";
-import { PluginAPI, PackagerContext } from "../../../types";
+import {
+    PluginAPI,
+    PackagerContext,
+    TranspilerFactoryResult
+} from "../../../types";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
     const transpilerName = `${plugin.name}-transpiler`;
     const transformFunction = async (code: string, moduleId: string) => {
-        let transpiler: any;
+        let transpiler: TranspilerFactoryResult;
         transpiler = context.cache.transpilers.get(transpilerName);
         if (!transpiler) {
-            transpiler =
-                typeof plugin.transpiler === "function"
-                    ? new plugin.transpiler(context)
-                    : plugin.transpiler;
+            transpiler = plugin.transpiler && plugin.transpiler(context);
             context.cache.transpilers.set(transpilerName, transpiler);
         }
 
+        if (!verifyExtensions(transpiler.extensions)(moduleId)) {
+            return null;
+        }
+
+        console.log("entered");
+
         const file = context.files.find(f => f.path === moduleId)!;
 
+        console.time("transpiling");
         await context.transpileQueue.push(transpilerName, () =>
             transpiler.transpile({ ...file, code })
         );
+        console.timeEnd("transpiling");
         const completed = context.transpileQueue.completed.find(
             c => c.path === moduleId
         );

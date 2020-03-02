@@ -9,7 +9,6 @@ coverage
 .DS_Store
 /demo
 .vscode
-.pnp.js
 .dist
 
 # Documentation website
