@@ -2,7 +2,7 @@ import { PluginAPI, PackagerContext } from "../../../types";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
     const checkIfFileIsAlreadyTranspiler = (path: string) =>
-        context.transpileQueue.completed.find(f => f.path === path);
+        context.workerQueue.complete.find(f => f.path === path);
 
     const beforeBundleFunction = async (code: string, moduleId: string) => {
         const file = checkIfFileIsAlreadyTranspiler(moduleId);

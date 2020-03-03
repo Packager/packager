@@ -1,7 +1,7 @@
 import { cacheFactory, normalizeBundleOptions } from "packager-shared";
 
 import setup from "../setup";
-import { Queue } from "./utils";
+import { workerQueue } from "./utils";
 import { baseResolver, baseLoader } from "./base-plugins";
 
 import {
@@ -22,8 +22,6 @@ const cache = {
     esModulesWithDefaultExport: new Set()
 };
 
-const transpileQueue = new Queue({ timeout: 30000 });
-
 export function createPluginFactory(
     files: File[],
     bundleOptions: BundleOptions = defaultBundleOptions,
@@ -32,7 +30,7 @@ export function createPluginFactory(
     const context: PackagerContext = {
         cache,
         files,
-        transpileQueue,
+        workerQueue: workerQueue(),
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 

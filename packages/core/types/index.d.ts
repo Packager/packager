@@ -11,64 +11,6 @@ import {
 
 import { Node } from "acorn";
 
-export interface QueueSystem {
-    completed: any[];
-    push: (
-        name: string,
-        task: Function,
-        options?: QueueSystemTaskOptions
-    ) => Promise<any>;
-}
-
-export interface QueueSystemScheduler {
-    schedule(callback: Function): void;
-}
-
-export interface QueueSystemTaskOptions {
-    timeout?: number;
-    args?: any;
-}
-
-export interface QueueSystemCancellationToken {
-    cancelled?: boolean;
-    reason?: any;
-    cancel(reason?: any): void;
-}
-
-export interface QueueSystemSequentialTaskQueueOptions {
-    name?: string;
-    timeout?: number;
-    scheduler?: QueueSystemScheduler;
-}
-
-export interface QueueSystemCancellablePromiseLike<T> extends PromiseLike<T> {
-    cancel(reason?: any): void;
-}
-
-export interface QueueSystemTaskEntry {
-    name: string;
-    args: any[];
-    callback: Function;
-    timeout?: number;
-    timeoutHandle?: any;
-    cancellationToken: QueueSystemCancellationToken;
-    result?: any;
-    resolve?: (value: any | PromiseLike<any>) => void;
-    reject?: (reason?: any) => void;
-}
-
-export interface QueueSystemTaskEntry {
-    name: string;
-    args: any[];
-    callback: Function;
-    timeout?: number;
-    timeoutHandle?: any;
-    cancellationToken: QueueSystemCancellationToken;
-    result?: any;
-    resolve?: (value: any | PromiseLike<any>) => void;
-    reject?: (reason?: any) => void;
-}
-
 export type ApplicationCache = {
     get: (name: string) => any | undefined;
     getAll: () => { [name: string]: any };
@@ -99,7 +41,7 @@ export type PackagerContext = {
         esModulesWithDefaultExport: any;
         esModulesWithoutDefaultExport: any;
     };
-    transpileQueue: QueueSystem;
+    workerQueue: WorkerQueue;
     files: File[];
     bundleOptions: BundleOptions;
 };
@@ -216,3 +158,13 @@ export enum TRANSPILE_STATUS {
     ERROR_COMPILE = "TRANSPILER:ERROR:COMPILE",
     ERROR_ADDITIONAL = "TRANSPILER:ERROR:ADDITIONAL"
 }
+
+export type WorkerQueue = {
+    complete: any[];
+    errors: any[];
+    queue: Function[] | any[];
+    awaiters: Function[];
+    push: (cb: Function | Promise<any>) => void;
+    next: () => void;
+    callAWaiters: () => void;
+};

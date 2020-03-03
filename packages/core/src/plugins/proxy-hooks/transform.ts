@@ -20,16 +20,10 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
             return null;
         }
 
-        console.log("entered");
-
         const file = context.files.find(f => f.path === moduleId)!;
+        await context.workerQueue.push(transpiler.transpile({ ...file, code }));
 
-        console.time("transpiling");
-        await context.transpileQueue.push(transpilerName, () =>
-            transpiler.transpile({ ...file, code })
-        );
-        console.timeEnd("transpiling");
-        const completed = context.transpileQueue.completed.find(
+        const completed = context.workerQueue.complete.find(
             c => c.path === moduleId
         );
 
