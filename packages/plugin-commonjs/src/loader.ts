@@ -1,4 +1,4 @@
-import { PackagerContext, Loader, LoadResult } from "packager";
+import { PackagerContext } from "packager";
 import {
     HELPERS,
     HELPERS_ID,
@@ -10,11 +10,11 @@ import {
     getIsCjsPromise
 } from "./utils";
 
-export default async function(this: PackagerContext, modulePath: string) {
-    if (modulePath === HELPERS_ID) return HELPERS;
+export default async function(this: PackagerContext, moduleId: string) {
+    if (moduleId === HELPERS_ID) return HELPERS;
 
-    if (modulePath.endsWith(EXTERNAL_SUFFIX)) {
-        const actualId = getIdFromExternalProxyId(modulePath);
+    if (moduleId.endsWith(EXTERNAL_SUFFIX)) {
+        const actualId = getIdFromExternalProxyId(moduleId);
         const name = getName(actualId);
 
         return `import ${name} from ${JSON.stringify(
@@ -22,8 +22,8 @@ export default async function(this: PackagerContext, modulePath: string) {
         )}; export default ${name};`;
     }
 
-    if (modulePath.endsWith(PROXY_SUFFIX)) {
-        const actualId = getIdFromProxyId(modulePath);
+    if (moduleId.endsWith(PROXY_SUFFIX)) {
+        const actualId = getIdFromProxyId(moduleId);
         const name = getName(actualId);
 
         return getIsCjsPromise(actualId).then((isCjs: boolean) => {

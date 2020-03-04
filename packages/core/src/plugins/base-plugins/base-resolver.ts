@@ -69,25 +69,25 @@ const resolveRelativeExternal = (
 export default function baseResolver(context: PackagerContext): Resolver {
     return {
         name: "packager::resolver::base-resolver",
-        resolveId(modulePath: string, parent?: string): ResolveResult {
-            if (!parent) return modulePath;
+        resolveId(moduleId: string, parentId?: string): ResolveResult {
+            if (!parentId) return moduleId;
 
-            if (isModuleExternal(modulePath)) return modulePath;
+            if (isModuleExternal(moduleId)) return moduleId;
 
             const relativePath = <string | null>(
-                resolveRelative(modulePath, parent, context)
+                resolveRelative(moduleId, parentId, context)
             );
 
             if (relativePath) return relativePath;
 
             if (
-                !parent.startsWith(".") ||
-                !parent.startsWith("/") ||
-                isModuleExternal(parent)
+                !parentId.startsWith(".") ||
+                !parentId.startsWith("/") ||
+                isModuleExternal(parentId)
             ) {
                 const pkgPath = resolveRelativeExternal(
-                    modulePath,
-                    parent,
+                    moduleId,
+                    parentId,
                     context
                 );
 
@@ -97,7 +97,7 @@ export default function baseResolver(context: PackagerContext): Resolver {
             }
 
             throw new Error(
-                `Could not resolve '${modulePath}' from '${parent}'`
+                `Could not resolve '${moduleId}' from '${parentId}'`
             );
         }
     };

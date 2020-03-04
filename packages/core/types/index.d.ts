@@ -11,6 +11,12 @@ import {
 
 import { Node } from "acorn";
 
+declare global {
+    interface Window {
+        __dependencies?: { [key: string]: any };
+    }
+}
+
 export type ApplicationCache = {
     get: (name: string) => any | undefined;
     getAll: () => { [name: string]: any };
@@ -44,6 +50,7 @@ export type PackagerContext = {
     workerQueue: WorkerQueue;
     files: File[];
     bundleOptions: BundleOptions;
+    plugins: PluginAPI[];
 };
 
 export type BundleOptions = {
@@ -93,7 +100,7 @@ export type PluginLoaderHook = (
     moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 
-export type PluginBeforeBundleHookResult = string | void;
+export type PluginBeforeBundleHookResult = string | null | void;
 export type PluginBeforeBundleHook = (
     this: PackagerContext,
     code: string,
@@ -111,6 +118,7 @@ export type PluginAPI = {
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
     beforeBundle?: PluginBeforeBundleHook;
+    plugins?: string[];
 };
 
 export type TranspilerAPI = {

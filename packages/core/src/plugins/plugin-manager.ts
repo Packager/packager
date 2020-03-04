@@ -5,6 +5,7 @@ import {
     PluginManager,
     PluginAPIasRollupPlugin
 } from "../../types";
+import { Plugin } from "rollup";
 import {
     resolver as resolverProxyHook,
     loader as loaderProxyHook,
@@ -19,7 +20,7 @@ const transformPluginAsProxy = (
     plugin: PluginAPI,
     context: PackagerContext
 ): PluginAPIasRollupPlugin => {
-    let propertiesAndHooks: any = {
+    let propertiesAndHooks: Plugin = {
         name: plugin.name
     };
 
@@ -71,6 +72,8 @@ export const createPluginManager = (): PluginManager => ({
         return this.getRegisteredPlugins().map(
             (plugin: PluginManagerPlugin) => {
                 if (plugin.transformed) return plugin;
+
+                this.context.plugins.push(plugin);
 
                 const transformedPlugin = transformPluginAsProxy(
                     plugin,

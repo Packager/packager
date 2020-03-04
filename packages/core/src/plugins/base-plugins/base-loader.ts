@@ -8,15 +8,15 @@ const cleanupExternalDependency = (code: string): string =>
 export default function baseLoader(context: PackagerContext): Loader {
     return {
         name: "packager::loader::base-loader",
-        async load(modulePath: string): Promise<LoadResult> {
-            const file = context.files.find(f => f.path === modulePath);
+        async load(moduleId: string): Promise<LoadResult> {
+            const file = context.files.find(f => f.path === moduleId);
 
-            if (modulePath && !file) {
-                const moduleMeta = parsePackagePath(modulePath);
+            if (moduleId && !file) {
+                const moduleMeta = parsePackagePath(moduleId);
                 const moduleName = moduleMeta.name?.split("__")[0];
                 if (!moduleName)
                     throw new Error(
-                        "There was an issue with loading deps for " + modulePath
+                        "There was an issue with loading deps for " + moduleId
                     );
 
                 const version =
@@ -25,7 +25,7 @@ export default function baseLoader(context: PackagerContext): Loader {
                     "latest";
 
                 const cachedNpmDependency = context.cache.dependencies.get(
-                    modulePath
+                    moduleId
                 );
 
                 if (!cachedNpmDependency) {
@@ -41,10 +41,10 @@ export default function baseLoader(context: PackagerContext): Loader {
                             npmDependency.code
                         );
 
-                        context.cache.dependencies.set(modulePath, {
+                        context.cache.dependencies.set(moduleId, {
                             ...npmDependency,
                             code: cleanUpCode,
-                            name: modulePath
+                            name: moduleId
                         });
 
                         return {
@@ -58,7 +58,7 @@ export default function baseLoader(context: PackagerContext): Loader {
                 return {
                     code: ""
                 };
-            } else if (modulePath && file) {
+            } else if (moduleId && file) {
                 return {
                     code: file.code
                 };

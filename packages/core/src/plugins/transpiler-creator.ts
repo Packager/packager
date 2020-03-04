@@ -24,28 +24,21 @@ const validateOptions = (options: TranspilerAPI) => {
         !Array.isArray(options.extensions) ||
         (Array.isArray(options.extensions) && options.extensions.length === 0)
     ) {
-        throw new Error("Every transpiler requires a worker.");
+        throw new Error("Every transpiler requires extensions.");
     }
 };
-
-let worker: Worker;
 
 export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
     validateOptions(options);
 
     return function(context: PackagerContext) {
-        if (!worker) {
-            worker = options.worker();
-        }
-
         return {
             context,
-            worker,
+            worker: options.worker(),
             extensions: options.extensions,
             transpile(file: File) {
-                console.log("hit transpile func!");
                 return new Promise((resolve, reject) => {
-                    worker.onmessage = async ({ data }) => {
+                    this.worker.onmessage = async ({ data }) => {
                         const { file, type, error, additional } = data;
 
                         if (
@@ -82,7 +75,7 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                         }
                     };
 
-                    worker.postMessage({
+                    this.worker.postMessage({
                         type: TRANSPILE_STATUS.PREPARE_FILES,
                         file,
                         context: {

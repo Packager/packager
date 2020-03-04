@@ -21,7 +21,7 @@ const getNextService = (currentService: string): string | null => {
     return serviceNames[currentIndex + 1];
 };
 
-type FetchedNpmDependecy = {
+type FetchedNpmDependency = {
     code: string;
     transformedCode?: string;
     meta: {
@@ -36,7 +36,7 @@ export default async function fetchNpmDependency(
     version: number | string = "latest",
     path: string = "",
     service = "unpkg"
-): Promise<FetchedNpmDependecy | null> {
+): Promise<FetchedNpmDependency | null> {
     try {
         const _service = services[service];
         const fullPath = `${_service.url}/${name}@${version}${

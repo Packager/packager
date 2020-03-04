@@ -1,11 +1,11 @@
 import { PluginAPI, PackagerContext } from "../../../types";
 
 export default (plugin: PluginAPI, context: PackagerContext) => {
-    const checkIfFileIsAlreadyTranspiler = (path: string) =>
+    const checkIfFileIsAlreadyTranspiled = (path: string) =>
         context.workerQueue.complete.find(f => f.path === path);
 
     const beforeBundleFunction = async (code: string, moduleId: string) => {
-        const file = checkIfFileIsAlreadyTranspiler(moduleId);
+        const file = checkIfFileIsAlreadyTranspiled(moduleId);
 
         if (file) {
             return {
@@ -21,7 +21,6 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
     return new Proxy(beforeBundleFunction, {
         async apply(target, thisArg, argumentsList) {
             context = { ...context, acornParser: thisArg.parse };
-
             const handledTransformFunction = await Reflect.apply(
                 target,
                 context,

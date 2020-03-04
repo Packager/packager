@@ -8,7 +8,8 @@ import {
     BundleOptions,
     PackagerContext,
     File,
-    PluginManager
+    PluginManager,
+    PluginAPI
 } from "../../types";
 
 const defaultBundleOptions: BundleOptions = {
@@ -22,6 +23,8 @@ const cache = {
     esModulesWithDefaultExport: new Set()
 };
 
+const plugins: PluginAPI[] = [];
+
 export function createPluginFactory(
     files: File[],
     bundleOptions: BundleOptions = defaultBundleOptions,
@@ -30,6 +33,7 @@ export function createPluginFactory(
     const context: PackagerContext = {
         cache,
         files,
+        plugins,
         workerQueue: workerQueue(),
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };

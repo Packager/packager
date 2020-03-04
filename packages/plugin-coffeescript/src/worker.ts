@@ -1,17 +1,23 @@
 import { TRANSPILE_STATUS } from "packager";
+declare global {
+    interface Window {
+        CoffeeScript: any;
+    }
+}
 
-declare var CoffeeScript: any;
-
-self.importScripts(
-    "https://unpkg.com/coffeescript/lib/coffeescript-browser-compiler-legacy/coffeescript.js"
-);
-
-console.log("initiated worker");
+const loadCoffeescript = () => {
+    if (!self.CoffeeScript) {
+        self.importScripts(
+            "https://unpkg.com/coffeescript/lib/coffeescript-browser-compiler-legacy/coffeescript.js"
+        );
+    }
+};
 
 self.addEventListener("message", async ({ data }: any) => {
+    loadCoffeescript();
+
     const { file, type, context } = data;
     if (type === TRANSPILE_STATUS.PREPARE_FILES) {
-        console.log("inside worker");
         try {
             const transpiledFile = await transpileFile(file);
 
@@ -33,7 +39,7 @@ self.addEventListener("message", async ({ data }: any) => {
 const transpileFile = (file: any) => {
     return new Promise((resolve, reject) => {
         try {
-            const transpiled = CoffeeScript.compile(file.code, {
+            const transpiled = self.CoffeeScript.compile(file.code, {
                 filename: file.path,
                 sourceMap: true
             });

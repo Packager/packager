@@ -5,7 +5,7 @@ import loader from "./loader";
 import beforeBundle from "./beforeBundle";
 
 const commonjsPlugin = createPlugin({
-    name: "commonjs-plugin",
+    name: "commonjs",
     resolver,
     loader,
     beforeBundle
