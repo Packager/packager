@@ -56,7 +56,7 @@ export const path: PathUtil;
 export const stylePluginHelpers: {
     generateExport: (
         file: File | ModifiedFile,
-        prependExportDefault: boolean
+        prependExportDefault?: boolean
     ) => string;
     generateExportsForAllStyles: (styles: string[], filePath: string) => string;
 };
