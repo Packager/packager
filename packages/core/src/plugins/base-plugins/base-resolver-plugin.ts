@@ -35,7 +35,6 @@ const resolveRelativeExternal = (
 const baseResolverPlugin = createPlugin({
     name: "base-resolver",
     resolver(moduleId: string, parentId?: string) {
-        console.log(this);
         if (!parentId) return moduleId;
 
         if (isModuleExternal(moduleId)) return moduleId;
