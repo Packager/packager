@@ -27,13 +27,11 @@ self.addEventListener("message", async ({ data }: any) => {
         try {
             const transpiledFile = prepareAndTranspileFile(file, context);
 
-            // @ts-ignore wrong scope
             self.postMessage({
                 type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
                 file: transpiledFile
             });
         } catch (error) {
-            // @ts-ignore wrong scope
             self.postMessage({
                 type: TRANSPILE_STATUS.ERROR_COMPILE,
                 error

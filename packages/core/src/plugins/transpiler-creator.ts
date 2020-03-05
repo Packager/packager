@@ -45,6 +45,7 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                             type === TRANSPILE_STATUS.ERROR_ADDITIONAL ||
                             type === TRANSPILE_STATUS.ERROR_COMPILE
                         ) {
+                            console.log(`failed in worker`, error);
                             return reject(error);
                         }
 
