@@ -26,7 +26,7 @@ const baseOutputSettings = {
 const banner = `/*
     @license
 
-    Packager Plugin Commonjs v${pkg.version}
+    Packager Commonjs Plugin v${pkg.version}
     @author baryla (Adrian Barylski)
     @github https://github.com/baryla/packager
 

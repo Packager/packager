@@ -1,7 +1,6 @@
 # Main
 node_modules
-yarn*
-yarn.lock
+yarn-error.log
 .yarn
 .yarnrc.yml
 /dist

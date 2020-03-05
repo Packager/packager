@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const baseOutputSettings = {
-    name: "coffeescriptPlugin",
+    name: "cssPlugin",
     format: "iife",
     compact: true
 };
@@ -27,7 +27,7 @@ const baseOutputSettings = {
 const banner = `/*
     @license
 
-    Packager CoffeeScript Plugin v${pkg.version}
+    Packager CSS Plugin v${pkg.version}
     @author baryla (Adrian Barylski)
     @github https://github.com/baryla/packager
 

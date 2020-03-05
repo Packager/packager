@@ -39,9 +39,10 @@ export function createPluginFactory(
     };
 
     pluginManager.setContext(context);
+    pluginManager.registerPlugin(baseResolver);
+    pluginManager.registerPlugin(baseLoader);
 
     const registeredPlugins = pluginManager.prepareAndGetPlugins();
-    const basePlugins = [baseResolver(context), baseLoader(context)];
 
-    return [...setup(context), ...registeredPlugins, ...basePlugins];
+    return [...setup(context), ...registeredPlugins];
 }

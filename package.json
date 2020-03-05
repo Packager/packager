@@ -14,6 +14,7 @@
         "packages/core",
         "packages/plugin-coffeescript",
         "packages/plugin-commonjs",
+        "packages/plugin-css",
         "packages/plugin-sass",
         "packages/shared"
     ],

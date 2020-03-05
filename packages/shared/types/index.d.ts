@@ -1,3 +1,5 @@
+import { PackagerContext, BundleOptions, File } from "packager";
+
 export type ApplicationCache = {
     get: (name: string) => any | undefined;
     getAll: () => { [name: string]: any };
@@ -6,10 +8,6 @@ export type ApplicationCache = {
     update: (name: string, value: any) => boolean;
     delete: (name: string) => boolean;
     clear: () => void;
-};
-
-export type BundleOptions = {
-    dependencies: { [moduleName: string]: string };
 };
 
 export type ParsedPackagePath = {
@@ -21,13 +19,6 @@ export type ParsedPackagePath = {
 export type ModifiedFile = {
     code: string;
     path: string;
-};
-
-export type File = {
-    name: string;
-    path: string;
-    code: string;
-    entry?: boolean;
 };
 
 export type VerifyExtensions = (
@@ -61,3 +52,9 @@ export const stylePluginHelpers: {
     generateExportsForAllStyles: (styles: string[], filePath: string) => string;
 };
 export const verifyExtensions: (extensions: string[]) => VerifyExtensions;
+export const resolveRelative: (
+    childPath: string,
+    parentPath: string,
+    context: PackagerContext,
+    pathOnly?: boolean
+) => File | string | null;

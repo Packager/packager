@@ -1,7 +1,7 @@
 {
-    "name": "packager-shared",
+    "name": "packager-plugin-css",
     "version": "0.1.0",
-    "description": "Shared utils for Packager.",
+    "description": "CSS plugin for Packager.",
     "cdnjs": ".dist/index.browser.js",
     "unpkg": ".dist/index.browser.js",
     "jsdelivr": ".dist/index.browser.js",
@@ -18,10 +18,8 @@
         "lint": "tslint -p tsconfig.json"
     },
     "dependencies": {
-        "deepmerge": "^4.2.2",
-        "estree-walker": "^1.0.1",
-        "rollup": "^1.31.1",
-        "packager": "0.1.0"
+        "packager": "0.1.0",
+        "packager-shared": "0.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.1",

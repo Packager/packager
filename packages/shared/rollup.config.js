@@ -26,7 +26,7 @@ const baseOutputSettings = {
 const banner = `/*
     @license
 
-    Packager Shared v${pkg.version}
+    Packager Shared libs v${pkg.version}
     @author baryla (Adrian Barylski)
     @github https://github.com/baryla/packager
 

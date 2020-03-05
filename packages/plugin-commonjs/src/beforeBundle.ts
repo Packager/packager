@@ -16,6 +16,7 @@ export default async function(
     moduleId: string
 ) {
     if (isNotTransformable(moduleId)) return null;
+
     const cachedDependency = this.cache.dependencies.get(moduleId);
     const existsOnWindow =
         window.__dependencies && window.__dependencies[moduleId] != null;

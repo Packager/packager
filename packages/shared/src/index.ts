@@ -5,3 +5,4 @@ export { default as parsePackagePath } from "./parse-package-path";
 export { default as path } from "./path";
 export { default as stylePluginHelpers } from "./style-plugin-helpers";
 export { default as verifyExtensions } from "./verify-extensions";
+export { default as resolveRelative } from "./relative-resolver";
