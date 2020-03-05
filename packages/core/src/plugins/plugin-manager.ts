@@ -73,7 +73,14 @@ export const createPluginManager = (): PluginManager => ({
             (plugin: PluginManagerPlugin) => {
                 if (plugin.transformed) return plugin;
 
-                this.context.plugins.push(plugin);
+                const foundIndex = this.context.plugins.findIndex(
+                    p => p.name === plugin.name
+                );
+                if (!!~foundIndex) {
+                    this.context.plugins[foundIndex] = plugin;
+                } else {
+                    this.context.plugins.push(plugin);
+                }
 
                 const transformedPlugin = transformPluginAsProxy(
                     plugin,

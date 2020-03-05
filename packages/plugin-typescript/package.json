@@ -1,25 +1,14 @@
 {
-    "name": "packager-monorepo",
+    "name": "packager-plugin-typescript",
     "version": "0.1.0",
-    "private": true,
-    "description": "Browser-based trans-bundler.",
-    "cdnjs": "dist/index.browser.js",
-    "unpkg": "dist/index.browser.js",
-    "jsdelivr": "dist/index.browser.js",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "description": "Typescript plugin for Packager.",
+    "cdnjs": ".dist/index.browser.js",
+    "unpkg": ".dist/index.browser.js",
+    "jsdelivr": ".dist/index.browser.js",
+    "main": ".dist/index.js",
+    "types": ".dist/index.d.ts",
     "author": "Adrian Barylski",
     "license": "MIT",
-    "workspaces": [
-        "packages/core",
-        "packages/plugin-coffeescript",
-        "packages/plugin-commonjs",
-        "packages/plugin-css",
-        "packages/plugin-sass",
-        "packages/plugin-stylus",
-        "packages/plugin-typescript",
-        "packages/shared"
-    ],
     "scripts": {
         "dev": "rollup -w -c",
         "build": "rollup -c",
@@ -29,9 +18,8 @@
         "lint": "tslint -p tsconfig.json"
     },
     "dependencies": {
-        "deepmerge": "^4.2.2",
-        "estree-walker": "^1.0.1",
-        "rollup": "^1.31.1"
+        "packager": "0.1.0",
+        "packager-shared": "0.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.1",
@@ -49,11 +37,6 @@
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.7.4"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn test && yarn format && yarn build-prod"
-        }
     },
     "jest": {
         "globals": {
