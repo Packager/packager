@@ -14,6 +14,8 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
         if (!transpiler) {
             transpiler = plugin.transpiler && plugin.transpiler(context);
             context.cache.transpilers.set(transpilerName, transpiler);
+        } else {
+            transpiler.setContext(context);
         }
 
         if (!verifyExtensions(transpiler.extensions)(moduleId)) {

@@ -1,3 +1,3 @@
-import stylusPlugin from "./";
+import typescriptPlugin from "./";
 
-export default stylusPlugin;
+export default typescriptPlugin;

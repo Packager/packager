@@ -131,6 +131,7 @@ export type TranspilerFactoryResult = {
     worker: Worker;
     extensions: string[];
     transpile: (file: File) => Promise<any>;
+    setContext: (context: PackagerContext) => void;
 };
 
 export type TranspilerFactory = (

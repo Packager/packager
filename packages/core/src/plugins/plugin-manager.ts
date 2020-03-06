@@ -16,6 +16,8 @@ import {
 import { validatePlugin, normalizePlugin } from "./utils";
 
 const pluginRegistry = new Map();
+const rawPluginRegistry = new Map();
+
 const transformPluginAsProxy = (
     plugin: PluginAPI,
     context: PackagerContext
@@ -67,11 +69,25 @@ export const createPluginManager = (): PluginManager => ({
             ...normalizePlugin(plugin),
             transformed: false
         });
+
+        rawPluginRegistry.set(plugin.name || null, normalizePlugin(plugin));
     },
     prepareAndGetPlugins() {
         return this.getRegisteredPlugins().map(
             (plugin: PluginManagerPlugin) => {
-                if (plugin.transformed) return plugin;
+                if (plugin.transformed) {
+                    const rawPlugin = rawPluginRegistry.get(plugin.name);
+                    if (rawPlugin) {
+                        return {
+                            ...transformPluginAsProxy(rawPlugin, this.context),
+                            transformed: true
+                        };
+                    }
+
+                    throw Error(
+                        `Plugin ${plugin.name} has been registered incorrectly.`
+                    );
+                }
 
                 const foundIndex = this.context.plugins.findIndex(
                     p => p.name === plugin.name

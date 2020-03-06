@@ -83,6 +83,9 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                         }
                     });
                 });
+            },
+            setContext(context: PackagerContext): void {
+                this.context = context;
             }
         };
     };
