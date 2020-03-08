@@ -1,6 +1,6 @@
-import { PluginAPI, PackagerContext } from "packager/types";
+import { PluginAPI, PluginContext } from "packager/types";
 
-export default (plugin: PluginAPI, context: PackagerContext) => {
+export default (plugin: PluginAPI, context: PluginContext) => {
     const resolverFunction = async (moduleId: string, parentId?: string) => {
         return moduleId;
     };

@@ -1,4 +1,4 @@
-import { PackagerContext } from "packager";
+import { PluginContext } from "packager";
 import { isModuleExternal } from "packager-shared";
 
 import performTransformation, {
@@ -11,13 +11,15 @@ const isNotTransformable = (moduleId: string) =>
     !moduleId.endsWith("?commonjs-proxy") && !isModuleExternal(moduleId);
 
 export default async function(
-    this: PackagerContext,
+    this: PluginContext,
     code: string,
     moduleId: string
 ) {
     if (isNotTransformable(moduleId)) return null;
 
-    const cachedDependency = this.cache.dependencies.get(moduleId);
+    const cachedDependency = this.packagerContext.cache.dependencies.get(
+        moduleId
+    );
     const existsOnWindow =
         window.__dependencies && window.__dependencies[moduleId] != null;
 
@@ -31,28 +33,30 @@ export default async function(
 
     const sourceMap = true;
     const { isEsModule, hasDefaultExport, ast } = checkEsModule(
-        this.acornParser,
+        this.packagerContext.acornParser,
         code,
         moduleId
     );
 
     if (isEsModule) {
         (hasDefaultExport
-            ? this.cache.esModulesWithDefaultExport
-            : this.cache.esModulesWithoutDefaultExport
+            ? this.packagerContext.cache.esModulesWithDefaultExport
+            : this.packagerContext.cache.esModulesWithoutDefaultExport
         ).add(moduleId);
         return null;
     }
 
     // it is not an ES module but it does not have CJS-specific elements.
     if (!hasCjsKeywords(code)) {
-        this.cache.esModulesWithoutDefaultExport.add(moduleId);
+        this.packagerContext.cache.esModulesWithoutDefaultExport.add(moduleId);
         return null;
     }
 
-    const isEntry = this.files.find(f => f.path === moduleId && f.entry);
+    const isEntry = this.packagerContext.files.find(
+        f => f.path === moduleId && f.entry
+    );
     const transformed = await performTransformation(
-        this.acornParser,
+        this.packagerContext.acornParser,
         code,
         moduleId,
         Boolean(isEntry),
@@ -63,7 +67,7 @@ export default async function(
     setIsCjsPromise(moduleId, Boolean(transformed));
 
     if (transformed) {
-        this.cache.dependencies.update(moduleId, {
+        this.packagerContext.cache.dependencies.update(moduleId, {
             transformedCode: transformed.code
         });
 

@@ -1,9 +1,9 @@
-import { PackagerContext, PluginResolverResult } from "packager";
+import { PluginContext, PluginResolverResult } from "packager";
 
 import { HELPERS_ID, PROXY_SUFFIX, getIdFromProxyId } from "./utils";
 
 export default function(
-    this: PackagerContext,
+    this: PluginContext,
     moduleId: string,
     parentId?: string
 ): PluginResolverResult {

@@ -1,4 +1,5 @@
-import { File, ModifiedFile } from "../types";
+import { File } from "packager";
+import { ModifiedFile } from "../types";
 
 export const generateExport = (
     file: File | ModifiedFile,

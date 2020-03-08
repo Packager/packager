@@ -9,7 +9,7 @@ import {
     TransformResult as RollupTransformResult
 } from "rollup";
 
-import { Node } from "acorn";
+import { Parser } from "acorn";
 
 declare global {
     interface Window {
@@ -39,18 +39,20 @@ export type File = {
     entry?: boolean;
 };
 
+export type PackagerCache = {
+    dependencies: ApplicationCache;
+    transpilers: ApplicationCache;
+    esModulesWithDefaultExport: any;
+    esModulesWithoutDefaultExport: any;
+};
+
 export type PackagerContext = {
-    acornParser?: (code: string) => Node;
-    cache: {
-        dependencies: ApplicationCache;
-        transpilers: ApplicationCache;
-        esModulesWithDefaultExport: any;
-        esModulesWithoutDefaultExport: any;
-    };
+    acornParser?: Parser["parse"];
+    cache: PackagerCache;
     workerQueue: WorkerQueue;
     files: File[];
     bundleOptions: BundleOptions;
-    plugins: PluginAPI[];
+    plugins: PluginContext[];
 };
 
 export type BundleOptions = {
@@ -71,17 +73,13 @@ export type ParsedPackagePath = {
     path: string | null;
 };
 
-export type PluginContext = {
-    files: File[];
-};
-
 export type PluginResolverResult =
     | { id: string; syntheticNamedExports?: boolean | null }
     | string
     | null
     | void;
 export type PluginResolverHook = (
-    this: PackagerContext,
+    this: PluginContext,
     moduleId: string,
     parentId?: string
 ) => Promise<PluginResolverResult> | PluginResolverResult;
@@ -96,13 +94,13 @@ export type PluginLoaderResult =
     | null
     | void;
 export type PluginLoaderHook = (
-    this: PackagerContext,
+    this: PluginContext,
     moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 
 export type PluginBeforeBundleHookResult = string | null | void;
 export type PluginBeforeBundleHook = (
-    this: PackagerContext,
+    this: PluginContext,
     code: string,
     moduleId: string
 ) => Promise<PluginBeforeBundleHookResult> | PluginBeforeBundleHookResult;
@@ -114,29 +112,49 @@ export type PluginHook =
 
 export type PluginAPI = {
     name: string;
-    transpiler?: any;
+    transpiler?: (context: PluginContext) => TranspilerFactoryResult;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
     beforeBundle?: PluginBeforeBundleHook;
-    plugins?: string[];
+    extensions?: string[];
+};
+
+export type PluginContext = {
+    name: string;
+    packagerContext: PackagerContext;
+    transpiler?: {
+        name: string;
+        extensions: string[];
+    };
+    rawPlugin: PluginAPI;
 };
 
 export type TranspilerAPI = {
     worker: () => Worker;
-    extensions: string[];
+    dependencies?: string[];
+};
+
+type additionalTranspile = {
+    styles: any[];
+    html: any[];
 };
 
 export type TranspilerFactoryResult = {
-    context: PackagerContext;
+    context: PluginContext;
     worker: Worker;
     extensions: string[];
+    dependencyTranspilers?: string[];
     transpile: (file: File) => Promise<any>;
-    setContext: (context: PackagerContext) => void;
+    setContext: (context: PluginContext) => void;
+    getDependencyTranspiler: (
+        extension: string
+    ) => TranspilerFactoryResult | null;
+    transpileAdditional: (data: any) => Promise<any>;
 };
 
 export type TranspilerFactory = (
     this: TranspilerFactoryResult,
-    context: PackagerContext
+    context: PluginContext
 ) => TranspilerFactoryResult;
 
 export type PluginAPIasRollupPlugin = {
@@ -149,8 +167,8 @@ export type PluginAPIasRollupPlugin = {
 export type PluginManagerPlugin = PluginAPI & { transformed: boolean };
 
 export type PluginManager = {
-    context: PackagerContext;
-    setContext: (context: PackagerContext) => void;
+    packagerContext: PackagerContext;
+    setPackagerContext: (context: PackagerContext) => void;
     registerPlugin: (plugin: PluginAPI) => void;
     prepareAndGetPlugins: () => PluginManagerPlugin[];
     getRegisteredPlugins: () => PluginManagerPlugin[];
@@ -169,6 +187,7 @@ export enum TRANSPILE_STATUS {
 }
 
 export type WorkerQueue = {
+    currentTask: any;
     complete: any[];
     errors: any[];
     queue: Function[] | any[];
@@ -176,4 +195,5 @@ export type WorkerQueue = {
     push: (cb: Function | Promise<any>) => void;
     next: () => void;
     callAWaiters: () => void;
+    wait: () => Promise<void>;
 };

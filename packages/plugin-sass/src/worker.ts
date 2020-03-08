@@ -98,10 +98,11 @@ const transpileFile = (file: any) => {
             } else {
                 resolve({
                     ...file,
-                    code: stylePluginHelpers.generateExport({
-                        ...file,
-                        code: result.text
-                    }),
+                    code: result.text,
+                    // code: stylePluginHelpers.generateExport({
+                    //     ...file,
+                    //     code: result.text
+                    // }),
                     map: result.map
                 });
             }

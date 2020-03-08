@@ -1,4 +1,4 @@
-import { PackagerContext } from "packager";
+import { PluginContext } from "packager";
 import {
     HELPERS,
     HELPERS_ID,
@@ -10,7 +10,7 @@ import {
     getIsCjsPromise
 } from "./utils";
 
-export default async function(this: PackagerContext, moduleId: string) {
+export default async function(this: PluginContext, moduleId: string) {
     if (moduleId === HELPERS_ID) return HELPERS;
 
     if (moduleId.endsWith(EXTERNAL_SUFFIX)) {
@@ -31,11 +31,19 @@ export default async function(this: PackagerContext, moduleId: string) {
                 return `import { __moduleExports } from ${JSON.stringify(
                     actualId
                 )}; export default __moduleExports;`;
-            else if (this.cache.esModulesWithoutDefaultExport.has(actualId))
+            else if (
+                this.packagerContext.cache.esModulesWithoutDefaultExport.has(
+                    actualId
+                )
+            )
                 return `import * as ${name} from ${JSON.stringify(
                     actualId
                 )}; export default ${name};`;
-            else if (this.cache.esModulesWithDefaultExport.has(actualId)) {
+            else if (
+                this.packagerContext.cache.esModulesWithDefaultExport.has(
+                    actualId
+                )
+            ) {
                 return `export {default} from ${JSON.stringify(actualId)};`;
             }
             return `import * as ${name} from ${JSON.stringify(

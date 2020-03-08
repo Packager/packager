@@ -3,7 +3,8 @@ import {
     PluginManagerPlugin,
     PluginAPI,
     PluginManager,
-    PluginAPIasRollupPlugin
+    PluginAPIasRollupPlugin,
+    PluginContext
 } from "../../types";
 import { Plugin } from "rollup";
 import {
@@ -26,31 +27,51 @@ const transformPluginAsProxy = (
         name: plugin.name
     };
 
+    let pluginContext: PluginContext = {
+        name: plugin.name,
+        packagerContext: context,
+        transpiler: plugin.transpiler && {
+            name: `${plugin.name}-transpiler`,
+            extensions: plugin.extensions || []
+        },
+        rawPlugin: plugin
+    };
+
+    const pluginIndex = context.plugins.findIndex(p => p.name === plugin.name);
+
+    pluginContext.packagerContext = context;
+
+    if (!!~pluginIndex) {
+        context.plugins[pluginIndex] = pluginContext;
+    } else {
+        context.plugins.push(pluginContext);
+    }
+
     if (plugin.resolver) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
-            resolveId: resolverProxyHook(plugin, context)
+            resolveId: resolverProxyHook(plugin, pluginContext)
         };
     }
 
     if (plugin.loader) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
-            load: loaderProxyHook(plugin, context)
+            load: loaderProxyHook(plugin, pluginContext)
         };
     }
 
-    if (plugin.transpiler) {
+    if (pluginContext.transpiler) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
-            transform: transformProxyHook(plugin, context)
+            transform: transformProxyHook(plugin, pluginContext)
         };
     }
 
-    if (!plugin.transpiler && plugin.beforeBundle) {
+    if (!pluginContext.transpiler && plugin.beforeBundle) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
-            transform: beforeBundleProxyHook(plugin, context)
+            transform: beforeBundleProxyHook(plugin, pluginContext)
         };
     }
 
@@ -58,9 +79,9 @@ const transformPluginAsProxy = (
 };
 
 export const createPluginManager = (): PluginManager => ({
-    context: <PackagerContext>{},
-    setContext(context: PackagerContext): void {
-        this.context = context;
+    packagerContext: <PackagerContext>{},
+    setPackagerContext(context: PackagerContext): void {
+        this.packagerContext = context;
     },
     registerPlugin(plugin: PluginAPI): void {
         validatePlugin(plugin);
@@ -79,7 +100,10 @@ export const createPluginManager = (): PluginManager => ({
                     const rawPlugin = rawPluginRegistry.get(plugin.name);
                     if (rawPlugin) {
                         return {
-                            ...transformPluginAsProxy(rawPlugin, this.context),
+                            ...transformPluginAsProxy(
+                                rawPlugin,
+                                this.packagerContext
+                            ),
                             transformed: true
                         };
                     }
@@ -89,18 +113,9 @@ export const createPluginManager = (): PluginManager => ({
                     );
                 }
 
-                const foundIndex = this.context.plugins.findIndex(
-                    p => p.name === plugin.name
-                );
-                if (!!~foundIndex) {
-                    this.context.plugins[foundIndex] = plugin;
-                } else {
-                    this.context.plugins.push(plugin);
-                }
-
                 const transformedPlugin = transformPluginAsProxy(
                     plugin,
-                    this.context
+                    this.packagerContext
                 );
 
                 pluginRegistry.set(plugin.name, {

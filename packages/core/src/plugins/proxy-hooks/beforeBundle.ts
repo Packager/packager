@@ -1,8 +1,8 @@
-import { PluginAPI, PackagerContext } from "../../../types";
+import { PluginAPI, PluginContext } from "../../../types";
 
-export default (plugin: PluginAPI, context: PackagerContext) => {
+export default (plugin: PluginAPI, context: PluginContext) => {
     const checkIfFileIsAlreadyTranspiled = (path: string) =>
-        context.workerQueue.complete.find(f => f.path === path);
+        context.packagerContext.workerQueue.complete.find(f => f.path === path);
 
     const beforeBundleFunction = async (code: string, moduleId: string) => {
         const file = checkIfFileIsAlreadyTranspiled(moduleId);
@@ -20,7 +20,10 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
 
     return new Proxy(beforeBundleFunction, {
         async apply(target, thisArg, argumentsList) {
-            context = { ...context, acornParser: thisArg.parse };
+            context.packagerContext = {
+                ...context.packagerContext,
+                acornParser: thisArg.parse
+            };
             const handledTransformFunction = await Reflect.apply(
                 target,
                 context,

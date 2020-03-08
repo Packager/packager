@@ -2,30 +2,43 @@ import { verifyExtensions } from "packager-shared";
 import { TransformationException } from "../../exceptions";
 import {
     PluginAPI,
-    PackagerContext,
+    PluginContext,
     TranspilerFactoryResult
 } from "../../../types";
 
-export default (plugin: PluginAPI, context: PackagerContext) => {
+export default (plugin: PluginAPI, context: PluginContext) => {
     const transpilerName = `${plugin.name}-transpiler`;
     const transformFunction = async (code: string, moduleId: string) => {
+        if (!plugin.transpiler) return null;
+
         let transpiler: TranspilerFactoryResult;
-        transpiler = context.cache.transpilers.get(transpilerName);
+        transpiler = context.packagerContext.cache.transpilers.get(
+            transpilerName
+        );
+
         if (!transpiler) {
-            transpiler = plugin.transpiler && plugin.transpiler(context);
-            context.cache.transpilers.set(transpilerName, transpiler);
+            transpiler = plugin.transpiler(context);
         } else {
             transpiler.setContext(context);
         }
+
+        context.packagerContext.cache.transpilers.set(
+            transpilerName,
+            transpiler
+        );
 
         if (!verifyExtensions(transpiler.extensions)(moduleId)) {
             return null;
         }
 
-        const file = context.files.find(f => f.path === moduleId)!;
-        await context.workerQueue.push(transpiler.transpile({ ...file, code }));
+        const file = context.packagerContext.files.find(
+            f => f.path === moduleId
+        )!;
+        await context.packagerContext.workerQueue.push(
+            transpiler.transpile({ ...file, code })
+        );
 
-        const completed = context.workerQueue.complete.find(
+        const completed = context.packagerContext.workerQueue.complete.find(
             c => c.path === moduleId
         );
 
@@ -42,7 +55,10 @@ export default (plugin: PluginAPI, context: PackagerContext) => {
 
     return new Proxy(transformFunction, {
         async apply(target, thisArg, argumentsList) {
-            context = { ...context, acornParser: thisArg.parse };
+            context.packagerContext = {
+                ...context.packagerContext,
+                acornParser: thisArg.parse
+            };
             const handledTransformFunction = await Reflect.apply(
                 target,
                 context,

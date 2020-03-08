@@ -13,6 +13,7 @@ if (typeof enqueue !== "function") {
 }
 
 const workerQueue = (): WorkerQueue => ({
+    currentTask: null,
     complete: [],
     errors: [],
     queue: [],
@@ -22,26 +23,35 @@ const workerQueue = (): WorkerQueue => ({
 
         enqueue(this.next.bind(this));
 
-        return new Promise(resolve => {
-            this.awaiters.push(resolve);
-        });
+        return this.wait();
     },
     async next(): Promise<void> {
-        try {
-            const currentTask = await this.queue.shift();
-            if (currentTask) {
-                this.complete.push(currentTask);
-            }
-        } catch (e) {
-            this.errors.push(e);
-        }
+        if (!this.currentTask) {
+            const task = this.queue.shift();
+            try {
+                if (task) {
+                    this.currentTask = await task;
+                    this.complete.push(this.currentTask);
 
-        if (this.queue.length) {
-            enqueue(this.next.bind(this));
-        } else this.callAWaiters();
+                    if (this.queue.length) {
+                        enqueue(this.next.bind(this));
+                    } else this.callAWaiters();
+                } else {
+                    this.callAWaiters();
+                }
+            } catch (e) {
+                this.errors.push(e);
+            }
+        }
     },
     callAWaiters() {
         this.awaiters.splice(0).forEach(awaiter => awaiter());
+    },
+    wait() {
+        if (!this.queue.length) {
+            return Promise.resolve();
+        }
+        return new Promise(resolve => this.awaiters.push(resolve));
     }
 });
 

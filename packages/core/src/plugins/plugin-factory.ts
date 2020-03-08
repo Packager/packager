@@ -9,7 +9,8 @@ import {
     PackagerContext,
     File,
     PluginManager,
-    PluginAPI
+    PluginAPI,
+    PluginContext
 } from "../../types";
 
 const defaultBundleOptions: BundleOptions = {
@@ -23,7 +24,7 @@ const cache = {
     esModulesWithDefaultExport: new Set()
 };
 
-const plugins: PluginAPI[] = [];
+const plugins: PluginContext[] = [];
 
 export function createPluginFactory(
     files: File[],
@@ -38,7 +39,7 @@ export function createPluginFactory(
         bundleOptions: normalizeBundleOptions(bundleOptions)
     };
 
-    pluginManager.setContext(context);
+    pluginManager.setPackagerContext(context);
     pluginManager.registerPlugin(baseResolver);
     pluginManager.registerPlugin(baseLoader);
 

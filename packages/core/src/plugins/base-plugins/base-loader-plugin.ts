@@ -9,7 +9,7 @@ const cleanupExternalDependency = (code: string): string =>
 const baseLoaderPlugin = createPlugin({
     name: "base-loader",
     async loader(moduleId: string) {
-        const file = this.files.find(f => f.path === moduleId);
+        const file = this.packagerContext.files.find(f => f.path === moduleId);
 
         if (moduleId && !file) {
             const moduleMeta = parsePackagePath(moduleId);
@@ -21,10 +21,12 @@ const baseLoaderPlugin = createPlugin({
 
             const version =
                 moduleMeta.version ||
-                this.bundleOptions.dependencies[moduleName] ||
+                this.packagerContext.bundleOptions.dependencies[moduleName] ||
                 "latest";
 
-            const cachedNpmDependency = this.cache.dependencies.get(moduleId);
+            const cachedNpmDependency = this.packagerContext.cache.dependencies.get(
+                moduleId
+            );
 
             if (!cachedNpmDependency) {
                 const npmDependency =
@@ -39,7 +41,7 @@ const baseLoaderPlugin = createPlugin({
                         npmDependency.code
                     );
 
-                    this.cache.dependencies.set(moduleId, {
+                    this.packagerContext.cache.dependencies.set(moduleId, {
                         ...npmDependency,
                         code: cleanUpCode,
                         name: moduleId
