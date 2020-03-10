@@ -15,6 +15,7 @@
         "packages/plugin-coffeescript",
         "packages/plugin-commonjs",
         "packages/plugin-css",
+        "packages/plugin-json",
         "packages/plugin-less",
         "packages/plugin-sass",
         "packages/plugin-stylus",
@@ -23,12 +24,13 @@
         "packages/shared"
     ],
     "scripts": {
-        "dev": "rollup -w -c",
-        "build": "rollup -c",
-        "build-prod": "NODE_ENV=production rollup -c",
-        "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage",
-        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-        "lint": "tslint -p tsconfig.json"
+        "dev": "yarn workspaces run dev",
+        "build": "yarn workspaces run build",
+        "build-prod": "NODE_ENV=production yarn build",
+        "test": "yarn workspaces run test",
+        "format": "yarn workspaces run format",
+        "lint": "yarn workspaces run lint",
+        "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps"
     },
     "dependencies": {
         "deepmerge": "^4.2.2",

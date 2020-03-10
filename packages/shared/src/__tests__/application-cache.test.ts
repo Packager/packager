@@ -1,7 +1,7 @@
-import { applicationCache } from "../";
+import { cacheFactory } from "../";
 
 describe("application cache", () => {
-    const cache = applicationCache();
+    const cache = cacheFactory();
 
     const cachedData = {
         path: "path",

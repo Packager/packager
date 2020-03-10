@@ -1,5 +1,5 @@
 import { PackagerContext, File } from "packager";
-import { path } from "./";
+import path from "./path";
 
 export const resolveRelative = (
     childPath: string,
@@ -7,6 +7,8 @@ export const resolveRelative = (
     context: PackagerContext,
     pathOnly: boolean = true
 ): File | string | null => {
+    if (!parentPath || parentPath == "") return null;
+
     const retryFileFind = (path: string): File | null =>
         context.files.find(
             f =>

@@ -31,28 +31,28 @@ export function extname(path: string): string {
     return match[0];
 }
 
-export function relative(from: string, to: string): string {
-    const fromParts = from.split(/[\/\\]/).filter(Boolean);
-    const toParts = to.split(/[\/\\]/).filter(Boolean);
+// export function relative(from: string, to: string): string {
+//     const fromParts = from.split(/[\/\\]/).filter(Boolean);
+//     const toParts = to.split(/[\/\\]/).filter(Boolean);
 
-    while (fromParts[0] && toParts[0] && fromParts[0] === toParts[0]) {
-        fromParts.shift();
-        toParts.shift();
-    }
+//     while (fromParts[0] && toParts[0] && fromParts[0] === toParts[0]) {
+//         fromParts.shift();
+//         toParts.shift();
+//     }
 
-    while (toParts[0] === "." || toParts[0] === "..") {
-        const toPart = toParts.shift();
-        if (toPart === "..") {
-            fromParts.pop();
-        }
-    }
+//     while (toParts[0] === "." || toParts[0] === "..") {
+//         const toPart = toParts.shift();
+//         if (toPart === "..") {
+//             fromParts.pop();
+//         }
+//     }
 
-    while (fromParts.pop()) {
-        toParts.unshift("..");
-    }
+//     while (fromParts.pop()) {
+//         toParts.unshift("..");
+//     }
 
-    return normalize(toParts.join("/"));
-}
+//     return normalize(toParts.join("/"));
+// }
 
 export function resolve(...paths: string[]) {
     let resolvedParts = paths.shift()!.split(/[\/\\]/);
@@ -89,7 +89,7 @@ export default {
     basename,
     dirname,
     extname,
-    relative,
+    // relative,
     resolve,
     normalize,
     sep
