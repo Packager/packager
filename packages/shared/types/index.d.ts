@@ -58,3 +58,9 @@ export const resolveRelative: (
     context: PackagerContext,
     pathOnly?: boolean
 ) => File | string | null;
+
+export const generateSourceMap: (
+    filePath: string,
+    originalCode: string,
+    generatedCode: string
+) => string;

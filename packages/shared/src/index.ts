@@ -6,3 +6,4 @@ export { default as path } from "./path";
 export { default as stylePluginHelpers } from "./style-plugin-helpers";
 export { default as verifyExtensions } from "./verify-extensions";
 export { default as resolveRelative } from "./relative-resolver";
+export { default as generateSourceMap } from "./generate-source-map";

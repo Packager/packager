@@ -21,6 +21,7 @@
         "packages/plugin-stylus",
         "packages/plugin-svelte",
         "packages/plugin-typescript",
+        "packages/plugin-vue",
         "packages/shared"
     ],
     "scripts": {

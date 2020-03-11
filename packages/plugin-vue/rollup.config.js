@@ -2,10 +2,11 @@ import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import cjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import dts from "rollup-plugin-dts";
+import webWorkerLoader from "rollup-plugin-web-worker-loader";
+
 import pkg from "./package.json";
 
-const plugins = [resolve(), typescript(), cjs()];
+const plugins = [resolve(), typescript(), webWorkerLoader(), cjs()];
 
 if (process.env.NODE_ENV === "production") {
     plugins.push(
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const baseOutputSettings = {
-    name: "packagerShared",
+    name: "vuePlugin",
     format: "iife",
     compact: true
 };
@@ -26,7 +27,7 @@ const baseOutputSettings = {
 const banner = `/*
     @license
 
-    Packager Shared libs v${pkg.version}
+    Packager Vue Plugin v${pkg.version}
     @author baryla (Adrian Barylski)
     @github https://github.com/baryla/packager
 
@@ -46,11 +47,6 @@ export default [
                 sourcemap: true
             }
         ]
-    },
-    {
-        input: "types/index.d.ts",
-        output: [{ file: ".dist/index.d.ts", format: "es" }],
-        plugins: [dts()]
     },
     {
         input: "src/index.browser.ts",

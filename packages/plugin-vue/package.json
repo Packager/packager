@@ -1,7 +1,7 @@
 {
-    "name": "packager",
+    "name": "packager-plugin-vue",
     "version": "0.1.0",
-    "description": "Browser-based trans-bundler.",
+    "description": "Vue plugin for Packager.",
     "cdnjs": ".dist/index.browser.js",
     "unpkg": ".dist/index.browser.js",
     "jsdelivr": ".dist/index.browser.js",
@@ -16,13 +16,11 @@
         "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage --passWithNoTests",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
-        "upgrade-packager-deps": "yarn upgrade packager-shared"
+        "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared"
     },
     "dependencies": {
-        "deepmerge": "^4.2.2",
-        "estree-walker": "^1.0.1",
-        "packager-shared": "0.1.0",
-        "rollup": "^1.31.1"
+        "packager": "0.1.0",
+        "packager-shared": "0.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.1",

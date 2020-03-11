@@ -118,6 +118,15 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
 
                 for (const style of styles) {
                     const { code, path, name, extension } = style;
+                    if (!extension || extension === "") {
+                        console.error(
+                            `Could not recognise which file type or language to load for ${path}`
+                        );
+                        throw new Error(
+                            `Could not recognise which file type or language to load for ${path}`
+                        );
+                    }
+
                     const transpiler = this.getDependencyTranspiler(extension);
 
                     if (transpiler) {
@@ -134,6 +143,10 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
             getDependencyTranspiler(
                 extension: string
             ): TranspilerFactoryResult | null {
+                extension = extension.startsWith(".")
+                    ? extension
+                    : `.${extension}`;
+
                 const transpilers: TranspilerFactoryResult[] = Object.values(
                     this.context.packagerContext.cache.transpilers.getAll()
                 );
