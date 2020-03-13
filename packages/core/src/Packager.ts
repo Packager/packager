@@ -101,7 +101,7 @@ export default class Packager {
                 onwarn: handleBuildWarnings,
                 plugins: createPluginFactory(
                     this.files,
-                    bundleOptions,
+                    this.bundleOptions,
                     pluginManager
                 )
             };
