@@ -1,4 +1,5 @@
 const packager = new Packager();
+packager.registerPlugin(commonjsPlugin);
 
 const files = [
     {
@@ -17,7 +18,7 @@ var ListView = Backbone.View.extend({
         this.render();
     },
     render: function(){
-        $(this.el).append("<h1>Hello world!</h1>");
+        $(this.el).append("<h1>Hello world from Backbone!</h1>");
     }
     });
 var listView = new ListView();`

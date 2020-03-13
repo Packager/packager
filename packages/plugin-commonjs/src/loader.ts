@@ -27,19 +27,19 @@ export default async function(this: PluginContext, moduleId: string) {
         const name = getName(actualId);
 
         return getIsCjsPromise(actualId).then((isCjs: boolean) => {
-            if (isCjs)
+            if (isCjs) {
                 return `import { __moduleExports } from ${JSON.stringify(
                     actualId
                 )}; export default __moduleExports;`;
-            else if (
+            } else if (
                 this.packagerContext.cache.esModulesWithoutDefaultExport.has(
                     actualId
                 )
-            )
+            ) {
                 return `import * as ${name} from ${JSON.stringify(
                     actualId
                 )}; export default ${name};`;
-            else if (
+            } else if (
                 this.packagerContext.cache.esModulesWithDefaultExport.has(
                     actualId
                 )

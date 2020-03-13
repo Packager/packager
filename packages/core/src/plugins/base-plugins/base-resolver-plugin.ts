@@ -45,11 +45,7 @@ const baseResolverPlugin = createPlugin({
 
         if (relativePath) return relativePath;
 
-        if (
-            !parentId.startsWith(".") ||
-            !parentId.startsWith("/") ||
-            isModuleExternal(parentId)
-        ) {
+        if (isModuleExternal(parentId)) {
             const pkgPath = resolveRelativeExternal(
                 moduleId,
                 parentId,

@@ -3,7 +3,8 @@ import transpiler from "./transpiler";
 
 const coffeescriptPlugin = createPlugin({
     name: "coffeescript",
-    transpiler
+    transpiler,
+    extensions: [".coffee"]
 });
 
 export default coffeescriptPlugin;

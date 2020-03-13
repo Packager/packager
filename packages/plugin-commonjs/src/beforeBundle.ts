@@ -7,15 +7,17 @@ import performTransformation, {
 } from "./utils/perform-transform";
 import { setIsCjsPromise } from "./utils/is-cjs-promise";
 
-const isNotTransformable = (moduleId: string) =>
-    !moduleId.endsWith("?commonjs-proxy") && !isModuleExternal(moduleId);
+const isNotTransformable = (moduleId: string, code: string) =>
+    !moduleId.endsWith("?commonjs-proxy") &&
+    !isModuleExternal(moduleId) &&
+    !hasCjsKeywords(code);
 
 export default async function(
     this: PluginContext,
     code: string,
     moduleId: string
 ) {
-    if (isNotTransformable(moduleId)) return null;
+    if (isNotTransformable(moduleId, code)) return null;
 
     const cachedDependency = this.packagerContext.cache.dependencies.get(
         moduleId

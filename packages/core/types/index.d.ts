@@ -1,6 +1,7 @@
 import {
     Plugin,
     SourceMap,
+    PluginContext as RollupPluginContext,
     ResolveIdHook as RollupResolveIdHook,
     ResolveIdResult as RollupResolveIdResult,
     LoadHook as RollupLoadHook,
