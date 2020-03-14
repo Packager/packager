@@ -9,7 +9,6 @@ import {
     PackagerContext,
     File,
     PluginManager,
-    PluginAPI,
     PluginContext
 } from "../../types";
 

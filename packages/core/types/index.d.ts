@@ -68,7 +68,7 @@ export type ParsedPackagePath = {
 };
 
 export type PluginResolverResult =
-    | { id: string; skipSelf?: boolean; syntheticNamedExports?: boolean | null }
+    | { id: string; syntheticNamedExports?: boolean | null }
     | string
     | null
     | void;
@@ -104,9 +104,13 @@ export type PluginHook =
     | PluginLoaderHook
     | PluginBeforeBundleHook;
 
+export type PluginTranspiler = (
+    context: PluginContext
+) => TranspilerFactoryResult;
+
 export type PluginAPI = {
     name: string;
-    transpiler?: (context: PluginContext) => TranspilerFactoryResult;
+    transpiler?: PluginTranspiler;
     resolver?: PluginResolverHook;
     loader?: PluginLoaderHook;
     beforeBundle?: PluginBeforeBundleHook;

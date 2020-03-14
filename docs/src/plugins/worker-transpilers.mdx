@@ -8,31 +8,23 @@ import { ApiProps } from "~components/ApiProps";
 
 # Worker Transpilers
 
-A Worker Transpiler is a dedicated Transpiler class with a WebWorker that is responsible for transpiling code in the worker thread.
+A Worker Transpiler is responsible for transpiling code in the worker thread.
 
-There are a few things which need to followed in order to successfully return the transpiled code to the plugin hooks but before we find this out, let's create a simple Worker Transpiler.
+There are a few things which need to followed in order to successfully return the transpiled code to the plugin hooks but before we find this out, let's create a simple Worker Transpiler to grasp our heads around this idea.
 
 ## Example
 
 ```ts
-// MyTranspiler.ts
-
-import { File, PackagerContext } from "packager/types";
-import Transpiler from "packager/transpilers/transpiler";
+// transpiler.ts
+import { createTranspiler } from "packager";
 import MyWorker from "web-worker:./my-worker.ts";
 
-class MyTranspiler extends Transpiler {
-    constructor(context: PackagerContext) {
-        super("my-transpiler", new MyWorker(), context);
-    }
+const transpiler = createTranspiler({
+    worker: MyWorker
+});
 
-    transpile(file: File) {
-        return this.doTranspile(file);
-    }
-}
-
-// MyWorker.ts
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+// my-worker.ts
+import { TRANSPILE_STATUS } from "packager";
 
 self.addEventListener("message", async ({ data }) => {
     const { file, type, context } = data;
@@ -44,13 +36,21 @@ self.addEventListener("message", async ({ data }) => {
         });
     }
 });
+
+// plugin.ts
+import { createPlugin } from "packager";
+import transpiler from "./transpiler";
+
+const plugin = createPlugin({
+    name: "simple-plugin",
+    transpiler,
+    extensions: [".yoyo"]
+});
 ```
 
 It may be a little overwhelming at first when you look at the code above, especially if you haven't worked with Web Workers before don't worry, we'll walk through it :)
 
-Every Worker Transpiler has to extend `Transpiler` Class that Packager comes with because it handles [Transpiler Statuses](#statuses) and loading additional workers if needed.
-
-The Class that we have declared, doesn't really do anything special and it's very likely that all of your Transpiler classes will look like the one above. All you have to know is that the 3 arguments in the `super` keyword are required as well as the `transpile` method.
+It is recommended that you create your transpiler using the helper factory provided by Packager `createTranspiler` because it does a few other things in the background for us like safely bind the context, handle queuing in the worker queue and many other things.
 
 ## Statuses
 
@@ -66,7 +66,7 @@ This is a status that the Parent Transpiler sends to our Worker along with some 
 <ApiProps type="Receivable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 if (type === TRANSPILE_STATUS.PREPARE_FILES) {
     // code here
@@ -84,7 +84,7 @@ As an example, a `Vue Plugin` may have this because it depends on `Sass`, `Less`
 <ApiProps type="Sendable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 self.postMessage({
     type: TRANSPILE_STATUS.PREPARE_ADDITIONAL
@@ -99,7 +99,7 @@ Similar to `TRANSPILER:ADDITIONAL:PREPARE`, you may not used this one. It's used
 <ApiProps type="Receivable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 if (type === TRANSPILE_STATUS.ADDITIONAL_TRANSPILED) {
     // code here
@@ -113,7 +113,7 @@ After we have completed all the transpilation in our Worker Transpiler, we will 
 <ApiProps type="Sendable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 self.postMessage({
     type: TRANSPILE_STATUS.TRANSPILE_COMPLETE
@@ -128,7 +128,7 @@ If we want to notify the Parent Transpiler that something messed up in the trans
 <ApiProps type="Sendable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 self.postMessage({
     type: TRANSPILE_STATUS.ERROR_COMPILE
@@ -143,7 +143,7 @@ Same as `TRANSPILER:ERROR:COMPILE`, we can notify Parent Transpiler that somethi
 <ApiProps type="Sendable" />
 
 ```ts usage=true
-import { TRANSPILE_STATUS } from "packager/transpilers/transpiler";
+import { TRANSPILE_STATUS } from "packager";
 
 self.postMessage({
     type: TRANSPILE_STATUS.ERROR_ADDITIONAL
