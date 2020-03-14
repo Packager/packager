@@ -1,4 +1,7 @@
 const packager = new Packager();
+packager.registerPlugin(commonjsPlugin);
+packager.registerPlugin(vuePlugin);
+packager.registerPlugin(sassPlugin);
 
 const files = [
     {
@@ -17,10 +20,15 @@ new Vue({
         name: "App.vue",
         path: "/src/App.vue",
         code: `<template>
-    <h1>Hello World</h1>
+    <h1>Hello world from Vue!</h1>
 </template>
 <script>
 export default { name: 'app' };
+</script>
+<script lang="scss>
+h1 {
+    text-decoration: underline;
+}
 </script>`
     }
 ];

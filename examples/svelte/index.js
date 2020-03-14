@@ -1,4 +1,7 @@
 const packager = new Packager();
+packager.registerPlugin(commonjsPlugin);
+packager.registerPlugin(sveltePlugin);
+packager.registerPlugin(sassPlugin);
 
 const files = [
     {
@@ -22,10 +25,13 @@ new SvelteApp({
     }
 </script>
 
-<h1>Hello World!</h1>
-<button on:click={handleClick}>
-    Clicked {count} {count === 1 ? 'time' : 'times'}
-</button>`
+<h1>Hello World from Svelte!</h1>
+
+<style lang="scss">
+h1 {
+    text-decoration: underline;
+}
+</style>`
     }
 ];
 

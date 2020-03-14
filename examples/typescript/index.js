@@ -1,4 +1,5 @@
 const packager = new Packager();
+packager.registerPlugin(typescriptPlugin);
 
 const files = [
     {
@@ -8,13 +9,13 @@ const files = [
         code: `import Greeting from './Greeting';
 
 const el = document.getElementById('app');
-el.innerText = Greeting('World');`
+el.innerText = Greeting('world');`
     },
     {
         name: "Greeting.ts",
         path: "/src/Greeting.ts",
         code: `export default function (name: string): string {
-    return 'Hello, ' + name;
+    return 'Hello ' + name + ' from TypeScript!';
 }`
     }
 ];
