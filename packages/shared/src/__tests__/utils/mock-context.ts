@@ -43,8 +43,8 @@ export const bundleOptions = {
 export const plugins = [];
 
 export const mockContext: PackagerContext = {
+    ...cache,
     files,
-    cache,
     workerQueue,
     bundleOptions,
     plugins

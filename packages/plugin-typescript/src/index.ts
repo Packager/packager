@@ -3,7 +3,8 @@ import transpiler from "./transpiler";
 
 const typescriptPlugin = createPlugin({
     name: "typescript",
-    transpiler
+    transpiler,
+    extensions: [".js", ".jsx", ".ts", ".tsx"]
 });
 
 export default typescriptPlugin;

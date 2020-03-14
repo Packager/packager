@@ -12,9 +12,7 @@ export default (plugin: PluginAPI, context: PluginContext) => {
         if (!plugin.transpiler) return null;
 
         let transpiler: TranspilerFactoryResult;
-        transpiler = context.packagerContext.cache.transpilers.get(
-            transpilerName
-        );
+        transpiler = context.packagerContext.transpilers.get(transpilerName);
 
         if (!transpiler) {
             transpiler = plugin.transpiler(context);
@@ -22,10 +20,7 @@ export default (plugin: PluginAPI, context: PluginContext) => {
             transpiler.setContext(context);
         }
 
-        context.packagerContext.cache.transpilers.set(
-            transpilerName,
-            transpiler
-        );
+        context.packagerContext.transpilers.set(transpilerName, transpiler);
 
         if (!verifyExtensions(transpiler.extensions)(moduleId)) {
             return null;

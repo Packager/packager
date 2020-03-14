@@ -33,13 +33,14 @@ const validateOptions = (options: TranspilerAPI) => {
 };
 
 const validateContext = (context: PluginContext) => {
+    const transpiler = context.meta.get("transpiler");
+
     if (
-        !context.transpiler!.extensions ||
-        (context.transpiler!.extensions &&
-            !Array.isArray(context.transpiler!.extensions)) ||
-        (context.transpiler!.extensions &&
-            Array.isArray(context.transpiler!.extensions) &&
-            !context.transpiler!.extensions.length)
+        !transpiler!.extensions ||
+        (transpiler!.extensions && !Array.isArray(transpiler!.extensions)) ||
+        (transpiler!.extensions &&
+            Array.isArray(transpiler!.extensions) &&
+            !transpiler!.extensions.length)
     ) {
         throw new Error(
             `Plugin ${context.name} has to have extensions when using a transpiler.`
@@ -59,7 +60,7 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                 this.context = context;
             },
             worker: options.worker(),
-            extensions: context.transpiler!.extensions,
+            extensions: context.meta.get("transpiler").extensions,
             transpile(file: File) {
                 return new Promise((resolve, reject) => {
                     this.worker.onmessage = async ({ data }) => {
@@ -148,7 +149,7 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                     : `.${extension}`;
 
                 const transpilers: TranspilerFactoryResult[] = Object.values(
-                    this.context.packagerContext.cache.transpilers.getAll()
+                    this.context.packagerContext.transpilers.getAll()
                 );
                 let transpiler = transpilers.find(t =>
                     t.extensions.includes(extension)
@@ -168,8 +169,15 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                 }
 
                 const foundPlugin = this.context.packagerContext.plugins.find(
-                    p => p.transpiler?.extensions.includes(extension)
+                    p => {
+                        const transpiler = p.meta.get("transpiler");
+                        if (transpiler) {
+                            return transpiler.extensions.includes(extension);
+                        }
+                        return false;
+                    }
                 );
+                console.log(foundPlugin);
                 /**
                  * Checking whether any of the registered plugins actually
                  * support this extension.
@@ -183,7 +191,7 @@ export const createTranspiler = (options: TranspilerAPI): TranspilerFactory => {
                         pluginContext
                     );
 
-                    this.context.packagerContext.cache.transpilers.set(
+                    this.context.packagerContext.transpilers.set(
                         `${foundPlugin.name}-transpiler`,
                         transpiler
                     );

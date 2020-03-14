@@ -1,36 +1,11 @@
-import { isModuleExternal, resolveRelative, path } from "packager-shared";
+import {
+    isModuleExternal,
+    resolveRelativeExternal,
+    resolveRelative
+} from "packager-shared";
 
 import { createPlugin } from "../plugin-creator";
 import { PackagerContext } from "../../../types";
-
-const resolveRelativeExternal = (
-    childPath: string,
-    parentPath: string,
-    context: PackagerContext
-) => {
-    if (!parentPath.startsWith("@")) {
-        if (!!~parentPath.indexOf("/")) {
-            const cachedParent = context.cache.dependencies.get(parentPath);
-            if (cachedParent) {
-                const relativeExternalUrl = new URL(cachedParent.meta.url)
-                    .pathname;
-
-                return path.resolve(
-                    path.dirname(relativeExternalUrl),
-                    childPath
-                );
-            }
-
-            return path
-                .resolve(path.dirname(`/${parentPath}`), childPath)
-                .replace(/^\.\//, "");
-        }
-
-        return path.resolve(`/${parentPath}`, childPath);
-    }
-
-    throw new Error(`Module ${childPath} has a parent ${parentPath} with @.`);
-};
 
 const baseResolverPlugin = createPlugin({
     name: "base-resolver",
@@ -52,9 +27,13 @@ const baseResolverPlugin = createPlugin({
                 this.packagerContext
             );
 
-            return {
-                id: pkgPath.substr(1)
-            };
+            if (pkgPath) {
+                return {
+                    id: pkgPath.substr(1)
+                };
+            }
+
+            return null;
         }
 
         throw new Error(`Could not resolve '${moduleId}' from '${parentId}'`);

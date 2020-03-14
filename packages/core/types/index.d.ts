@@ -1,7 +1,6 @@
 import {
     Plugin,
     SourceMap,
-    PluginContext as RollupPluginContext,
     ResolveIdHook as RollupResolveIdHook,
     ResolveIdResult as RollupResolveIdResult,
     LoadHook as RollupLoadHook,
@@ -40,16 +39,10 @@ export type File = {
     entry?: boolean;
 };
 
-export type PackagerCache = {
-    dependencies: ApplicationCache;
-    transpilers: ApplicationCache;
-    esModulesWithDefaultExport: any;
-    esModulesWithoutDefaultExport: any;
-};
-
 export type PackagerContext = {
     acornParser?: Parser["parse"];
-    cache: PackagerCache;
+    dependencies: ApplicationCache;
+    transpilers: ApplicationCache;
     workerQueue: WorkerQueue;
     files: File[];
     bundleOptions: BundleOptions;
@@ -75,7 +68,7 @@ export type ParsedPackagePath = {
 };
 
 export type PluginResolverResult =
-    | { id: string; syntheticNamedExports?: boolean | null }
+    | { id: string; skipSelf?: boolean; syntheticNamedExports?: boolean | null }
     | string
     | null
     | void;
@@ -120,14 +113,13 @@ export type PluginAPI = {
     extensions?: string[];
 };
 
+export type PluginContextMeta = Map<string, any>;
+
 export type PluginContext = {
     name: string;
     packagerContext: PackagerContext;
-    transpiler?: {
-        name: string;
-        extensions: string[];
-    };
     rawPlugin: PluginAPI;
+    meta: PluginContextMeta;
 };
 
 export type TranspilerAPI = {

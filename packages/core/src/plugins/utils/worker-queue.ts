@@ -32,6 +32,7 @@ const workerQueue = (): WorkerQueue => ({
                 if (task) {
                     this.currentTask = await task;
                     this.complete.push(this.currentTask);
+                    this.currentTask = undefined;
 
                     if (this.queue.length) {
                         enqueue(this.next.bind(this));

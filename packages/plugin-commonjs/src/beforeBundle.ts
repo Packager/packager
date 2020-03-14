@@ -19,9 +19,7 @@ export default async function(
 ) {
     if (isNotTransformable(moduleId, code)) return null;
 
-    const cachedDependency = this.packagerContext.cache.dependencies.get(
-        moduleId
-    );
+    const cachedDependency = this.packagerContext.dependencies.get(moduleId);
     const existsOnWindow =
         window.__dependencies && window.__dependencies[moduleId] != null;
 
@@ -41,16 +39,20 @@ export default async function(
     );
 
     if (isEsModule) {
-        (hasDefaultExport
-            ? this.packagerContext.cache.esModulesWithDefaultExport
-            : this.packagerContext.cache.esModulesWithoutDefaultExport
-        ).add(moduleId);
+        const key = hasDefaultExport
+            ? "esModulesWithDefaultExport"
+            : "esModulesWithoutDefaultExport";
+
+        this.meta.set(key, this.meta.get(key).add(moduleId));
         return null;
     }
 
     // it is not an ES module but it does not have CJS-specific elements.
     if (!hasCjsKeywords(code)) {
-        this.packagerContext.cache.esModulesWithoutDefaultExport.add(moduleId);
+        this.meta.set(
+            "esModulesWithoutDefaultExport",
+            this.meta.get("esModulesWithoutDefaultExport").add(moduleId)
+        );
         return null;
     }
 
@@ -69,7 +71,7 @@ export default async function(
     setIsCjsPromise(moduleId, Boolean(transformed));
 
     if (transformed) {
-        this.packagerContext.cache.dependencies.update(moduleId, {
+        this.packagerContext.dependencies.update(moduleId, {
             transformedCode: transformed.code
         });
 

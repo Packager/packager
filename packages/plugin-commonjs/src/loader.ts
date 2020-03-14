@@ -32,17 +32,13 @@ export default async function(this: PluginContext, moduleId: string) {
                     actualId
                 )}; export default __moduleExports;`;
             } else if (
-                this.packagerContext.cache.esModulesWithoutDefaultExport.has(
-                    actualId
-                )
+                this.meta.get("esModulesWithoutDefaultExport").has(actualId)
             ) {
                 return `import * as ${name} from ${JSON.stringify(
                     actualId
                 )}; export default ${name};`;
             } else if (
-                this.packagerContext.cache.esModulesWithDefaultExport.has(
-                    actualId
-                )
+                this.meta.get("esModulesWithDefaultExport").has(actualId)
             ) {
                 return `export {default} from ${JSON.stringify(actualId)};`;
             }

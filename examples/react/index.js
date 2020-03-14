@@ -1,4 +1,6 @@
 const packager = new Packager();
+packager.registerPlugin(commonjsPlugin);
+packager.registerPlugin(typescriptPlugin);
 
 const files = [
     {
@@ -19,7 +21,7 @@ ReactDOM.render(
         path: "/src/App.jsx",
         code: `import React from 'react';
 
-export default () => (<h1>Hello World!</h1>);`
+export default () => (<h1>Hello World from React!</h1>);`
     }
 ];
 

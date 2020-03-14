@@ -7,8 +7,6 @@ const files = [
         path: "/src/app.js",
         code: `import Vue from 'vue';
 
-console.log(Vue);
-
 new Vue({
     el: '#app',
     render: h => h('h1', 'Hello World from package.json support!')

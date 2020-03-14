@@ -15,7 +15,6 @@ const loadSucrase = () => {
 };
 
 loadSucrase();
-
 self.addEventListener("message", async ({ data }: any) => {
     loadSucrase();
     const { file, type, context } = data;

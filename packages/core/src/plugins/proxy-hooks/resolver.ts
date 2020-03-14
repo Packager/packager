@@ -17,12 +17,16 @@ export default (plugin: PluginAPI, context: PluginContext) => {
                 return Promise.resolve();
             }
 
-            return (
-                (await plugin.resolver!.bind(context)(
-                    argumentsList[0],
-                    argumentsList[1]
-                )) || null
-            );
+            try {
+                return (
+                    (await plugin.resolver!.bind(context)(
+                        argumentsList[0],
+                        argumentsList[1]
+                    )) || null
+                );
+            } catch (e) {
+                throw Error(e);
+            }
         }
     });
 };

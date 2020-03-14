@@ -32,7 +32,7 @@ export function createPluginFactory(
     pluginManager: PluginManager
 ) {
     const context: PackagerContext = {
-        cache,
+        ...cache,
         files,
         plugins,
         workerQueue: workerQueue(),

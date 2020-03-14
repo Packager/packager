@@ -27,14 +27,19 @@ const transformPluginAsProxy = (
         name: plugin.name
     };
 
+    const pluginMeta = new Map();
+    if (plugin.transpiler) {
+        pluginMeta.set("transpiler", {
+            name: `${plugin.name}-transpiler`,
+            extensions: plugin.extensions || []
+        });
+    }
+
     let pluginContext: PluginContext = {
         name: plugin.name,
         packagerContext: context,
-        transpiler: plugin.transpiler && {
-            name: `${plugin.name}-transpiler`,
-            extensions: plugin.extensions || []
-        },
-        rawPlugin: plugin
+        rawPlugin: plugin,
+        meta: pluginMeta
     };
 
     const pluginIndex = context.plugins.findIndex(p => p.name === plugin.name);
@@ -61,14 +66,14 @@ const transformPluginAsProxy = (
         };
     }
 
-    if (pluginContext.transpiler) {
+    if (pluginContext.meta.has("transpiler")) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
             transform: transformProxyHook(plugin, pluginContext)
         };
     }
 
-    if (!pluginContext.transpiler && plugin.beforeBundle) {
+    if (!pluginContext.meta.has("transpiler") && plugin.beforeBundle) {
         propertiesAndHooks = {
             ...propertiesAndHooks,
             transform: beforeBundleProxyHook(plugin, pluginContext)

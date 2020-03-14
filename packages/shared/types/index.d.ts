@@ -58,6 +58,11 @@ export const resolveRelative: (
     context: PackagerContext,
     pathOnly?: boolean
 ) => File | string | null;
+export const resolveRelativeExternal: (
+    childPath: string,
+    parentPath: string,
+    context: PackagerContext
+) => string | null | never;
 
 export const generateSourceMap: (
     filePath: string,

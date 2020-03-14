@@ -24,7 +24,7 @@ const baseLoaderPlugin = createPlugin({
                 this.packagerContext.bundleOptions.dependencies[moduleName] ||
                 "latest";
 
-            const cachedNpmDependency = this.packagerContext.cache.dependencies.get(
+            const cachedNpmDependency = this.packagerContext.dependencies.get(
                 moduleId
             );
 
@@ -41,7 +41,7 @@ const baseLoaderPlugin = createPlugin({
                         npmDependency.code
                     );
 
-                    this.packagerContext.cache.dependencies.set(moduleId, {
+                    this.packagerContext.dependencies.set(moduleId, {
                         ...npmDependency,
                         code: cleanUpCode,
                         name: moduleId
