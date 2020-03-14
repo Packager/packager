@@ -1,5 +1,9 @@
 import { PluginResolverResult, PluginContext } from "packager";
-import { resolveRelativeExternal } from "packager-shared";
+import {
+    resolveRelativeExternal,
+    resolveRelative,
+    isModuleExternal
+} from "packager-shared";
 
 import { HELPERS_ID, PROXY_SUFFIX, getIdFromProxyId } from "./utils";
 
@@ -47,8 +51,7 @@ export default function(
 
         if (moduleId === tempParentId && tempParentId.startsWith(".")) {
             const proxyModule = this.meta.get("proxyModules").get(parentId);
-            // console.log({ moduleId, parentId, tempParentId, proxyModule });
-            if (proxyModule) {
+            if (proxyModule && isModuleExternal(proxyModule.parent)) {
                 const resolvedRelative = resolveRelativeExternal(
                     tempParentId,
                     proxyModule.parent,
@@ -58,11 +61,17 @@ export default function(
                 if (resolvedRelative) {
                     return resolvedRelative.substr(1);
                 }
+            } else {
+                const resolvedRelative = resolveRelative(
+                    tempParentId,
+                    proxyModule.parent,
+                    this.packagerContext
+                );
 
-                return null;
+                if (resolvedRelative) {
+                    return resolvedRelative;
+                }
             }
-
-            return null;
         }
     }
 
