@@ -5,4 +5,5 @@ import {
 } from "./plugins/transpiler-creator";
 import { createPlugin } from "./plugins/plugin-creator";
 
-export { Packager, createPlugin, createTranspiler, TRANSPILE_STATUS };
+export { createPlugin, createTranspiler, TRANSPILE_STATUS };
+export default Packager;

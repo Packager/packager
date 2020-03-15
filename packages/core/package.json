@@ -1,6 +1,6 @@
 {
     "name": "packager",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Browser-based trans-bundler.",
     "cdnjs": ".dist/index.browser.js",
     "unpkg": ".dist/index.browser.js",
@@ -28,11 +28,13 @@
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
         "upgrade-packager-deps": "yarn upgrade packager-shared",
+        "update-version": "npm version",
         "prepublish": "yarn build-prod"
     },
     "dependencies": {
         "deepmerge": "^4.2.2",
         "estree-walker": "^1.0.1",
+        "packager": "0.1.0",
         "packager-shared": "0.1.0",
         "rollup": "^1.31.1"
     },

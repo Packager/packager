@@ -1,6 +1,6 @@
 {
     "name": "packager-plugin-typescript",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Typescript plugin for Packager.",
     "cdnjs": ".dist/index.browser.js",
     "unpkg": ".dist/index.browser.js",
@@ -28,7 +28,9 @@
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
         "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared",
-        "prepublish": "yarn build-prod"
+        "update-version": "npm version",
+        "prepublish": "yarn build-prod",
+        "npm:publish": "npm publish"
     },
     "dependencies": {
         "packager": "0.1.0",

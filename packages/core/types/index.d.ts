@@ -194,3 +194,18 @@ export type WorkerQueue = {
     callAWaiters: () => void;
     wait: () => Promise<void>;
 };
+
+type PackagerBundleResult = {
+    code: string;
+};
+interface PackagerConstructor {
+    bundle: (
+        files: File[],
+        bundleOptions: BundleOptions
+    ) => Promise<PackagerBundleResult | undefined>;
+    registerPlugin: (plugin: PluginAPI) => void;
+}
+
+export interface PackagerInterface {
+    new (options: PackagerOptions): PackagerConstructor;
+}

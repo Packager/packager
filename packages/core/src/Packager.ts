@@ -1,7 +1,13 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
 import merge from "deepmerge";
 
-import { PackagerOptions, BundleOptions, File, PluginAPI } from "../types";
+import {
+    PackagerConstructor,
+    PackagerOptions,
+    BundleOptions,
+    File,
+    PluginAPI
+} from "../types";
 import {
     loadRollup,
     loadMagicString,
@@ -15,7 +21,7 @@ import { createPluginFactory } from "./plugins/plugin-factory";
 
 const pluginManager = createPluginManager();
 
-export default class Packager {
+export default class Packager implements PackagerConstructor {
     public rollup: any;
     public files = <File[]>[];
     public packagerOptions = <PackagerOptions>{
