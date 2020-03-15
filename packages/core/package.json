@@ -35,8 +35,7 @@
     "dependencies": {
         "deepmerge": "^4.2.2",
         "estree-walker": "^1.0.1",
-        "packager": "0.1.0",
-        "packager-shared": "0.1.0",
+        "packager-shared": "0.1.1",
         "rollup": "^1.31.1"
     },
     "devDependencies": {
