@@ -33,7 +33,7 @@
         "lint": "yarn workspaces run lint",
         "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
         "commit": "yarn lint && yarn format && yarn test && yarn build-prod && git add --all && git-cz",
-        "npm:publish": "yarn workspaces run npm:publish"
+        "npm:publish": "npm login && yarn workspaces run npm:publish"
     },
     "dependencies": {
         "deepmerge": "^4.2.2",
