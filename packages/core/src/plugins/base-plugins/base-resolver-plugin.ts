@@ -5,7 +5,6 @@ import {
 } from "packager-shared";
 
 import { createPlugin } from "../plugin-creator";
-import { PackagerContext } from "../../../types";
 
 const baseResolverPlugin = createPlugin({
     name: "base-resolver",

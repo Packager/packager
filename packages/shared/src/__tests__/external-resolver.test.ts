@@ -17,6 +17,6 @@ describe("external relative resolver", () => {
             mockContext
         );
 
-        expect(resolves).toBe("react/cjs/react.development.js");
+        expect(resolves).toBe("/react/cjs/react.development.js");
     });
 });

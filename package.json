@@ -31,7 +31,8 @@
         "test": "yarn workspaces run test",
         "format": "yarn workspaces run format",
         "lint": "yarn workspaces run lint",
-        "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps"
+        "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
+        "commit": "git add --all && git-cz"
     },
     "dependencies": {
         "deepmerge": "^4.2.2",
@@ -44,6 +45,7 @@
         "@rollup/plugin-typescript": "^2.1.0",
         "@types/acorn": "^4.0.5",
         "@types/jest": "^24.9.0",
+        "cz-conventional-changelog": "3.1.0",
         "husky": "^4.2.3",
         "jest": "^24.9.0",
         "prettier": "^1.19.1",
@@ -80,5 +82,10 @@
             "json",
             "node"
         ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
     }
 }

@@ -9,6 +9,17 @@
     "types": ".dist/index.d.ts",
     "author": "Adrian Barylski",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/baryla/packager.git"
+    },
+    "homepage": "https://github.com/baryla/packager",
+    "files": [
+        ".dist",
+        "types",
+        "package.json",
+        "README.md"
+    ],
     "scripts": {
         "dev": "rollup -w -c",
         "build": "rollup -c",
@@ -16,7 +27,8 @@
         "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage --passWithNoTests",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
-        "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared"
+        "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared",
+        "prepublish": "yarn build-prod"
     },
     "dependencies": {
         "packager": "0.1.0",

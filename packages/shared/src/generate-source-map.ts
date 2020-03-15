@@ -4,13 +4,16 @@
 
 const fetchScript = (url: string) => {
     if (typeof self.importScripts === "function") {
-        self.importScripts(url);
-    } else {
-        fetch(url)
-            .then(res => res.text())
-            // @ts-ignore ignore eval :o
-            .then(text => eval(text));
+        return self.importScripts(url);
+    } else if (typeof fetch === "function") {
+        return (
+            fetch(url)
+                .then(res => res.text())
+                // @ts-ignore ignore eval :o
+                .then(text => eval(text))
+        );
     }
+    return false;
 };
 
 fetchScript("https://unpkg.com/source-map/dist/source-map.js");
