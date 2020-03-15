@@ -29,7 +29,8 @@
         "lint": "tslint -p tsconfig.json",
         "upgrade-packager-deps": "yarn upgrade packager-shared",
         "update-version": "npm version",
-        "prepublish": "yarn build-prod"
+        "prepublish": "yarn build-prod",
+        "npm:publish": "npm publish"
     },
     "dependencies": {
         "deepmerge": "^4.2.2",
