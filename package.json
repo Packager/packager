@@ -32,7 +32,7 @@
         "format": "yarn workspaces run format",
         "lint": "yarn workspaces run lint",
         "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
-        "commit": "git add --all && git-cz",
+        "commit": "yarn lint && yarn format && yarn test && yarn build-prod && git add --all && git-cz",
         "npm:publish": "yarn workspaces run npm:publish"
     },
     "dependencies": {
