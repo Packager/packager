@@ -58,11 +58,6 @@
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.7.4"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn test && yarn format && yarn build-prod"
-        }
-    },
     "jest": {
         "globals": {
             "ts-jest": {
