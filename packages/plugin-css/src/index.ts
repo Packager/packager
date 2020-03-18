@@ -3,11 +3,11 @@ import { createPlugin } from "packager";
 import Worker from "web-worker:./worker.ts";
 
 const cssPlugin = createPlugin({
-    name: "css",
-    extensions: [".css"],
-    transpiler: {
-        worker: Worker
-    }
+  name: "css",
+  extensions: [".css"],
+  transpiler: {
+    worker: Worker
+  }
 });
 
 export default cssPlugin;

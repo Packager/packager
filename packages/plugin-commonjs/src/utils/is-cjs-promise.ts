@@ -5,7 +5,7 @@
 const isCjsPromises = new Map();
 
 export const getIsCjsPromise = (id: string): Promise<boolean> =>
-    new Promise(resolve => resolve(isCjsPromises.get(id) || false));
+  new Promise(resolve => resolve(isCjsPromises.get(id) || false));
 
 export const setIsCjsPromise = (id: string, is: boolean) =>
-    isCjsPromises.set(id, is);
+  isCjsPromises.set(id, is);

@@ -2,33 +2,33 @@ const absolutePath = /^(?:\/|(?:[A-Za-z]:)?[\\|\/])/;
 const relativePath = /^\.?\.\//;
 
 export function isAbsolute(path: string): boolean {
-    return absolutePath.test(path);
+  return absolutePath.test(path);
 }
 
 export function isRelative(path: string): boolean {
-    return relativePath.test(path);
+  return relativePath.test(path);
 }
 
 export function basename(path: string): string | undefined {
-    return path.split(/(\/|\\)/).pop();
+  return path.split(/(\/|\\)/).pop();
 }
 
 export function dirname(path: string): string {
-    const match = /(\/|\\)[^\/\\]*$/.exec(path);
-    if (!match) return ".";
+  const match = /(\/|\\)[^\/\\]*$/.exec(path);
+  if (!match) return ".";
 
-    const dir = path.slice(0, -match[0].length);
+  const dir = path.slice(0, -match[0].length);
 
-    // If `dir` is the empty string, we're at root.
-    return dir ? dir : "/";
+  // If `dir` is the empty string, we're at root.
+  return dir ? dir : "/";
 }
 
 export function extname(path: string): string {
-    const bname = basename(path);
-    if (!bname) return "";
-    const match = /\.[^\.]+$/.exec(bname);
-    if (!match) return "";
-    return match[0];
+  const bname = basename(path);
+  if (!bname) return "";
+  const match = /\.[^\.]+$/.exec(bname);
+  if (!match) return "";
+  return match[0];
 }
 
 // export function relative(from: string, to: string): string {
@@ -55,42 +55,42 @@ export function extname(path: string): string {
 // }
 
 export function resolve(...paths: string[]) {
-    let resolvedParts = paths.shift()!.split(/[\/\\]/);
+  let resolvedParts = paths.shift()!.split(/[\/\\]/);
 
-    paths.forEach(path => {
-        if (isAbsolute(path)) {
-            resolvedParts = path.split(/[\/\\]/);
-        } else {
-            const parts = path.split(/[\/\\]/);
+  paths.forEach(path => {
+    if (isAbsolute(path)) {
+      resolvedParts = path.split(/[\/\\]/);
+    } else {
+      const parts = path.split(/[\/\\]/);
 
-            while (parts[0] === "." || parts[0] === "..") {
-                const part = parts.shift();
-                if (part === "..") {
-                    resolvedParts.pop();
-                }
-            }
-
-            resolvedParts.push.apply(resolvedParts, parts);
+      while (parts[0] === "." || parts[0] === "..") {
+        const part = parts.shift();
+        if (part === "..") {
+          resolvedParts.pop();
         }
-    });
+      }
 
-    return normalize(resolvedParts.join("/"));
+      resolvedParts.push.apply(resolvedParts, parts);
+    }
+  });
+
+  return normalize(resolvedParts.join("/"));
 }
 
 export function normalize(path: string): string {
-    return path.replace(/\/\//gi, "/");
+  return path.replace(/\/\//gi, "/");
 }
 
 export const sep: string = "/";
 
 export default {
-    isAbsolute,
-    isRelative,
-    basename,
-    dirname,
-    extname,
-    // relative,
-    resolve,
-    normalize,
-    sep
+  isAbsolute,
+  isRelative,
+  basename,
+  dirname,
+  extname,
+  // relative,
+  resolve,
+  normalize,
+  sep
 };

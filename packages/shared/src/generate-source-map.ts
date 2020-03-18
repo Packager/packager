@@ -3,40 +3,40 @@
  */
 
 const fetchScript = (url: string) => {
-    if (typeof self.importScripts === "function") {
-        return self.importScripts(url);
-    } else if (typeof fetch === "function") {
-        return (
-            fetch(url)
-                .then(res => res.text())
-                // @ts-ignore ignore eval :o
-                .then(text => eval(text))
-        );
-    }
-    return false;
+  if (typeof self.importScripts === "function") {
+    return self.importScripts(url);
+  } else if (typeof fetch === "function") {
+    return (
+      fetch(url)
+        .then(res => res.text())
+        // @ts-ignore ignore eval :o
+        .then(text => eval(text))
+    );
+  }
+  return false;
 };
 
 fetchScript("https://unpkg.com/source-map/dist/source-map.js");
 
 const generateSourceMap = (
-    filePath: string,
-    originalCode: string,
-    generatedCode: string
+  filePath: string,
+  originalCode: string,
+  generatedCode: string
 ) => {
-    // @ts-ignore
-    const map = new self.sourceMap.SourceMapGenerator({ file: filePath });
-    map.setSourceContent(filePath, originalCode);
-    generatedCode.split(/\r?\n/g).forEach((line: string, index: number) => {
-        if (line) {
-            map.addMapping({
-                source: filePath,
-                original: { line: index + 1, column: 0 },
-                generated: { line: index + 1, column: 0 }
-            });
-        }
-    });
+  // @ts-ignore
+  const map = new self.sourceMap.SourceMapGenerator({ file: filePath });
+  map.setSourceContent(filePath, originalCode);
+  generatedCode.split(/\r?\n/g).forEach((line: string, index: number) => {
+    if (line) {
+      map.addMapping({
+        source: filePath,
+        original: { line: index + 1, column: 0 },
+        generated: { line: index + 1, column: 0 }
+      });
+    }
+  });
 
-    return map.toJSON();
+  return map.toJSON();
 };
 
 // @ts-ignore

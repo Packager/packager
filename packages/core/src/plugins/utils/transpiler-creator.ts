@@ -112,7 +112,6 @@ export const createTranspiler = (
       html: any[];
     }) {
       const completedStyles: any = [];
-
       for (const style of styles) {
         const { code, path, name, extension } = style;
         if (!extension || extension === "") {
@@ -125,7 +124,6 @@ export const createTranspiler = (
         }
 
         const transpiler = this.getDependencyTranspiler(extension);
-
         if (transpiler) {
           completedStyles.push(transpiler.transpile({ name, code, path }));
         }
@@ -152,7 +150,7 @@ export const createTranspiler = (
           ...transpiler.context,
           packagerContext: this.context.packagerContext
         };
-        console.log("if transpiler", transpiler);
+
         transpiler.setContext(pluginContext);
         return transpiler;
       }
@@ -164,7 +162,7 @@ export const createTranspiler = (
         }
         return false;
       });
-      console.log(foundPlugin);
+
       /**
        * Checking whether any of the registered plugins actually
        * support this extension.
@@ -184,8 +182,6 @@ export const createTranspiler = (
           transpiler
         );
         pluginContext.packagerContext = this.context.packagerContext;
-
-        console.log("apply transpiler", transpiler);
         transpiler.setContext(pluginContext);
 
         return transpiler;

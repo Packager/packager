@@ -17,34 +17,30 @@ import path from "./path";
  * @param context
  */
 const resolveExternal = (
-    childPath: string,
-    parentPath: string,
-    context: PackagerContext
+  childPath: string,
+  parentPath: string,
+  context: PackagerContext
 ): string => {
-    if (!parentPath.startsWith("@")) {
-        if (!!~parentPath.indexOf("/")) {
-            const cachedParent = context.dependencies.get(parentPath);
-            if (cachedParent) {
-                const relativeExternalUrl = new URL(cachedParent.meta.url)
-                    .pathname;
+  if (!parentPath.startsWith("@")) {
+    if (!!~parentPath.indexOf("/")) {
+      const cachedParent = context.dependencies.get(parentPath);
+      if (cachedParent) {
+        const relativeExternalUrl = new URL(cachedParent.meta.url).pathname;
 
-                return path.resolve(
-                    path.dirname(relativeExternalUrl),
-                    childPath
-                );
-            }
+        return path.resolve(path.dirname(relativeExternalUrl), childPath);
+      }
 
-            return path
-                .resolve(path.dirname(`/${parentPath}`), childPath)
-                .replace(/^\.\//, "");
-        }
-
-        return path.resolve(`/${parentPath}`, childPath);
+      return path
+        .resolve(path.dirname(`/${parentPath}`), childPath)
+        .replace(/^\.\//, "");
     }
 
-    throw new Error(
-        `Module ${childPath} has a parent ${parentPath} with @ which is currently not supported.`
-    );
+    return path.resolve(`/${parentPath}`, childPath);
+  }
+
+  throw new Error(
+    `Module ${childPath} has a parent ${parentPath} with @ which is currently not supported.`
+  );
 };
 
 export default resolveExternal;
