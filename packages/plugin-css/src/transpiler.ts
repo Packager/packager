@@ -3,8 +3,7 @@ import { createTranspiler } from "packager";
 import Worker from "web-worker:./worker.ts";
 
 const transpiler = createTranspiler({
-    worker: Worker,
-    extensions: [".css"]
+    worker: Worker
 });
 
 export default transpiler;

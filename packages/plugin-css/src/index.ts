@@ -1,9 +1,13 @@
 import { createPlugin } from "packager";
-import transpiler from "./transpiler";
+// @ts-ignore
+import Worker from "web-worker:./worker.ts";
 
 const cssPlugin = createPlugin({
     name: "css",
-    transpiler
+    extensions: [".css"],
+    transpiler: {
+        worker: Worker
+    }
 });
 
 export default cssPlugin;

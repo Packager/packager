@@ -1,9 +1,6 @@
 import Packager from "./Packager";
-import {
-    createTranspiler,
-    TRANSPILE_STATUS
-} from "./plugins/transpiler-creator";
+import { TRANSPILE_STATUS } from "./plugins/utils";
 import { createPlugin } from "./plugins/plugin-creator";
 
-export { createPlugin, createTranspiler, TRANSPILE_STATUS };
+export { createPlugin, TRANSPILE_STATUS };
 export default Packager;
