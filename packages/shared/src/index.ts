@@ -8,3 +8,4 @@ export { default as verifyExtensions } from "./verify-extensions";
 export { default as resolveRelative } from "./relative-resolver";
 export { default as resolveRelativeExternal } from "./external-resolver";
 export { default as generateSourceMap } from "./generate-source-map";
+export { default as deepMerge } from "./deep-merge";

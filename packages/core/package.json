@@ -33,7 +33,6 @@
     "npm:publish": "npm publish"
   },
   "dependencies": {
-    "deepmerge": "^4.2.2",
     "estree-walker": "^1.0.1",
     "packager-shared": "0.1.1",
     "rollup": "^1.31.1"

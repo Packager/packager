@@ -36,7 +36,6 @@
     "npm:publish": "npm login && yarn workspaces run npm:publish"
   },
   "dependencies": {
-    "deepmerge": "^4.2.2",
     "estree-walker": "^1.0.1",
     "rollup": "^1.31.1"
   },

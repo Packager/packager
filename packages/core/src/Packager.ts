@@ -1,5 +1,5 @@
 import { InputOptions, OutputOptions, RollupCache } from "rollup";
-import merge from "deepmerge";
+import { deepMerge } from "packager-shared";
 
 import {
   PackagerConstructor,
@@ -64,11 +64,9 @@ export default class Packager implements PackagerConstructor {
     this.bundleOptions = { ...this.bundleOptions, ...bundleOptions };
 
     try {
-      // @ts-ignore
       if (!this.rollup || !window.rollup) {
         await loadRollup();
         await loadMagicString();
-        //@ts-ignore
         this.rollup = window.rollup;
       }
 
@@ -82,7 +80,10 @@ export default class Packager implements PackagerConstructor {
             : packageJson.code;
 
         const pkgBundleOptions = extractPackageJsonOptions(parsed);
-        this.bundleOptions = merge(pkgBundleOptions, this.bundleOptions || {});
+        this.bundleOptions = deepMerge(
+          pkgBundleOptions,
+          this.bundleOptions || {}
+        ) as BundleOptions;
 
         if (parsed.main) {
           entryFile = findEntryFile(

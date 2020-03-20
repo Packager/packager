@@ -14,6 +14,7 @@ import { Parser } from "acorn";
 declare global {
   interface Window {
     __dependencies?: { [key: string]: any };
+    rollup: any;
   }
 }
 
@@ -160,14 +161,16 @@ export type PluginManager = {
   getRegisteredPlugins: () => PluginManagerPlugin[];
 };
 
-export const createPlugin: (options: PluginAPI) => PluginAPI;
-export const createTranspiler: (
+export declare function createPlugin(options: PluginAPI): PluginAPI;
+export declare function createTranspiler(
   this: TranspilerContext,
   options: PluginTranspiler,
   context: PluginContext
-) => TranspilerContext;
+): TranspilerContext;
 
-export enum TRANSPILE_STATUS {
+// export type TRANSPILE_STATUS = "PREPARE_FILES" | "PREPARE_ADDITIONAL" | "ADDITIONAL_TRANSPILED" | "TRANSPILE_COMPLETE" | "ERROR_COMPILE" | "ERROR_ADDITIONAL"
+
+export declare enum TRANSPILE_STATUS {
   PREPARE_FILES = "TRANSPILER:FILE:PREPARE",
   PREPARE_ADDITIONAL = "TRANSPILER:ADDITIONAL:PREPARE",
   ADDITIONAL_TRANSPILED = "TRANSPILER:ADDITIONAL:TRANSPILED",

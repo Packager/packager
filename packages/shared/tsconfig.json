@@ -3,12 +3,12 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
-    "lib": ["WebWorker", "ES5", "ES6", "ES2017", "DOM"],
-    "target": "ES6",
+    "lib": ["WebWorker", "DOM", "ES5", "ES2015", "ES2017"],
+    "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "declaration": true,
     "typeRoots": ["../types"],
-    "module": "ES6",
     "outDir": "./.dist",
     "strict": true,
     "esModuleInterop": true

@@ -37,6 +37,16 @@ export type PathUtil = {
   normalize: (path: string) => string;
   sep: string;
 };
+
+export type DeepMergeArrayValue = string[];
+export type DeepMergeObjectValue = { [key: string]: any };
+export declare function deepMerge(
+  ...sources: DeepMergeArrayValue[]
+): DeepMergeArrayValue;
+export declare function deepMerge(
+  ...sources: DeepMergeObjectValue[]
+): DeepMergeObjectValue;
+
 export const cacheFactory: () => ApplicationCache;
 export const isModuleExternal: (modulePath: string) => boolean;
 export const normalizeBundleOptions: (

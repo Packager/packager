@@ -19,7 +19,8 @@ new Vue({
     "name": "package-json-example",
     "main": "src/app.js",
     "dependencies": {
-        "vue": "2.6.10"
+        "vue": "2.6.10",
+        "react": "16.10"
     }
 }`
   }
@@ -27,7 +28,9 @@ new Vue({
 
 (async () => {
   try {
-    const bundle = await packager.bundle(files);
+    const bundle = await packager.bundle(files, {
+      dependencies: { react: "16.12" }
+    });
     eval(bundle.code);
   } catch (e) {
     console.error(e);
