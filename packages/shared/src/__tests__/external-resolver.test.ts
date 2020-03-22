@@ -5,18 +5,49 @@ let childPath;
 let parentPath;
 
 describe("external relative resolver", () => {
-    beforeEach(() => {
-        childPath = "./cjs/react.development.js";
-        parentPath = "react";
+  beforeEach(() => {
+    childPath = "./cjs/react.development.js";
+    parentPath = "react";
+  });
+
+  it("should resolve file path correctly", () => {
+    const resolves = resolveRelativeExternal(
+      childPath,
+      parentPath,
+      mockContext
+    );
+
+    expect(resolves).toBe("/react/cjs/react.development.js");
+  });
+
+  it("should throw if parent begins with @", () => {
+    parentPath = `@${parentPath}`;
+
+    expect(() =>
+      resolveRelativeExternal(childPath, parentPath, mockContext)
+    ).toThrowError();
+  });
+
+  it("should fetch the parent from the dependencies context and resolve child", () => {
+    parentPath = "svelte/internal";
+    childPath = "../testing.js";
+    mockContext.dependencies.set(parentPath, {
+      meta: {
+        url: "https://unpkg.com/svelte/internal.js"
+      }
     });
 
-    it("should resolve file path correctly", () => {
-        const resolves = resolveRelativeExternal(
-            childPath,
-            parentPath,
-            mockContext
-        );
+    expect(resolveRelativeExternal(childPath, parentPath, mockContext)).toBe(
+      `/testing.js`
+    );
+  });
 
-        expect(resolves).toBe("/react/cjs/react.development.js");
-    });
+  it("should resolve child if parent beings with '/' but isn't in the dependencies", () => {
+    parentPath = "react/testing";
+    childPath = "../testing.js";
+
+    expect(resolveRelativeExternal(childPath, parentPath, mockContext)).toBe(
+      `/testing.js`
+    );
+  });
 });

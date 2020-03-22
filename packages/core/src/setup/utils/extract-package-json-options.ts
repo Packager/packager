@@ -1,8 +1,8 @@
 export default (packageJson: any) => {
-    return {
-        dependencies: {
-            ...packageJson.dependencies,
-            ...packageJson.peerDependencies
-        }
-    };
+  return {
+    dependencies: {
+      ...packageJson.dependencies,
+      ...packageJson.peerDependencies
+    }
+  };
 };

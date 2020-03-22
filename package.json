@@ -1,87 +1,86 @@
 {
-    "name": "packager-monorepo",
-    "version": "0.1.0",
-    "private": true,
-    "description": "Browser-based trans-bundler.",
-    "cdnjs": "dist/index.browser.js",
-    "unpkg": "dist/index.browser.js",
-    "jsdelivr": "dist/index.browser.js",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "author": "Adrian Barylski",
-    "license": "MIT",
-    "workspaces": [
-        "packages/core",
-        "packages/plugin-coffeescript",
-        "packages/plugin-commonjs",
-        "packages/plugin-css",
-        "packages/plugin-json",
-        "packages/plugin-less",
-        "packages/plugin-sass",
-        "packages/plugin-stylus",
-        "packages/plugin-svelte",
-        "packages/plugin-typescript",
-        "packages/plugin-vue",
-        "packages/shared"
+  "name": "packager-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser-based trans-bundler.",
+  "cdnjs": "dist/index.browser.js",
+  "unpkg": "dist/index.browser.js",
+  "jsdelivr": "dist/index.browser.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Adrian Barylski",
+  "license": "MIT",
+  "workspaces": [
+    "packages/core",
+    "packages/plugin-coffeescript",
+    "packages/plugin-commonjs",
+    "packages/plugin-css",
+    "packages/plugin-json",
+    "packages/plugin-less",
+    "packages/plugin-sass",
+    "packages/plugin-stylus",
+    "packages/plugin-svelte",
+    "packages/plugin-typescript",
+    "packages/plugin-vue",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev": "yarn workspaces run dev",
+    "build": "yarn workspaces run build",
+    "build-prod": "NODE_ENV=production yarn build",
+    "test": "yarn workspaces run test",
+    "format": "yarn workspaces run format",
+    "lint": "yarn workspaces run lint",
+    "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
+    "commit": "yarn format && yarn test && yarn build-prod && yarn upgrade-packager-deps && git add --all && git-cz",
+    "npm:publish": "npm login && yarn workspaces run npm:publish"
+  },
+  "dependencies": {
+    "estree-walker": "^1.0.1",
+    "rollup": "^1.31.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-typescript": "^2.1.0",
+    "@types/acorn": "^4.0.5",
+    "@types/jest": "^24.9.0",
+    "cz-conventional-changelog": "3.1.0",
+    "husky": "^4.2.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "rollup-plugin-dts": "^1.2.1",
+    "rollup-plugin-terser": "^5.2.0",
+    "rollup-plugin-web-worker-loader": "^0.8.1",
+    "ts-jest": "^24.3.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    },
+    "roots": [
+      "<rootDir>/src"
     ],
-    "scripts": {
-        "dev": "yarn workspaces run dev",
-        "build": "yarn workspaces run build",
-        "build-prod": "NODE_ENV=production yarn build",
-        "test": "yarn workspaces run test",
-        "format": "yarn workspaces run format",
-        "lint": "yarn workspaces run lint",
-        "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
-        "commit": "yarn lint && yarn format && yarn test && yarn build-prod && yarn upgrade-packager-deps && git add --all && git-cz",
-        "npm:publish": "npm login && yarn workspaces run npm:publish"
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "dependencies": {
-        "deepmerge": "^4.2.2",
-        "estree-walker": "^1.0.1",
-        "rollup": "^1.31.1"
-    },
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^11.0.1",
-        "@rollup/plugin-node-resolve": "^7.0.0",
-        "@rollup/plugin-typescript": "^2.1.0",
-        "@types/acorn": "^4.0.5",
-        "@types/jest": "^24.9.0",
-        "cz-conventional-changelog": "3.1.0",
-        "husky": "^4.2.3",
-        "jest": "^24.9.0",
-        "prettier": "^1.19.1",
-        "rollup-plugin-dts": "^1.2.1",
-        "rollup-plugin-terser": "^5.2.0",
-        "rollup-plugin-web-worker-loader": "^0.8.1",
-        "ts-jest": "^24.3.0",
-        "tslint": "^5.20.1",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^3.7.4"
-    },
-    "jest": {
-        "globals": {
-            "ts-jest": {
-                "diagnostics": false
-            }
-        },
-        "roots": [
-            "<rootDir>/src"
-        ],
-        "transform": {
-            "^.+\\.tsx?$": "ts-jest"
-        },
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ]
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog"
-        }
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  }
 }

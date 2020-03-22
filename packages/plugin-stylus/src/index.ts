@@ -1,9 +1,13 @@
 import { createPlugin } from "packager";
-import transpiler from "./transpiler";
+// @ts-ignore
+import Worker from "web-worker:./worker.ts";
 
 const stylusPlugin = createPlugin({
-    name: "stylus",
-    transpiler
+  name: "stylus",
+  extensions: [".styl", ".stylus"],
+  transpiler: {
+    worker: Worker
+  }
 });
 
 export default stylusPlugin;

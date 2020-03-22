@@ -1,15 +1,15 @@
 {
-    "exclude": ["node_modules", "**/__tests__/*", "dist"],
-    "compilerOptions": {
-        "baseUrl": "./src",
-        "allowSyntheticDefaultImports": true,
-        "lib": ["WebWorker", "DOM", "ES5", "ES2015", "ES2017", "ScriptHost"],
-        "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "Node",
-        "typeRoots": ["../types"],
-        "outDir": "./.dist",
-        "strict": true,
-        "esModuleInterop": true
-    }
+  "exclude": ["node_modules", "**/__tests__/*", "dist"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["WebWorker", "DOM", "ES5", "ES2015", "ES2017", "ScriptHost"],
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "typeRoots": ["../types"],
+    "outDir": "./.dist",
+    "strict": true,
+    "esModuleInterop": true
+  }
 }

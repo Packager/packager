@@ -2,11 +2,11 @@ const packager = new Packager();
 packager.registerPlugin(commonjsPlugin);
 
 const files = [
-    {
-        name: "app.js",
-        path: "/src/app.js",
-        entry: true,
-        code: `import Backbone from 'backbone';
+  {
+    name: "app.js",
+    path: "/src/app.js",
+    entry: true,
+    code: `import Backbone from 'backbone';
 import _ from 'underscore';
 import $ from 'jquery';
 
@@ -22,14 +22,14 @@ var ListView = Backbone.View.extend({
     }
     });
 var listView = new ListView();`
-    }
+  }
 ];
 
 (async () => {
-    try {
-        const bundle = await packager.bundle(files);
-        eval(bundle.code);
-    } catch (e) {
-        console.error(e);
-    }
+  try {
+    const bundle = await packager.bundle(files);
+    eval(bundle.code);
+  } catch (e) {
+    console.error(e);
+  }
 })();

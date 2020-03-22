@@ -1,10 +1,13 @@
 import { createPlugin } from "packager";
-import transpiler from "./transpiler";
+// @ts-ignore
+import Worker from "web-worker:./worker.ts";
 
 const coffeescriptPlugin = createPlugin({
-    name: "coffeescript",
-    transpiler,
-    extensions: [".coffee"]
+  name: "coffeescript",
+  extensions: [".coffee"],
+  transpiler: {
+    worker: Worker
+  }
 });
 
 export default coffeescriptPlugin;

@@ -5,10 +5,10 @@ import loader from "./loader";
 import beforeBundle from "./beforeBundle";
 
 const commonjsPlugin = createPlugin({
-    name: "commonjs",
-    resolver,
-    loader,
-    beforeBundle
+  name: "commonjs",
+  resolver,
+  loader,
+  beforeBundle
 });
 
 export default commonjsPlugin;

@@ -1,10 +1,13 @@
 import { createPlugin } from "packager";
-import transpiler from "./transpiler";
+// @ts-ignore
+import Worker from "web-worker:./worker.ts";
 
 const vuePlugin = createPlugin({
-    name: "vue",
-    transpiler,
-    extensions: [".vue"]
+  name: "vue",
+  extensions: [".vue"],
+  transpiler: {
+    worker: Worker
+  }
 });
 
 export default vuePlugin;

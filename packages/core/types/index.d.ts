@@ -1,56 +1,57 @@
 import {
-    Plugin,
-    SourceMap,
-    ResolveIdHook as RollupResolveIdHook,
-    ResolveIdResult as RollupResolveIdResult,
-    LoadHook as RollupLoadHook,
-    LoadResult as RollupLoadResult,
-    TransformHook as RollupTransformHook,
-    TransformResult as RollupTransformResult
+  Plugin,
+  SourceMap,
+  ResolveIdHook as RollupResolveIdHook,
+  ResolveIdResult as RollupResolveIdResult,
+  LoadHook as RollupLoadHook,
+  LoadResult as RollupLoadResult,
+  TransformHook as RollupTransformHook,
+  TransformResult as RollupTransformResult
 } from "rollup";
 
 import { Parser } from "acorn";
 
 declare global {
-    interface Window {
-        __dependencies?: { [key: string]: any };
-    }
+  interface Window {
+    __dependencies?: { [key: string]: any };
+    rollup: any;
+  }
 }
 
 export type ApplicationCache = {
-    get: (name: string) => any | undefined;
-    getAll: () => { [name: string]: any };
-    set: (name: string, value: any) => boolean;
-    has: (name: string) => boolean;
-    update: (name: string, value: any) => boolean;
-    delete: (name: string) => boolean;
-    clear: () => void;
+  get: (name: string) => any | undefined;
+  getAll: () => { [name: string]: any };
+  set: (name: string, value: any) => boolean;
+  has: (name: string) => boolean;
+  update: (name: string, value: any) => boolean;
+  delete: (name: string) => boolean;
+  clear: () => void;
 };
 
 export type PackagerOptions = {
-    cache: boolean;
-    sourcemaps: boolean;
+  cache: boolean;
+  sourcemaps: boolean;
 };
 
 export type File = {
-    name: string;
-    path: string;
-    code: string;
-    entry?: boolean;
+  name: string;
+  path: string;
+  code: string;
+  entry?: boolean;
 };
 
 export type PackagerContext = {
-    acornParser?: Parser["parse"];
-    dependencies: ApplicationCache;
-    transpilers: ApplicationCache;
-    workerQueue: WorkerQueue;
-    files: File[];
-    bundleOptions: BundleOptions;
-    plugins: PluginContext[];
+  acornParser?: Parser["parse"];
+  dependencies: ApplicationCache;
+  transpilers: ApplicationCache;
+  workerQueue: WorkerQueue;
+  files: File[];
+  bundleOptions: BundleOptions;
+  plugins: PluginContext[];
 };
 
 export type BundleOptions = {
-    dependencies: { [moduleName: string]: string };
+  dependencies: { [moduleName: string]: string };
 };
 
 export interface Transformer extends Plugin {}
@@ -62,150 +63,145 @@ export type ResolveResult = RollupResolveIdResult;
 export type LoadResult = RollupLoadResult;
 
 export type ParsedPackagePath = {
-    name: string | null;
-    version: string | null;
-    path: string | null;
+  name: string | null;
+  version: string | null;
+  path: string | null;
 };
 
 export type PluginResolverResult =
-    | { id: string; syntheticNamedExports?: boolean | null }
-    | string
-    | null
-    | void;
+  | { id: string; syntheticNamedExports?: boolean | null }
+  | string
+  | null
+  | void;
 export type PluginResolverHook = (
-    this: PluginContext,
-    moduleId: string,
-    parentId?: string
+  this: PluginContext,
+  moduleId: string,
+  parentId?: string
 ) => Promise<PluginResolverResult> | PluginResolverResult;
 
 export type PluginLoaderResult =
-    | {
-          code: string;
-          map?: string | SourceMap;
-          syntheticNamedExports?: boolean | null;
-      }
-    | string
-    | null
-    | void;
+  | {
+      code: string;
+      map?: string | SourceMap;
+      syntheticNamedExports?: boolean | null;
+    }
+  | string
+  | null
+  | void;
 export type PluginLoaderHook = (
-    this: PluginContext,
-    moduleId: string
+  this: PluginContext,
+  moduleId: string
 ) => Promise<PluginLoaderResult> | PluginLoaderResult;
 
 export type PluginBeforeBundleHookResult = string | null | void;
 export type PluginBeforeBundleHook = (
-    this: PluginContext,
-    code: string,
-    moduleId: string
+  this: PluginContext,
+  code: string,
+  moduleId: string
 ) => Promise<PluginBeforeBundleHookResult> | PluginBeforeBundleHookResult;
 
 export type PluginHook =
-    | PluginResolverHook
-    | PluginLoaderHook
-    | PluginBeforeBundleHook;
+  | PluginResolverHook
+  | PluginLoaderHook
+  | PluginBeforeBundleHook;
 
-export type PluginTranspiler = (
-    context: PluginContext
-) => TranspilerFactoryResult;
+export type PluginTranspiler = {
+  worker: () => Worker;
+  dependencies?: string[];
+};
 
 export type PluginAPI = {
-    name: string;
-    transpiler?: PluginTranspiler;
-    resolver?: PluginResolverHook;
-    loader?: PluginLoaderHook;
-    beforeBundle?: PluginBeforeBundleHook;
-    extensions?: string[];
+  name: string;
+  transpiler?: PluginTranspiler;
+  resolver?: PluginResolverHook;
+  loader?: PluginLoaderHook;
+  beforeBundle?: PluginBeforeBundleHook;
+  extensions?: string[];
 };
 
 export type PluginContextMeta = Map<string, any>;
 
 export type PluginContext = {
-    name: string;
-    packagerContext: PackagerContext;
-    rawPlugin: PluginAPI;
-    meta: PluginContextMeta;
-};
-
-export type TranspilerAPI = {
-    worker: () => Worker;
-    dependencies?: string[];
+  name: string;
+  packagerContext: PackagerContext;
+  rawPlugin: PluginAPI;
+  meta: PluginContextMeta;
 };
 
 type additionalTranspile = {
-    styles: any[];
-    html: any[];
+  styles: any[];
+  html: any[];
 };
 
-export type TranspilerFactoryResult = {
-    context: PluginContext;
-    worker: Worker;
-    extensions: string[];
-    dependencyTranspilers?: string[];
-    transpile: (file: File) => Promise<any>;
-    setContext: (context: PluginContext) => void;
-    getDependencyTranspiler: (
-        extension: string
-    ) => TranspilerFactoryResult | null;
-    transpileAdditional: (data: any) => Promise<any>;
+export type TranspilerContext = {
+  context: PluginContext;
+  worker: Worker;
+  extensions: string[];
+  dependencyTranspilers?: string[];
+  transpile: (file: File) => Promise<any>;
+  setContext: (context: PluginContext) => void;
+  getDependencyTranspiler: (extension: string) => TranspilerContext | null;
+  transpileAdditional: (data: any) => Promise<any>;
 };
-
-export type TranspilerFactory = (
-    this: TranspilerFactoryResult,
-    context: PluginContext
-) => TranspilerFactoryResult;
 
 export type PluginAPIasRollupPlugin = {
-    name: string;
-    resolveId?: RollupResolveIdHook;
-    load?: RollupLoadHook;
-    transform?: RollupTransformHook;
+  name: string;
+  resolveId?: RollupResolveIdHook;
+  load?: RollupLoadHook;
+  transform?: RollupTransformHook;
 };
 
 export type PluginManagerPlugin = PluginAPI & { transformed: boolean };
 
 export type PluginManager = {
-    packagerContext: PackagerContext;
-    setPackagerContext: (context: PackagerContext) => void;
-    registerPlugin: (plugin: PluginAPI) => void;
-    prepareAndGetPlugins: () => PluginManagerPlugin[];
-    getRegisteredPlugins: () => PluginManagerPlugin[];
+  packagerContext: PackagerContext;
+  setPackagerContext: (context: PackagerContext) => void;
+  registerPlugin: (plugin: PluginAPI) => void;
+  prepareAndGetPlugins: () => PluginManagerPlugin[];
+  getRegisteredPlugins: () => PluginManagerPlugin[];
 };
 
-export const createPlugin: (options: PluginAPI) => PluginAPI;
-export const createTranspiler: (options: TranspilerAPI) => TranspilerFactory;
+export declare function createPlugin(options: PluginAPI): PluginAPI;
+export declare function createTranspiler(
+  this: TranspilerContext,
+  options: PluginTranspiler,
+  context: PluginContext
+): TranspilerContext;
 
-export enum TRANSPILE_STATUS {
-    PREPARE_FILES = "TRANSPILER:FILE:PREPARE",
-    PREPARE_ADDITIONAL = "TRANSPILER:ADDITIONAL:PREPARE",
-    ADDITIONAL_TRANSPILED = "TRANSPILER:ADDITIONAL:TRANSPILED",
-    TRANSPILE_COMPLETE = "TRANSPILER:TRANSPILE:COMPLETE",
-    ERROR_COMPILE = "TRANSPILER:ERROR:COMPILE",
-    ERROR_ADDITIONAL = "TRANSPILER:ERROR:ADDITIONAL"
+// export type TRANSPILE_STATUS = "PREPARE_FILES" | "PREPARE_ADDITIONAL" | "ADDITIONAL_TRANSPILED" | "TRANSPILE_COMPLETE" | "ERROR_COMPILE" | "ERROR_ADDITIONAL"
+
+export declare enum TRANSPILE_STATUS {
+  PREPARE_FILES = "TRANSPILER:FILE:PREPARE",
+  PREPARE_ADDITIONAL = "TRANSPILER:ADDITIONAL:PREPARE",
+  ADDITIONAL_TRANSPILED = "TRANSPILER:ADDITIONAL:TRANSPILED",
+  TRANSPILE_COMPLETE = "TRANSPILER:TRANSPILE:COMPLETE",
+  ERROR_COMPILE = "TRANSPILER:ERROR:COMPILE",
+  ERROR_ADDITIONAL = "TRANSPILER:ERROR:ADDITIONAL"
 }
 
 export type WorkerQueue = {
-    currentTask: any;
-    complete: any[];
-    errors: any[];
-    queue: Function[] | any[];
-    awaiters: Function[];
-    push: (cb: Function | Promise<any>) => void;
-    next: () => void;
-    callAWaiters: () => void;
-    wait: () => Promise<void>;
+  currentTask: any;
+  complete: any[];
+  errors: any[];
+  queue: Function[] | any[];
+  awaiters: Function[];
+  push: (cb: Function | Promise<any>) => void;
+  next: () => void;
+  callAWaiters: () => void;
+  wait: () => Promise<void>;
 };
 
 type PackagerBundleResult = {
-    code: string;
+  code: string;
 };
 interface PackagerConstructor {
-    bundle: (
-        files: File[],
-        bundleOptions: BundleOptions
-    ) => Promise<PackagerBundleResult | undefined>;
-    registerPlugin: (plugin: PluginAPI) => void;
+  bundle: (
+    files: File[],
+    bundleOptions: BundleOptions
+  ) => Promise<PackagerBundleResult | undefined>;
+  registerPlugin: (plugin: PluginAPI) => void;
 }
 
 export interface PackagerInterface {
-    new (options: PackagerOptions): PackagerConstructor;
+  new (options: PackagerOptions): PackagerConstructor;
 }

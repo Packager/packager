@@ -1,79 +1,79 @@
 {
-    "name": "packager-plugin-commonjs",
-    "version": "0.1.1",
-    "description": "CommonJS plugin for Packager.",
-    "cdnjs": ".dist/index.browser.js",
-    "unpkg": ".dist/index.browser.js",
-    "jsdelivr": ".dist/index.browser.js",
-    "main": ".dist/index.js",
-    "types": ".dist/index.d.ts",
-    "author": "Adrian Barylski",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/baryla/packager.git"
+  "name": "packager-plugin-commonjs",
+  "version": "0.1.1",
+  "description": "CommonJS plugin for Packager.",
+  "cdnjs": ".dist/index.browser.js",
+  "unpkg": ".dist/index.browser.js",
+  "jsdelivr": ".dist/index.browser.js",
+  "main": ".dist/index.js",
+  "types": ".dist/index.d.ts",
+  "author": "Adrian Barylski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baryla/packager.git"
+  },
+  "homepage": "https://github.com/baryla/packager",
+  "files": [
+    ".dist",
+    "types",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "rollup -w -c",
+    "build": "rollup -c",
+    "build-prod": "NODE_ENV=production rollup -c",
+    "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage --passWithNoTests",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared",
+    "update-version": "npm version",
+    "prepublish": "yarn build-prod",
+    "npm:publish": "npm publish"
+  },
+  "dependencies": {
+    "packager": "0.1.1",
+    "packager-shared": "0.1.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-typescript": "^2.1.0",
+    "@types/acorn": "^4.0.5",
+    "@types/jest": "^24.9.0",
+    "husky": "^4.2.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "rollup-plugin-terser": "^5.2.0",
+    "ts-jest": "^24.3.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
     },
-    "homepage": "https://github.com/baryla/packager",
-    "files": [
-        ".dist",
-        "types",
-        "package.json",
-        "README.md"
+    "roots": [
+      "<rootDir>/src"
     ],
-    "scripts": {
-        "dev": "rollup -w -c",
-        "build": "rollup -c",
-        "build-prod": "NODE_ENV=production rollup -c",
-        "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage --passWithNoTests",
-        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-        "lint": "tslint -p tsconfig.json",
-        "upgrade-packager-deps": "yarn upgrade packager && yarn upgrade packager-shared",
-        "update-version": "npm version",
-        "prepublish": "yarn build-prod",
-        "npm:publish": "npm publish"
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "dependencies": {
-        "packager": "0.1.1",
-        "packager-shared": "0.1.1"
-    },
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^11.0.1",
-        "@rollup/plugin-node-resolve": "^7.0.0",
-        "@rollup/plugin-typescript": "^2.1.0",
-        "@types/acorn": "^4.0.5",
-        "@types/jest": "^24.9.0",
-        "husky": "^4.2.3",
-        "jest": "^24.9.0",
-        "prettier": "^1.19.1",
-        "rollup-plugin-terser": "^5.2.0",
-        "ts-jest": "^24.3.0",
-        "tslint": "^5.20.1",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^3.7.4"
-    },
-    "jest": {
-        "globals": {
-            "ts-jest": {
-                "diagnostics": false
-            }
-        },
-        "roots": [
-            "<rootDir>/src"
-        ],
-        "transform": {
-            "^.+\\.tsx?$": "ts-jest"
-        },
-        "testPathIgnorePatterns": [
-            "/node_modules",
-            "/src/*/__tests__/utils"
-        ],
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ]
-    }
+    "testPathIgnorePatterns": [
+      "/node_modules",
+      "/src/*/__tests__/utils"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }
