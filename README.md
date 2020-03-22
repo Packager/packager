@@ -14,14 +14,14 @@ npm install packager
 
 ```js
 const pkger = new Packager({
-    sourcemaps: true
+  sourcemaps: true
 });
 
 try {
-    const { code } = await pkger.bundle(files);
-    console.log(code);
+  const { code } = await pkger.bundle(files);
+  console.log(code);
 } catch (e) {
-    //
+  //
 }
 ```
 
