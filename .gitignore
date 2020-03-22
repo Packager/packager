@@ -3,12 +3,11 @@ node_modules
 yarn-error.log
 .yarn
 .yarnrc.yml
-/dist
+dist
 coverage
 .DS_Store
 /demo
 .vscode
-.dist
 
 # Documentation website
 /docs/node_modules

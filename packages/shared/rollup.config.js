@@ -40,7 +40,7 @@ export default [
     plugins,
     output: [
       {
-        file: ".dist/index.js",
+        file: "dist/index.js",
         format: "esm",
         banner,
         sourcemap: true
@@ -49,7 +49,7 @@ export default [
   },
   {
     input: "types/index.d.ts",
-    output: [{ file: ".dist/index.d.ts", format: "es" }],
+    output: [{ file: "dist/index.d.ts", format: "es" }],
     plugins: [dts()]
   },
   {
@@ -58,7 +58,7 @@ export default [
     output: [
       {
         ...baseOutputSettings,
-        file: ".dist/index.browser.js",
+        file: "dist/index.browser.js",
         banner
       }
     ]

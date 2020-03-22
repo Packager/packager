@@ -1,12 +1,12 @@
 {
   "name": "packager",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "Browser-based trans-bundler.",
-  "cdnjs": ".dist/index.browser.js",
-  "unpkg": ".dist/index.browser.js",
-  "jsdelivr": ".dist/index.browser.js",
-  "main": ".dist/index.js",
-  "types": ".dist/index.d.ts",
+  "cdnjs": "dist/index.browser.js",
+  "unpkg": "dist/index.browser.js",
+  "jsdelivr": "dist/index.browser.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Adrian Barylski",
   "license": "MIT",
   "repository": {
@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/baryla/packager",
   "files": [
-    ".dist",
+    "dist",
     "types",
     "package.json",
     "README.md"
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "estree-walker": "^1.0.1",
-    "packager-shared": "0.1.1",
+    "packager-shared": "0.1.5",
     "rollup": "^1.31.1"
   },
   "devDependencies": {

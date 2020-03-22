@@ -1,6 +1,5 @@
 {
   "name": "packager-monorepo",
-  "version": "0.1.0",
   "private": true,
   "description": "Browser-based trans-bundler.",
   "cdnjs": "dist/index.browser.js",
@@ -32,6 +31,7 @@
     "format": "yarn workspaces run format",
     "lint": "yarn workspaces run lint",
     "upgrade-packager-deps": "yarn workspaces run upgrade-packager-deps",
+    "update-version": "yarn workspaces run update-version",
     "commit": "yarn format && yarn test && yarn build-prod && yarn upgrade-packager-deps && git add --all && git-cz",
     "npm:publish": "npm login && yarn workspaces run npm:publish"
   },

@@ -9,7 +9,7 @@
     "moduleResolution": "Node",
     "declaration": true,
     "typeRoots": ["../types"],
-    "outDir": "./.dist",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true
   }

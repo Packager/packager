@@ -40,7 +40,7 @@ export default [
     plugins,
     output: [
       {
-        file: ".dist/index.js",
+        file: "dist/index.js",
         format: "esm",
         banner,
         sourcemap: true
@@ -53,7 +53,7 @@ export default [
     output: [
       {
         ...baseOutputSettings,
-        file: ".dist/index.browser.js",
+        file: "dist/index.browser.js",
         banner
       }
     ]

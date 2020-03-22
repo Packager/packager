@@ -1,12 +1,12 @@
 {
   "name": "packager-plugin-less",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "LESS plugin for Packager.",
-  "cdnjs": ".dist/index.browser.js",
-  "unpkg": ".dist/index.browser.js",
-  "jsdelivr": ".dist/index.browser.js",
-  "main": ".dist/index.js",
-  "types": ".dist/index.d.ts",
+  "cdnjs": "dist/index.browser.js",
+  "unpkg": "dist/index.browser.js",
+  "jsdelivr": "dist/index.browser.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Adrian Barylski",
   "license": "MIT",
   "repository": {
@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/baryla/packager",
   "files": [
-    ".dist",
+    "dist",
     "types",
     "package.json",
     "README.md"
@@ -33,8 +33,8 @@
     "npm:publish": "npm publish"
   },
   "dependencies": {
-    "packager": "0.1.1",
-    "packager-shared": "0.1.1"
+    "packager": "0.1.5",
+    "packager-shared": "0.1.5"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",

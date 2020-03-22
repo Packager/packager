@@ -8,7 +8,7 @@
     "moduleResolution": "Node",
     "typeRoots": ["../types"],
     "module": "ES6",
-    "outDir": "./.dist",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true
   }
