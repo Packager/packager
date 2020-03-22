@@ -168,8 +168,6 @@ export declare function createTranspiler(
   context: PluginContext
 ): TranspilerContext;
 
-// export type TRANSPILE_STATUS = "PREPARE_FILES" | "PREPARE_ADDITIONAL" | "ADDITIONAL_TRANSPILED" | "TRANSPILE_COMPLETE" | "ERROR_COMPILE" | "ERROR_ADDITIONAL"
-
 export declare enum TRANSPILE_STATUS {
   PREPARE_FILES = "TRANSPILER:FILE:PREPARE",
   PREPARE_ADDITIONAL = "TRANSPILER:ADDITIONAL:PREPARE",
@@ -205,3 +203,5 @@ interface PackagerConstructor {
 export interface PackagerInterface {
   new (options: PackagerOptions): PackagerConstructor;
 }
+
+export default PackagerInterface;

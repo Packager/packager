@@ -1,4 +1,4 @@
-# Packager for Bloxy
+# Packager
 
 ## Installation
 
@@ -27,8 +27,8 @@ try {
 
 ## Examples
 
-For example on how to use Packager, visit the `examples` folder :)
+For examples on how to use Packager, visit the `examples` folder :)
 
 ## Documentation
 
-For more information, head over to the docs section.
+[Packager Documentation](https://packager.baryla.dev)
