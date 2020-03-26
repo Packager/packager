@@ -2,6 +2,12 @@
  * @todo Fix sourcemaps because they're inaccurate.
  */
 
+declare global {
+  interface Window {
+    sourceMap: any;
+  }
+}
+
 const fetchScript = (url: string) => {
   if (typeof self.importScripts === "function") {
     return self.importScripts(url);
@@ -16,14 +22,15 @@ const fetchScript = (url: string) => {
   return false;
 };
 
-fetchScript("https://unpkg.com/source-map/dist/source-map.js");
+if (!self.sourceMap) {
+  fetchScript("https://unpkg.com/source-map/dist/source-map.js");
+}
 
 const generateSourceMap = (
   filePath: string,
   originalCode: string,
   generatedCode: string
 ) => {
-  // @ts-ignore
   const map = new self.sourceMap.SourceMapGenerator({ file: filePath });
   map.setSourceContent(filePath, originalCode);
   generatedCode.split(/\r?\n/g).forEach((line: string, index: number) => {

@@ -13,12 +13,12 @@ npm install packager
 ## Usage
 
 ```js
-const pkger = new Packager({
+const packager = new Packager({
   sourcemaps: true
 });
 
 try {
-  const { code } = await pkger.bundle(files);
+  const { code } = await packager.bundle(files);
   console.log(code);
 } catch (e) {
   //
