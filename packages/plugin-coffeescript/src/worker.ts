@@ -8,7 +8,7 @@ declare global {
 const loadCoffeescript = () => {
   if (!self.CoffeeScript) {
     self.importScripts(
-      "https://unpkg.com/coffeescript/lib/coffeescript-browser-compiler-legacy/coffeescript.js"
+      "https://cdn.jsdelivr.net/npm/coffeescript/lib/coffeescript-browser-compiler-legacy/coffeescript.js"
     );
   }
 };

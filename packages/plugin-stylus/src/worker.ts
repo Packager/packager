@@ -10,7 +10,7 @@ declare global {
 const loadStylus = () => {
   if (!self.stylus) {
     self.importScripts(
-      "https://unpkg.com/@bloxy/iife-libs@latest/libs/stylus.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/stylus.js"
     );
   }
 };

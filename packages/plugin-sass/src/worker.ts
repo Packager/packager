@@ -11,7 +11,9 @@ declare global {
 
 const loadSass = () => {
   if (!self.Sass) {
-    self.importScripts("https://unpkg.com/sass.js@latest/dist/sass.sync.js");
+    self.importScripts(
+      "https://cdn.jsdelivr.net/npm/sass.js@latest/dist/sass.sync.js"
+    );
   }
 };
 

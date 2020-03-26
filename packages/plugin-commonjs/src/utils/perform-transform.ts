@@ -79,7 +79,7 @@ export const loadMagicString = () =>
   new Promise(resolve => {
     const script = document.createElement("script");
     script.src =
-      "https://unpkg.com/@bloxy/iife-libs@0.0.4/libs/magic-string.js";
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@0.0.4/libs/magic-string.js";
     script.setAttribute("data-packager", "true");
     script.onload = resolve;
     document.head.appendChild(script);

@@ -23,7 +23,7 @@ const fetchScript = (url: string) => {
 };
 
 if (!self.sourceMap) {
-  fetchScript("https://unpkg.com/source-map/dist/source-map.js");
+  fetchScript("https://cdn.jsdelivr.net/npm/source-map/dist/source-map.js");
 }
 
 const generateSourceMap = (

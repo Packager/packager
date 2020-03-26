@@ -13,34 +13,40 @@ declare global {
 
 const loadTemplateCompiler = () => {
   if (!self.VueTemplateCompiler) {
-    self.importScripts("https://unpkg.com/vue-template-compiler/browser.js");
+    self.importScripts(
+      "https://cdn.jsdelivr.net/npm/vue-template-compiler/browser.js"
+    );
   }
 };
 
 const loadBuble = () => {
   if (!self.buble) {
     self.importScripts(
-      "https://unpkg.com/@bloxy/iife-libs@latest/libs/buble.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/buble.js"
     );
   }
 };
 
 const loadHashSum = () => {
   if (!self.hashSum) {
-    self.importScripts("https://unpkg.com/hash-sum-browser/dist/index.min.js");
+    self.importScripts(
+      "https://cdn.jsdelivr.net/npm/hash-sum-browser/dist/index.min.js"
+    );
   }
 };
 
 const loadCss = () => {
   if (!self.css) {
-    self.importScripts("https://unpkg.com/@bloxy/iife-libs@latest/libs/css.js");
+    self.importScripts(
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/css.js"
+    );
   }
 };
 
 const loadPostcssSelectorParser = () => {
   if (!self.postcssSelectorParser) {
     self.importScripts(
-      "https://unpkg.com/@bloxy/iife-libs@latest/libs/postcss-selector-parser.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/postcss-selector-parser.js"
     );
   }
 };
@@ -96,6 +102,7 @@ self.addEventListener("message", async ({ data }: any) => {
     let code = file.code;
     if (additional) {
       try {
+        console.log(additional);
         // append the style injector here
         // do something with html stuff here like vue pug. but later.
         // code + styles

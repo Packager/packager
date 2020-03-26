@@ -1,5 +1,5 @@
 import { File, TRANSPILE_STATUS } from "packager";
-import { resolveRelative, stylePluginHelpers } from "packager-shared";
+import { resolveRelative } from "packager-shared";
 import parseCssImport from "./utils/parse-css-import";
 
 declare global {
@@ -10,7 +10,9 @@ declare global {
 
 const loadCss = () => {
   if (!self.css) {
-    self.importScripts("https://unpkg.com/@bloxy/iife-libs@latest/libs/css.js");
+    self.importScripts(
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/css.js"
+    );
   }
 };
 
@@ -45,10 +47,7 @@ const prepareAndTranspileFile = (file: any, context: any) => {
 
   const compiledCode = self.css.stringify(originalAst);
 
-  return {
-    ...file,
-    code: stylePluginHelpers.generateExport({ ...file, code: compiledCode })
-  };
+  return { ...file, code: compiledCode };
 };
 
 const getAstFromFile = (file: File) =>

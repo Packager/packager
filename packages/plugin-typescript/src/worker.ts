@@ -9,7 +9,7 @@ declare global {
 const loadSucrase = () => {
   if (!self.sucrase) {
     self.importScripts(
-      "https://unpkg.com/@bloxy/iife-libs@latest/libs/sucrase.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/sucrase.js"
     );
   }
 };

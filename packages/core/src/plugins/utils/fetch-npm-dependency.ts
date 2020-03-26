@@ -5,7 +5,7 @@ const services: { [key: string]: { [key: string]: string } } = {
     url: "https://unpkg.com"
   },
   jsdelivr: {
-    url: "https://cdn.jsdelivr.net"
+    url: "https://cdn.jsdelivr.net/npm"
   }
 };
 

@@ -26,7 +26,6 @@ const resolveExternal = (
       const cachedParent = context.dependencies.get(parentPath);
       if (cachedParent) {
         const relativeExternalUrl = new URL(cachedParent.meta.url).pathname;
-
         return path.resolve(path.dirname(relativeExternalUrl), childPath);
       }
 
