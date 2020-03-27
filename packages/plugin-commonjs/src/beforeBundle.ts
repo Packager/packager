@@ -28,7 +28,11 @@ export default async function(
       return cachedDependency.transformedCode;
     }
 
-    return `const __default = window.__dependencies['${moduleId}']; export default __default;`;
+    const keys = Object.keys(window.__dependencies![moduleId]);
+    const exports = keys.length
+      ? `export const { ${keys.map(m => `${m}`)} } = __default;`
+      : "";
+    return `const __default = window.__dependencies['${moduleId}']; ${exports} export default __default; `;
   }
 
   const sourceMap = true;

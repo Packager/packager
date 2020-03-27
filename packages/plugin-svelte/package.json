@@ -1,6 +1,6 @@
 {
   "name": "packager-plugin-svelte",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Svelte plugin for Packager.",
   "cdnjs": "dist/index.browser.js",
   "unpkg": "dist/index.browser.js",
@@ -33,8 +33,8 @@
     "npm:publish": "npm publish"
   },
   "dependencies": {
-    "packager": "0.1.5",
-    "packager-shared": "0.1.5"
+    "packager": "0.1.6",
+    "packager-shared": "0.1.6"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
