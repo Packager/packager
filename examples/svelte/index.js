@@ -2,6 +2,7 @@ const packager = new Packager();
 packager.registerPlugin(commonjsPlugin);
 packager.registerPlugin(sveltePlugin);
 packager.registerPlugin(sassPlugin);
+packager.registerPlugin(cssPlugin);
 
 const files = [
   {
@@ -9,7 +10,8 @@ const files = [
     path: "/src/app.js",
     entry: true,
     code: `import SvelteApp from './App.svelte';
-        
+import './styles.css';
+
 new SvelteApp({
     target: document.getElementById('app')
 })`
@@ -32,6 +34,13 @@ h1 {
     text-decoration: underline;
 }
 </style>`
+  },
+  {
+    name: "styles.css",
+    path: "/src/styles.css",
+    code: `h1 {
+  background: pink;
+}`
   }
 ];
 

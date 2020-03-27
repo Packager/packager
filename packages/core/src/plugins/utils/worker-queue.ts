@@ -30,8 +30,9 @@ const workerQueue = (): WorkerQueue => ({
       const task = this.queue.shift();
       try {
         if (task) {
-          this.currentTask = await task;
-          this.complete.push(this.currentTask);
+          this.currentTask = task;
+          const complete = await this.currentTask;
+          this.complete.push(complete);
           this.currentTask = undefined;
 
           if (this.queue.length) {
