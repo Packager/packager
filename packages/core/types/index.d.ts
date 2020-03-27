@@ -192,7 +192,7 @@ export type WorkerQueue = {
 type PackagerBundleResult = {
   code: string;
 };
-interface PackagerConstructor {
+export interface PackagerConstructor {
   bundle: (
     files: File[],
     bundleOptions: BundleOptions

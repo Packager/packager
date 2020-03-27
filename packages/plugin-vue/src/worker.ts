@@ -102,7 +102,6 @@ self.addEventListener("message", async ({ data }: any) => {
     let code = file.code;
     if (additional) {
       try {
-        console.log(additional);
         // append the style injector here
         // do something with html stuff here like vue pug. but later.
         // code + styles
