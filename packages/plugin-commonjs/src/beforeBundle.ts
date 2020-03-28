@@ -5,7 +5,7 @@ import performTransformation, {
   checkEsModule,
   hasCjsKeywords
 } from "./utils/perform-transform";
-import { setIsCjsPromise } from "./utils/is-cjs-promise";
+import { setIsCjsPromise, reservedWords } from "./utils";
 
 const isNotTransformable = (moduleId: string, code: string) =>
   !moduleId.endsWith("?commonjs-proxy") &&
@@ -28,9 +28,18 @@ export default async function(
       return cachedDependency.transformedCode;
     }
 
+    /**
+     * We have to export everything from __default in a destructured assingment
+     * apart from the reserved keywords. As an example, Vue has a delete function on the
+     * Vue instance so when we try to export that, we get a reserved keyword error.
+     * However, we are fine to filter those out because they will most likely not even be used.
+     */
     const keys = Object.keys(window.__dependencies![moduleId]);
+    const reserved = reservedWords.split(" ");
     const exports = keys.length
-      ? `export const { ${keys.map(m => `${m}`)} } = __default;`
+      ? `export const { ${keys
+          .filter(m => !reserved.includes(m))
+          .map(m => `${m}`)} } = __default;`
       : "";
     return `const __default = window.__dependencies['${moduleId}']; ${exports} export default __default; `;
   }

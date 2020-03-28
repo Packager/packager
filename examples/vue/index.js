@@ -2,7 +2,7 @@ const packager = new Packager();
 packager.registerPlugin(commonjsPlugin);
 packager.registerPlugin(vuePlugin);
 packager.registerPlugin(sassPlugin);
-packager.registerPlugin(cssPlugin);
+packager.registerPlugin(lessPlugin);
 
 const files = [
   {
@@ -31,9 +31,10 @@ h1 {
   text-decoration: underline;
 }
 </style>
-<style>
+<style lang="less">
+@color: red;
 h1 {
-  color: red;
+  color: @color;
 }
 </style>`
   }
