@@ -135,10 +135,17 @@ const prepareFileAndCompileTemplate = (file: any) => {
   const scopeId = `data-v-${self.hashSum(file.path)}`;
   const scoped = styles.some((style: any) => style.scoped === true);
 
+  const compiledScript = compileTemplate(
+    script.content,
+    template,
+    scopeId,
+    scoped
+  );
+
   return {
     styles: prepareStyles(styles, scoped ? scopeId : null, file),
     html: [],
-    script: compileTemplate(script.content, template, scopeId, scoped)
+    script: compiledScript
   };
 };
 
@@ -282,13 +289,17 @@ const insertTemplateInExport = (
   const exportRegex = /^export default.*/gm;
   if (exportRegex.test(content)) {
     const insideExport = /\{(.*)\}/gms.exec(content);
+    const beforeExport = /^.*(?=\export default)/gms.exec(content);
     const _template = "`" + template + "`";
-    content = `export default {
+
+    content = `${beforeExport} 
+        ;export default {
             template: ${_template},
             render: __renderFns__.render,
-            staticRenderFns: __renderFns__.staticRenderFns, 
+            staticRenderFns: __renderFns__.staticRenderFns,
             ${scoped ? `_scopeId:"` + scopeId + `",` : ""}
-            ${insideExport && insideExport.length ? insideExport[1] : ""} }; `;
+            ${insideExport && insideExport.length ? insideExport[1] : ""} 
+        }; `;
   }
 
   return content;

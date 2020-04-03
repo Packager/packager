@@ -1,6 +1,6 @@
 {
   "name": "packager-shared",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Shared utils for Packager.",
   "cdnjs": "dist/index.browser.js",
   "unpkg": "dist/index.browser.js",
@@ -33,7 +33,7 @@
     "npm:publish": "npm publish"
   },
   "dependencies": {
-    "packager": "0.1.8"
+    "packager": "0.1.9"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
