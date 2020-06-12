@@ -1,3 +1,3 @@
-# CSS Plugin
+# Packager CSS Plugin
 
-CSS Plugin for Packager.
+CSS plugin for Packager

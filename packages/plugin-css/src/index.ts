@@ -1,15 +1,16 @@
-import { createPlugin } from "packager";
+import { createPlugin, styleHelpers } from "packager-pluginutils";
 // @ts-ignore
-import Worker from "web-worker:./worker.ts";
-import beforeBundle from "./beforeBundle";
+import Worker from "web-worker:./worker";
 
 const cssPlugin = createPlugin({
   name: "css",
   extensions: [".css"],
-  beforeBundle,
   transpiler: {
-    worker: Worker
-  }
+    worker: Worker,
+  },
+  beforeBundle(code: string, moduleId: string) {
+    return styleHelpers.generateExport({ path: moduleId, code });
+  },
 });
 
 export default cssPlugin;

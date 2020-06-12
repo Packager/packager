@@ -1,3 +1,3 @@
-# TypeScript Plugin
+# Packager Typescript Plugin
 
-TypeScript Plugin for Packager.
+Typescript plugin for Packager

@@ -1,10 +1,11 @@
-import { createPlugin } from "packager";
-
-import beforeBundle from "./beforeBundle";
+import { createPlugin } from "packager-pluginutils";
 
 const jsonPlugin = createPlugin({
   name: "json",
-  beforeBundle
+  extensions: [".json"],
+  beforeBundle(code: string) {
+    return `export default ${code}`;
+  },
 });
 
 export default jsonPlugin;

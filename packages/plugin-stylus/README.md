@@ -1,3 +1,3 @@
-# Stylus Plugin
+# Packager Stylus Plugin
 
-Stylus Plugin for Packager.
+Stylus plugin for Packager

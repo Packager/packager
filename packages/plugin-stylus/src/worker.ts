@@ -1,5 +1,5 @@
-import { TRANSPILE_STATUS } from "packager";
-import { stylePluginHelpers } from "packager-shared";
+import { File, WebWorkerEvent, WebWorkerContext } from "packager";
+import { TRANSPILE_STATUS } from "packager-pluginutils";
 
 declare global {
   interface Window {
@@ -10,34 +10,35 @@ declare global {
 const loadStylus = () => {
   if (!self.stylus) {
     self.importScripts(
-      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/stylus.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs/libs/stylus.js"
     );
   }
 };
 
 loadStylus();
 
-self.addEventListener("message", async ({ data }: any) => {
-  loadStylus();
+self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
   const { file, type, context } = data;
-  if (type === TRANSPILE_STATUS.PREPARE_FILES) {
-    try {
-      const transpiledFile = await transpileFile(file);
 
+  if (type === TRANSPILE_STATUS.START) {
+    try {
+      const transpiledFile = await transpileFile(file, context);
+      // @ts-ignore
       self.postMessage({
-        type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
-        file: transpiledFile
+        type: TRANSPILE_STATUS.END,
+        file: transpiledFile,
       });
     } catch (error) {
+      // @ts-ignore wrong scope
       self.postMessage({
-        type: TRANSPILE_STATUS.ERROR_COMPILE,
-        error
+        type: TRANSPILE_STATUS.ERROR,
+        error,
       });
     }
   }
 });
 
-const transpileFile = (file: any) =>
+const transpileFile = async (file: File, context: WebWorkerContext) =>
   new Promise((resolve, reject) => {
     self
       .stylus(file.code)
@@ -46,13 +47,7 @@ const transpileFile = (file: any) =>
         if (err) {
           reject(err);
         } else {
-          resolve({
-            ...file,
-            code: stylePluginHelpers.generateExport({
-              ...file,
-              code: css
-            })
-          });
+          resolve({ ...file, code: css });
         }
       });
   });

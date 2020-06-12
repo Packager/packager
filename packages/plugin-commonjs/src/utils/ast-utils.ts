@@ -1,52 +1,94 @@
-/**
- * Modified from: https://github.com/rollup/plugins/tree/master/packages/commonjs
- */
+/* eslint-disable no-undefined */
+import { Node } from "estree";
 
-export const operators: any = {
-  "==": (x: any) => equals(x.left, x.right, false),
+export function isReference(node: Node, parent: Node): boolean {
+  if (node.type === "MemberExpression") {
+    return !node.computed && isReference(node.object, node);
+  }
 
-  "!=": (x: any) => not(operators["=="](x)),
+  if (node.type === "Identifier") {
+    if (!parent) return true;
 
-  "===": (x: any) => equals(x.left, x.right, true),
+    switch (parent.type) {
+      // disregard `bar` in `foo.bar`
+      case "MemberExpression":
+        return parent.computed || node === parent.object;
 
-  "!==": (x: any) => not(operators["==="](x)),
+      // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
+      case "MethodDefinition":
+        return parent.computed;
 
-  "!": (x: any) => isFalsy(x.argument),
+      // disregard the `foo` in `class {foo=bar}` but keep it in `class {[foo]=bar}` and `class {bar=foo}`
+      case "FieldDefinition" as any:
+        return (parent as any).computed || node === (parent as any).value;
 
-  "&&": (x: any) => isTruthy(x.left) && isTruthy(x.right),
+      // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
+      case "Property":
+        return parent.computed || node === parent.value;
 
-  "||": (x: any) => isTruthy(x.left) || isTruthy(x.right)
+      // disregard the `bar` in `export { foo as bar }` or
+      // the foo in `import { foo as bar }`
+      case "ExportSpecifier":
+      case "ImportSpecifier":
+        return node === parent.local;
+
+      // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
+      case "LabeledStatement":
+      case "BreakStatement":
+      case "ContinueStatement":
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  return false;
+}
+
+const operators = {
+  "==": (x) => equals(x.left, x.right, false),
+
+  "!=": (x) => not(operators["=="](x)),
+
+  "===": (x) => equals(x.left, x.right, true),
+
+  "!==": (x) => not(operators["==="](x)),
+
+  "!": (x) => isFalsy(x.argument),
+
+  "&&": (x) => isTruthy(x.left) && isTruthy(x.right),
+
+  "||": (x) => isTruthy(x.left) || isTruthy(x.right),
 };
 
-export const extractors: any = {
-  Identifier(names: string[], node: any) {
+const extractors = {
+  Identifier(names, node) {
     names.push(node.name);
   },
 
-  ObjectPattern(names: string[], node: any) {
-    node.properties.forEach((prop: any) => {
+  ObjectPattern(names, node) {
+    node.properties.forEach((prop) => {
       getExtractor(prop.value.type)(names, prop.value);
     });
   },
 
-  ArrayPattern(names: string[], node: any) {
-    node.elements.forEach((element: any) => {
+  ArrayPattern(names, node) {
+    node.elements.forEach((element) => {
       if (!element) return;
       getExtractor(element.type)(names, element);
     });
   },
 
-  RestElement(names: string[], node: any) {
+  RestElement(names, node) {
     getExtractor(node.argument.type)(names, node.argument);
   },
 
-  AssignmentPattern(names: string[], node: any) {
+  AssignmentPattern(names, node) {
     getExtractor(node.left.type)(names, node.left);
   },
-  MemberExpression() {}
 };
 
-export const flatten = (node: any) => {
+export function flatten(node) {
   const parts = [];
 
   while (node.type === "MemberExpression") {
@@ -63,72 +105,39 @@ export const flatten = (node: any) => {
   parts.unshift(name);
 
   return { name, keypath: parts.join(".") };
-};
+}
 
-export const extractNames = (node: any) => {
-  const names: string[] = [];
+export function extractNames(node) {
+  const names = [];
   extractors[node.type](names, node);
   return names;
-};
+}
 
-export const getExtractor = (type: any) => {
+function getExtractor(type) {
   const extractor = extractors[type];
   if (!extractor) throw new SyntaxError(`${type} pattern not supported.`);
   return extractor;
-};
+}
 
-export const isTruthy = (node: any): any => {
+export function isTruthy(node) {
   if (node.type === "Literal") return !!node.value;
   if (node.type === "ParenthesizedExpression") return isTruthy(node.expression);
   if (node.operator in operators) return operators[node.operator](node);
   return undefined;
-};
+}
 
-export const isFalsy = (node: any) => {
+export function isFalsy(node) {
   return not(isTruthy(node));
-};
+}
 
-export const not = (value: any) => {
+function not(value) {
   return value === undefined ? value : !value;
-};
+}
 
-export const equals = (a: any, b: any, strict: boolean) => {
+function equals(a, b, strict) {
   if (a.type !== b.type) return undefined;
   // eslint-disable-next-line eqeqeq
   if (a.type === "Literal")
     return strict ? a.value === b.value : a.value == b.value;
   return undefined;
-};
-
-export const isReference = (node: any, parent: any): any => {
-  if (node.type === "MemberExpression") {
-    return !node.computed && isReference(node.object, node);
-  }
-  if (node.type === "Identifier") {
-    if (!parent) return true;
-    switch (parent.type) {
-      // disregard `bar` in `foo.bar`
-      case "MemberExpression":
-        return parent.computed || node === parent.object;
-      // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
-      case "MethodDefinition":
-        return parent.computed;
-      // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
-      case "Property":
-        return parent.computed || node === parent.value;
-      // disregard the `bar` in `export { foo as bar }` or
-      // the foo in `import { foo as bar }`
-      case "ExportSpecifier":
-      case "ImportSpecifier":
-        return node === parent.local;
-      // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
-      case "LabeledStatement":
-      case "BreakStatement":
-      case "ContinueStatement":
-        return false;
-      default:
-        return true;
-    }
-  }
-  return false;
-};
+}

@@ -1,129 +1,73 @@
-import { File, TRANSPILE_STATUS } from "packager";
-import { resolveRelative } from "packager-shared";
-import parseCssImport from "./utils/parse-css-import";
+import { File, WebWorkerEvent, WebWorkerContext } from "packager";
+import { TRANSPILE_STATUS, path, styleHelpers } from "packager-pluginutils";
+import { importPlugin, ImportPluginOptions } from "./postcss-plugins";
+
+import { Postcss } from "./types";
 
 declare global {
   interface Window {
-    css: any;
+    postcss: Postcss;
   }
 }
 
-const loadCss = () => {
-  if (!self.css) {
+const loadPostcss = () => {
+  if (!self.postcss) {
     self.importScripts(
-      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/css.js"
+      "https://cdn.jsdelivr.net/npm/@bloxy/iife-libs@latest/libs/postcss.js"
     );
   }
 };
 
-loadCss();
+loadPostcss();
 
-self.addEventListener("message", async ({ data }: any) => {
-  loadCss();
-
+self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
   const { file, type, context } = data;
 
-  if (type === TRANSPILE_STATUS.PREPARE_FILES) {
+  if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledFile = prepareAndTranspileFile(file, context);
+      const transpiledFile = await transpileFile(file, context);
 
+      // @ts-ignore
       self.postMessage({
-        type: TRANSPILE_STATUS.TRANSPILE_COMPLETE,
-        file: transpiledFile
+        type: TRANSPILE_STATUS.END,
+        file: transpiledFile,
       });
     } catch (error) {
+      // @ts-ignore wrong scope
       self.postMessage({
-        type: TRANSPILE_STATUS.ERROR_COMPILE,
-        error
+        type: TRANSPILE_STATUS.ERROR,
+        error,
       });
     }
   }
 });
 
-const prepareAndTranspileFile = (file: any, context: any) => {
-  const originalAst = getAstFromFile(file);
-  const rules = appendImportedFilesWithAst(file.path, originalAst, context);
-  originalAst.stylesheet.rules = rules;
+const transpileFile = async (file: File, context: WebWorkerContext) => {
+  const importOptions: ImportPluginOptions = {
+    postcss: self.postcss,
+    resolve: async (moduleId: string, parentId: string) => {
+      return path.resolve(path.dirname(parentId), moduleId);
+    },
+    load: async (moduleId: string) => {
+      const module = context.files.find((f) => f.path === moduleId);
 
-  const compiledCode = self.css.stringify(originalAst);
-
-  return { ...file, code: compiledCode };
-};
-
-const getAstFromFile = (file: File) =>
-  self.css.parse(file.code, { source: file.path });
-
-const appendImportedFilesWithAst = (
-  currentPath: any,
-  currentAst: any,
-  context: any,
-  loopedRules: any = []
-) => {
-  const rules = currentAst.stylesheet.rules || [];
-  for (let rule of rules) {
-    if (rule.type != "import") {
-      loopedRules.push(rule);
-    }
-
-    if (rule.import) {
-      const importRule = `@import ${rule.import};`;
-      const parsedImport = parseCssImport(importRule);
-
-      if (parsedImport.path) {
-        const foundFile = <File | null>(
-          resolveRelative(parsedImport.path, currentPath, context, false)
-        );
-
-        if (foundFile) {
-          if (!foundFile.path.endsWith(".css")) {
-            throw new Error(
-              `You can't import ${foundFile.path} in ${currentPath} because it's not a CSS file.`
-            );
-          }
-
-          const parsedAdditionalFile = self.css.parse(foundFile.code, {
-            source: foundFile.path
-          });
-
-          if (!parsedImport.condition || !parsedImport.condition.length) {
-            appendImportedFilesWithAst(
-              foundFile.path,
-              parsedAdditionalFile,
-              context,
-              loopedRules
-            );
-          } else {
-            const importRules = parsedAdditionalFile.stylesheet.rules.filter(
-              (r: any) => r.type === "import"
-            );
-
-            loopedRules.push({
-              media: parsedImport.condition,
-              rules: parsedAdditionalFile.stylesheet.rules.filter(
-                (r: any) => r.type !== "import"
-              ),
-              type: "media"
-            });
-
-            if (importRules.length) {
-              let appendAdditionalImports = {
-                ...parsedAdditionalFile
-              };
-
-              appendAdditionalImports.stylesheet.rules = importRules;
-
-              appendImportedFilesWithAst(
-                foundFile.path,
-                appendAdditionalImports,
-                context,
-                loopedRules
-              );
-            }
-          }
-        }
+      if (module) {
+        return module.code;
       }
-    }
-  }
 
-  return loopedRules;
+      throw new Error(`Not able to load ${moduleId}`);
+    },
+  };
+
+  const plugins = [importPlugin(importOptions)];
+  const result = await self.postcss(plugins).process(file.code, {
+    from: file.path,
+    to: file.path,
+    map: { inline: true },
+  });
+
+  return {
+    ...file,
+    code: result.css,
+  };
 };

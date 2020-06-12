@@ -1,3 +1,3 @@
-# CommonJS Plugin
+# Packager CommonJS Plugin
 
-CommonJS Plugin for Packager.
+CommonJS plugin for Packager

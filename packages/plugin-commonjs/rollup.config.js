@@ -1,34 +1,33 @@
-import typescript from "@rollup/plugin-typescript";
+import typescript from "rollup-plugin-typescript2";
 import resolve from "@rollup/plugin-node-resolve";
 import cjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-
+import webWorkerLoader from "rollup-plugin-web-worker-loader";
 import pkg from "./package.json";
 
-const plugins = [resolve(), typescript(), cjs()];
+const plugins = [
+  resolve(),
+  typescript(),
+  webWorkerLoader({ extensions: [".ts"] }),
+  cjs(),
+];
 
 if (process.env.NODE_ENV === "production") {
   plugins.push(
     terser({
       output: {
-        comments: (n, c) => /@license/i.test(c.value)
-      }
+        comments: (n, c) => /@license/i.test(c.value),
+      },
     })
   );
 }
 
-const baseOutputSettings = {
-  name: "commonjsPlugin",
-  format: "iife",
-  compact: true
-};
-
 const banner = `/*
     @license
 
-    Packager Commonjs Plugin v${pkg.version}
+    Packager CommonJS Plugin v${pkg.version}
     @author baryla (Adrian Barylski)
-    @github https://github.com/baryla/packager
+    @github https://github.com/packager/packager
 
     Released under the MIT License.
 */`;
@@ -40,22 +39,23 @@ export default [
     plugins,
     output: [
       {
-        file: "dist/index.js",
+        dir: "dist",
         format: "esm",
         banner,
-        sourcemap: true
-      }
-    ]
+      },
+    ],
   },
   {
     input: "src/index.browser.ts",
     plugins,
     output: [
       {
-        ...baseOutputSettings,
+        name: "commonjsPlugin",
+        format: "iife",
+        compact: true,
         file: "dist/index.browser.js",
-        banner
-      }
-    ]
-  }
+        banner,
+      },
+    ],
+  },
 ];

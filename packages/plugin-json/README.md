@@ -1,3 +1,3 @@
-# JSON Plugin
+# Packager JSON Plugin
 
-JSON Plugin for Packager.
+JSON plugin for Packager
