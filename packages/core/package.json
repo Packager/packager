@@ -1,0 +1,53 @@
+{
+  "name": "packager",
+  "version": "0.2.0",
+  "description": "Browser-based bundler",
+  "cdnjs": "dist/index.browser.js",
+  "unpkg": "dist/index.browser.js",
+  "jsdelivr": "dist/index.browser.js",
+  "main": "dist/index.js",
+  "types": "dist/types.d.ts",
+  "author": "Adrian Barylski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Packager/packager.git"
+  },
+  "homepage": "https://github.com/Packager/packager",
+  "files": [
+    "dist",
+    "types",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "rollup -w -c",
+    "build": "rollup -c",
+    "build-prod": "NODE_ENV=production rollup -c",
+    "test": "jest --detectOpenHandles --testTimeout=10000 --forceExit --coverage --passWithNoTests",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "upgrade-packager-deps": "yarn upgrade packager-shared",
+    "update-version": "npm version",
+    "prepublish": "yarn build-prod",
+    "npm:publish": "npm publish"
+  },
+  "dependencies": {
+    "packager-pluginutils": "0.2.0",
+    "rollup": "^2.13.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.1",
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "rollup-plugin-dts": "^1.4.7",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.0",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  }
+}
