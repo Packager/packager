@@ -1,1 +1,4 @@
-export { default as createTranspiler } from "./create-transpiler";
+export {
+  default as createTranspiler,
+  TranspileContext,
+} from "./create-transpiler";

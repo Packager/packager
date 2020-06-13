@@ -1,20 +1,20 @@
-import { File } from "packager";
+import { File, WebWorkerEvent, WORKER_ORIGIN } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
 import { TransformOptions, BabelFileResult } from "@babel/core";
 
 import commonjsPlugin from "./plugins/commonjs-to-es6";
 
-declare global {
-  interface Window {
-    Babel: {
-      transform: (
-        code: string,
-        options?: TransformOptions
-      ) => BabelFileResult | null;
-      availablePlugins: Record<string, any>;
-    };
-  }
+interface WebWorker extends Worker {
+  Babel: {
+    transform: (
+      code: string,
+      options?: TransformOptions
+    ) => BabelFileResult | null;
+    availablePlugins: Record<string, any>;
+  };
+  importScripts: (...urls: Array<string>) => void;
 }
+declare const self: WebWorker;
 
 const loadBabel = () => {
   if (!self.Babel) {
@@ -26,28 +26,24 @@ const loadBabel = () => {
 
 loadBabel();
 
-self.addEventListener("message", async ({ data }: any) => {
-  const { type, file } = data;
+self.addEventListener("message", async (event: WebWorkerEvent) => {
+  const { context, type } = event.data;
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiled = self.Babel.transform(file.code, {
-        filename: file.path,
+      const transpiled = self.Babel.transform(context.code, {
+        filename: context.moduleId,
         plugins: [commonjsPlugin],
       });
 
       const transpiledFile =
-        transpiled.code === file.code
-          ? null
-          : { ...file, code: transpiled.code };
+        transpiled.code === context.code ? null : { code: transpiled.code };
 
-      // @ts-ignore
       self.postMessage({
         type: TRANSPILE_STATUS.END,
-        file: transpiledFile,
+        context: transpiledFile,
       });
     } catch (error) {
-      // @ts-ignore wrong scope
       self.postMessage({
         type: TRANSPILE_STATUS.ERROR,
         error,

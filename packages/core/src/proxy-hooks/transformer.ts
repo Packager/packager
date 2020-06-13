@@ -1,17 +1,40 @@
-import { verifyExtensions } from "packager-pluginutils";
-import { Plugin, File } from "../types";
+import { Plugin } from "../types";
 import { createTranspiler } from "./utils";
 import { packagerContext, isModuleExternal } from "../utils";
+import { TranspileContext } from "./utils";
 
 const transformerHook = (plugin: Plugin) =>
   new Proxy(
     async (code: string, moduleId: string) => {
-      const isExternal = isModuleExternal(moduleId);
-      if (isExternal && !verifyExtensions(plugin.extensions)(moduleId)) {
+      /**
+       * if gateway doesn't exist on the transpiler object,
+       * we throw because it is a required field of a plugin.
+       */
+      if (!plugin.transpiler.gateway) {
+        throw new Error(`'gateway' is required in ${plugin.name}`);
+      }
+
+      /**
+       * if both worker and beforeBundle don't exist, we should ignore
+       * because another plugin could be taking care of this.
+       */
+      if (!plugin.transpiler.worker && !plugin.transpiler.beforeBundle) {
         return null;
       }
 
-      if (!plugin.transpiler) {
+      /**
+       * if the provided gateway check fails, we don't need to worry about
+       * this as this plugin is not interested in this particular file/code.
+       */
+      if (!plugin.transpiler.gateway(moduleId, code)) {
+        return null;
+      }
+
+      /**
+       * if worker doesn't exist but beforeBundle does, we can safely return
+       * code and moduleId because we already check for any ignores.
+       */
+      if (!plugin.transpiler.worker && plugin.transpiler.beforeBundle) {
         return { code, moduleId };
       }
 
@@ -28,11 +51,11 @@ const transformerHook = (plugin: Plugin) =>
         });
       }
 
-      const file = packagerContext
-        .get("files")
-        .find((file) => file.path === moduleId);
-
-      const transpiled = await transpiler.transpile({ ...file, code });
+      const transpiled = await transpiler.transpile({
+        isExternal: isModuleExternal(moduleId),
+        moduleId,
+        code,
+      } as TranspileContext);
 
       if (transpiled) {
         return {
@@ -42,7 +65,7 @@ const transformerHook = (plugin: Plugin) =>
         };
       }
 
-      return null;
+      throw new Error(`Failed to transpile ${moduleId} in ${transpilerName}.`);
     },
     {
       async apply(target, thisArg, argumentsList) {
@@ -58,12 +81,14 @@ const transformerHook = (plugin: Plugin) =>
 
         const { code, map, moduleId } = handledTransformFunction;
 
-        if (!plugin.beforeBundle) {
+        if (!plugin.transpiler.beforeBundle) {
           return handledTransformFunction;
         }
 
         return {
-          code: plugin.beforeBundle.bind(thisArg)(code, moduleId) || code,
+          code:
+            plugin.transpiler.beforeBundle.bind(thisArg)(moduleId, code) ||
+            code,
           map,
         };
       },

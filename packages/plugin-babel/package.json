@@ -33,6 +33,7 @@
     "npm:publish": "npm publish"
   },
   "dependencies": {
+    "estree-walker": "^2.0.1",
     "packager": "0.2.0",
     "packager-pluginutils": "0.2.0",
     "rollup": "^2.13.1"

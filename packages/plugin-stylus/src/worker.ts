@@ -1,11 +1,11 @@
-import { File, WebWorkerEvent, WebWorkerContext } from "packager";
+import { WebWorkerEvent, WebWorkerContext } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
 
-declare global {
-  interface Window {
-    stylus: any;
-  }
+interface WebWorker extends Worker {
+  stylus: (code: string) => any;
+  importScripts: (...urls: Array<string>) => void;
 }
+declare const self: WebWorker;
 
 const loadStylus = () => {
   if (!self.stylus) {
@@ -18,18 +18,17 @@ const loadStylus = () => {
 loadStylus();
 
 self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
-  const { file, type, context } = data;
+  const { type, context } = data;
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledFile = await transpileFile(file, context);
-      // @ts-ignore
+      const transpiledFile = await transpileFile(context);
+
       self.postMessage({
         type: TRANSPILE_STATUS.END,
-        file: transpiledFile,
+        context: transpiledFile,
       });
     } catch (error) {
-      // @ts-ignore wrong scope
       self.postMessage({
         type: TRANSPILE_STATUS.ERROR,
         error,
@@ -38,16 +37,16 @@ self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
   }
 });
 
-const transpileFile = async (file: File, context: WebWorkerContext) =>
+const transpileFile = async (context: WebWorkerContext) =>
   new Promise((resolve, reject) => {
     self
-      .stylus(file.code)
-      .set("filename", file.path)
+      .stylus(context.code)
+      .set("filename", context.moduleId)
       .render((err: any, css: string) => {
         if (err) {
           reject(err);
         } else {
-          resolve({ ...file, code: css });
+          resolve({ ...context, code: css });
         }
       });
   });

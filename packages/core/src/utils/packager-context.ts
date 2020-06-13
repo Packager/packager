@@ -4,6 +4,7 @@ import WorkerQueue from "./worker-queue";
 window.__PACKAGER_CONTEXT__ = window.__PACKAGER_CONTEXT__ || {
   _rollupPlugins: new Map(),
   _workerQueue: new WorkerQueue(),
+  _parser: null,
 
   plugins: new Map(),
   files: [],

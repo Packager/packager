@@ -1,10 +1,16 @@
-import { createPlugin } from "packager-pluginutils";
+import { createPlugin, verifyExtensions } from "packager-pluginutils";
+
+const isValid = verifyExtensions([".json"]);
 
 const jsonPlugin = createPlugin({
   name: "json",
-  extensions: [".json"],
-  beforeBundle(code: string) {
-    return `export default ${code}`;
+  transpiler: {
+    gateway(moduleId: string) {
+      return isValid(moduleId);
+    },
+    beforeBundle(_, code: string) {
+      return `export default ${code}`;
+    },
   },
 });
 

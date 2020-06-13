@@ -13,14 +13,17 @@ import { Postcss } from "../../types";
 
 export interface ImportPluginOptions {
   postcss: Postcss;
-  resolve: (moduleId: string, parentId: string) => Promise<string | null>;
-  load: (moduleId: string) => Promise<string>;
+  resolver: (moduleId: string, parentId: string) => Promise<string | null>;
+  loader: (moduleId: string) => Promise<string>;
+  skipDuplicates?: boolean;
 }
 
 const importPlugin = (options: ImportPluginOptions) => (
   styles: Root,
   result: Result
 ) => {
+  options = { ...options, skipDuplicates: true };
+
   const state = {
     importedFiles: {},
     hashFiles: {},
@@ -106,7 +109,13 @@ function applyStyles(bundle, styles) {
   });
 }
 
-function parseStyles(result, styles, options, state, media) {
+function parseStyles(
+  result,
+  styles,
+  options: ImportPluginOptions,
+  state,
+  media
+) {
   const statements = parseStatements(result, styles);
 
   return Promise.resolve(statements)
@@ -149,7 +158,7 @@ function parseStyles(result, styles, options, state, media) {
     });
 }
 
-function resolveImportId(result, stmt, options, state) {
+function resolveImportId(result, stmt, options: ImportPluginOptions, state) {
   const atRule = stmt.node;
   let sourceFile;
   if (atRule.source && atRule.source.input && atRule.source.input.file) {
@@ -157,7 +166,7 @@ function resolveImportId(result, stmt, options, state) {
   }
   const parentId = sourceFile;
 
-  return Promise.resolve(options.resolve(stmt.uri, parentId))
+  return Promise.resolve(options.resolver(stmt.uri, parentId))
     .then((resolved) =>
       loadImportContent(result, stmt, resolved, options, state)
     )
@@ -168,7 +177,13 @@ function resolveImportId(result, stmt, options, state) {
     });
 }
 
-function loadImportContent(result, stmt, filename, options, state) {
+function loadImportContent(
+  result,
+  stmt,
+  filename,
+  options: ImportPluginOptions,
+  state
+) {
   const atRule = stmt.node;
   const media = stmt.media;
   if (options.skipDuplicates) {
@@ -182,7 +197,7 @@ function loadImportContent(result, stmt, filename, options, state) {
     state.importedFiles[filename][media] = true;
   }
 
-  return Promise.resolve(options.load(filename)).then((content) => {
+  return Promise.resolve(options.loader(filename)).then((content) => {
     if (content.trim() === "") {
       result.warn(`${filename} is empty`, { node: atRule });
       return;

@@ -1,14 +1,14 @@
-import { File, WebWorkerEvent, WebWorkerContext } from "packager";
-import { TRANSPILE_STATUS, path, styleHelpers } from "packager-pluginutils";
+import { WebWorkerEvent, WebWorkerContext } from "packager";
+import { TRANSPILE_STATUS, path } from "packager-pluginutils";
 import { importPlugin, ImportPluginOptions } from "./postcss-plugins";
 
 import { Postcss } from "./types";
 
-declare global {
-  interface Window {
-    postcss: Postcss;
-  }
+interface WebWorker extends Worker {
+  postcss: Postcss;
+  importScripts: (...urls: Array<string>) => void;
 }
+declare const self: WebWorker;
 
 const loadPostcss = () => {
   if (!self.postcss) {
@@ -21,19 +21,17 @@ const loadPostcss = () => {
 loadPostcss();
 
 self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
-  const { file, type, context } = data;
+  const { type, context } = data;
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledFile = await transpileFile(file, context);
+      const transpiledFile = await transpileFile(context);
 
-      // @ts-ignore
       self.postMessage({
         type: TRANSPILE_STATUS.END,
-        file: transpiledFile,
+        context: transpiledFile,
       });
     } catch (error) {
-      // @ts-ignore wrong scope
       self.postMessage({
         type: TRANSPILE_STATUS.ERROR,
         error,
@@ -42,14 +40,34 @@ self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
   }
 });
 
-const transpileFile = async (file: File, context: WebWorkerContext) => {
+const resolveDependency = (moduleId: string): Promise<WebWorkerContext> =>
+  new Promise((resolve) => {
+    self.postMessage({
+      type: TRANSPILE_STATUS.ADD_DEPENDENCY,
+      context: { moduleId, isExternal: false },
+    });
+
+    const handleEvent = ({ data }: WebWorkerEvent) => {
+      const { context, type } = data;
+
+      if (type === TRANSPILE_STATUS.ADD_DEPENDENCY) {
+        resolve(context);
+
+        self.removeEventListener("message", handleEvent);
+      }
+    };
+
+    self.addEventListener("message", handleEvent);
+  });
+
+const transpileFile = async (context: WebWorkerContext) => {
   const importOptions: ImportPluginOptions = {
     postcss: self.postcss,
-    resolve: async (moduleId: string, parentId: string) => {
+    resolver: async (moduleId: string, parentId: string) => {
       return path.resolve(path.dirname(parentId), moduleId);
     },
-    load: async (moduleId: string) => {
-      const module = context.files.find((f) => f.path === moduleId);
+    loader: async (moduleId: string) => {
+      const module = await resolveDependency(moduleId);
 
       if (module) {
         return module.code;
@@ -59,15 +77,13 @@ const transpileFile = async (file: File, context: WebWorkerContext) => {
     },
   };
 
-  const plugins = [importPlugin(importOptions)];
-  const result = await self.postcss(plugins).process(file.code, {
-    from: file.path,
-    to: file.path,
-    map: { inline: true },
-  });
+  const result = await self
+    .postcss([importPlugin(importOptions)])
+    .process(context.code, {
+      from: context.moduleId,
+      to: context.moduleId,
+      map: { inline: true },
+    });
 
-  return {
-    ...file,
-    code: result.css,
-  };
+  return { ...context, code: result.css };
 };

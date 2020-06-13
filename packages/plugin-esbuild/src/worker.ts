@@ -1,4 +1,4 @@
-import { File } from "packager";
+import { WebWorkerEvent } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
 import { Service } from "esbuild";
 
@@ -7,16 +7,14 @@ interface ServiceOptions {
   worker: boolean;
 }
 
-declare global {
-  interface Window {
-    esbuildService: Service;
-    esbuild: {
-      startService: (options: ServiceOptions) => Service;
-    };
-  }
+interface WebWorker extends Worker {
+  esbuildService: Service;
+  esbuild: {
+    startService: (options: ServiceOptions) => Service;
+  };
+  importScripts: (...urls: Array<string>) => void;
 }
-
-self.esbuildService = {} as Service;
+declare const self: WebWorker;
 
 const loadEsbuildService = async () => {
   if (!self.esbuild) {
@@ -29,30 +27,28 @@ const loadEsbuildService = async () => {
   }
 };
 
-const loaderByFile = (file: File) =>
-  file.path.endsWith(".js") || file.path.endsWith(".jsx") ? "jsx" : "tsx";
+const loaderByFile = (moduleId: string) =>
+  moduleId.endsWith(".js") || moduleId.endsWith(".jsx") ? "jsx" : "tsx";
 
-self.addEventListener("message", async ({ data }: any) => {
+self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
   await loadEsbuildService();
 
-  const { type, file } = data;
+  const { type, context } = data;
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledCode = await self.esbuildService.transform(file.code, {
+      const transpiledCode = await self.esbuildService.transform(context.code, {
         sourcemap: true,
         target: "esnext",
-        loader: loaderByFile(file),
-        sourcefile: file.path,
+        loader: loaderByFile(context.moduleId),
+        sourcefile: context.moduleId,
       });
 
-      // @ts-ignore
       self.postMessage({
         type: TRANSPILE_STATUS.END,
-        file: { ...file, code: transpiledCode.js },
+        context: { ...context, code: transpiledCode.js },
       });
     } catch (error) {
-      // @ts-ignore wrong scope
       self.postMessage({
         type: TRANSPILE_STATUS.ERROR,
         error,

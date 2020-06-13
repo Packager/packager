@@ -1,65 +1,78 @@
 import { TRANSPILE_STATUS } from "packager-pluginutils";
-import { Plugin, File } from "../../types";
+import { Plugin, WebWorkerEvent, File } from "../../types";
 import { packagerContext } from "../../utils";
 
+export type TranspileContext = {
+  moduleId: string;
+  code: string;
+  isExternal?: boolean;
+};
+
 const createTranspiler = (plugin: Plugin) => {
-  if (!plugin.transpiler!.worker) {
-    throw new Error("Every transpiler requires a worker.");
+  if (!plugin.transpiler.worker) {
+    throw new Error("A worker is required to run a transpilation.");
   }
 
   return {
     worker: plugin.transpiler.worker(),
-    async transpile(file: File) {
+    async transpile(context: TranspileContext) {
       return await packagerContext.get("_workerQueue").add(
         () =>
           new Promise((resolve, reject) => {
-            this.worker.onmessage = async ({ data }) => {
-              const { file, type, error } = data;
+            this.worker.onmessage = async ({ data }: WebWorkerEvent) => {
+              const { context, type, error } = data;
 
               if (type === TRANSPILE_STATUS.ERROR) {
                 return reject(error);
               }
 
-              // if (type === "TEST_TYPE_SEND") {
-              //   console.log("CAUGHT!");
-              //   await new Promise((resolve) => setTimeout(resolve, 1000));
-              //   this.worker.postMessage({
-              //     type: "TEST_TYPE_SEND",
-              //     data,
-              //   });
-              // }
+              if (type === TRANSPILE_STATUS.ADD_DEPENDENCY) {
+                if (context.isExternal) {
+                  throw new Error(
+                    "External dependencies via the transpiler are not yet supported."
+                  );
+                }
 
-              // if (type === TRANSPILE_STATUS.ADD_DEPENDENCY) {
-              //   try {
-              //     console.log("ADD DEPENDENCY!");
-              //     // const additionalTranspiled = await this.transpileAdditional(
-              //     //   additional
-              //     // );
+                const file = packagerContext
+                  .get("files")
+                  .find((file: File) => file.path === context.moduleId);
 
-              //     // this.worker.postMessage({
-              //     //   type: TRANSPILE_STATUS.ADD_DEPENDENCY,
-              //     //   file,
-              //     //   additional: additionalTranspiled,
-              //     //   context: {
-              //     //     files: packagerContext.get('files')
-              //     //   },
-              //     // });
-              //   } catch (error) {
-              //     return reject(error);
-              //   }
-              // }
+                if (!file) {
+                  throw new Error(
+                    `Failed to load ${context.moduleId} using ${plugin.name}`
+                  );
+                }
+
+                return this.worker.postMessage({
+                  type: TRANSPILE_STATUS.ADD_DEPENDENCY,
+                  context: {
+                    moduleId: file.path,
+                    code: file.code,
+                    isExternal: false,
+                  },
+                });
+              }
+
+              /**
+               * need to figure out a nice way to transpile dependencies
+               * that are not from the same transpiler. As an example,
+               * if a Vue file (which uses vue-transpiler) has some SASS code
+               * in it, we need to invoke the SASS transpiler.
+               */
+              if (type === TRANSPILE_STATUS.TRANSPILE_DEPENDENCY) {
+                throw new Error(
+                  "Transpiling dependencies via the transpiler is not yet supported."
+                );
+              }
 
               if (type === TRANSPILE_STATUS.END) {
-                return resolve(file);
+                return resolve(context);
               }
             };
 
             this.worker.postMessage({
               type: TRANSPILE_STATUS.START,
-              file,
-              context: {
-                files: packagerContext.get("files"),
-              },
+              context,
             });
           })
       );

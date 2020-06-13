@@ -1,15 +1,23 @@
-import { createPlugin, styleHelpers } from "packager-pluginutils";
+import {
+  createPlugin,
+  styleHelpers,
+  verifyExtensions,
+} from "packager-pluginutils";
 // @ts-ignore
 import Worker from "web-worker:./worker";
 
+const isValid = verifyExtensions([".styl"]);
+
 const stylusPlugin = createPlugin({
   name: "stylus",
-  extensions: [".styl"],
   transpiler: {
+    gateway(moduleId: string) {
+      return isValid(moduleId);
+    },
     worker: Worker,
-  },
-  beforeBundle(code: string, moduleId: string) {
-    return styleHelpers.generateExport({ path: moduleId, code });
+    beforeBundle(moduleId: string, code: string) {
+      return styleHelpers.generateExport({ path: moduleId, code });
+    },
   },
 });
 

@@ -1,5 +1,6 @@
 import {
   SourceMap,
+  AcornNode,
   Plugin as RollupPlugin,
   PluginContext as RollupPluginContext,
 } from "rollup";
@@ -15,10 +16,8 @@ export interface File {
 export interface Plugin {
   name: string;
   transpiler?: PluginTranspiler;
-  extensions?: Array<string>;
   resolver?: PluginResolverHook;
   loader?: PluginLoaderHook;
-  beforeBundle?: PluginBeforeBundleHook;
 }
 
 export interface PluginManager {
@@ -38,9 +37,9 @@ export interface PackagerContext {
 
 export interface WebWorkerEvent extends MessageEvent {
   data: {
-    file: File;
     type: TRANSPILE_STATUS;
     context: WebWorkerContext;
+    error?: Error | string;
   };
 }
 
@@ -78,17 +77,25 @@ export type PluginLoaderHook = (
 export type PluginBeforeBundleHookResult = string | null | void;
 export type PluginBeforeBundleHook = (
   this: RollupPluginContext,
-  code: string,
-  moduleId: string
+  moduleId: string,
+  code: string
 ) => Promise<PluginBeforeBundleHookResult> | PluginBeforeBundleHookResult;
 
+/**
+ * Either worker or beforeBundle is required.
+ */
 export type PluginTranspiler = {
-  worker: () => Worker;
+  gateway: (moduleId: string, code: string) => boolean;
+  worker?: () => Worker;
+  beforeBundle?: PluginBeforeBundleHook;
 };
+
+export type Parser = (code: string, options?: any) => AcornNode;
 
 export type PackagerContextState = {
   _rollupPlugins: Map<string, RollupPlugin>;
   _workerQueue: any;
+  _parser: Parser;
 
   plugins: Map<string, Plugin>;
   files: Array<File>;
@@ -99,7 +106,9 @@ export type PackagerContextState = {
 };
 
 export type WebWorkerContext = {
-  files: Array<File>;
+  moduleId: string;
+  code: string;
+  isExternal?: boolean;
 };
 
 // Others
@@ -111,4 +120,5 @@ declare global {
 
 export declare const packagerContext: {
   files: Array<File>;
+  parser: Parser;
 };

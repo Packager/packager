@@ -7,14 +7,11 @@ import {
 import { Plugin } from "../../types";
 
 const generateRollupPluginProxy = (plugin: Plugin): RollupPlugin => {
-  let rollupPlugin = {
+  const rollupPlugin = {
     name: plugin.name,
     resolveId: plugin.resolver ? resolverProxyHook(plugin) : undefined,
     load: plugin.loader ? loaderProxyHook(plugin) : undefined,
-    transform:
-      plugin.transpiler || plugin.beforeBundle
-        ? transformerProxyHook(plugin)
-        : undefined,
+    transform: plugin.transpiler ? transformerProxyHook(plugin) : undefined,
   } as RollupPlugin;
 
   return rollupPlugin;

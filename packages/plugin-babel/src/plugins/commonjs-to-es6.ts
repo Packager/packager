@@ -3,6 +3,29 @@
  * Credits to https://github.com/tbranyen
  */
 
+/**
+ * @todo
+ *
+ * conditional require:
+ * - if file '/src/app.js' has the following code:
+ *   if (false) {
+ *     console.log(require('./greeting'));
+ *   }
+ *
+ * - if file '/src/greeting.js' has the following code:
+ *   console.log('side effect!');
+ *   exports.greeting = 'Hello World';
+ *
+ * the console log inside app.js is not included in the bundle however,
+ * the console.log from the greeting.js is included. this must be an issue
+ * with the plugin.
+ *
+ *
+ * importing styles (css):
+ * - at the moment, this is not possible. need to figure out whether
+ * this should even be possible.
+ */
+
 export default (api, options) => {
   const t = api.types;
   const state = {
