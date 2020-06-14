@@ -1,4 +1,4 @@
-import { Plugin, File } from "packager";
+import { Plugin, File, WebWorkerContext } from "packager";
 
 export declare const path: {
   isAbsolute: (path: string) => boolean;
@@ -22,10 +22,18 @@ export declare function verifyExtensions(
   extensions: Array<string>
 ): (path: string) => boolean;
 
+export declare function resolveWorkerDependency(
+  moduleId: string
+): Promise<WebWorkerContext>;
+
 export declare enum TRANSPILE_STATUS {
   START = "START",
   END = "END",
   ADD_DEPENDENCY = "ADD_DEPENDENCY",
   TRANSPILE_DEPENDENCY = "TRANSPILE_DEPENDENCY",
   ERROR = "ERROR",
+}
+
+export declare enum TRANSPILE_ERROR {
+  DEPENDENCY_NOT_FOUND = "DEPENDENCY_NOT_FOUND",
 }

@@ -1,13 +1,24 @@
 import { WebWorkerEvent } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
-import transpileFile from "./utils/transpile-css-file";
-import { Postcss } from "./types";
+import transpileFile from "./utils/transpile-less-file";
+import { WebWorker } from "./types";
 
-interface WebWorker extends Worker {
-  postcss: Postcss;
-  importScripts: (...urls: Array<string>) => void;
-}
 declare const self: WebWorker;
+
+self.window = self as any;
+self.window.document = {
+  currentScript: { async: true },
+  createElement: () => ({ appendChild: () => {} } as any),
+  createTextNode: () => ({}),
+  getElementsByTagName: () => [],
+  head: { appendChild: () => {}, removeChild: () => {} } as any,
+};
+
+const loadLess = () => {
+  if (!self.less) {
+    self.importScripts("https://cdn.jsdelivr.net/npm/less");
+  }
+};
 
 const loadPostcss = () => {
   if (!self.postcss) {
@@ -17,6 +28,7 @@ const loadPostcss = () => {
   }
 };
 
+loadLess();
 loadPostcss();
 
 self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
@@ -24,7 +36,11 @@ self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledFile = await transpileFile(context, self.postcss);
+      const transpiledFile = await transpileFile(
+        context,
+        self.less,
+        self.postcss
+      );
 
       self.postMessage({
         type: TRANSPILE_STATUS.END,

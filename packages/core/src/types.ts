@@ -4,7 +4,7 @@ import {
   Plugin as RollupPlugin,
   PluginContext as RollupPluginContext,
 } from "rollup";
-import { TRANSPILE_STATUS } from "packager-pluginutils";
+import { TRANSPILE_STATUS, TRANSPILE_ERROR } from "packager-pluginutils";
 
 // Interfaces
 export interface File {
@@ -35,11 +35,15 @@ export interface PackagerContext {
   set: (key: string, value: any) => Record<string, any>;
 }
 
+interface WorkerError extends Error {
+  type: string;
+}
+
 export interface WebWorkerEvent extends MessageEvent {
   data: {
     type: TRANSPILE_STATUS;
     context: WebWorkerContext;
-    error?: Error | string;
+    error?: TRANSPILE_ERROR;
   };
 }
 

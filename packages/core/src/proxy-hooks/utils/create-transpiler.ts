@@ -1,4 +1,4 @@
-import { TRANSPILE_STATUS } from "packager-pluginutils";
+import { TRANSPILE_STATUS, TRANSPILE_ERROR } from "packager-pluginutils";
 import { Plugin, WebWorkerEvent, File } from "../../types";
 import { packagerContext } from "../../utils";
 
@@ -38,9 +38,10 @@ const createTranspiler = (plugin: Plugin) => {
                   .find((file: File) => file.path === context.moduleId);
 
                 if (!file) {
-                  throw new Error(
-                    `Failed to load ${context.moduleId} using ${plugin.name}`
-                  );
+                  return this.worker.postMessage({
+                    type: TRANSPILE_STATUS.ERROR,
+                    error: TRANSPILE_ERROR.DEPENDENCY_NOT_FOUND,
+                  });
                 }
 
                 return this.worker.postMessage({

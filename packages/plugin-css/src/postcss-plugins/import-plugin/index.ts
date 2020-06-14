@@ -2,7 +2,7 @@ import { Root, Result } from "postcss";
 import parseStatements from "./parse-statements";
 import joinMedia from "./join-media";
 import processContent from "./process-content";
-import { Postcss } from "../../types";
+import { Postcss, ImportPluginOptions } from "../../types";
 
 /**
  * Plugin ported from https://github.com/postcss/postcss-import with some minor
@@ -10,13 +10,6 @@ import { Postcss } from "../../types";
  *
  * Full credits to the PostCSS team
  */
-
-export interface ImportPluginOptions {
-  postcss: Postcss;
-  resolver: (moduleId: string, parentId: string) => Promise<string | null>;
-  loader: (moduleId: string) => Promise<string>;
-  skipDuplicates?: boolean;
-}
 
 const importPlugin = (options: ImportPluginOptions) => (
   styles: Root,

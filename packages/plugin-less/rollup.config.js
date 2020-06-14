@@ -2,14 +2,13 @@ import typescript from "rollup-plugin-typescript2";
 import resolve from "@rollup/plugin-node-resolve";
 import cjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import webWorkerLoader from "rollup-plugin-web-worker-loader";
-import dts from "rollup-plugin-dts";
+import workerLoader from "rollup-plugin-web-worker-loader";
 import pkg from "./package.json";
 
 const plugins = [
   resolve(),
   typescript(),
-  webWorkerLoader({ extensions: [".ts"] }),
+  workerLoader({ extensions: [".ts"] }),
   cjs(),
 ];
 
@@ -26,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
 const banner = `/*
     @license
 
-    Packager CSS Plugin v${pkg.version}
+    Packager LESS Plugin v${pkg.version}
     @author baryla (Adrian Barylski)
     @github https://github.com/packager/packager
 
@@ -51,17 +50,12 @@ export default [
     plugins,
     output: [
       {
-        name: "cssPlugin",
+        name: "lessPlugin",
         format: "iife",
         compact: true,
         file: "dist/index.browser.js",
         banner,
       },
     ],
-  },
-  {
-    input: "src/types.ts",
-    output: [{ dir: "dist", format: "es" }],
-    plugins: [dts()],
   },
 ];

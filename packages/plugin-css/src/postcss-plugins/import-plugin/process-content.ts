@@ -1,4 +1,4 @@
-import { ImportPluginOptions } from "./";
+import { ImportPluginOptions } from "../../types";
 
 export default function (
   result,

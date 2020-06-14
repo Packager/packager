@@ -1,0 +1,12 @@
+{
+  "exclude": ["node_modules", "**/__tests__/*", "dist"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2015",
+    "module": "ES2015",
+    "moduleResolution": "Node",
+    "importHelpers": false,
+    "esModuleInterop": true
+  }
+}

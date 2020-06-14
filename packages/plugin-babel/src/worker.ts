@@ -1,4 +1,4 @@
-import { File, WebWorkerEvent, WORKER_ORIGIN } from "packager";
+import { WebWorkerEvent } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
 import { TransformOptions, BabelFileResult } from "@babel/core";
 

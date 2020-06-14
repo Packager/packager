@@ -1,16 +1,17 @@
 import {
   createPlugin,
-  styleHelpers,
   verifyExtensions,
+  styleHelpers,
 } from "packager-pluginutils";
 // @ts-ignore
 import Worker from "web-worker:./worker";
-import transpileCssFile from "./utils/transpile-css-file";
 
-const isValid = verifyExtensions([".css"]);
+import transpileLessFile from "./utils/transpile-less-file";
 
-const cssPlugin = createPlugin({
-  name: "css",
+const isValid = verifyExtensions([".less"]);
+
+const lessPlugin = createPlugin({
+  name: "less",
   transpiler: {
     gateway(moduleId: string) {
       return isValid(moduleId);
@@ -22,6 +23,6 @@ const cssPlugin = createPlugin({
   },
 });
 
-export { transpileCssFile };
+export { transpileLessFile };
 
-export default cssPlugin;
+export default lessPlugin;

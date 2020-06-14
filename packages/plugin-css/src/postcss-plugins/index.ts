@@ -1,1 +1,1 @@
-export { default as importPlugin, ImportPluginOptions } from "./import-plugin";
+export { default as importPlugin } from "./import-plugin";

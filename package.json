@@ -14,12 +14,11 @@
   "workspaces": [
     "packages/core",
     "packages/plugin-babel",
-    "packages/plugin-commonjs",
     "packages/plugin-css",
     "packages/plugin-esbuild",
     "packages/plugin-json",
+    "packages/plugin-less",
     "packages/plugin-stylus",
-    "packages/plugin-typescript",
     "packages/utils"
   ],
   "scripts": {

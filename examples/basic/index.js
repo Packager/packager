@@ -4,6 +4,7 @@ packager.registerPlugins([
   esbuildPlugin,
   jsonPlugin,
   cssPlugin,
+  lessPlugin,
   stylusPlugin,
 ]);
 
@@ -56,26 +57,41 @@ body {
 const files2 = [
   {
     path: "/src/app.js",
-    code: `const greeting = require('./greet');
-  
-console.log(greeting('hello world'));
-`,
+    code: `
+import './styles.less';`,
     entry: true,
   },
   {
-    path: "/src/greet.ts",
-    code: `export default function (message: string): string {
-  return message;
-}`,
+    path: "/src/styles.css",
+    code: `@import "./testing.css";
+@import "./testing/lol.css";`,
   },
   {
-    path: "/src/styles.styl",
+    path: "/src/styles.less",
+    code: `@import "./vars.less";
+  @import-name: testing;
+  @import "./@{import-name}.css";
+
+  body {
+    color: @blue;
+  }`,
+  },
+  {
+    path: "/src/vars.less",
+    code: `@import "testing/lol.css";
+  @blue: blue;`,
+  },
+  {
+    path: "/src/testing.css",
     code: `body {
-  background: red;
-  div {
-    color: white;
-  }
-}`,
+    background: red;
+  }`,
+  },
+  {
+    path: "/src/testing/lol.css",
+    code: `body {
+    text-decoration: underline;
+  }`,
   },
 ];
 
