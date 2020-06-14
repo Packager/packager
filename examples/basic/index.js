@@ -58,7 +58,7 @@ const files2 = [
   {
     path: "/src/app.js",
     code: `
-import './styles.less';`,
+import './styles.css';`,
     entry: true,
   },
   {
@@ -98,10 +98,15 @@ import './styles.less';`,
 (async () => {
   try {
     console.time("first");
-    const bundle1 = await packager.bundle(files2);
+    const bundle1 = await packager.bundle(files);
     console.log(bundle1);
     eval(bundle1.code);
     console.timeEnd("first");
+    console.time("second");
+    const bundle2 = await packager.bundle(files2);
+    console.log(bundle2);
+    eval(bundle2.code);
+    console.timeEnd("second");
   } catch (e) {
     console.error(e);
   }

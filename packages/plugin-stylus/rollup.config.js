@@ -2,6 +2,7 @@ import typescript from "rollup-plugin-typescript2";
 import resolve from "@rollup/plugin-node-resolve";
 import cjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
+import dts from "rollup-plugin-dts";
 import webWorkerLoader from "rollup-plugin-web-worker-loader";
 import pkg from "./package.json";
 
@@ -57,5 +58,10 @@ export default [
         banner,
       },
     ],
+  },
+  {
+    input: "src/types.ts",
+    output: [{ dir: "dist", format: "es" }],
+    plugins: [dts()],
   },
 ];

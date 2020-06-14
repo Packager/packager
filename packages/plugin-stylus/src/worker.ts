@@ -1,5 +1,7 @@
-import { WebWorkerEvent, WebWorkerContext } from "packager";
+import { WebWorkerEvent } from "packager";
 import { TRANSPILE_STATUS } from "packager-pluginutils";
+
+import transpileFile from "./utils/transpile-stylus-file";
 
 interface WebWorker extends Worker {
   stylus: (code: string) => any;
@@ -22,7 +24,7 @@ self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
 
   if (type === TRANSPILE_STATUS.START) {
     try {
-      const transpiledFile = await transpileFile(context);
+      const transpiledFile = await transpileFile(context, self.stylus);
 
       self.postMessage({
         type: TRANSPILE_STATUS.END,
@@ -36,17 +38,3 @@ self.addEventListener("message", async ({ data }: WebWorkerEvent) => {
     }
   }
 });
-
-const transpileFile = async (context: WebWorkerContext) =>
-  new Promise((resolve, reject) => {
-    self
-      .stylus(context.code)
-      .set("filename", context.moduleId)
-      .render((err: any, css: string) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ ...context, code: css });
-        }
-      });
-  });

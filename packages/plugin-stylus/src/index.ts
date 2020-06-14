@@ -6,6 +6,8 @@ import {
 // @ts-ignore
 import Worker from "web-worker:./worker";
 
+import transpileStylusFile from "./utils/transpile-stylus-file";
+
 const isValid = verifyExtensions([".styl"]);
 
 const stylusPlugin = createPlugin({
@@ -20,5 +22,7 @@ const stylusPlugin = createPlugin({
     },
   },
 });
+
+export { transpileStylusFile };
 
 export default stylusPlugin;
