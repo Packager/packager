@@ -8,9 +8,5 @@ coverage
 .DS_Store
 /demo
 .vscode
-
-# Documentation website
-/docs/node_modules
-/docs/yarn*
-/docs/.docz
-/docs/.DS_Store
+scripts
+datasets

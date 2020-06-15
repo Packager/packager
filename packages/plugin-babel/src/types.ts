@@ -13,6 +13,8 @@ export type ObjectProperty = {
   start: number;
   name: string;
   type: string;
+  object?: ObjectProperty;
+  property?: ObjectProperty;
 };
 
 export type Node = AcornNode & {

@@ -8,6 +8,10 @@ packager.registerPlugins([
   stylusPlugin,
 ]);
 
+const fetchDataSet = async (name) => {
+  return await (await fetch(`../../datasets/${name}`)).json();
+};
+
 const files = [
   {
     path: "/src/app.js",
@@ -95,18 +99,32 @@ import './styles.css';`,
   },
 ];
 
+const files3 = [
+  {
+    path: "/src/app.js",
+    code: `const greet = import('./greetings');
+console.log(greet);`,
+    entry: true,
+  },
+  {
+    path: "/src/greetings.js",
+    code: `const message = 'hello';
+export { message };`,
+  },
+];
+
 (async () => {
   try {
+    // const datasetFiles = await fetchDataSet("collect.js.json");
     console.time("first");
-    const bundle1 = await packager.bundle(files);
-    console.log(bundle1);
+    const bundle1 = await packager.bundle(files3);
     eval(bundle1.code);
     console.timeEnd("first");
-    console.time("second");
-    const bundle2 = await packager.bundle(files2);
-    console.log(bundle2);
-    eval(bundle2.code);
-    console.timeEnd("second");
+    // console.time("second");
+    // const bundle2 = await packager.bundle(files2);
+    // console.log(bundle2);
+    // eval(bundle2.code);
+    // console.timeEnd("second");
   } catch (e) {
     console.error(e);
   }

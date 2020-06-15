@@ -30,6 +30,18 @@ const isSingleExports = (node: Node) =>
   node.expression?.left?.object?.name === "exports" &&
   node.expression?.left?.object?.type === "Identifier";
 
+/**
+ * Check for module.exports.namedExport
+ */
+const isNamedExport = (node: Node) =>
+  node.type === "AssignmentExpression" &&
+  node.operator === "=" &&
+  node.left?.object?.object?.name === "module" &&
+  node.left?.object?.object?.type === "Identifier" &&
+  node.left?.object?.property?.name === "exports" &&
+  node.left?.object?.property?.type === "Identifier" &&
+  node.left?.property.type === "Identifier";
+
 const allowedExtensions = [".js"];
 const isModuleSkippable = (moduleId: string) =>
   (path.extname(moduleId) && !verifyExtensions(allowedExtensions)(moduleId)) ||
@@ -65,6 +77,10 @@ export default function (moduleId: string, code: string): boolean {
       }
 
       if (isSingleExports(node)) {
+        isCjs = true;
+      }
+
+      if (isNamedExport(node)) {
         isCjs = true;
       }
     },

@@ -59,6 +59,7 @@ const transformerHook = (plugin: Plugin) =>
 
       if (transpiled) {
         return {
+          ...(transpiled.meta || {}),
           code: transpiled.code,
           map: transpiled.map || { mappings: "" },
           moduleId,
@@ -79,13 +80,14 @@ const transformerHook = (plugin: Plugin) =>
           return Promise.resolve();
         }
 
-        const { code, map, moduleId } = handledTransformFunction;
+        const { code, map, moduleId, ...meta } = handledTransformFunction;
 
         if (!plugin.transpiler.beforeBundle) {
           return handledTransformFunction;
         }
 
         return {
+          ...meta,
           code:
             plugin.transpiler.beforeBundle.bind(thisArg)(moduleId, code) ||
             code,

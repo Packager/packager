@@ -38,5 +38,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "axios": "^0.19.2"
+  }
 }

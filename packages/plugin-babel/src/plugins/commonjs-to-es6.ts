@@ -33,11 +33,11 @@ export default (api, options) => {
     renamed: new Map(),
     identifiers: new Set(),
     isCJS: false,
+    hasDefaultExport: false,
   };
 
   const enter = (path) => {
     let cursor = path;
-
     // Find the closest function scope or parent.
     do {
       // Ignore block statements.
@@ -85,10 +85,15 @@ export default (api, options) => {
 
   return {
     post() {
+      this.file.metadata = {
+        hasDefaultExport: state.hasDefaultExport,
+      };
+
       state.globals.clear();
       state.renamed.clear();
       state.identifiers.clear();
       state.isCJS = false;
+      state.hasDefaultExport = false;
     },
 
     visitor: {
@@ -130,7 +135,6 @@ export default (api, options) => {
                       t.callExpression(t.import(), [str])
                     );
 
-                    // @ts-ignore
                     newNode.__replaced = true;
 
                     path.replaceWith(newNode);
@@ -157,7 +161,6 @@ export default (api, options) => {
                       t.stringLiteral(str.value)
                     );
 
-                    // @ts-ignore
                     decl.__replaced = true;
 
                     path.scope
@@ -169,7 +172,6 @@ export default (api, options) => {
                   else if (str) {
                     const { parentPath } = path;
                     const { left } = parentPath.node;
-                    // @ts-ignore
                     const oldId = !t.isMemberExpression(left) ? left : left.id;
 
                     // Default to the closest likely identifier.
@@ -189,7 +191,6 @@ export default (api, options) => {
                       t.stringLiteral(str.value)
                     );
 
-                    // @ts-ignore
                     decl.__replaced = true;
 
                     // Push the declaration in the root scope.
@@ -204,7 +205,6 @@ export default (api, options) => {
                         t.assignmentExpression("=", oldId, id)
                       );
 
-                      // @ts-ignore
                       newNode.__replaced = true;
 
                       path.parentPath.parentPath.replaceWith(newNode);
@@ -272,9 +272,7 @@ export default (api, options) => {
             ),
           ]);
 
-          // @ts-ignore
           exportsAlias.__replaced = true;
-          // @ts-ignore
           moduleExportsAlias.__replaced = true;
 
           // Add the `module` and `exports` globals into the program body,
@@ -297,8 +295,10 @@ export default (api, options) => {
           );
 
           path.node.__replaced = true;
-          // @ts-ignore
+
           defaultExport.__replaced = true;
+
+          state.hasDefaultExport = true;
 
           programPath.pushContainer("body", defaultExport);
         },

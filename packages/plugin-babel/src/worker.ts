@@ -9,7 +9,7 @@ interface WebWorker extends Worker {
     transform: (
       code: string,
       options?: TransformOptions
-    ) => BabelFileResult | null;
+    ) => (BabelFileResult & { metadata: { hasDefaultExport: boolean } }) | null;
     availablePlugins: Record<string, any>;
   };
   importScripts: (...urls: Array<string>) => void;
@@ -36,12 +36,16 @@ self.addEventListener("message", async (event: WebWorkerEvent) => {
         plugins: [commonjsPlugin],
       });
 
-      const transpiledFile =
-        transpiled.code === context.code ? null : { code: transpiled.code };
-
       self.postMessage({
         type: TRANSPILE_STATUS.END,
-        context: transpiledFile,
+        context: {
+          code: transpiled.code,
+          meta: {
+            syntheticNamedExports: Boolean(
+              transpiled.metadata.hasDefaultExport
+            ),
+          },
+        },
       });
     } catch (error) {
       self.postMessage({
