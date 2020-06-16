@@ -40,6 +40,10 @@ const fileManager = (loadedDependencies: Array<Dependency>, less: Less) => {
 
 export default (context: WebWorkerContext, less: Less, postcss: any) =>
   new Promise(async (resolve, reject) => {
+    if (!less || !less.parse || !postcss) {
+      throw new Error("Less and Postcss are required.");
+    }
+
     const imports = await findImports(context.moduleId, context.code, less);
     const options = {
       plugins: [fileManager(imports, less)],

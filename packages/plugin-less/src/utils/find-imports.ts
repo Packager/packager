@@ -56,6 +56,10 @@ const fakeFileManager = (less: Less) => {
 
 const retryExtensions = [".less", ".css"];
 export default async (moduleId: string, code: string, less: Less) => {
+  if (!less || !less.parse) {
+    throw new Error("Less is not defined.");
+  }
+
   const loadedDependencies = [];
   const loadDependenciesRecursively = async (
     moduleIds: Array<string>,

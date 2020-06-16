@@ -1,20 +1,19 @@
+import { Plugin as RollupPlugin } from "rollup";
 import { packagerContext } from "../utils";
-import { generateRollupPluginProxy } from "./utils";
 import { PluginManager, Plugin } from "../types";
+import {
+  resolverProxyHook,
+  loaderProxyHook,
+  transformerProxyHook,
+} from "../proxy-hooks";
 
-export const getPlugins = (name?: string) => {
-  if (name) {
-    return {
-      rollup: packagerContext.get("_rollupPlugins").get(name),
-      raw: packagerContext.get("plugins").get(name),
-    };
-  }
-
-  return {
-    rollup: Array.from(packagerContext.get("_rollupPlugins").values()),
-    raw: Array.from(packagerContext.get("plugins").values()),
-  };
-};
+const generateRollupPluginProxy = (plugin: Plugin): RollupPlugin =>
+  ({
+    name: plugin.name,
+    resolveId: plugin.resolver ? resolverProxyHook(plugin) : undefined,
+    load: plugin.loader ? loaderProxyHook(plugin) : undefined,
+    transform: plugin.transpiler ? transformerProxyHook(plugin) : undefined,
+  } as RollupPlugin);
 
 const registerSinglePlugin = ({ rollup, raw }, plugin: Plugin) => {
   if (!rollup) {
@@ -52,6 +51,20 @@ export const registerPlugins = (plugins: Array<Plugin> | Plugin): void => {
       registerSinglePlugin({ rollup, raw }, plugin);
     }
   }
+};
+
+export const getPlugins = (name?: string) => {
+  if (name) {
+    return {
+      rollup: packagerContext.get("_rollupPlugins").get(name),
+      raw: packagerContext.get("plugins").get(name),
+    };
+  }
+
+  return {
+    rollup: Array.from(packagerContext.get("_rollupPlugins").values()),
+    raw: Array.from(packagerContext.get("plugins").values()),
+  };
 };
 
 const pluginManager = (): PluginManager => {
