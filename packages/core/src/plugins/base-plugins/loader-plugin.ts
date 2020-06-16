@@ -36,6 +36,8 @@ const loaderPlugin = createPlugin({
     if (npmDependency) {
       const cleanedCode = cleanupExternalDependency(npmDependency.code);
 
+      console.log(moduleId);
+
       // packagerContext.set(
       //   "npmDependencies",
       //   deepMerge(packagerContext.get("npmDependencies"), {

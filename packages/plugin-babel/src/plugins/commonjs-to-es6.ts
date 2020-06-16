@@ -26,7 +26,7 @@
  * this should even be possible.
  */
 
-export default (api, options) => {
+export default function (api, options: Record<string, any>) {
   const t = api.types;
   const state = {
     globals: new Set(),
@@ -425,4 +425,4 @@ export default (api, options) => {
       },
     },
   };
-};
+}

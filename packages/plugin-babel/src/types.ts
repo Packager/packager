@@ -23,4 +23,6 @@ export type Node = AcornNode & {
   callee?: ObjectProperty;
   left?: Node & LeftRight;
   right?: Node & LeftRight;
+  object?: ObjectProperty;
+  property?: ObjectProperty;
 };

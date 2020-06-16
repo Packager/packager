@@ -102,14 +102,16 @@ import './styles.css';`,
 const files3 = [
   {
     path: "/src/app.js",
-    code: `const greet = import('./greetings');
-console.log(greet);`,
+    code: `import Test from './umd';`,
     entry: true,
   },
   {
-    path: "/src/greetings.js",
-    code: `const message = 'hello';
-export { message };`,
+    path: "/src/umd.js",
+    code: `(function (global, factory) {
+      typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+      typeof define === 'function' && define.amd ? define(factory) :
+      (global = global || self, global.Vue = factory());
+    }(this, function () { 'use strict'; }));`,
   },
 ];
 

@@ -42,6 +42,19 @@ const isNamedExport = (node: Node) =>
   node.left?.object?.property?.type === "Identifier" &&
   node.left?.property.type === "Identifier";
 
+/**
+ * Checks for define.amd
+ *
+ * @todo this could potentially cause some unwanted issues.
+ * probably better to explore a different way of checking for UMD builds.
+ */
+const isUmdBuild = (node: Node) =>
+  node.type === "MemberExpression" &&
+  node.object.name === "define" &&
+  node.object.type === "Identifier" &&
+  node.property.name === "amd" &&
+  node.property.type === "Identifier";
+
 const allowedExtensions = [".js"];
 const isModuleSkippable = (moduleId: string) =>
   (path.extname(moduleId) && !verifyExtensions(allowedExtensions)(moduleId)) ||
@@ -49,7 +62,7 @@ const isModuleSkippable = (moduleId: string) =>
     packagerContext.files.find((f) => f.path !== moduleId));
 
 export default function (moduleId: string, code: string): boolean {
-  let isCjs = false;
+  let allow = false;
 
   /**
    * if the moduleId has an extension but it's not one of the allowed ones,
@@ -64,27 +77,31 @@ export default function (moduleId: string, code: string): boolean {
 
   walk(packagerContext.parser(code), {
     enter(node: Node) {
-      if (isCjs) {
+      if (allow) {
         this.skip();
       }
 
       if (isModuleExports(node)) {
-        isCjs = true;
+        allow = true;
       }
 
       if (isRequireStatement(node)) {
-        isCjs = true;
+        allow = true;
       }
 
       if (isSingleExports(node)) {
-        isCjs = true;
+        allow = true;
       }
 
       if (isNamedExport(node)) {
-        isCjs = true;
+        allow = true;
+      }
+
+      if (isUmdBuild(node)) {
+        allow = true;
       }
     },
   });
 
-  return isCjs;
+  return allow;
 }
