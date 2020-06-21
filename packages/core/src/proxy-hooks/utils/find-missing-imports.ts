@@ -33,7 +33,7 @@ const handleDefaultExport = (imports: Imports, exports: Exports) => {
             let tempImport;
 
             for (const keyExport in curr.exports) {
-              if (curr.exports[keyExport] === "lolekaa") {
+              if (curr.exports[keyExport] === defaultImported.import) {
                 tempImport = {
                   [keyExport]: curr.exports[keyExport],
                 };
@@ -82,9 +82,7 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
         !imports.default.some((_import) => _import.source === curr.source)
       ) {
         acc.default.push({
-          exports: {
-            default: defaultExport,
-          },
+          import: defaultExport,
           source: curr.source,
         });
       }
@@ -113,7 +111,7 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
 
       if (Object.keys(namedExports).length) {
         acc.named.push({
-          exports: namedExports,
+          imports: namedExports,
           source: curr.source,
         });
       }

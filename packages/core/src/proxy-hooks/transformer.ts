@@ -4,6 +4,8 @@ import { packagerContext, isModuleExternal } from "../utils";
 import { TranspileContext, contextCodeWrap } from "./utils";
 import overrideExport from "./utils/override-transformed-external";
 
+export const IGNORE_CACHED = `"__IGNORE_PACKAGER_CACHED__"`;
+
 const transformerHook = (plugin: Plugin) =>
   new Proxy(
     async (code: string, moduleId: string) => {
@@ -92,25 +94,30 @@ const transformerHook = (plugin: Plugin) =>
         } = handledTransformFunction;
 
         if (!plugin.transpiler.beforeBundle) {
-          await overrideExport(moduleId, code, thisArg);
+          if (code.startsWith(IGNORE_CACHED)) {
+            return handledTransformFunction;
+          }
 
-          return {
-            ...handledTransformFunction,
-            code: isExternal ? contextCodeWrap(moduleId, code, thisArg) : code,
-          };
+          const updatedCode = await overrideExport(moduleId, code, thisArg);
+
+          return { ...handledTransformFunction, code: updatedCode };
         }
 
         const beforeBundleOutput = await plugin.transpiler.beforeBundle.bind(
           thisArg
         )(moduleId, code);
 
-        return {
-          ...meta,
-          code: isExternal
-            ? contextCodeWrap(moduleId, beforeBundleOutput, thisArg) || null
-            : beforeBundleOutput || null,
-          map,
-        };
+        if (code.startsWith(IGNORE_CACHED)) {
+          return { ...meta, code: beforeBundleOutput || null, map };
+        }
+
+        const updatedCode = await overrideExport(
+          moduleId,
+          beforeBundleOutput,
+          thisArg
+        );
+
+        return { ...meta, code: updatedCode || null, map };
       },
     }
   );

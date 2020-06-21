@@ -6,22 +6,45 @@ import {
   parsePackagePath,
 } from "../../utils";
 import { reservedWords } from "./utils";
+import { IGNORE_CACHED } from "../../proxy-hooks/transformer";
 
 const cleanupExternalDependency = (code: string): string =>
   code.replace(/process.env.NODE_ENV/g, "'development'");
 
+const reserved = reservedWords.split(" ");
 const generateExportForCachedPackage = (moduleId: string) => {
-  const reserved = reservedWords.split(" ");
-  const namedExportKeys = Object.keys(
-    packagerContext.get("npmDependencies")[moduleId]
-  );
-  const namedExports = namedExportKeys.length
-    ? `export const { ${namedExportKeys
-        .filter((m) => !reserved.includes(m))
-        .map((m) => `${m}`)} } = __default;`
-    : "";
+  const moduleExports = packagerContext.get("npmDependencies")[moduleId];
+  const namedExportKeys = Object.keys(moduleExports);
+  let namedExports = "";
 
-  return `const __default = window.__PACKAGER_CONTEXT__.npmDependencies['${moduleId}']; ${namedExports} export default __default; `;
+  // window.__PACKAGER_CONTEXT__.npmDependencies(moduleId)["default"]
+  const defaultExports = namedExportKeys.includes("default")
+    ? Object.keys(moduleExports.default)
+    : [];
+  // everything else but default export
+  const otherExports = namedExportKeys.filter((key) => key !== "default");
+
+  const defaultWithoutReserved = defaultExports
+    .filter((m) => !reserved.includes(m))
+    .map((m) => m);
+
+  const otherWithoutReserved = otherExports
+    .filter((m) => !reserved.includes(m) && !defaultWithoutReserved.includes(m))
+    .map((m) => m);
+
+  if (defaultWithoutReserved.length) {
+    namedExports = `${namedExports} export const { ${defaultWithoutReserved.join(
+      ", "
+    )} } = __default;`;
+  }
+
+  if (otherWithoutReserved.length) {
+    namedExports = `${namedExports} export const { ${otherWithoutReserved.join(
+      ", "
+    )} } = __main;`;
+  }
+
+  return `${IGNORE_CACHED} \n\n const __main = window.__PACKAGER_CONTEXT__.npmDependencies['${moduleId}']; const __default = __main.default || {}; ${namedExports} export default __default; `;
 };
 
 const loaderPlugin = createPlugin({

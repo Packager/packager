@@ -23,12 +23,15 @@ import findMissingImports from "./find-missing-imports";
  *             so that they become available. If we have an exported default, we will need to
  *             do an "import ALL, { XYZ... } from ...".
  *
- *
+ * @todo figure out a way to group the imports by source so that
+ * we can only have 1 import (2 at most with namespaced import).
  *
  * Actions:
  * 1. Get the AST from the code to be "walk" through it.
  * 2. Get all imports and exports.
  * 3. Find which exports are missing imports
+ * 4. Go through the missing imports and append them to the code.
+ * 5. Add the __PACKAGER_CONTEXT__ to the code
  */
 export default async function (
   moduleId: string,
@@ -37,6 +40,78 @@ export default async function (
 ) {
   const rootNode = rollupPluginContext.parse(code, {}) as RootNode;
   const { imports, exports } = getAllImportsExports(rootNode, code);
-  const missingImports = findMissingImports(imports, exports);
-  console.log(moduleId, missingImports);
+  const { default: missingDefault, named, namespaced } = findMissingImports(
+    imports,
+    exports
+  );
+
+  // Append default import statement
+  for (const missing of missingDefault) {
+    code = `import ${missing.import} from "${missing.source}";\n\n ${code}`;
+  }
+
+  // Append named import statement
+  for (const missing of named) {
+    const inlined = Object.keys(missing.imports)
+      .map((_import) => {
+        if (_import === missing.imports[_import]) {
+          return _import;
+        }
+
+        return `${_import}: ${missing.imports[_import]}`;
+      })
+      .join(", ");
+
+    code = `import { ${inlined} } from "${missing.source}";\n\n ${code}`;
+  }
+
+  for (const missing of namespaced) {
+    code = `import * as ${missing.import} from "${missing.source}";\n\n ${code}`;
+  }
+
+  const packagerContextExports = [];
+
+  if (exports?.default?.export) {
+    packagerContextExports.push(`default: ${exports.default.export}`);
+  }
+
+  // named exports with sources
+  for (const named of exports.named) {
+    const onlyExportsWithSources = Object.keys(named.exports)
+      .map((_exportKey) => {
+        if (!named.source) {
+          return null;
+        }
+
+        const exportValue = named.exports[_exportKey];
+        if (exportValue === exports?.default?.export) {
+          return packagerContextExports.find(
+            (_export) => !_export.startsWith("default:")
+          )
+            ? `default: ${exportValue}`
+            : null;
+        }
+
+        if (_exportKey === "default") {
+          return exportValue;
+        }
+
+        if (_exportKey === exportValue) {
+          return exportValue;
+        }
+
+        return `${_exportKey}: ${exportValue}`;
+      })
+      .filter(Boolean);
+
+    packagerContextExports.push(onlyExportsWithSources);
+  }
+
+  for (const allImport of namespaced) {
+    packagerContextExports.push(`...${allImport.import}`);
+  }
+
+  return `${code} \n\n window.__PACKAGER_CONTEXT__.npmDependencies['${moduleId}'] = { ${packagerContextExports.join(
+    ", "
+  )} }`;
 }
