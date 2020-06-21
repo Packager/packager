@@ -1,3 +1,4 @@
+import { path } from "packager-pluginutils";
 import { Imports, Exports, NamedImports } from "./get-all-imports-exports";
 
 const handleDefaultExport = (imports: Imports, exports: Exports) => {
@@ -133,6 +134,37 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
   return results;
 };
 
+const getRandomNamespaceName = (source: string) => {
+  const randomString = Math.random().toString(36).slice(2);
+
+  return `${randomString}${source ? path.basename(source) : ""}`;
+};
+
+const handleExportAll = (imports: Imports, exports: Exports) => {
+  const results = {
+    namespaced: [],
+  };
+
+  // all "all" exports that don't have corresponding imports
+  const missingNamespaced = exports.all.filter(
+    (all) =>
+      all.source &&
+      !imports.namespaced.find((namespaced) => all.source === namespaced.source)
+  );
+
+  if (missingNamespaced) {
+    // we need to generate a random import name so that we can spread it into __PACKAGER_CONTEXT__ without name clashes.
+    results.namespaced.push(
+      ...missingNamespaced.map((missing) => ({
+        import: getRandomNamespaceName(missing.source),
+        source: missing.source,
+      }))
+    );
+  }
+
+  return results;
+};
+
 /**
  * The job of this function is to find all of the missing
  * imports for a given file. The reason why they are "missing"
@@ -198,7 +230,14 @@ export default function (imports: Imports, exports: Exports) {
     }
   }
 
-  // @todo 3. If there are "all" exports
+  // If there are "all" exports
+  if (exports.all.length) {
+    const { namespaced } = handleExportAll(imports, exports);
+
+    if (namespaced.length) {
+      missingImports.namespaced.push(...namespaced);
+    }
+  }
 
   return missingImports;
 }
