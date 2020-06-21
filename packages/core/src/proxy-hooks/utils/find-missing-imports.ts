@@ -75,11 +75,44 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
   const { default: defaultNamed, named } = namedWithSource.reduce(
     (acc, curr) => {
       const defaultExport = curr.exports["default"];
-      if (defaultExport) {
+      // do we have a default export and it's not already imported?
+      if (
+        defaultExport &&
+        !imports.default.some((_import) => _import.source === curr.source)
+      ) {
         acc.default.push({
           exports: {
             default: defaultExport,
           },
+          source: curr.source,
+        });
+      }
+
+      let namedExports = {};
+      for (const keyExport in curr.exports) {
+        const valExport = curr.exports[keyExport];
+        if (valExport !== defaultExport) {
+          const sourceImported = imports.named.find(
+            (named) => named.source === curr.source
+          );
+
+          if (
+            !sourceImported ||
+            (sourceImported &&
+              !Object.values(sourceImported).find(
+                (_import) => _import === valExport
+              ))
+          ) {
+            namedExports = Object.assign(namedExports, {
+              [keyExport]: valExport,
+            });
+          }
+        }
+      }
+
+      if (Object.keys(namedExports).length) {
+        acc.named.push({
+          exports: namedExports,
           source: curr.source,
         });
       }
@@ -89,16 +122,12 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
     { default: [], named: [] }
   );
 
-  // if exists, have the "export { default as ... }"" already been imported as default?
   if (defaultNamed.length) {
-    const missingImports = defaultNamed.filter(
-      (named) =>
-        !imports.default.some((_import) => _import.source === named.source)
-    );
+    results.default.push(...defaultNamed);
+  }
 
-    if (missingImports.length) {
-      results.default.push(...missingImports);
-    }
+  if (named.length) {
+    results.named.push(...named);
   }
 
   return results;
@@ -132,6 +161,10 @@ const handleNamedExports = (imports: Imports, exports: Exports) => {
  *        we don't need to worry but if they haven't:
  *    2c. We need to add them to default imports if their local name is default otherwise
  *        they need to be added to named imports.
+ * 3. If there are "all" exports
+ *    3a. Check if there already isn't a corresponding namespace imports. If there is,
+ *        we can ignore it and if there isn't:
+ *    3b. We need to add it to the namespaced missing imports.
  */
 export default function (imports: Imports, exports: Exports) {
   const missingImports: Imports = {
@@ -164,6 +197,8 @@ export default function (imports: Imports, exports: Exports) {
       missingImports.named.push(...named);
     }
   }
+
+  // @todo 3. If there are "all" exports
 
   return missingImports;
 }
