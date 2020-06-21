@@ -1,7 +1,8 @@
 import { Plugin } from "../types";
 import { createTranspiler } from "./utils";
 import { packagerContext, isModuleExternal } from "../utils";
-import { TranspileContext } from "./utils";
+import { TranspileContext, contextCodeWrap } from "./utils";
+import overrideExport from "./utils/override-transformed-external";
 
 const transformerHook = (plugin: Plugin) =>
   new Proxy(
@@ -16,7 +17,7 @@ const transformerHook = (plugin: Plugin) =>
 
       /**
        * if both worker and beforeBundle don't exist, we should ignore
-       * because another plugin could be taking care of this.
+       * because another plugin could be taking care of this module,
        */
       if (!plugin.transpiler.worker && !plugin.transpiler.beforeBundle) {
         return null;
@@ -24,7 +25,7 @@ const transformerHook = (plugin: Plugin) =>
 
       /**
        * if the provided gateway check fails, we don't need to worry about
-       * this as this plugin is not interested in this particular file/code.
+       * this as this plugin is not interested in this particular module.
        */
       if (!plugin.transpiler.gateway(moduleId, code)) {
         return null;
@@ -32,7 +33,7 @@ const transformerHook = (plugin: Plugin) =>
 
       /**
        * if worker doesn't exist but beforeBundle does, we can safely return
-       * code and moduleId because we already check for any ignores.
+       * the code and moduleId because we already check for any ignores.
        */
       if (!plugin.transpiler.worker && plugin.transpiler.beforeBundle) {
         return { code, moduleId };
@@ -51,8 +52,9 @@ const transformerHook = (plugin: Plugin) =>
         });
       }
 
+      const isExternal = isModuleExternal(moduleId);
       const transpiled = await transpiler.transpile({
-        isExternal: isModuleExternal(moduleId),
+        isExternal,
         moduleId,
         code,
       } as TranspileContext);
@@ -63,6 +65,7 @@ const transformerHook = (plugin: Plugin) =>
           code: transpiled.code,
           map: transpiled.map || { mappings: "" },
           moduleId,
+          isExternal,
         };
       }
 
@@ -80,17 +83,32 @@ const transformerHook = (plugin: Plugin) =>
           return Promise.resolve();
         }
 
-        const { code, map, moduleId, ...meta } = handledTransformFunction;
+        const {
+          code,
+          map,
+          moduleId,
+          isExternal,
+          ...meta
+        } = handledTransformFunction;
 
         if (!plugin.transpiler.beforeBundle) {
-          return handledTransformFunction;
+          await overrideExport(moduleId, code, thisArg);
+
+          return {
+            ...handledTransformFunction,
+            code: isExternal ? contextCodeWrap(moduleId, code, thisArg) : code,
+          };
         }
+
+        const beforeBundleOutput = await plugin.transpiler.beforeBundle.bind(
+          thisArg
+        )(moduleId, code);
 
         return {
           ...meta,
-          code:
-            plugin.transpiler.beforeBundle.bind(thisArg)(moduleId, code) ||
-            code,
+          code: isExternal
+            ? contextCodeWrap(moduleId, beforeBundleOutput, thisArg) || null
+            : beforeBundleOutput || null,
           map,
         };
       },

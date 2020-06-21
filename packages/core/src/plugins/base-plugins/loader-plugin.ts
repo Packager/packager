@@ -1,14 +1,28 @@
 import { createPlugin } from "packager-pluginutils";
-import { Plugin } from "../../types";
 import {
   packagerContext,
   isModuleExternal,
   fetchDependency,
   parsePackagePath,
 } from "../../utils";
+import { reservedWords } from "./utils";
 
 const cleanupExternalDependency = (code: string): string =>
   code.replace(/process.env.NODE_ENV/g, "'development'");
+
+const generateExportForCachedPackage = (moduleId: string) => {
+  const reserved = reservedWords.split(" ");
+  const namedExportKeys = Object.keys(
+    packagerContext.get("npmDependencies")[moduleId]
+  );
+  const namedExports = namedExportKeys.length
+    ? `export const { ${namedExportKeys
+        .filter((m) => !reserved.includes(m))
+        .map((m) => `${m}`)} } = __default;`
+    : "";
+
+  return `const __default = window.__PACKAGER_CONTEXT__.npmDependencies['${moduleId}']; ${namedExports} export default __default; `;
+};
 
 const loaderPlugin = createPlugin({
   name: "packager-loader-plugin",
@@ -19,6 +33,12 @@ const loaderPlugin = createPlugin({
 
     if (localFile) {
       return localFile;
+    }
+
+    const cachedPackage = moduleId in packagerContext.get("npmDependencies");
+
+    if (cachedPackage) {
+      return generateExportForCachedPackage(moduleId);
     }
 
     const parsedPackageName = parsePackagePath(moduleId);
@@ -36,8 +56,6 @@ const loaderPlugin = createPlugin({
     if (npmDependency) {
       const cleanedCode = cleanupExternalDependency(npmDependency.code);
 
-      console.log(moduleId);
-
       // packagerContext.set(
       //   "npmDependencies",
       //   deepMerge(packagerContext.get("npmDependencies"), {
@@ -48,7 +66,7 @@ const loaderPlugin = createPlugin({
       //   })
       // );
 
-      return { code: cleanedCode };
+      return { code: cleanedCode, moduleId };
     }
 
     return null;

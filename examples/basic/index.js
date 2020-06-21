@@ -102,31 +102,46 @@ import './styles.css';`,
 const files3 = [
   {
     path: "/src/app.js",
-    code: `import Test from './umd';`,
+    code: `
+// import Test from './test';
+// console.log(Test);
+
+import Vue, { extend } from 'vue';
+import React, { Component } from 'es-react';
+import Svelte, { SvelteComponent } from 'svelte';
+console.log({
+  Vue, extend,
+  React, Component,
+  Svelte, SvelteComponent
+});
+`,
     entry: true,
   },
   {
-    path: "/src/umd.js",
-    code: `(function (global, factory) {
-      typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-      typeof define === 'function' && define.amd ? define(factory) :
-      (global = global || self, global.Vue = factory());
-    }(this, function () { 'use strict'; }));`,
+    path: "/src/test.ts",
+    code: `
+const vars = {
+  greeting: {
+    helloWorld: 'hello!'
+  }
+};
+
+export default vars.greeting.helloWorld;
+`,
   },
 ];
 
 (async () => {
   try {
     // const datasetFiles = await fetchDataSet("collect.js.json");
-    console.time("first");
+    console.time("first time");
     const bundle1 = await packager.bundle(files3);
     eval(bundle1.code);
-    console.timeEnd("first");
-    // console.time("second");
-    // const bundle2 = await packager.bundle(files2);
-    // console.log(bundle2);
-    // eval(bundle2.code);
-    // console.timeEnd("second");
+    console.timeEnd("first time");
+    console.time("second time with caching");
+    const bundle2 = await packager.bundle(files3);
+    eval(bundle2.code);
+    console.timeEnd("second time with caching");
   } catch (e) {
     console.error(e);
   }

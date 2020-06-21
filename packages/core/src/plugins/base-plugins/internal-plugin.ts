@@ -1,4 +1,11 @@
-import { Plugin, InputOptions, RollupError, WarningHandler } from "rollup";
+import {
+  Plugin,
+  InputOptions,
+  OutputOptions,
+  OutputBundle,
+  RollupError,
+  WarningHandler,
+} from "rollup";
 import { packagerContext } from "../../utils";
 
 export default {

@@ -1,15 +1,12 @@
-import { createPlugin, verifyExtensions } from "packager-pluginutils";
+import { createPlugin } from "packager-pluginutils";
 // @ts-ignore
 import Worker from "web-worker:./worker";
-
-const isValid = verifyExtensions([".js", ".jsx", ".ts", ".tsx"]);
+import gateway from "./gateway";
 
 const esbuildPlugin = createPlugin({
   name: "esbuild",
   transpiler: {
-    gateway(moduleId: string) {
-      return isValid(moduleId);
-    },
+    gateway,
     worker: Worker,
   },
 });

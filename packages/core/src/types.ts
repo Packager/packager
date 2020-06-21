@@ -1,10 +1,13 @@
 import {
   SourceMap,
-  AcornNode,
   Plugin as RollupPlugin,
   PluginContext as RollupPluginContext,
 } from "rollup";
-import { TRANSPILE_STATUS, TRANSPILE_ERROR } from "packager-pluginutils";
+import {
+  TRANSPILE_STATUS,
+  TRANSPILE_ERROR,
+  RootNode,
+} from "packager-pluginutils";
 
 // Interfaces
 export interface File {
@@ -94,7 +97,7 @@ export type PluginTranspiler = {
   beforeBundle?: PluginBeforeBundleHook;
 };
 
-export type Parser = (code: string, options?: any) => AcornNode;
+export type Parser = (code: string, options?: any) => RootNode;
 
 export type PackagerContextState = {
   _rollupPlugins: Map<string, RollupPlugin>;

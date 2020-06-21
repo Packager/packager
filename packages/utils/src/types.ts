@@ -1,4 +1,29 @@
 import { Plugin, File, WebWorkerContext } from "packager";
+import { Node, ModuleInfoExport } from "./module-info/types";
+
+export interface AstNode extends Node {}
+
+export interface RootNode {
+  body: Array<Node>;
+  end: number;
+  sourceType: string;
+  start: number;
+  type: string;
+}
+
+export interface ModuleInfo {
+  meta: {
+    hasDefaultImports: boolean;
+    hasNamedImports: boolean;
+    hasNamespaceImports: boolean;
+    hasDefaultExport: boolean;
+    hasNamedExports: boolean;
+    hasUmdWrappers: boolean;
+    hasExportAll: boolean;
+  };
+  defaultExport?: ModuleInfoExport;
+  namedExports?: ModuleInfoExport;
+}
 
 export declare const path: {
   isAbsolute: (path: string) => boolean;
@@ -17,6 +42,20 @@ export declare const styleHelpers: {
 };
 
 export declare function createPlugin(options: Plugin): Plugin;
+
+export declare function nodeHasDefaultExport(
+  node: Node,
+  includeNamed?: boolean
+): boolean;
+export declare function nodeHasNamedExports(
+  node: Node,
+  includeDefault?: boolean
+): boolean;
+export declare function nodeHasExportAll(node: Node): boolean;
+export declare function nodeHasDefaultImports(node: Node): boolean;
+export declare function nodeHasNamedImports(node: Node): boolean;
+export declare function nodeHasNamespaceImports(node: Node): boolean;
+export declare function getModuleInfo(rootNode: RootNode): ModuleInfo;
 
 export declare function verifyExtensions(
   extensions: Array<string>

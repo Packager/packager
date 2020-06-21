@@ -4,6 +4,8 @@ import * as styleHelpersUtil from "./style-helpers";
 
 export * from "./worker-helpers";
 export * from "./consts";
+export * from "./ast-helpers";
+export { default as getModuleInfo } from "./module-info";
 
 export const path = pathUtil;
 export const styleHelpers = styleHelpersUtil;

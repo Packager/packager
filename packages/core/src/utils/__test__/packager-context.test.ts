@@ -1,10 +1,11 @@
 import { getContext, setContext } from "../packager-context";
+import { PackagerContextState } from "../../types";
 
 describe("packager-context", () => {
   beforeEach(() => {
     window.__PACKAGER_CONTEXT__ = {
-      plugins: [],
-    };
+      plugins: new Map(),
+    } as PackagerContextState;
   });
 
   it("should set the value to context", () => {
