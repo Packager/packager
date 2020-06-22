@@ -1,11 +1,4 @@
-import {
-  Plugin,
-  InputOptions,
-  OutputOptions,
-  OutputBundle,
-  RollupError,
-  WarningHandler,
-} from "rollup";
+import { Plugin, InputOptions, RollupError, WarningHandler } from "rollup";
 import { packagerContext } from "../../utils";
 
 export default {
@@ -23,8 +16,5 @@ export default {
     if (!packagerContext.get("_parser")) {
       packagerContext.set("_parser", this.parse);
     }
-  },
-  renderError(error: Error) {
-    console.log("render error", error);
   },
 } as Plugin;

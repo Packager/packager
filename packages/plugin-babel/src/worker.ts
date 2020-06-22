@@ -33,6 +33,7 @@ self.addEventListener("message", async (event: WebWorkerEvent) => {
     try {
       const transpiled = self.Babel.transform(context.code, {
         filename: context.moduleId,
+        compact: false,
         plugins: [commonjsPlugin],
       });
 

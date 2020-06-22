@@ -101,9 +101,14 @@ import './styles.css';`,
 
 const files3 = [
   {
-    path: "/src/app.js",
-    code: `import { Component } from 'react';
-console.log(Component);
+    path: "/src/app.jsx",
+    code: `import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <h1>Hello World</h1>,
+  document.getElementById('app')
+);
 `,
     entry: true,
   },
