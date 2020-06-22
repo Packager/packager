@@ -1,7 +1,7 @@
 import { path } from "packager-pluginutils";
 
 const resolveExternal = (moduleId: string, parentId: string): string => {
-  if (path.extname(parentId) === "") {
+  if (!path.extname(parentId) && !~parentId.indexOf("/")) {
     return path.resolve(parentId, moduleId);
   }
 

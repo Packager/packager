@@ -102,40 +102,10 @@ import './styles.css';`,
 const files3 = [
   {
     path: "/src/app.js",
-    code: `
-// import all from './test';
-// import { hello } from './test';
-// import { testing } from './test';
-// import { greeting } from './test';
-
-// console.log(all, hello, testing, greeting);
-
-// import Test from './test';
-// console.log(Test);
-
-import Vue, { extend } from 'vue';
-import React, { Component, PropTypes } from 'es-react';
-import Svelte, { SvelteComponent } from 'svelte';
-console.log({
-  Vue, extend,
-  React, Component, PropTypes,
-  Svelte, SvelteComponent
-});
+    code: `import { Component } from 'react';
+console.log(Component);
 `,
     entry: true,
-  },
-  {
-    path: "/src/test.ts",
-    code: `
-export const hello = 'hello';
-export const greeting = 'greeting';
-export const testing = 'testing';
-
-export default {
-  hello,
-  greeting,
-  testing
-}`,
   },
 ];
 
@@ -146,22 +116,22 @@ export default {
     const bundle1 = await packager.bundle(files3);
     eval(bundle1.code);
     console.timeEnd("first time");
-    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["es-react"]);
+    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["react"]);
     console.time("second time with caching");
     const bundle2 = await packager.bundle(files3);
     eval(bundle2.code);
     console.timeEnd("second time with caching");
-    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["es-react"]);
+    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["react"]);
     console.time("third time with caching");
     const bundle3 = await packager.bundle(files3);
     eval(bundle3.code);
     console.timeEnd("third time with caching");
-    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["es-react"]);
+    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["react"]);
     console.time("fourth time with caching");
     const bundle4 = await packager.bundle(files3);
     eval(bundle4.code);
     console.timeEnd("fourth time with caching");
-    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["es-react"]);
+    console.log(window.__PACKAGER_CONTEXT__.npmDependencies["react"]);
   } catch (e) {
     console.error(e);
   }
